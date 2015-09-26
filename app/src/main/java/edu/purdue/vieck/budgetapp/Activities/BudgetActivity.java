@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -31,10 +33,10 @@ import edu.purdue.vieck.budgetapp.Fragments.SubmitFragment;
 public class BudgetActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     private ViewPager mViewPager;
     private PagerSlidingTabStrip mTabLayout;
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
     private DatabaseHandler mDatabaseHandler;
     ViewPagerAdapter adapter;
 
@@ -78,6 +80,9 @@ public class BudgetActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
         mTabLayout = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         mTabLayout.setViewPager(mViewPager);
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+                .getDisplayMetrics());
+        mViewPager.setPageMargin(pageMargin);
         mTabLayout.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
             @Override
             public void onTabReselected(int i) {
@@ -161,7 +166,7 @@ public class BudgetActivity extends AppCompatActivity {
             viewPager.setAdapter(adapter);
     }
 
-    static class ViewPagerAdapter extends FragmentStatePagerAdapter {
+    static class ViewPagerAdapter extends FragmentPagerAdapter {
         private final ArrayList<Fragment> mFragmentList = new ArrayList<>();
         private final ArrayList<String> mTitleList = new ArrayList<>();
 
