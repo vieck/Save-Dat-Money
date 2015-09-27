@@ -42,7 +42,10 @@ public class DashboardActivity extends Activity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
                     case R.id.nav_item_graph:
                         intent = new Intent(currentActivity, GraphActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -57,7 +60,7 @@ public class DashboardActivity extends Activity {
                 return true;
             }
         });
-        getFragmentManager().beginTransaction().add(R.id.fragment_container_dashboard, new DashboardFragment()).commit();
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, new DashboardFragment()).commit();
     }
 
 }

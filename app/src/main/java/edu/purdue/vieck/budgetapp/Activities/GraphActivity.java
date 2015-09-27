@@ -10,23 +10,37 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+<<<<<<< HEAD
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragment;
+=======
+import edu.purdue.vieck.budgetapp.Fragments.IncomeExpensesGraphFragment;
+>>>>>>> origin/master
 import edu.purdue.vieck.budgetapp.R;
 
 public class GraphActivity extends AppCompatActivity {
 
+<<<<<<< HEAD
     private Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     GraphFragment graphFragment;
+=======
+    private Toolbar mToolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+>>>>>>> origin/master
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
+<<<<<<< HEAD
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+=======
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+>>>>>>> origin/master
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation_layout);
         final Activity currentActivity = this;
@@ -60,8 +74,12 @@ public class GraphActivity extends AppCompatActivity {
                 return true;
             }
         });
+<<<<<<< HEAD
         graphFragment = new GraphFragment();
         getFragmentManager().beginTransaction().add(R.id.fragment_container, graphFragment).commit();
+=======
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, new IncomeExpensesGraphFragment()).commit();
+>>>>>>> origin/master
     }
 
     @Override

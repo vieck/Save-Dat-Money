@@ -59,19 +59,28 @@ public class BudgetActivity extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
                     case R.id.nav_item_chart:
                         intent = new Intent(currentActivity, BudgetActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
                     case R.id.nav_item_graph:
                         intent = new Intent(currentActivity, GraphActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
                     case R.id.nav_item_list:
                         intent = new Intent(currentActivity, DataActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

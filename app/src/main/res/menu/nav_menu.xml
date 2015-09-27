@@ -3,12 +3,22 @@
     <group android:checkableBehavior="all">
 
         <item android:id="@+id/nav_item_dashboard"
+            android:icon="@drawable/exit"
             android:title="@string/dashboard"/>
 
         <item android:id="@+id/nav_item_chart"
+<<<<<<< HEAD
+=======
+            android:icon="@drawable/panel"
+>>>>>>> origin/master
             android:title="@string/charts" />
 
+        <item android:id="@+id/nav_item_graph"
+            android:icon="@drawable/graph"
+            android:title="@string/graphs"/>
+
         <item android:id="@+id/nav_item_list"
+            android:icon="@android:drawable/ic_menu_compass"
             android:title="@string/data" />
 
         <item android:id="@+id/nav_item_graph"

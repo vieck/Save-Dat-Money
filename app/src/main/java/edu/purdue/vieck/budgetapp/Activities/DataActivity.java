@@ -43,19 +43,28 @@ public class DataActivity extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
                     case R.id.nav_item_chart:
                         intent = new Intent(currentActivity, BudgetActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
                     case R.id.nav_item_graph:
                         intent = new Intent(currentActivity, GraphActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
                     case R.id.nav_item_list:
                         intent = new Intent(currentActivity, DataActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -65,8 +74,13 @@ public class DataActivity extends AppCompatActivity {
                 return true;
             }
         });
+<<<<<<< HEAD
 
         getSupportFragmentManager().beginTransaction().add(R.id.data_fragment_container, dataFragment = new DataFragment()).commit();
+=======
+        mDatabaseHandler = new DatabaseHandler(this);
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, dataFragment = new DataFragment()).commit();
+>>>>>>> origin/master
     }
 
     @Override
