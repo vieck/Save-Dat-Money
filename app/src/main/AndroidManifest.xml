@@ -38,6 +38,10 @@
             android:name=".Activities.GraphActivity"
             android:label="@string/title_activity_graph" >
         </activity>
+        <activity
+            android:name=".Activities.SubmitActivity"
+            android:label="@string/title_activity_submit" >
+        </activity>
     </application>
 
 </manifest>

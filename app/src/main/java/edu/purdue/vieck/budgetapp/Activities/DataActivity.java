@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
 import edu.purdue.vieck.budgetapp.Fragments.DataFragment;
 
@@ -23,7 +22,6 @@ public class DataActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     DataFragment dataFragment;
-    private DatabaseHandler mDatabaseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +29,6 @@ public class DataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_data);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        mDatabaseHandler = new DatabaseHandler(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation_layout);
         final Activity currentActivity = this;
@@ -46,11 +43,19 @@ public class DataActivity extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
-                    case R.id.chart_nav_item:
+
+                    case R.id.nav_item_chart:
                         intent = new Intent(currentActivity, BudgetActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
+
+                    case R.id.nav_item_graph:
+                        intent = new Intent(currentActivity, GraphActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+
                     case R.id.nav_item_list:
                         intent = new Intent(currentActivity, DataActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -60,7 +65,7 @@ public class DataActivity extends AppCompatActivity {
                 return true;
             }
         });
-        mDatabaseHandler = new DatabaseHandler(this);
+
         getSupportFragmentManager().beginTransaction().add(R.id.data_fragment_container, dataFragment = new DataFragment()).commit();
     }
 

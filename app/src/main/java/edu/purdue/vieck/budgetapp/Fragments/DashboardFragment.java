@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.purdue.vieck.budgetapp.Activities.GraphActivity;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
 import edu.purdue.vieck.budgetapp.Activities.BudgetActivity;
@@ -39,9 +40,9 @@ public class DashboardFragment extends Fragment {
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         List<DashboardItem> cards = new ArrayList<>();
+         // <div>Icon made by <a href="http://www.simpleicon.com" title="SimpleIcon">SimpleIcon</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
         cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.entertainment_main), "Entertainment", getResources().getColor(R.color.DeepSkyBlue), new Intent(getActivity(),BudgetActivity.class)));
-        // <div>Icon made by <a href="http://www.simpleicon.com" title="SimpleIcon">SimpleIcon</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
-        cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.panel), "Graphs", getResources().getColor(R.color.Orange), new Intent(getActivity(), BudgetActivity.class)));
+        cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.panel), "Graphs", getResources().getColor(R.color.Orange), new Intent(getActivity(), GraphActivity.class)));
         cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.piggy_bank), "Expenses", getResources().getColor(R.color.Crimson), new Intent(getActivity(),BudgetActivity.class)));
         cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.currency_symbol), "Currency", getResources().getColor(R.color.Lime), new Intent(getActivity(),BudgetActivity.class)));
         cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.hand_coin), "Cash Flow", getResources().getColor(R.color.Gold), new Intent(getActivity(),BudgetActivity.class)));

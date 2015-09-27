@@ -7,7 +7,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,22 +22,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.purdue.vieck.budgetapp.DatabaseHandler;
-import edu.purdue.vieck.budgetapp.R;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetElement;
+import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.Fragments.ChartFragment;
-import edu.purdue.vieck.budgetapp.Fragments.SubmitFragment;
+import edu.purdue.vieck.budgetapp.R;
 
 
 public class BudgetActivity extends AppCompatActivity {
 
+    ViewPagerAdapter adapter;
     private Toolbar mToolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ViewPager mViewPager;
     private PagerSlidingTabStrip mTabLayout;
     private DatabaseHandler mDatabaseHandler;
-    ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +59,19 @@ public class BudgetActivity extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
-                    case R.id.chart_nav_item:
+
+                    case R.id.nav_item_chart:
                         intent = new Intent(currentActivity, BudgetActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
+
+                    case R.id.nav_item_graph:
+                        intent = new Intent(currentActivity, GraphActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+
                     case R.id.nav_item_list:
                         intent = new Intent(currentActivity, DataActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -107,8 +113,9 @@ public class BudgetActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_data) {
-            SubmitFragment submitFragment = new SubmitFragment();
-            submitFragment.show(getSupportFragmentManager(), "SubmitFragment");
+            /*SubmitFragment submitFragment = new SubmitFragment();
+            submitFragment.show(getSupportFragmentManager(), "SubmitFragment");*/
+            this.startActivity(new Intent(this, SubmitActivity.class));
             return true;
         } else if (id == R.id.action_delete) {
             mDatabaseHandler.deleteAll();
