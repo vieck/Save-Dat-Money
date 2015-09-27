@@ -37,8 +37,13 @@ public class DashboardActivity extends Activity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
-                    case R.id.chart_nav_item:
+                    case R.id.nav_item_chart:
                         intent = new Intent(currentActivity, BudgetActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+                    case R.id.nav_item_graph:
+                        intent = new Intent(currentActivity, GraphActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
@@ -51,7 +56,7 @@ public class DashboardActivity extends Activity {
                 return true;
             }
         });
-        getFragmentManager().beginTransaction().add(R.id.fragment_container_dashboard, new DashboardFragment()).commit();
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, new DashboardFragment()).commit();
     }
 
 }
