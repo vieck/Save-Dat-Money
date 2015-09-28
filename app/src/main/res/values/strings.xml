@@ -40,16 +40,25 @@
         <item>Entertainment</item>
         <item>Income</item>
     </string-array>
+
+    <!-- Category Types -->
+    <string-array name="icons">
+        <item>@drawable/graph</item>
+        <item>@drawable/graph</item>
+        <item>@drawable/graph</item>
+        <item>@drawable/graph</item>
+        <item>@drawable/graph</item>
+        <item>@drawable/graph</item>
+    </string-array>
+
     <string name="title_activity_data">DataActivity</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="title_activity_graph">GraphActivity</string>
-<<<<<<< HEAD
     <string name="title_activity_submit">SubmitActivity</string>
-=======
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
->>>>>>> origin/master
+    <string name="title_activity_category">CategoryActivity</string>
 </resources>

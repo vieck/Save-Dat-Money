@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetElement;
+import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 
 /**
  * Created by vieck on 7/22/15.
@@ -54,23 +54,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addData(BudgetElement budgetElement) {
+    public void addData(BudgetItem budgetItem) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_CATEGORY, budgetElement.getCategory());
-        contentValues.put(COLUMN_AMOUNT, budgetElement.getAmount());
-        contentValues.put(COLUMN_TYPE, budgetElement.isType());
-        contentValues.put(COLUMN_DAY, budgetElement.getDay());
-        contentValues.put(COLUMN_MONTH, budgetElement.getMonth());
-        contentValues.put(COLUMN_YEAR, budgetElement.getYear());
-        contentValues.put(COLUMN_NOTE, budgetElement.getNote());
+        contentValues.put(COLUMN_CATEGORY, budgetItem.getCategory());
+        contentValues.put(COLUMN_AMOUNT, budgetItem.getAmount());
+        contentValues.put(COLUMN_TYPE, budgetItem.isType());
+        contentValues.put(COLUMN_DAY, budgetItem.getDay());
+        contentValues.put(COLUMN_MONTH, budgetItem.getMonth());
+        contentValues.put(COLUMN_YEAR, budgetItem.getYear());
+        contentValues.put(COLUMN_NOTE, budgetItem.getNote());
 
         database.insert(TABLE_DATA, null, contentValues);
         database.close();
     }
 
-    public Stack<BudgetElement> getAllData() {
-        Stack<BudgetElement> mDataset = new Stack<>();
+    public Stack<BudgetItem> getAllData() {
+        Stack<BudgetItem> mDataset = new Stack<>();
         String selectQuery = "SELECT  * FROM " + TABLE_DATA
                 + " ORDER BY " + COLUMN_MONTH + " ASC," + COLUMN_YEAR + " DESC";
 
@@ -79,62 +79,62 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.moveToFirst();
         if (!cursor.isAfterLast()) {
             do {
-                BudgetElement budgetElement = new BudgetElement();
+                BudgetItem budgetItem = new BudgetItem();
                 cursor.getLong(0);
-                budgetElement.setCategory(cursor.getString(1));
-                budgetElement.setAmount(cursor.getFloat(2));
+                budgetItem.setCategory(cursor.getString(1));
+                budgetItem.setAmount(cursor.getFloat(2));
                 if (cursor.getInt(3) == 0) {
-                    budgetElement.setType(false);
+                    budgetItem.setType(false);
                 } else {
-                    budgetElement.setType(true);
+                    budgetItem.setType(true);
                 }
-                budgetElement.setDay(cursor.getInt(4));
-                budgetElement.setMonth(cursor.getInt(5));
-                budgetElement.setYear(cursor.getInt(6));
-                Log.d("Database", "Category" + budgetElement.getCategory() +
-                        "\nAmount " + budgetElement.getAmount() +
-                        "\nType " + budgetElement.isType());
-                mDataset.add(budgetElement);
+                budgetItem.setDay(cursor.getInt(4));
+                budgetItem.setMonth(cursor.getInt(5));
+                budgetItem.setYear(cursor.getInt(6));
+                Log.d("Database", "Category" + budgetItem.getCategory() +
+                        "\nAmount " + budgetItem.getAmount() +
+                        "\nType " + budgetItem.isType());
+                mDataset.add(budgetItem);
             } while (cursor.moveToNext());
         }
         return mDataset;
     }
 
-    public HashMap<Integer, List<BudgetElement>> getAllYears() {
-        HashMap<Integer, List<BudgetElement>> mDataset = new HashMap<>();
+    public HashMap<Integer, List<BudgetItem>> getAllYears() {
+        HashMap<Integer, List<BudgetItem>> mDataset = new HashMap<>();
         String selectQuery = "SELECT * FROM " + TABLE_DATA
                 + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                BudgetElement budgetElement = new BudgetElement();
-                budgetElement.setCategory(cursor.getString(1));
-                budgetElement.setAmount(cursor.getFloat(2));
+                BudgetItem budgetItem = new BudgetItem();
+                budgetItem.setCategory(cursor.getString(1));
+                budgetItem.setAmount(cursor.getFloat(2));
                 if (cursor.getInt(3) == 0) {
-                    budgetElement.setType(false);
+                    budgetItem.setType(false);
                 } else {
-                    budgetElement.setType(true);
+                    budgetItem.setType(true);
                 }
-                budgetElement.setDay(cursor.getInt(4));
-                budgetElement.setMonth(cursor.getInt(5));
-                budgetElement.setYear(cursor.getInt(6));
-                if (mDataset.get(budgetElement.getYear()) == null) {
-                    List<BudgetElement> list = new ArrayList<>();
-                    list.add(budgetElement);
-                    mDataset.put(budgetElement.getYear(), list);
+                budgetItem.setDay(cursor.getInt(4));
+                budgetItem.setMonth(cursor.getInt(5));
+                budgetItem.setYear(cursor.getInt(6));
+                if (mDataset.get(budgetItem.getYear()) == null) {
+                    List<BudgetItem> list = new ArrayList<>();
+                    list.add(budgetItem);
+                    mDataset.put(budgetItem.getYear(), list);
                 } else {
-                    List<BudgetElement> list = mDataset.get(budgetElement.getYear());
-                    list.add(budgetElement);
-                    mDataset.put(budgetElement.getYear(), list);
+                    List<BudgetItem> list = mDataset.get(budgetItem.getYear());
+                    list.add(budgetItem);
+                    mDataset.put(budgetItem.getYear(), list);
                 }
             } while (cursor.moveToNext());
         }
         return mDataset;
     }
 
-    public Stack<BudgetElement> getSpecificMonthYear(int month, int year) {
-        Stack<BudgetElement> mDataset = new Stack<>();
+    public Stack<BudgetItem> getSpecificMonthYear(int month, int year) {
+        Stack<BudgetItem> mDataset = new Stack<>();
         String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
                 + " and " + COLUMN_YEAR + " = " + year
                 + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
@@ -142,55 +142,55 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                BudgetElement budgetElement = new BudgetElement();
-                //budgetElement.setID(cursor.getLong(0));
-                budgetElement.setCategory(cursor.getString(1));
-                budgetElement.setAmount(cursor.getFloat(2));
+                BudgetItem budgetItem = new BudgetItem();
+                //budgetItem.setID(cursor.getLong(0));
+                budgetItem.setCategory(cursor.getString(1));
+                budgetItem.setAmount(cursor.getFloat(2));
                 if (cursor.getInt(3) == 0) {
-                    budgetElement.setType(false);
+                    budgetItem.setType(false);
                 } else {
-                    budgetElement.setType(true);
+                    budgetItem.setType(true);
                 }
-                budgetElement.setDay(cursor.getInt(4));
-                budgetElement.setMonth(cursor.getInt(5));
-                budgetElement.setYear(cursor.getInt(6));
+                budgetItem.setDay(cursor.getInt(4));
+                budgetItem.setMonth(cursor.getInt(5));
+                budgetItem.setYear(cursor.getInt(6));
 
-                mDataset.add(budgetElement);
+                mDataset.add(budgetItem);
             } while (cursor.moveToNext());
         }
         sqLiteDatabase.close();
         return mDataset;
     }
 
-    public ArrayList<BudgetElement> getFilteredData(String filter) {
-        ArrayList<BudgetElement> mDataset = new ArrayList<>();
+    public ArrayList<BudgetItem> getFilteredData(String filter) {
+        ArrayList<BudgetItem> mDataset = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + filter + "%'";
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                BudgetElement budgetElement = new BudgetElement();
-                //budgetElement.setID(cursor.getLong(0));
-                budgetElement.setCategory(cursor.getString(1));
-                budgetElement.setAmount(cursor.getFloat(2));
+                BudgetItem budgetItem = new BudgetItem();
+                //budgetItem.setID(cursor.getLong(0));
+                budgetItem.setCategory(cursor.getString(1));
+                budgetItem.setAmount(cursor.getFloat(2));
                 if (cursor.getInt(3) == 0) {
-                    budgetElement.setType(false);
+                    budgetItem.setType(false);
                 } else {
-                    budgetElement.setType(true);
+                    budgetItem.setType(true);
                 }
-                budgetElement.setDay(cursor.getInt(4));
-                budgetElement.setMonth(cursor.getInt(5));
-                budgetElement.setYear(cursor.getInt(6));
+                budgetItem.setDay(cursor.getInt(4));
+                budgetItem.setMonth(cursor.getInt(5));
+                budgetItem.setYear(cursor.getInt(6));
 
-                mDataset.add(budgetElement);
+                mDataset.add(budgetItem);
             } while (cursor.moveToNext());
         }
         sqLiteDatabase.close();
         return mDataset;
     }
 
-    public Stack<BudgetElement> searchDatabase(String searchParameters) {
-        Stack<BudgetElement> mDataset = new Stack<>();
+    public Stack<BudgetItem> searchDatabase(String searchParameters) {
+        Stack<BudgetItem> mDataset = new Stack<>();
         String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_CATEGORY + "LIKE '%" + searchParameters + "%' or "
                 + COLUMN_AMOUNT + " LIKE '" + searchParameters + "' or "
                 + COLUMN_DAY + " LIKE '%" + searchParameters + "%' or "
@@ -201,29 +201,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                BudgetElement budgetElement = new BudgetElement();
-                //budgetElement.setID(cursor.getLong(0));
-                budgetElement.setCategory(cursor.getString(1));
-                budgetElement.setAmount(cursor.getFloat(2));
+                BudgetItem budgetItem = new BudgetItem();
+                //budgetItem.setID(cursor.getLong(0));
+                budgetItem.setCategory(cursor.getString(1));
+                budgetItem.setAmount(cursor.getFloat(2));
                 if (cursor.getInt(3) == 0) {
-                    budgetElement.setType(false);
+                    budgetItem.setType(false);
                 } else {
-                    budgetElement.setType(true);
+                    budgetItem.setType(true);
                 }
-                budgetElement.setDay(cursor.getInt(4));
-                budgetElement.setMonth(cursor.getInt(5));
-                budgetElement.setYear(cursor.getInt(6));
+                budgetItem.setDay(cursor.getInt(4));
+                budgetItem.setMonth(cursor.getInt(5));
+                budgetItem.setYear(cursor.getInt(6));
 
-                mDataset.add(budgetElement);
+                mDataset.add(budgetItem);
             } while (cursor.moveToNext());
         }
         sqLiteDatabase.close();
         return mDataset;
     }
 
-    public void delete(BudgetElement budgetElement) {
+    public void delete(BudgetItem budgetItem) {
         SQLiteDatabase database = this.getWritableDatabase();
-        database.delete(TABLE_DATA, COLUMN_ID + " = " + "'" + budgetElement.getCategory() + "'", null);
+        database.delete(TABLE_DATA, COLUMN_ID + " = " + "'" + budgetItem.getCategory() + "'", null);
         database.close();
     }
 

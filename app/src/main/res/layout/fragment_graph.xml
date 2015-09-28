@@ -1,13 +1,7 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-</LinearLayout>
-=======
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edu.purdue.vieck.budgetapp.Fragments.IncomeExpensesGraphFragment">
 
@@ -16,27 +10,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text=""
-            android:textSize="40sp"
-            android:id="@+id/textPercentage"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            />
+    <TextView
+        android:id="@+id/textPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="40sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text=""
-            android:id="@+id/textRemaining"
-            android:layout_below="@+id/textPercentage"
-            android:layout_centerHorizontal="true"
-            android:maxWidth="200dp" />
+    <TextView
+        android:id="@+id/textRemaining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textPercentage"
+        android:layout_centerHorizontal="true"
+        android:maxWidth="200dp"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
 </RelativeLayout>
->>>>>>> origin/master

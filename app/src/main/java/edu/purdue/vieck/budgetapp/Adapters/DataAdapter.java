@@ -12,7 +12,7 @@ import java.util.Stack;
 
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetElement;
+import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 
 /**
  * Created by vieck on 7/16/15.
@@ -21,7 +21,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.mViewHolder> {
 
     Context context;
     DatabaseHandler databaseHandler;
-    Stack<BudgetElement> mDataset = new Stack<>();
+    Stack<BudgetItem> mDataset = new Stack<>();
 
     public DataAdapter(Context context, String filter) {
         this.context = context;
@@ -36,22 +36,22 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.mViewHolder> {
 
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.data_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_data, viewGroup, false);
         mViewHolder viewHolder = new mViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(mViewHolder viewHolder, int i) {
-        final BudgetElement budgetElement = mDataset.get(i);
-        viewHolder.date.setText(budgetElement.getMonth() + "-" + budgetElement.getMonth() + "-" + budgetElement.getYear());
-        viewHolder.amount.setText(budgetElement.getAmount() + "");
-        viewHolder.expenses.setText(budgetElement.isType() + "");
-        viewHolder.income.setText(budgetElement.getCategory());
+        final BudgetItem budgetItem = mDataset.get(i);
+        viewHolder.date.setText(budgetItem.getMonth() + "-" + budgetItem.getMonth() + "-" + budgetItem.getYear());
+        viewHolder.amount.setText(budgetItem.getAmount() + "");
+        viewHolder.expenses.setText(budgetItem.isType() + "");
+        viewHolder.income.setText(budgetItem.getCategory());
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseHandler.delete(budgetElement);
+                databaseHandler.delete(budgetItem);
             }
         });
     }

@@ -3,17 +3,17 @@ package edu.purdue.vieck.budgetapp.CustomObjects;
 /**
  * Created by vieck on 7/14/15.
  */
-public class BudgetElement {
+public class BudgetItem {
     private String category, note;
     private boolean type;
     private int day, month, year;
     private float amount;
 
-    public BudgetElement() {
+    public BudgetItem() {
 
     }
 
-    public BudgetElement(float amount, String category, boolean type, int day, int month, int year, String note) {
+    public BudgetItem(float amount, String category, boolean type, int day, int month, int year, String note) {
         this.amount = amount;
         this.category = category;
         this.type = type;

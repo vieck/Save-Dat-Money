@@ -7,10 +7,7 @@
             android:title="@string/dashboard"/>
 
         <item android:id="@+id/nav_item_chart"
-<<<<<<< HEAD
-=======
             android:icon="@drawable/panel"
->>>>>>> origin/master
             android:title="@string/charts" />
 
         <item android:id="@+id/nav_item_graph"
@@ -20,9 +17,6 @@
         <item android:id="@+id/nav_item_list"
             android:icon="@android:drawable/ic_menu_compass"
             android:title="@string/data" />
-
-        <item android:id="@+id/nav_item_graph"
-            android:title="@string/title_activity_graph"/>
 
     </group>
 </menu>

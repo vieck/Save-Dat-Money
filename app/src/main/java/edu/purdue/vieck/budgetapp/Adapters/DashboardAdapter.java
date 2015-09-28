@@ -2,7 +2,6 @@ package edu.purdue.vieck.budgetapp.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,7 +32,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.mVie
 
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dashboard_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dashboard, parent, false);
         mViewHolder viewHolder = new mViewHolder(view);
         return viewHolder;
     }

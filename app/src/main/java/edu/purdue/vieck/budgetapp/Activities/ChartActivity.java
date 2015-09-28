@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetElement;
+import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.Fragments.ChartFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 
-public class BudgetActivity extends AppCompatActivity {
+public class ChartActivity extends AppCompatActivity {
 
     ViewPagerAdapter adapter;
     private Toolbar mToolbar;
@@ -59,28 +59,16 @@ public class BudgetActivity extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
                     case R.id.nav_item_chart:
-                        intent = new Intent(currentActivity, BudgetActivity.class);
+                        intent = new Intent(currentActivity, ChartActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
                     case R.id.nav_item_graph:
                         intent = new Intent(currentActivity, GraphActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
                     case R.id.nav_item_list:
                         intent = new Intent(currentActivity, DataActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -122,9 +110,9 @@ public class BudgetActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_data) {
-            /*SubmitFragment submitFragment = new SubmitFragment();
-            submitFragment.show(getSupportFragmentManager(), "SubmitFragment");*/
-            this.startActivity(new Intent(this, SubmitActivity.class));
+            /*AddFragment addFragment = new AddFragment();
+            addFragment.show(getSupportFragmentManager(), "AddFragment");*/
+            this.startActivity(new Intent(this, AddActivity.class));
             return true;
         } else if (id == R.id.action_delete) {
             mDatabaseHandler.deleteAll();
@@ -144,7 +132,7 @@ public class BudgetActivity extends AppCompatActivity {
         bundle.putInt("year", -1);
         chartFragment.setArguments(bundle);
         adapter.addFragment(chartFragment, "Chart");
-        HashMap<Integer, List<BudgetElement>> years = mDatabaseHandler.getAllYears();
+        HashMap<Integer, List<BudgetItem>> years = mDatabaseHandler.getAllYears();
         ArrayList<Integer> uniqueMonths = new ArrayList<>();
         Integer[] keys = years.keySet().toArray(new Integer[years.keySet().size()]);
 
@@ -161,8 +149,8 @@ public class BudgetActivity extends AppCompatActivity {
         }
 
         for (int i : keys) {
-            List<BudgetElement> budgetElements = years.get(i);
-            for (BudgetElement element : budgetElements) {
+            List<BudgetItem> budgetItems = years.get(i);
+            for (BudgetItem element : budgetItems) {
                 bundle = new Bundle();
                 bundle.putInt("year", i);
                 bundle.putInt("month", element.getMonth());

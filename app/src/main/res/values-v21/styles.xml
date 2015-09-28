@@ -18,7 +18,8 @@
         <item name="android:textSize">8pt</item>
     </style>
     
-    <style name="spinner_style">
+    <style name="textview_category">
+        <item name="android:background">@color/White</item>
         <item name="android:textColor">@color/Black</item>
     </style>
 

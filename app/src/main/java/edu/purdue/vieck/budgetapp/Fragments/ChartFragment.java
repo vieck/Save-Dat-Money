@@ -30,10 +30,10 @@ import com.github.mikephil.charting.utils.PercentFormatter;
 
 import java.util.ArrayList;
 
+import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
 import edu.purdue.vieck.budgetapp.Adapters.ChartAdapter;
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetElement;
 
 
 public class ChartFragment extends Fragment implements OnChartValueSelectedListener {
@@ -135,32 +135,32 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         /*for (int i = 0; i < count + 1; i++) {
             yVals.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
         }*/
-        ArrayList<BudgetElement> groceries = mDatabaseHandler.getFilteredData("Groceries");
+        ArrayList<BudgetItem> groceries = mDatabaseHandler.getFilteredData("Groceries");
         float groceryCount, medicalCount, entertainmentCount, utilitiesCount, incomeCount;
         groceryCount = 0;
-        for (BudgetElement element : groceries)
+        for (BudgetItem element : groceries)
             groceryCount += element.getAmount();
 
 
-        ArrayList<BudgetElement> medical = mDatabaseHandler.getFilteredData("Medical");
+        ArrayList<BudgetItem> medical = mDatabaseHandler.getFilteredData("Medical");
         medicalCount = 0;
-        for (BudgetElement element : medical)
+        for (BudgetItem element : medical)
             medicalCount += element.getAmount();
 
 
-        ArrayList<BudgetElement> entertainment = mDatabaseHandler.getFilteredData("Entertainment");
+        ArrayList<BudgetItem> entertainment = mDatabaseHandler.getFilteredData("Entertainment");
         entertainmentCount = 0;
-        for (BudgetElement element : entertainment)
+        for (BudgetItem element : entertainment)
             entertainmentCount += element.getAmount();
 
-        ArrayList<BudgetElement> utilities = mDatabaseHandler.getFilteredData("Utilities");
+        ArrayList<BudgetItem> utilities = mDatabaseHandler.getFilteredData("Utilities");
         utilitiesCount = 0;
-        for (BudgetElement element : utilities)
+        for (BudgetItem element : utilities)
             utilitiesCount += element.getAmount();
 
-        ArrayList<BudgetElement> income = mDatabaseHandler.getFilteredData("Income");
+        ArrayList<BudgetItem> income = mDatabaseHandler.getFilteredData("Income");
         incomeCount = 0;
-        for (BudgetElement element : income)
+        for (BudgetItem element : income)
             incomeCount += element.getAmount();
 
         float totalAmount = groceryCount + utilitiesCount + entertainmentCount + medicalCount + incomeCount;
