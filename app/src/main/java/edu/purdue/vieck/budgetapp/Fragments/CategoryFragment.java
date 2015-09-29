@@ -17,6 +17,7 @@ import java.util.List;
 
 import edu.purdue.vieck.budgetapp.Adapters.CategoryAdapter;
 import edu.purdue.vieck.budgetapp.CustomObjects.CategoryItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.CategoryTree;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -38,12 +39,14 @@ public class CategoryFragment extends Fragment {
         String[] names = getResources().getStringArray(R.array.categoryarray);
         TypedArray drawables = getResources().obtainTypedArray(R.array.icons);
 
-        ArrayList<CategoryItem> categoryItems = new ArrayList<>();
+        CategoryTree tree = new CategoryTree(new CategoryItem(getActivity().getDrawable(R.drawable.calculator),"root"));
         for (int i = 0; i < names.length; i++) {
-            categoryItems.add(new CategoryItem(getActivity().getDrawable(R.drawable.graph),names[i]));
+            CategoryTree.Node node = new CategoryTree.Node();
+            node.setCategoryItem(new CategoryItem(drawables.getDrawable(i), names[i]));
+            tree.addNode(node);
         }
 
-        categoryAdapter = new CategoryAdapter(getActivity(), categoryItems);
+        categoryAdapter = new CategoryAdapter(getActivity(), tree);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(categoryAdapter);

@@ -17,10 +17,16 @@
         <item name="android:layout_marginRight">5dp</item>
         <item name="android:textSize">8pt</item>
     </style>
+
+    <!-- CATEGORY STYLES -->
     
     <style name="textview_category">
         <item name="android:background">@color/White</item>
         <item name="android:textColor">@color/Black</item>
+    </style>
+    
+    <style name="textview_category_item">
+        <item name="android:textSize">12pt</item>
     </style>
 
     <!-- DASHBOARD STYLES -->

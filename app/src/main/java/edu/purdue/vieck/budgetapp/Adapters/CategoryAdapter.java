@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.TreeMap;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.CategoryItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.CategoryTree;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -23,11 +25,11 @@ import edu.purdue.vieck.budgetapp.R;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.mViewHolder> {
 
     Context context;
-    List<CategoryItem> categoryTree;
+    ArrayList<CategoryTree.Node> categoryNodes;
 
-    public CategoryAdapter(Context context, List<CategoryItem> categoryTree) {
+    public CategoryAdapter(Context context, CategoryTree categoryTree) {
         this.context = context;
-        this.categoryTree = categoryTree;
+        this.categoryNodes = categoryTree.getChildNodes();
     }
 
     @Override
@@ -39,14 +41,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.mViewH
 
     @Override
     public void onBindViewHolder(mViewHolder holder, int position) {
-        final CategoryItem  categoryItem = categoryTree.get(position);
+        final CategoryItem categoryItem = categoryNodes.get(position).getCategoryItem();
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+                notifyDataSetChanged();
+            }
+        });
         holder.name.setText(categoryItem.getType());
         holder.icon.setImageDrawable(categoryItem.getIcon());
     }
 
     @Override
     public int getItemCount() {
-        return categoryTree.size();
+        return categoryNodes.size();
     }
 
     public class mViewHolder extends RecyclerView.ViewHolder {

@@ -37,18 +37,16 @@
         <item>Utilities</item>
         <item>Entertainment</item>
         <item>Medical</item>
-        <item>Entertainment</item>
-        <item>Income</item>
+        <item>Insurance</item>
     </string-array>
 
     <!-- Category Types -->
     <string-array name="icons">
-        <item>@drawable/graph</item>
-        <item>@drawable/graph</item>
-        <item>@drawable/graph</item>
-        <item>@drawable/graph</item>
-        <item>@drawable/graph</item>
-        <item>@drawable/graph</item>
+        <item>@drawable/groceries</item>
+        <item>@drawable/utilities</item>
+        <item>@drawable/entertainment_main</item>
+        <item>@drawable/medical_insurance</item>
+        <item>@drawable/insurance</item>
     </string-array>
 
     <string name="title_activity_data">DataActivity</string>
