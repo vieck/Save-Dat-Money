@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,12 +41,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.mViewH
     }
 
     @Override
-    public void onBindViewHolder(mViewHolder holder, int position) {
+    public void onBindViewHolder(mViewHolder holder, final int position) {
         final CategoryItem categoryItem = categoryNodes.get(position).getCategoryItem();
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Log.d("OnCardViewClick","Clicked");
+                if (categoryNodes.get(position).getChildNodes() != null)
+                    categoryNodes = categoryNodes.get(position).getChildNodes();
                 notifyDataSetChanged();
             }
         });

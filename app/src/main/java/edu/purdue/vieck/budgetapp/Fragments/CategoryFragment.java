@@ -36,13 +36,43 @@ public class CategoryFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.category_recyclerview);
         layoutManager = new LinearLayoutManager(getActivity());
 
-        String[] names = getResources().getStringArray(R.array.categoryarray);
+        String[] categoryNames = getResources().getStringArray(R.array.categoryarray);
+        String[] subCategoryFood = getResources().getStringArray(R.array.subgroceryarray);
+        String[] subCategoryUtility = getResources().getStringArray(R.array.subutilityarray);
+        String[] subCategoryEntertainment = getResources().getStringArray(R.array.subentertainmentarray);
+        String[] subCategoryMedical = getResources().getStringArray(R.array.submedicalarray);
+        String[] subCategoryInsurance = getResources().getStringArray(R.array.subinsurancearray);
         TypedArray drawables = getResources().obtainTypedArray(R.array.icons);
 
         CategoryTree tree = new CategoryTree(new CategoryItem(getActivity().getDrawable(R.drawable.calculator),"root"));
-        for (int i = 0; i < names.length; i++) {
-            CategoryTree.Node node = new CategoryTree.Node();
-            node.setCategoryItem(new CategoryItem(drawables.getDrawable(i), names[i]));
+        CategoryTree.Node node = new CategoryTree.Node();
+        node.setCategoryItem(new CategoryItem(drawables.getDrawable(0), categoryNames[0]));
+        // Grocery Sub List
+        for (int i = 0; i < subCategoryFood.length; i++) {
+            node.getChildNodes().add(new CategoryItem(drawables.getDrawable(0), subCategoryFood[i]));
+        }
+        tree.addNode(node);
+        // Utility Sub List
+        for (int i = 0; i < subCategoryUtility.length; i++) {
+
+        }
+        // Entertainment Sub List
+        for (int i = 0; i < subCategoryEntertainment.length; i++) {
+
+        }
+        // Medical Sub List
+        for (int i = 0; i < subCategoryMedical.length; i++) {
+
+        }
+        // Insurance Sub List
+        for (int i = 0; i < subCategoryInsurance.length; i++) {
+
+        }
+
+
+        for (int i = 0; i < categoryNames.length; i++) {
+            node = new CategoryTree.Node();
+
             tree.addNode(node);
         }
 

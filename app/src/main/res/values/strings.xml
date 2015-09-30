@@ -33,12 +33,56 @@
 
 
     <string-array name="categoryarray">
-        <item>Groceries</item>
+        <item>Food</item>
         <item>Utilities</item>
         <item>Entertainment</item>
         <item>Medical</item>
         <item>Insurance</item>
+        <item>Misc</item>
     </string-array>
+    
+    <string-array name="subgroceryarray">
+        <item>Groceries</item>
+        <item>Fast Food</item>
+        <item>Misc</item>
+    </string-array>
+
+    <string-array name="subutilityarray">
+        <item>Electricity</item>
+        <item>Gas</item>
+        <item>Home Phone</item>
+        <item>Cellphone</item>
+        <item>Internet</item>
+        <item>Cable</item>
+        <item>Water</item>
+        <item>Trash</item>
+        <item>Misc</item>
+    </string-array>
+    
+    <string-array name="subentertainmentarray">
+        <item>Movies</item>
+        <item>Vacation</item>
+        <item>Digital Media</item>
+        <item>Music</item>
+        <item>Online Purchases</item>
+        <item>Misc</item>
+    </string-array>
+
+    <string-array name="submedicalarray">
+        <item>Doctor Visit</item>
+        <item>Emergency Room</item>
+        <item>Medication</item>
+        <item>Misc</item>
+    </string-array>
+
+    <string-array name="subinsurancearray">
+        <item>Home Insurance</item>
+        <item>Auto Insurance</item>
+        <item>Medical Insurance</item>
+        <item>Life Insurance</item>
+    </string-array>
+
+
 
     <!-- Category Types -->
     <string-array name="icons">
