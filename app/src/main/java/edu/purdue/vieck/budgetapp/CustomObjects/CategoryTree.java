@@ -1,6 +1,7 @@
 package edu.purdue.vieck.budgetapp.CustomObjects;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 
 import org.w3c.dom.Node;
@@ -16,9 +17,7 @@ public class CategoryTree<T> {
     private Node<T> root;
 
     public CategoryTree(CategoryItem categoryItem) {
-        root = new Node<T>();
-        root.categoryItem = categoryItem;
-        root.childNodes = new ArrayList<>();
+        root = new Node<T>(categoryItem);
     }
 
     public static class Node<T> {
@@ -26,33 +25,51 @@ public class CategoryTree<T> {
         private Node<T> parent;
         private ArrayList<Node<T>> childNodes;
 
-        public void setCategoryItem(CategoryItem categoryItem) {
+        public Node(CategoryItem categoryItem) {
             this.categoryItem = categoryItem;
-        }
-
-        public void setParent(Node<T> parent) {
-            this.parent = parent;
-        }
-
-        public void setChildNodes(ArrayList<Node<T>> childNodes) {
-            this.childNodes = childNodes;
-        }
-
-        public CategoryItem getCategoryItem() {
-            return categoryItem;
+            childNodes = new ArrayList<>();
         }
 
         public ArrayList<Node<T>> getChildNodes() {
             return childNodes;
         }
 
-        public Node<T> getParent() {
-            return parent;
+        public int getNumberOfChildren() {
+            return childNodes.size();
         }
+
+        public boolean hasChildren() {
+            return childNodes.size() > 0;
+        }
+
+        public void setChildNodes(ArrayList<Node<T>> childNodes) {
+            this.childNodes = childNodes;
+        }
+
+        public void addChild(Node node) { childNodes.add(node); }
+
+        public void removeChildAt(int index) throws IndexOutOfBoundsException { childNodes.remove(index); }
+
+        public Node getChildAt(int index) throws IndexOutOfBoundsException { return childNodes.get(index); }
+
+        public CategoryItem getItem() { return categoryItem; }
     }
 
-    public Node getRootNode() {
+    public Node getRoot() {
         return root;
+    }
+
+    public void setRoot(Node<T> root) {
+        this.root = root;
+    }
+
+
+    public void walkTree(Node<CategoryItem> node, ArrayList<Node> nodes) {
+        nodes.add(node);
+        Log.d("Tree", "Name "+node.getItem().getType());
+        for (Node<CategoryItem> data : node.getChildNodes()) {
+            walkTree(data, nodes);
+        }
     }
 
     public int getNodeChildrenAmount() {
@@ -72,6 +89,11 @@ public class CategoryTree<T> {
     }
 
     public void addNode(Node<T> node) {
-        root.childNodes.add(node);
+        if (!root.hasChildren()) {
+            root.childNodes.add(node);
+        } else {
+
+        }
+
     }
 }

@@ -42,7 +42,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.mViewH
 
     @Override
     public void onBindViewHolder(mViewHolder holder, final int position) {
-        final CategoryItem categoryItem = categoryNodes.get(position).getCategoryItem();
+        final CategoryItem categoryItem = categoryNodes.get(position).getItem();
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

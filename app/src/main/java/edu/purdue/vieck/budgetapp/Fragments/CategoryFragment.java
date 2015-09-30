@@ -45,41 +45,42 @@ public class CategoryFragment extends Fragment {
         TypedArray drawables = getResources().obtainTypedArray(R.array.icons);
 
         CategoryTree tree = new CategoryTree(new CategoryItem(getActivity().getDrawable(R.drawable.calculator),"root"));
-        CategoryTree.Node node = new CategoryTree.Node();
-        node.setCategoryItem(new CategoryItem(drawables.getDrawable(0), categoryNames[0]));
+        CategoryTree.Node node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[0]));
         // Grocery Sub List
         for (int i = 0; i < subCategoryFood.length; i++) {
-            node.getChildNodes().add(new CategoryItem(drawables.getDrawable(0), subCategoryFood[i]));
+            node.addChild(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryFood[i])));
         }
-        tree.addNode(node);
+        tree.getRoot().addChild(node);
+        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[1]));
         // Utility Sub List
         for (int i = 0; i < subCategoryUtility.length; i++) {
-
+            node.addChild(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryUtility[i])));
         }
+        tree.getRoot().addChild(node);
+        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[2]));
         // Entertainment Sub List
         for (int i = 0; i < subCategoryEntertainment.length; i++) {
-
+            node.addChild(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryEntertainment[i])));
         }
+        tree.getRoot().addChild(node);
+        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[3]));
         // Medical Sub List
         for (int i = 0; i < subCategoryMedical.length; i++) {
-
+            node.getChildNodes().add(new CategoryItem(drawables.getDrawable(0), subCategoryMedical[i]));
         }
+        tree.getRoot().addChild(node);
+        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[4]));
         // Insurance Sub List
         for (int i = 0; i < subCategoryInsurance.length; i++) {
-
+            node.getChildNodes().add(new CategoryItem(drawables.getDrawable(0), subCategoryInsurance[i]));
         }
-
-
-        for (int i = 0; i < categoryNames.length; i++) {
-            node = new CategoryTree.Node();
-
-            tree.addNode(node);
-        }
+        tree.getRoot().addChild(node);
 
         categoryAdapter = new CategoryAdapter(getActivity(), tree);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(categoryAdapter);
+
         return view;
     }
 }
