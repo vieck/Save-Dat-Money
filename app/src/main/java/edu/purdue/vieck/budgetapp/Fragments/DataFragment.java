@@ -11,9 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import edu.purdue.vieck.budgetapp.Adapters.DataAdapter;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
-import edu.purdue.vieck.budgetapp.Adapters.DataAdapter;
 
 /**
  * Created by mvieck on 9/22/2015.

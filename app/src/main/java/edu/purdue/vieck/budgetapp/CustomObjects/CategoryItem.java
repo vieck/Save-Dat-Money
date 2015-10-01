@@ -10,7 +10,8 @@ public class CategoryItem {
     Drawable icon;
     String type;
 
-    public CategoryItem() {}
+    public CategoryItem() {
+    }
 
     public CategoryItem(Drawable icon, String type) {
         this.icon = icon;

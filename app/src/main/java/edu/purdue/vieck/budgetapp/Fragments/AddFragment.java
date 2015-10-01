@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +19,16 @@ import android.widget.ToggleButton;
 
 import java.util.Calendar;
 
+import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 
 /**
  * Created by vieck on 7/13/15.
  */
 public class AddFragment extends Fragment {
     private Context mContext;
+    private Bundle mSavedState;
 
     DatabaseHandler databaseHandler;
 
@@ -53,6 +55,13 @@ public class AddFragment extends Fragment {
         Snackbar.make(getView(), text, Snackbar.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mSavedState = new Bundle();
+        //getFragmentManager().putFragment(outState,"mContent",mContext.getF);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,7 +75,7 @@ public class AddFragment extends Fragment {
                 CategoryFragment categoryFragment = new CategoryFragment();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, categoryFragment);
-                fragmentTransaction.addToBackStack("Add");
+                Log.d("Add Fragment", "Started Category Fragment");
                 fragmentTransaction.commit();
             }
         });
@@ -99,7 +108,7 @@ public class AddFragment extends Fragment {
                 int year = datePicker.getYear();
                 String entry = note.getText().toString();
                 BudgetItem budgetItem = new BudgetItem(
-                        amountV, "Example" , toggleV,
+                        amountV, "Example", toggleV,
                         day, month, year, entry);
                 databaseHandler.addData(budgetItem);
                 showSnackBar("Added Data");

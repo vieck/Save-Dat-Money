@@ -13,8 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import edu.purdue.vieck.budgetapp.R;
 import edu.purdue.vieck.budgetapp.Fragments.DataFragment;
+import edu.purdue.vieck.budgetapp.R;
 
 public class DataActivity extends AppCompatActivity {
 
@@ -64,7 +64,7 @@ public class DataActivity extends AppCompatActivity {
         });
 
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, dataFragment = new DataFragment()).commit();
- }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

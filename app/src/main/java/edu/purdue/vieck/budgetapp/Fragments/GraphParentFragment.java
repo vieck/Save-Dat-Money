@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.TextView;
 
 import com.hookedonplay.decoviewlib.DecoView;

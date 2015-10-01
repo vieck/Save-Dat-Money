@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import java.util.Stack;
 
+import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 
 /**
  * Created by vieck on 7/16/15.

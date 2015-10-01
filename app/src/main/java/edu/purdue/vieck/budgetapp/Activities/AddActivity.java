@@ -1,7 +1,10 @@
 package edu.purdue.vieck.budgetapp.Activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -11,12 +14,38 @@ import edu.purdue.vieck.budgetapp.R;
 public class AddActivity extends AppCompatActivity {
 
     AddFragment addFragment;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        getFragmentManager().beginTransaction().add(R.id.fragment_container, addFragment = new AddFragment()).commit();
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                //if (getFragmentManager().getBackStackEntryCount() > 1) {
+               // FragmentTransaction ft = getFragmentManager().beginTransaction();
+               // ft.replace(R.id.fragment_container, new AddFragment()).addToBackStack("category").commit();
+                //}
+            }
+        });
+        if (savedInstanceState == null) {
+            addFragment = new AddFragment();
+            getFragmentManager().beginTransaction().add(R.id.fragment_container, addFragment,"addFragment").commit();
+        } else {
+            addFragment = (AddFragment) getFragmentManager().findFragmentByTag("addFragment");
+
+            if (addFragment == null) {
+                addFragment = new AddFragment();
+                getFragmentManager().beginTransaction().add(R.id.fragment_container, addFragment,"addFragment");
+            } else {
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, addFragment).commit();
+            }
+        }
+
     }
 
     @Override

@@ -8,8 +8,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import edu.purdue.vieck.budgetapp.R;
 import edu.purdue.vieck.budgetapp.Fragments.DashboardFragment;
+import edu.purdue.vieck.budgetapp.R;
 
 public class DashboardActivity extends Activity {
 

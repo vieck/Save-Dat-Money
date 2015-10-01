@@ -1,7 +1,8 @@
 package edu.purdue.vieck.budgetapp.Adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,12 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-import java.util.TreeMap;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.CategoryItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.CategoryTree;
+import edu.purdue.vieck.budgetapp.Fragments.AddFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -46,10 +45,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.mViewH
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("OnCardViewClick","Clicked");
-                if (categoryNodes.get(position).getChildNodes() != null)
+                Log.d("OnCardViewClick", "Clicked");
+                if (!categoryNodes.get(position).isLeafNode()) {
                     categoryNodes = categoryNodes.get(position).getChildNodes();
-                notifyDataSetChanged();
+                    notifyDataSetChanged();
+                } else {
+                    FragmentActivity fragmentActivity = ((FragmentActivity) context);
+                    Bundle bundle = new Bundle();
+                    AddFragment addFragment = (AddFragment) fragmentActivity.getFragmentManager().findFragmentByTag("addFragment");
+                    fragmentActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container, addFragment).commit();
+                }
             }
         });
         holder.name.setText(categoryItem.getType());

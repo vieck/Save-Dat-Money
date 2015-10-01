@@ -30,10 +30,10 @@ import com.github.mikephil.charting.utils.PercentFormatter;
 
 import java.util.ArrayList;
 
+import edu.purdue.vieck.budgetapp.Adapters.ChartAdapter;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
-import edu.purdue.vieck.budgetapp.Adapters.ChartAdapter;
 
 
 public class ChartFragment extends Fragment implements OnChartValueSelectedListener {

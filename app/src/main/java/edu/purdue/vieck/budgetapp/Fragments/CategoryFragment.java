@@ -2,7 +2,6 @@ package edu.purdue.vieck.budgetapp.Fragments;
 
 import android.app.Fragment;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,10 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import edu.purdue.vieck.budgetapp.Adapters.CategoryAdapter;
 import edu.purdue.vieck.budgetapp.CustomObjects.CategoryItem;
@@ -44,7 +39,7 @@ public class CategoryFragment extends Fragment {
         String[] subCategoryInsurance = getResources().getStringArray(R.array.subinsurancearray);
         TypedArray drawables = getResources().obtainTypedArray(R.array.icons);
 
-        CategoryTree tree = new CategoryTree(new CategoryItem(getActivity().getDrawable(R.drawable.calculator),"root"));
+        CategoryTree tree = new CategoryTree(new CategoryItem(getActivity().getDrawable(R.drawable.calculator), "root"));
         CategoryTree.Node node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[0]));
         // Grocery Sub List
         for (int i = 0; i < subCategoryFood.length; i++) {
@@ -66,13 +61,13 @@ public class CategoryFragment extends Fragment {
         node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[3]));
         // Medical Sub List
         for (int i = 0; i < subCategoryMedical.length; i++) {
-            node.getChildNodes().add(new CategoryItem(drawables.getDrawable(0), subCategoryMedical[i]));
+            node.getChildNodes().add(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryMedical[i])));
         }
         tree.getRoot().addChild(node);
         node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[4]));
         // Insurance Sub List
         for (int i = 0; i < subCategoryInsurance.length; i++) {
-            node.getChildNodes().add(new CategoryItem(drawables.getDrawable(0), subCategoryInsurance[i]));
+            node.getChildNodes().add(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryInsurance[i])));
         }
         tree.getRoot().addChild(node);
 

@@ -124,17 +124,17 @@ public class IncomeExpensesGraphFragment extends GraphParentFragment {
         final View[] linkedViews = {textPercent, textToGo};
         final int fadeDuration = 2000;
 
-            decoView.addEvent(new DecoEvent.Builder(DecoDrawEffect.EffectType.EFFECT_SPIRAL_OUT_FILL)
-                    .setIndex(backIndex)
-                    .setDuration(3000)
-                    .build());
+        decoView.addEvent(new DecoEvent.Builder(DecoDrawEffect.EffectType.EFFECT_SPIRAL_OUT_FILL)
+                .setIndex(backIndex)
+                .setDuration(3000)
+                .build());
 
-            decoView.addEvent(new DecoEvent.Builder(DecoDrawEffect.EffectType.EFFECT_SPIRAL_OUT)
-                    .setIndex(seriesIndexOne)
-                    .setFadeDuration(fadeDuration)
-                    .setDuration(2000)
-                    .setDelay(1000)
-                    .build());
+        decoView.addEvent(new DecoEvent.Builder(DecoDrawEffect.EffectType.EFFECT_SPIRAL_OUT)
+                .setIndex(seriesIndexOne)
+                .setFadeDuration(fadeDuration)
+                .setDuration(2000)
+                .setDelay(1000)
+                .build());
 
         decoView.addEvent(new DecoEvent.Builder(DecoDrawEffect.EffectType.EFFECT_SPIRAL_OUT)
                 .setIndex(seriesIndexTwo)

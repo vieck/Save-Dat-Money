@@ -1,26 +1,39 @@
 package edu.purdue.vieck.budgetapp.Activities;
 
 import android.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import edu.purdue.vieck.budgetapp.Adapters.CategoryAdapter;
 import edu.purdue.vieck.budgetapp.Fragments.CategoryFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 public class CategoryActivity extends AppCompatActivity {
 
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (getFragmentManager().getBackStackEntryCount() > 1) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
         getFragmentManager().beginTransaction().add(R.id.fragment_container, new CategoryFragment());
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

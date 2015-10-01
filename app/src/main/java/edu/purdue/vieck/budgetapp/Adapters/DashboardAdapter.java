@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import edu.purdue.vieck.budgetapp.R;
 import edu.purdue.vieck.budgetapp.CustomObjects.DashboardItem;
+import edu.purdue.vieck.budgetapp.R;
 
 /**
  * Created by mvieck on 9/25/2015.

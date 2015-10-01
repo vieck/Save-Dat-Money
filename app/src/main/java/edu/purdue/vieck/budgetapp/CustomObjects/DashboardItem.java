@@ -13,7 +13,6 @@ public class DashboardItem {
     private Intent intent;
 
 
-
     public DashboardItem(Drawable image, String label, int color, Intent intent) {
         this.image = image;
         this.label = label;
