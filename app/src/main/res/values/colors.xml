@@ -8,6 +8,13 @@
     <color name="PaleGray">#BDB69C</color>
     <color name="NeonBlue">#80CEB9</color>
     <color name="SheetBlue">#41AAC4</color>
+    
+    <!--- Pie Chart Complementary Colors -->
+    <color name="pie_blue">#8E9AAF</color>
+    <color name="pie_light_blue">#CBC0D3</color>
+    <color name="pie_pink">#EFD3D7</color>
+    <color name="pie_quartz">#FEEAFA</color>
+    <color name="pie_teal">#DEE2FF</color>
 
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>

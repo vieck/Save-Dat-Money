@@ -47,9 +47,15 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
     public void onBindViewHolder(mViewHolder viewHolder, int i) {
         final BudgetItem budgetItem = mDataset.get(i);
         viewHolder.date.setText(budgetItem.getMonth() + "-" + budgetItem.getDay() + "-" + budgetItem.getYear());
-        viewHolder.amount.setText("" + budgetItem.getAmount());
-        viewHolder.expenses.setText("" + budgetItem.isType());
-        viewHolder.income.setText("" + budgetItem.getCategory());
+        viewHolder.category.setText("" + budgetItem.getCategory());
+        viewHolder.subcategory.setText("" + budgetItem.getSubcategory());
+        viewHolder.amount.setText("$ " + budgetItem.getAmount());
+        if (budgetItem.getAmount() > 0) {
+            viewHolder.amount.setTextColor(context.getResources().getColor(R.color.Lime));
+        } else {
+            viewHolder.amount.setTextColor(context.getResources().getColor(R.color.Red));
+        }
+        //viewHolder.income.setText("" + budgetItem.getCategory());
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,14 +71,15 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
 
     public class mViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
-        TextView date, amount, expenses, income;
+        TextView date, amount, category, subcategory, income;
 
         public mViewHolder(View v) {
             super(v);
             cardView = (CardView) v.findViewById(R.id.cardview);
             date = (TextView) v.findViewById(R.id.cardview_date);
             amount = (TextView) v.findViewById(R.id.cardview_amount);
-            expenses = (TextView) v.findViewById(R.id.cardview_expenses);
+            category = (TextView) v.findViewById(R.id.cardview_category);
+            subcategory = (TextView) v.findViewById(R.id.cardview_subcategory);
             income = (TextView) v.findViewById(R.id.cardview_budget);
         }
     }

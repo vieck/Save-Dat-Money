@@ -27,6 +27,11 @@
         <item name="android:textColorHint">@color/NeonBlue</item>
     </style>
 
+    <style name="StyleCategoryItem">
+        <item name="android:textColor">@color/CottonBlue</item>
+        <item name="android:textColorHint">@color/NeonBlue</item>
+    </style>
+
     <style name="textview_label">
         <item name="android:layout_marginBottom">20dp</item>
         <item name="android:layout_marginLeft">5dp</item>

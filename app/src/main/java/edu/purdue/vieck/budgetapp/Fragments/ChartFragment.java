@@ -66,8 +66,9 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_chart, container, false);
-        month = getArguments().getInt("month", -1);
-        year = getArguments().getInt("year", -1);
+        Bundle bundle = getArguments();
+        month = bundle.getInt("month", -1);
+        year = bundle.getInt("year", -1);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.budget_recycler_view);
         mChartAdapter = new ChartAdapter(mContext, month, year);
@@ -87,14 +88,15 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         mDatabaseHandler = new DatabaseHandler(mContext);
 
         mPieChart = (PieChart) view.findViewById(R.id.pie_chart);
-        //mPieChart.setDescription("Budget Wheel");
+        mPieChart.setDescription("Budget Wheel");
+        mPieChart.setDescriptionColor(getResources().getColor(R.color.White));
         mPieChart.setUsePercentValues(true);
         mPieChart.setDragDecelerationFrictionCoef(0.95f);
         //mTypeface = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         mPieChart.setDrawHoleEnabled(true);
         //mPieChart.setHoleColor(Color.WHITE);
         mPieChart.setCenterTextColor(Color.BLACK);
-        //mPieChart.setTransparentCircleColor(Color.WHITE);
+        mPieChart.setTransparentCircleColor(Color.WHITE);
         mPieChart.setHoleRadius(45f);
         mPieChart.setTransparentCircleRadius(45f);
         mPieChart.setDrawCenterText(true);
@@ -153,41 +155,53 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
 
         ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        if (mDatabaseHandler.getPercentage("Income", mInstance, yInstance) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Income", mInstance, yInstance), 4));
+        if (mDatabaseHandler.getPercentage("Income", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Income", month, year), 4));
             xVals.add("Income");
+            colors.add(getResources().getColor(R.color.DarkNavy));
         }
 
-        if (mDatabaseHandler.getPercentage("Utilities", mInstance, yInstance) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Utilities", mInstance, yInstance), 1));
+        if (mDatabaseHandler.getPercentage("Utilities", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Utilities", month, year), 1));
             xVals.add("Utilities");
+            colors.add(getResources().getColor(R.color.PaleBlue));
         }
 
-        if (mDatabaseHandler.getPercentage("Entertainment", mInstance, yInstance) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Entertainment", mInstance, yInstance), 2));
+        if (mDatabaseHandler.getPercentage("Entertainment", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Entertainment", month, year), 2));
             xVals.add("Entertainment");
+            colors.add(getResources().getColor(R.color.CottonBlue));
         }
 
-        if (mDatabaseHandler.getPercentage("Medical", mInstance, yInstance) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Medical", mInstance, yInstance), 3));
+        if (mDatabaseHandler.getPercentage("Medical", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Medical", month, year), 3));
             xVals.add("Medical");
+            colors.add(getResources().getColor(R.color.PaleTurquoise));
         }
 
-        if (mDatabaseHandler.getPercentage("Groceries", mInstance, yInstance) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Groceries", mInstance, yInstance), 0));
+        if (mDatabaseHandler.getPercentage("Groceries", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Groceries", month, year), 0));
             xVals.add("Groceries");
+            colors.add(getResources().getColor(R.color.NeonBlue));
         }
 
-        PieDataSet dataSet = new PieDataSet(yVals, "Budget");
+        if (mDatabaseHandler.getPercentage("Insurance", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Insurance", month, year), 5));
+            xVals.add("Insurance");
+            colors.add(getResources().getColor(R.color.SheetBlue));
+        }
+
+
+
+        PieDataSet dataSet = new PieDataSet(yVals, "Category Legend");
         dataSet.setSliceSpace(5f);
-        dataSet.setSelectionShift(9f);
+        dataSet.setSelectionShift(5f);
 
         // add a lot of colors
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+        /*for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
 
         for (int c : ColorTemplate.JOYFUL_COLORS)
@@ -203,13 +217,14 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             colors.add(c);
 
         colors.add(ColorTemplate.getHoloBlue());
+        */
 
         dataSet.setColors(colors);
 
         PieData data = new PieData(xVals, dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(12f);
-        data.setValueTextColor(Color.BLACK);
+        data.setValueTextColor(Color.WHITE);
         mPieChart.setData(data);
 
         // undo all highlights

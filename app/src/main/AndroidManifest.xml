@@ -11,6 +11,7 @@
             android:name=".Activities.ChartActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity android:name=".ActivitiesLandscape.ChartActivityLandscape"/>
         <activity
             android:name=".Activities.DataActivity"
             android:label="@string/title_activity_data" >
