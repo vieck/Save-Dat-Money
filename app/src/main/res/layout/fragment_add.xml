@@ -1,37 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/add_fragment"
+    style="@style/StyleActivityAdd">
 
     <TextView android:id="@+id/label_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        style="@style/textview_label"
-        android:text="@string/data_input"/>
+        android:text="@string/data_input"
+        style="@style/textview_label"/>
 
     <TextView android:id="@+id/label_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@id/label_input"
-        style="@style/textview_label"
-        android:text="@string/category"/>
+        android:text="@string/category"
+        style="@style/textview_label"/>
 
-    <TextView android:id="@+id/text_category"
-        android:layout_width="100dp"
-        android:layout_height="25dp"
-        android:layout_alignTop="@id/label_category"
+    <EditText android:id="@+id/edittext_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/edittext_add_hint"
+        android:layout_alignBaseline="@id/label_category"
         android:layout_toEndOf="@+id/label_category"
-        style="@style/textview_category"/>
+        style="@style/edittext_add_fragment"/>
+
+    <TextView android:id="@+id/label_sub_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/label_category"
+        android:text="@string/subcategory"
+        style="@style/textview_label"/>
+
+    <EditText android:id="@+id/edittext_subcategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/label_sub_category"
+        android:layout_toEndOf="@id/label_sub_category"
+        style="@style/edittext_add_fragment"/>
 
     <TextView android:id="@+id/label_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/label_category"
-        style="@style/textview_label"
-        android:text="@string/amount"/>
+        android:layout_below="@id/label_sub_category"
+        android:text="@string/amount"
+        style="@style/textview_label" />
 
     <EditText android:id="@+id/edittext_amount"
         android:layout_width="wrap_content"
@@ -39,15 +57,15 @@
         android:layout_alignBaseline="@id/label_amount"
         android:layout_toEndOf="@id/label_amount"
         android:inputType="numberDecimal"
-        android:hint="Enter amount"/>
+        android:hint="Enter amount"
+        style="@style/edittext_amount_add_fragment"/>
 
     <ToggleButton android:id="@+id/income_or_expense_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/edittext_amount"
         android:layout_alignBaseline="@id/edittext_amount"
-        android:textOff="@string/expense"
-        android:textOn="@string/income"/>
+        style="@style/button_add_fragment"/>
 
     <TextView android:id="@+id/label_note"
         android:layout_width="wrap_content"
@@ -61,7 +79,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/label_note"
         android:layout_toEndOf="@id/label_note"
-        android:layout_marginLeft="12dp"/>
+        android:layout_marginLeft="12dp"
+        style="@style/edittext_amount_add_fragment"/>
 
     <DatePicker android:id="@+id/datepicker"
         android:layout_width="wrap_content"
@@ -72,13 +91,14 @@
         android:layout_centerHorizontal="true"/>
 
     <ImageButton android:id="@+id/imagebtn_submit"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="fitXY"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
-        android:src="@drawable/ic_add_item"/>
-
+        android:tint="@color/DarkNavy"
+        android:stateListAnimator="@anim/button_elevation"
+        android:src="@android:drawable/ic_input_add"
+        android:background="@drawable/ripple"/>
 </RelativeLayout>

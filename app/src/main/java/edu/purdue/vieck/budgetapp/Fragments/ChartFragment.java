@@ -39,7 +39,8 @@ import edu.purdue.vieck.budgetapp.R;
 public class ChartFragment extends Fragment implements OnChartValueSelectedListener {
 
     int month, year;
-
+    private int mInstance;
+    private int yInstance;
     private PieChart mPieChart;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
@@ -47,6 +48,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     private Button chartButton;
     DatabaseHandler mDatabaseHandler;
     private Context mContext;
+    private String fragmentName;
 
     @Override
     public void onAttach(final Activity activity) {
@@ -62,6 +64,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_chart, container, false);
         month = getArguments().getInt("month", -1);
         year = getArguments().getInt("year", -1);
@@ -123,6 +126,18 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            mInstance = savedInstanceState.getInt("Month", -1);
+            yInstance = savedInstanceState.getInt("Year", -1);
+        } else {
+            mInstance = -1;
+            yInstance = -1;
+        }
+    }
+
     private void setData(int count, float range) {
 
         float mult = range;
@@ -135,59 +150,32 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         /*for (int i = 0; i < count + 1; i++) {
             yVals.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
         }*/
-        ArrayList<BudgetItem> groceries = mDatabaseHandler.getFilteredData("Groceries");
-        float groceryCount, medicalCount, entertainmentCount, utilitiesCount, incomeCount;
-        groceryCount = 0;
-        for (BudgetItem element : groceries)
-            groceryCount += element.getAmount();
 
 
-        ArrayList<BudgetItem> medical = mDatabaseHandler.getFilteredData("Medical");
-        medicalCount = 0;
-        for (BudgetItem element : medical)
-            medicalCount += element.getAmount();
-
-
-        ArrayList<BudgetItem> entertainment = mDatabaseHandler.getFilteredData("Entertainment");
-        entertainmentCount = 0;
-        for (BudgetItem element : entertainment)
-            entertainmentCount += element.getAmount();
-
-        ArrayList<BudgetItem> utilities = mDatabaseHandler.getFilteredData("Utilities");
-        utilitiesCount = 0;
-        for (BudgetItem element : utilities)
-            utilitiesCount += element.getAmount();
-
-        ArrayList<BudgetItem> income = mDatabaseHandler.getFilteredData("Income");
-        incomeCount = 0;
-        for (BudgetItem element : income)
-            incomeCount += element.getAmount();
-
-        float totalAmount = groceryCount + utilitiesCount + entertainmentCount + medicalCount + incomeCount;
-        int totalCount = groceries.size() + utilities.size() + medical.size() + entertainment.size() + income.size();
         ArrayList<String> xVals = new ArrayList<String>();
-        if (incomeCount != 0) {
-            yVals.add(new Entry(incomeCount / totalAmount, 4));
+
+        if (mDatabaseHandler.getPercentage("Income", mInstance, yInstance) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Income", mInstance, yInstance), 4));
             xVals.add("Income");
         }
 
-        if (utilitiesCount != 0) {
-            yVals.add(new Entry(utilitiesCount / totalAmount, 1));
+        if (mDatabaseHandler.getPercentage("Utilities", mInstance, yInstance) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Utilities", mInstance, yInstance), 1));
             xVals.add("Utilities");
         }
 
-        if (entertainmentCount != 0) {
-            yVals.add(new Entry(entertainmentCount / totalAmount, 2));
+        if (mDatabaseHandler.getPercentage("Entertainment", mInstance, yInstance) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Entertainment", mInstance, yInstance), 2));
             xVals.add("Entertainment");
         }
 
-        if (medicalCount != 0) {
-            yVals.add(new Entry(medicalCount / totalAmount, 3));
+        if (mDatabaseHandler.getPercentage("Medical", mInstance, yInstance) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Medical", mInstance, yInstance), 3));
             xVals.add("Medical");
         }
 
-        if (groceryCount != 0) {
-            yVals.add(new Entry(groceryCount / totalAmount, 0));
+        if (mDatabaseHandler.getPercentage("Groceries", mInstance, yInstance) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Groceries", mInstance, yInstance), 0));
             xVals.add("Groceries");
         }
 

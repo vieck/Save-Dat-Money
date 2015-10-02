@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.CategoryItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.CategoryTree;
 import edu.purdue.vieck.budgetapp.Fragments.AddFragment;
@@ -50,10 +51,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.mViewH
                     categoryNodes = categoryNodes.get(position).getChildNodes();
                     notifyDataSetChanged();
                 } else {
+                    CategoryItem item = categoryNodes.get(position).getItem();
+
                     FragmentActivity fragmentActivity = ((FragmentActivity) context);
                     Bundle bundle = new Bundle();
-                    AddFragment addFragment = (AddFragment) fragmentActivity.getFragmentManager().findFragmentByTag("addFragment");
-                    fragmentActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container, addFragment).commit();
+                    bundle.putString("Category",item.getType());
+                    bundle.putString("Subcategory",item.getSubType());
+                   // bundle.putString("Icon");
+                    AddFragment addFragment = new AddFragment();
+                    addFragment.setArguments(bundle);
+                    fragmentActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container , addFragment).commit();
                 }
             }
         });

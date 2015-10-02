@@ -4,7 +4,7 @@ package edu.purdue.vieck.budgetapp.CustomObjects;
  * Created by vieck on 7/14/15.
  */
 public class BudgetItem {
-    private String category, note;
+    private String category, subcategory, note;
     private boolean type;
     private int day, month, year;
     private float amount;
@@ -13,9 +13,10 @@ public class BudgetItem {
 
     }
 
-    public BudgetItem(float amount, String category, boolean type, int day, int month, int year, String note) {
+    public BudgetItem(float amount, String category, String subcategory, boolean type, int day, int month, int year, String note) {
         this.amount = amount;
         this.category = category;
+        this.subcategory = subcategory;
         this.type = type;
         this.day = day;
         this.month = month;
@@ -37,6 +38,14 @@ public class BudgetItem {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
     }
 
     public String getNote() {

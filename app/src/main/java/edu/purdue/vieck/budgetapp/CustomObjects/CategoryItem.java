@@ -9,13 +9,15 @@ public class CategoryItem {
 
     Drawable icon;
     String type;
+    String subType;
 
     public CategoryItem() {
     }
 
-    public CategoryItem(Drawable icon, String type) {
+    public CategoryItem(Drawable icon, String type, String subType) {
         this.icon = icon;
         this.type = type;
+        this.subType = subType;
     }
 
     public Drawable getIcon() {
@@ -32,5 +34,13 @@ public class CategoryItem {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getSubType() {
+        return subType;
+    }
+
+    public void setSubType(String subType) {
+        this.subType = subType;
     }
 }

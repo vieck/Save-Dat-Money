@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <!-- COORDINATED COLORS -->
+    <color name="DarkNavy">#2F343A</color>
+    <color name="PaleBlue">#717D8C</color>
+    <color name="CottonBlue">#DDDDDD</color>
+    <color name="PaleGray">#BDB69C</color>
+    <color name="NeonBlue">#80CEB9</color>
+    <color name="SheetBlue">#41AAC4</color>
+
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>
     <color name="LightYellow">#FFFFE0</color>

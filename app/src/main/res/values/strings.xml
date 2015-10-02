@@ -8,6 +8,7 @@
 
     <string name="data_input">Enter In A Value And Fill In The Table</string>
     <string name="category">Category</string>
+    <string name="subcategory">Subcategory</string>
     <string name="amount">Amount</string>
     <string name="expense">expense</string>
     <string name="expenses">Expenses</string>
@@ -27,7 +28,9 @@
 
     <!-- FRAGMENT DASHBOARD -->
     <string name="dashboard_title">Overview</string>
-    
+
+    <string name="edittext_add_hint">Tap me to add category</string>
+
     <string name="switch_chart">Switch To Chart</string>
     <string name="switch_data">Switch to Data</string>
 
@@ -95,12 +98,8 @@
 
     <string name="title_activity_data">DataActivity</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_dashboard">DashboardActivity</string>
-    <string name="title_activity_graph">GraphActivity</string>
-    <string name="title_activity_submit">SubmitActivity</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_category">CategoryActivity</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_activity_graph">Graphs</string>
+    <string name="title_activity_submit">Add Data</string>
+    <string name="title_activity_category">Categories</string>
 </resources>

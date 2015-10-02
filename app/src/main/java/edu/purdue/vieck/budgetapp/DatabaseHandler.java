@@ -23,6 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_DATA = "data";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_CATEGORY = "category";
+    private static final String COLUMN_SUB_CATEGORY = "subcategory";
     private static final String COLUMN_AMOUNT = "amount";
     private static final String COLUMN_TYPE = "type";
     private static final String COLUMN_DAY = "day";
@@ -39,6 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_COLOR_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_DATA + " ( "
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_CATEGORY + " TEXT,"
+                + COLUMN_SUB_CATEGORY + " TEXT,"
                 + COLUMN_AMOUNT + " REAL,"
                 + COLUMN_TYPE + " INTEGER,"
                 + COLUMN_DAY + " INTEGER,"
@@ -58,6 +60,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_CATEGORY, budgetItem.getCategory());
+        contentValues.put(COLUMN_SUB_CATEGORY, budgetItem.getSubcategory());
         contentValues.put(COLUMN_AMOUNT, budgetItem.getAmount());
         contentValues.put(COLUMN_TYPE, budgetItem.isType());
         contentValues.put(COLUMN_DAY, budgetItem.getDay());
@@ -69,6 +72,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.close();
     }
 
+    private BudgetItem convertCursorToItem(Cursor cursor) {
+        BudgetItem budgetItem = new BudgetItem();
+        cursor.getLong(0);
+        budgetItem.setCategory(cursor.getString(1));
+        budgetItem.setSubcategory(cursor.getString(2));
+        budgetItem.setAmount(cursor.getFloat(3));
+        if (cursor.getInt(4) == 0) {
+            budgetItem.setType(false);
+        } else {
+            budgetItem.setType(true);
+        }
+        budgetItem.setDay(cursor.getInt(5));
+        budgetItem.setMonth(cursor.getInt(6));
+        budgetItem.setYear(cursor.getInt(7));
+        Log.d("Database", "Category" + budgetItem.getSubcategory() +
+                "\nAmount " + budgetItem.getAmount() +
+                "\nType " + budgetItem.isType());
+        return budgetItem;
+    }
+
+
     public Stack<BudgetItem> getAllData() {
         Stack<BudgetItem> mDataset = new Stack<>();
         String selectQuery = "SELECT  * FROM " + TABLE_DATA
@@ -79,22 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.moveToFirst();
         if (!cursor.isAfterLast()) {
             do {
-                BudgetItem budgetItem = new BudgetItem();
-                cursor.getLong(0);
-                budgetItem.setCategory(cursor.getString(1));
-                budgetItem.setAmount(cursor.getFloat(2));
-                if (cursor.getInt(3) == 0) {
-                    budgetItem.setType(false);
-                } else {
-                    budgetItem.setType(true);
-                }
-                budgetItem.setDay(cursor.getInt(4));
-                budgetItem.setMonth(cursor.getInt(5));
-                budgetItem.setYear(cursor.getInt(6));
-                Log.d("Database", "Category" + budgetItem.getCategory() +
-                        "\nAmount " + budgetItem.getAmount() +
-                        "\nType " + budgetItem.isType());
-                mDataset.add(budgetItem);
+                mDataset.add(convertCursorToItem(cursor));
             } while (cursor.moveToNext());
         }
         return mDataset;
@@ -108,17 +117,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                BudgetItem budgetItem = new BudgetItem();
-                budgetItem.setCategory(cursor.getString(1));
-                budgetItem.setAmount(cursor.getFloat(2));
-                if (cursor.getInt(3) == 0) {
-                    budgetItem.setType(false);
-                } else {
-                    budgetItem.setType(true);
-                }
-                budgetItem.setDay(cursor.getInt(4));
-                budgetItem.setMonth(cursor.getInt(5));
-                budgetItem.setYear(cursor.getInt(6));
+                BudgetItem budgetItem = convertCursorToItem(cursor);
                 if (mDataset.get(budgetItem.getYear()) == null) {
                     List<BudgetItem> list = new ArrayList<>();
                     list.add(budgetItem);
@@ -142,20 +141,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                BudgetItem budgetItem = new BudgetItem();
-                //budgetItem.setID(cursor.getLong(0));
-                budgetItem.setCategory(cursor.getString(1));
-                budgetItem.setAmount(cursor.getFloat(2));
-                if (cursor.getInt(3) == 0) {
-                    budgetItem.setType(false);
-                } else {
-                    budgetItem.setType(true);
-                }
-                budgetItem.setDay(cursor.getInt(4));
-                budgetItem.setMonth(cursor.getInt(5));
-                budgetItem.setYear(cursor.getInt(6));
-
-                mDataset.add(budgetItem);
+                mDataset.add(convertCursorToItem(cursor));
             } while (cursor.moveToNext());
         }
         sqLiteDatabase.close();
@@ -169,20 +155,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                BudgetItem budgetItem = new BudgetItem();
-                //budgetItem.setID(cursor.getLong(0));
-                budgetItem.setCategory(cursor.getString(1));
-                budgetItem.setAmount(cursor.getFloat(2));
-                if (cursor.getInt(3) == 0) {
-                    budgetItem.setType(false);
-                } else {
-                    budgetItem.setType(true);
-                }
-                budgetItem.setDay(cursor.getInt(4));
-                budgetItem.setMonth(cursor.getInt(5));
-                budgetItem.setYear(cursor.getInt(6));
-
-                mDataset.add(budgetItem);
+                mDataset.add(convertCursorToItem(cursor));
             } while (cursor.moveToNext());
         }
         sqLiteDatabase.close();
@@ -201,20 +174,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                BudgetItem budgetItem = new BudgetItem();
-                //budgetItem.setID(cursor.getLong(0));
-                budgetItem.setCategory(cursor.getString(1));
-                budgetItem.setAmount(cursor.getFloat(2));
-                if (cursor.getInt(3) == 0) {
-                    budgetItem.setType(false);
-                } else {
-                    budgetItem.setType(true);
-                }
-                budgetItem.setDay(cursor.getInt(4));
-                budgetItem.setMonth(cursor.getInt(5));
-                budgetItem.setYear(cursor.getInt(6));
-
-                mDataset.add(budgetItem);
+                mDataset.add(convertCursorToItem(cursor));
             } while (cursor.moveToNext());
         }
         sqLiteDatabase.close();
@@ -231,5 +191,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         database.delete(TABLE_DATA, null, null);
         database.close();
+    }
+
+    public float getPercentage(String type, int month, int year) {
+        float categoryPercent = 0;
+        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'";
+        String totalQuery = "SELECT * FROM " + TABLE_DATA;
+        Log.d("Database", "Month : " + month + " Year : " + year);
+        if (month != -1 && year != -1) {
+            selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'"
+                    + " and " + COLUMN_MONTH + " = " + month
+                    + " and " + COLUMN_YEAR + " = " + year
+                    + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+
+            totalQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
+                    + " and " + COLUMN_YEAR + " = " + year
+                    + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+        }
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                categoryPercent += cursor.getFloat(3);
+            } while (cursor.moveToNext());
+        }
+        cursor = sqLiteDatabase.rawQuery(totalQuery, null);
+        int total = cursor.getCount();
+
+        sqLiteDatabase.close();
+        if (total > 0) {
+            categoryPercent = categoryPercent / total;
+        }
+        return categoryPercent;
     }
 }

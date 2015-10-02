@@ -39,35 +39,35 @@ public class CategoryFragment extends Fragment {
         String[] subCategoryInsurance = getResources().getStringArray(R.array.subinsurancearray);
         TypedArray drawables = getResources().obtainTypedArray(R.array.icons);
 
-        CategoryTree tree = new CategoryTree(new CategoryItem(getActivity().getDrawable(R.drawable.calculator), "root"));
-        CategoryTree.Node node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[0]));
+        CategoryTree tree = new CategoryTree(new CategoryItem(getActivity().getDrawable(R.drawable.calculator), "root", categoryNames[0]));
+        CategoryTree.Node node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[0], categoryNames[1]));
         // Grocery Sub List
         for (int i = 0; i < subCategoryFood.length; i++) {
-            node.addChild(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryFood[i])));
+            node.addChild(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryFood[i], categoryNames[0])));
         }
         tree.getRoot().addChild(node);
-        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[1]));
+        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[1], categoryNames[1]));
         // Utility Sub List
         for (int i = 0; i < subCategoryUtility.length; i++) {
-            node.addChild(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryUtility[i])));
+            node.addChild(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryUtility[i], categoryNames[2])));
         }
         tree.getRoot().addChild(node);
-        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[2]));
+        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[2], categoryNames[2]));
         // Entertainment Sub List
         for (int i = 0; i < subCategoryEntertainment.length; i++) {
-            node.addChild(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryEntertainment[i])));
+            node.addChild(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryEntertainment[i], categoryNames[2])));
         }
         tree.getRoot().addChild(node);
-        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[3]));
+        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[3], categoryNames[3]));
         // Medical Sub List
         for (int i = 0; i < subCategoryMedical.length; i++) {
-            node.getChildNodes().add(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryMedical[i])));
+            node.getChildNodes().add(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryMedical[i], categoryNames[3])));
         }
         tree.getRoot().addChild(node);
-        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[4]));
+        node = new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), categoryNames[4], categoryNames[4]));
         // Insurance Sub List
         for (int i = 0; i < subCategoryInsurance.length; i++) {
-            node.getChildNodes().add(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryInsurance[i])));
+            node.getChildNodes().add(new CategoryTree.Node(new CategoryItem(drawables.getDrawable(0), subCategoryInsurance[i], categoryNames[4])));
         }
         tree.getRoot().addChild(node);
 
