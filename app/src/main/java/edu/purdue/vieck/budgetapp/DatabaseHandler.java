@@ -193,11 +193,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.close();
     }
 
+    public float getTotalCategoryAmount(String type) {
+        float categoryAmount = 0;
+        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'";
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                categoryAmount += cursor.getFloat(3);
+            } while (cursor.moveToNext());
+        }
+        cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+        int total = cursor.getCount();
+
+        sqLiteDatabase.close();
+        return categoryAmount;
+    }
+
     public float getPercentage(String type, int month, int year) {
         float categoryPercent = 0;
         String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'";
         String totalQuery = "SELECT * FROM " + TABLE_DATA;
-        Log.d("Database", "Month : " + month + " Year : " + year);
         if (month != -1 && year != -1) {
             selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'"
                     + " and " + COLUMN_MONTH + " = " + month

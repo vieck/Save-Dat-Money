@@ -1,46 +1,41 @@
 package edu.purdue.vieck.budgetapp.CustomObjects;
 
-import android.graphics.drawable.Drawable;
-
 /**
- * Created by mvieck on 9/27/2015.
+ * Created by mvieck on 10/9/2015.
  */
 public class CategoryItem {
 
-    Drawable icon;
-    String type;
-    String subType;
+    String name;
+    float amount;
+    int drawableId;
 
-    public CategoryItem() {
+    public CategoryItem() { };
+
+    public CategoryItem(int drawableId, String name, float amount) {
+        this.drawableId = drawableId;
+        this.name = name;
+        this.amount = amount;
     }
 
-    public CategoryItem(Drawable icon, String type, String subType) {
-        this.icon = icon;
-        this.type = type;
-        this.subType = subType;
+    public int getDrawableId() { return drawableId; }
+
+    public void setDrawableId(int drawableId) {
+        this.drawableId = drawableId;
     }
 
-    public Drawable getIcon() {
-        return icon;
+    public String getName() {
+        return name;
     }
 
-    public void setIcon(Drawable icon) {
-        this.icon = icon;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public float getAmount() {
+        return amount;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSubType() {
-        return subType;
-    }
-
-    public void setSubType(String subType) {
-        this.subType = subType;
+    public void setAmount(float amount) {
+        this.amount = amount;
     }
 }

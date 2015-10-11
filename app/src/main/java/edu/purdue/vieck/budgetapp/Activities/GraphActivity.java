@@ -4,32 +4,54 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.astuetz.PagerSlidingTabStrip;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
+import edu.purdue.vieck.budgetapp.Fragments.ChartFragment;
+import edu.purdue.vieck.budgetapp.Fragments.DataFragment;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragment;
+import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentCategory;
+import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentOverview;
+import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentSubcategory;
 import edu.purdue.vieck.budgetapp.Fragments.IncomeExpensesGraphFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 public class GraphActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    GraphFragment graphFragment;
+    ViewPagerAdapter adapter;
+    private Toolbar mToolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private ViewPager mViewPager;
+    private PagerSlidingTabStrip mTabLayout;
+    private GraphFragment graphFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation_layout);
+        mTabLayout = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         final Activity currentActivity = this;
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -61,7 +83,18 @@ public class GraphActivity extends AppCompatActivity {
                 return true;
             }
         });
-        getFragmentManager().beginTransaction().add(R.id.fragment_container, new IncomeExpensesGraphFragment()).commit();
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(mViewPager);
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+                .getDisplayMetrics());
+        mViewPager.setPageMargin(pageMargin);
+        mTabLayout.setViewPager(mViewPager);
+        mTabLayout.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
+            @Override
+            public void onTabReselected(int i) {
+                mViewPager.setCurrentItem(i);
+            }
+        });
     }
 
     @Override
@@ -84,5 +117,56 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        String[] list = {"Overview","Categories", "Subcategories"};
+        GraphFragmentOverview fragmentOverview = new GraphFragmentOverview();
+        adapter.addFragment(fragmentOverview, "Overview");
+        GraphFragmentCategory fragmentCategory = new GraphFragmentCategory();
+        adapter.addFragment(fragmentCategory, "Category");
+        GraphFragmentSubcategory fragmentSubcategory = new GraphFragmentSubcategory();
+        adapter.addFragment(fragmentSubcategory, "Subcategories");
+        viewPager.setAdapter(adapter);
+    }
+
+    static class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final ArrayList<Fragment> mFragmentList = new ArrayList<>();
+        private final ArrayList<String> mTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mTitleList.add(title);
+        }
+
+        public void replaceFragment(Fragment fragment, String title) {
+            for (int i = 0; i < mTitleList.size(); i++) {
+                if (mTitleList.get(i).equals(title)) {
+                    mFragmentList.set(i, fragment);
+                    notifyDataSetChanged();
+                    return;
+                }
+            }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitleList.get(position);
+        }
     }
 }

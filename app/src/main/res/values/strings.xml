@@ -85,16 +85,55 @@
         <item>Life Insurance</item>
     </string-array>
 
-
-
     <!-- Category Types -->
-    <string-array name="icons">
+    <integer-array name="icons">
         <item>@drawable/groceries</item>
         <item>@drawable/utilities</item>
         <item>@drawable/entertainment_main</item>
         <item>@drawable/medical_insurance</item>
         <item>@drawable/insurance</item>
-    </string-array>
+    </integer-array>
+
+    <integer-array name="icons_groceries">
+        <item>@drawable/groceries</item>
+        <item>@drawable/groceries</item>
+        <item>@drawable/groceries</item>
+    </integer-array>
+
+    <integer-array name="icons_utilities">
+        <item>@drawable/utilities</item>
+        <item>@drawable/industry4</item>
+        <item>@drawable/home_phone</item>
+        <item>@drawable/cell_bill</item>
+        <item>@drawable/web</item>
+        <item>@drawable/satellite_tv</item>
+        <item>@drawable/water</item>
+        <item>@drawable/trash</item>
+        <item>@drawable/utilities</item>
+    </integer-array>
+
+    <integer-array name="icons_entertainment">
+        <item>@drawable/theater</item>
+        <item>@drawable/vacation</item>
+        <item>@drawable/digital_media</item>
+        <item>@drawable/digitial_music</item>
+        <item>@drawable/ecommerce</item>
+        <item>@drawable/entertainment_misc</item>
+    </integer-array>
+
+    <integer-array name="icons_medical">
+        <item>@drawable/medical_visit</item>
+        <item>@drawable/emergency_room</item>
+        <item>@drawable/medication</item>
+        <item>@drawable/medical_misc</item>
+    </integer-array>
+
+    <integer-array name="icons_insurance">
+        <item>@drawable/home_insurance</item>
+        <item>@drawable/car_insurance</item>
+        <item>@drawable/medical_insurance</item>
+        <item>@drawable/life_insurance</item>
+    </integer-array>
 
     <string name="title_activity_data">DataActivity</string>
 

@@ -131,7 +131,7 @@ public class ChartActivity extends AppCompatActivity {
         bundle.putInt("month", -1);
         bundle.putInt("year", -1);
         chartFragment.setArguments(bundle);
-        adapter.addFragment(chartFragment, "Chart");
+        adapter.addFragment(chartFragment, "Total");
         HashMap<Integer, List<BudgetItem>> years = mDatabaseHandler.getAllYears();
         ArrayList<Integer> uniqueMonths = new ArrayList<>();
         Integer[] keys = years.keySet().toArray(new Integer[years.keySet().size()]);

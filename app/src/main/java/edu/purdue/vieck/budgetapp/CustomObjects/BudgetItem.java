@@ -6,14 +6,14 @@ package edu.purdue.vieck.budgetapp.CustomObjects;
 public class BudgetItem {
     private String category, subcategory, note;
     private boolean type;
-    private int day, month, year;
+    private int day, month, year, image;
     private float amount;
 
     public BudgetItem() {
 
     }
 
-    public BudgetItem(float amount, String category, String subcategory, boolean type, int day, int month, int year, String note) {
+    public BudgetItem(float amount, String category, String subcategory, boolean type, int day, int month, int year, String note, int image) {
         this.amount = amount;
         this.category = category;
         this.subcategory = subcategory;
@@ -22,6 +22,7 @@ public class BudgetItem {
         this.month = month;
         this.year = year;
         this.note = note;
+        this.image = image;
     }
 
     public float getAmount() {
@@ -86,5 +87,13 @@ public class BudgetItem {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 }

@@ -17,11 +17,7 @@
         <item name="android:textColor">@color/CottonBlue</item>
     </style>
 
-    <style name="StyleActivityChart" parent="AppTheme">
-
-    </style>
-
-    <style name="StyleFragmentChart">
+    <style name="StyleFragment">
         <item name="android:background">@color/DarkNavy</item>
         <item name="android:textColor">@color/CottonBlue</item>
         <item name="android:textColorHint">@color/NeonBlue</item>
@@ -41,8 +37,13 @@
         <item name="android:textColor">@color/White</item>
     </style>
 
+    <!-- Graph Style -->
+    <style name="cardview_categories">
+        <item name="android:background">@color/PaleBlue</item>
+        <item name="android:textColor">@color/CottonBlue</item>
+    </style>
+
     <!-- CATEGORY STYLES -->
-    
     <style name="edittext_add_fragment">
         <item name="android:editable">false</item>
         <item name="android:textColor">@color/White</item>

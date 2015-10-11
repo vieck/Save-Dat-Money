@@ -2,11 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:orientation="horizontal"
     android:fillViewport="true"
-    style="@style/StyleFragmentChart"
+    style="@style/StyleFragment"
     tools:context="edu.purdue.vieck.budgetapp.Fragments.ChartFragment">
 
     <FrameLayout android:id="@+id/frame_layout"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"

@@ -223,8 +223,8 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
         PieData data = new PieData(xVals, dataSet);
         data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(12f);
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.BLACK);
         mPieChart.setData(data);
 
         // undo all highlights

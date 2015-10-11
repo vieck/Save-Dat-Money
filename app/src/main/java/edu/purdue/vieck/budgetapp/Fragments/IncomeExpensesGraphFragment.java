@@ -74,6 +74,24 @@ public class IncomeExpensesGraphFragment extends GraphParentFragment {
                 .setCapRounded(mRounded[styleIndex])
                 .build();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         seriesIndexOne = decoView.addSeries(incomeSeriesItem);
 
         SeriesItem expenseSeriesItem = new SeriesItem.Builder(getResources().getColor(R.color.Lime))

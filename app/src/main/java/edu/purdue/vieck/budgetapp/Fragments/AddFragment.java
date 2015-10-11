@@ -44,6 +44,8 @@ public class AddFragment extends Fragment {
 
     private TextView categories;
 
+    int iconResourceId;
+
     private EditText amount, category, subcategory, month, day, year, note;
 
     private ImageButton submitButton;
@@ -97,7 +99,9 @@ public class AddFragment extends Fragment {
         if (bundle != null) {
             categories.setText(bundle.getString("Subcategory") + "");
             subcategory.setText(bundle.getString("Category") + "");
+            iconResourceId = bundle.getInt("Icon",R.drawable.cell_bill);
         }
+        iconResourceId = R.drawable.fuel14;
         final Activity currentActivity = getActivity();
         categories.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +145,7 @@ public class AddFragment extends Fragment {
                 String noteString = note.getText().toString();
                 BudgetItem budgetItem = new BudgetItem(
                         amountV, categoryString, subcategoryString, toggleV,
-                        dayNum, monthNum, yearNum, noteString);
+                        dayNum, monthNum, yearNum, noteString, iconResourceId);
                 databaseHandler.addData(budgetItem);
                 showSnackBar("Added Data");
                 Toast.makeText(getActivity(), "Added Data", Toast.LENGTH_LONG).show();

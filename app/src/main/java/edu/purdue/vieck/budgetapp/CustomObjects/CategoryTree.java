@@ -11,22 +11,22 @@ public class CategoryTree {
 
     private Node root;
 
-    public CategoryTree(CategoryItem categoryItem) {
-        root = new Node(categoryItem);
+    public CategoryTree(AddItem addItem) {
+        root = new Node(addItem);
     }
 
     public static class Node {
-        private CategoryItem categoryItem;
+        private AddItem addItem;
         private Node parent;
         private ArrayList<Node> childNodes;
 
-        public Node(CategoryItem categoryItem) {
-            this.categoryItem = categoryItem;
+        public Node(AddItem addItem) {
+            this.addItem = addItem;
             childNodes = new ArrayList<>();
         }
 
-        public Node(CategoryItem categoryItem, Node parent) {
-            this.categoryItem = categoryItem;
+        public Node(AddItem addItem, Node parent) {
+            this.addItem = addItem;
             childNodes = new ArrayList<>();
             this.parent = parent;
         }
@@ -61,8 +61,8 @@ public class CategoryTree {
             return childNodes.get(index);
         }
 
-        public CategoryItem getItem() {
-            return categoryItem;
+        public AddItem getItem() {
+            return addItem;
         }
 
     }
