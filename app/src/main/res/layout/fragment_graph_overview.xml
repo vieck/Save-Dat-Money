@@ -7,8 +7,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/title_activity_graph"/>
-    <android.support.v7.widget.RecyclerView android:id="@+id/recycler_view"
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/bar_chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" />
+        android:layout_height="wrap_content" />
+
+    <SeekBar android:id="@+id/x_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
