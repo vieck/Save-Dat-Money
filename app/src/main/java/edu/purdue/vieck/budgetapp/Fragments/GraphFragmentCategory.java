@@ -47,7 +47,7 @@ public class GraphFragmentCategory extends Fragment {
             item = new CategoryItem();
             item.setDrawableId(categoryImages[i]);
             item.setName(categories[i]);
-            item.setAmount(databaseHandler.getTotalCategoryAmount(categories[i]));
+            item.setAmount(databaseHandler.getTotalAmount(true, categories[i]));
             list.add(item);
         }
         adapter = new GraphCategoryAdapter(getActivity(), list);

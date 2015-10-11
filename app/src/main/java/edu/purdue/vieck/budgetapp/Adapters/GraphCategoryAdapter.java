@@ -26,12 +26,14 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
 
     private Context mContext;
     private DatabaseHandler databaseHandler;
+    private float max;
     private List<CategoryItem> list;
 
     public GraphCategoryAdapter(Context mContext, List<CategoryItem> list) {
         this.mContext = mContext;
         this.list = list;
         databaseHandler = new DatabaseHandler(mContext);
+        max = databaseHandler.getTotalAmount(false, "");
     }
 
     @Override
@@ -46,9 +48,9 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
         final CategoryItem item = list.get(position);
         viewHolder.imageView.setImageDrawable(mContext.getDrawable(item.getDrawableId()));
         viewHolder.labelCategory.setText(item.getName());
-        viewHolder.amount.setText("$" + item.getAmount());
-        viewHolder.progressBar.setProgressColor(mContext.getResources().getColor(R.color.White));
-        viewHolder.progressBar.setBackgroundColor(mContext.getResources().getColor(R.color.Black));
+        viewHolder.amount.setText("$ " + item.getAmount());
+        viewHolder.progressBar.setMax(max);
+        viewHolder.progressBar.setProgress(item.getAmount());
     }
 
     @Override

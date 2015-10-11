@@ -193,9 +193,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.close();
     }
 
-    public float getTotalCategoryAmount(String type) {
+    public float getTotalAmount(boolean isCategory, String type) {
         float categoryAmount = 0;
-        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'";
+        String selectQuery;
+        if (isCategory) {
+            selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'";
+        } else {
+            selectQuery = "SELECT * FROM " + TABLE_DATA;
+        }
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {

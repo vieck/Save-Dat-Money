@@ -1,6 +1,7 @@
 package edu.purdue.vieck.budgetapp.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,6 +16,9 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -37,6 +41,8 @@ public class ChartActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private PagerSlidingTabStrip mTabLayout;
     private DatabaseHandler mDatabaseHandler;
+
+    private ImageButton addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +98,14 @@ public class ChartActivity extends AppCompatActivity {
                 mViewPager.setCurrentItem(i);
             }
         });
+        final Context context = this;
+        addButton = (ImageButton) findViewById(R.id.imagebtn_submit);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, AddActivity.class));
+            }
+        });
     }
 
     @Override
@@ -109,12 +123,7 @@ public class ChartActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_data) {
-            /*AddFragment addFragment = new AddFragment();
-            addFragment.show(getSupportFragmentManager(), "AddFragment");*/
-            this.startActivity(new Intent(this, AddActivity.class));
-            return true;
-        } else if (id == R.id.action_delete) {
+         if (id == R.id.action_delete) {
             mDatabaseHandler.deleteAll();
             return true;
         }
