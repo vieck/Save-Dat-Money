@@ -11,15 +11,17 @@
         android:layout_margin="10dp"
         android:orientation="vertical">
 
-        <ImageView android:id="@+id/imageview_dashboard_item"
+        <ImageView
+            android:id="@+id/imageview_dashboard_item"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center_horizontal" />
 
-        <TextView android:id="@+id/textview_dashboard_item"
+        <TextView
+            android:id="@+id/textview_dashboard_item"
             style="@style/dashboard_item_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

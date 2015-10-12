@@ -43,7 +43,7 @@
         <item>Insurance</item>
         <item>Misc</item>
     </string-array>
-    
+
     <string-array name="subgroceryarray">
         <item>Groceries</item>
         <item>Fast Food</item>
@@ -61,7 +61,7 @@
         <item>Trash</item>
         <item>Misc</item>
     </string-array>
-    
+
     <string-array name="subentertainmentarray">
         <item>Movies</item>
         <item>Vacation</item>

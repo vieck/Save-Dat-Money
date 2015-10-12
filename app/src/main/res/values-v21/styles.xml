@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorPrimary">@color/CottonBlue</item>
         <item name="android:colorPrimaryDark">@color/PaleGray</item>
@@ -49,7 +50,7 @@
         <item name="android:textColor">@color/White</item>
         <item name="android:textColorHint">@color/NeonBlue</item>
     </style>
-    
+
     <style name="edittext_amount_add_fragment">
         <item name="android:textColor">@color/White</item>
         <item name="android:textColorHint">@color/SheetBlue</item>
@@ -62,7 +63,7 @@
         <item name="android:buttonTint">@color/PaleBlue</item>
         <item name="android:textColor">@color/CottonBlue</item>
     </style>
-    
+
     <style name="textview_category_item">
         <item name="android:textSize">12pt</item>
     </style>

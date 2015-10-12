@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <!-- COORDINATED COLORS -->
     <color name="DarkNavy">#2F343A</color>
     <color name="PaleBlue">#717D8C</color>
@@ -8,7 +8,7 @@
     <color name="PaleGray">#BDB69C</color>
     <color name="NeonBlue">#80CEB9</color>
     <color name="SheetBlue">#41AAC4</color>
-    
+
     <!--- Pie Chart Complementary Colors -->
     <color name="pie_blue">#8E9AAF</color>
     <color name="pie_light_blue">#CBC0D3</color>

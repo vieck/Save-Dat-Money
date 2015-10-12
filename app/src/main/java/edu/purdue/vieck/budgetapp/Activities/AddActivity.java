@@ -1,7 +1,6 @@
 package edu.purdue.vieck.budgetapp.Activities;
 
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,20 +26,20 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onBackStackChanged() {
                 //if (getFragmentManager().getBackStackEntryCount() > 1) {
-               // FragmentTransaction ft = getFragmentManager().beginTransaction();
-               // ft.replace(R.id.fragment_container, new AddFragment()).addToBackStack("category").commit();
+                // FragmentTransaction ft = getFragmentManager().beginTransaction();
+                // ft.replace(R.id.fragment_container, new AddFragment()).addToBackStack("category").commit();
                 //}
             }
         });
         if (savedInstanceState == null) {
             addFragment = new AddFragment();
-            getFragmentManager().beginTransaction().add(R.id.fragment_container, addFragment,"addFragment").commit();
+            getFragmentManager().beginTransaction().add(R.id.fragment_container, addFragment, "addFragment").commit();
         } else {
             addFragment = (AddFragment) getFragmentManager().findFragmentByTag("addFragment");
 
             if (addFragment == null) {
                 addFragment = new AddFragment();
-                getFragmentManager().beginTransaction().add(R.id.fragment_container, addFragment,"addFragment");
+                getFragmentManager().beginTransaction().add(R.id.fragment_container, addFragment, "addFragment");
             } else {
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container, addFragment).commit();
             }

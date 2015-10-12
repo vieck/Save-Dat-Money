@@ -55,12 +55,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.mViewH
 
                     FragmentActivity fragmentActivity = ((FragmentActivity) context);
                     Bundle bundle = new Bundle();
-                    bundle.putString("Category",item.getType());
-                    bundle.putString("Subcategory",item.getSubType());
-                   //bundle.putInt("Icon", );
+                    bundle.putString("Category", item.getType());
+                    bundle.putString("Subcategory", item.getSubType());
+                    //bundle.putInt("Icon", );
                     AddFragment addFragment = new AddFragment();
                     addFragment.setArguments(bundle);
-                    fragmentActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container , addFragment).commit();
+                    fragmentActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container, addFragment).commit();
                 }
             }
         });

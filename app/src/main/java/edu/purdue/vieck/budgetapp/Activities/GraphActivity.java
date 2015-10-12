@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,17 +18,11 @@ import android.view.MenuItem;
 import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.Fragments.ChartFragment;
-import edu.purdue.vieck.budgetapp.Fragments.DataFragment;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragment;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentCategory;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentOverview;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentSubcategory;
-import edu.purdue.vieck.budgetapp.Fragments.IncomeExpensesGraphFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 public class GraphActivity extends AppCompatActivity {
@@ -121,7 +114,7 @@ public class GraphActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        String[] list = {"Overview","Categories", "Subcategories"};
+        String[] list = {"Overview", "Categories", "Subcategories"};
         GraphFragmentOverview fragmentOverview = new GraphFragmentOverview();
         adapter.addFragment(fragmentOverview, "Overview");
         GraphFragmentCategory fragmentCategory = new GraphFragmentCategory();

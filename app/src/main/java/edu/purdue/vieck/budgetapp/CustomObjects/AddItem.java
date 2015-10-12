@@ -1,7 +1,5 @@
 package edu.purdue.vieck.budgetapp.CustomObjects;
 
-import android.graphics.drawable.Drawable;
-
 /**
  * Created by mvieck on 9/27/2015.
  */

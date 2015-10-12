@@ -15,6 +15,46 @@ public class CategoryTree {
         root = new Node(addItem);
     }
 
+    public Node getRoot() {
+        return root;
+    }
+
+    public void setRoot(Node root) {
+        this.root = root;
+    }
+
+    public void walkTree(Node node, ArrayList<Node> nodes) {
+        nodes.add(node);
+        Log.d("Tree", "Name " + node.getItem().getType());
+        for (Node data : node.getChildNodes()) {
+            walkTree(data, nodes);
+        }
+    }
+
+    public int getNodeChildrenAmount() {
+        return root.childNodes.size();
+    }
+
+    public int getNumberOfChildrenNodes() {
+        return root.childNodes.size();
+    }
+
+    public ArrayList<Node> getChildNodes() {
+        return root.childNodes;
+    }
+
+    public void setChildNodes(ArrayList<Node> childNodes) {
+        root.childNodes = childNodes;
+    }
+
+    public void addNode(Node node) {
+        if (!root.hasChildren()) {
+            root.childNodes.add(node);
+        } else {
+
+        }
+    }
+
     public static class Node {
         private AddItem addItem;
         private Node parent;
@@ -31,10 +71,16 @@ public class CategoryTree {
             this.parent = parent;
         }
 
-        public boolean isLeafNode() { return getChildNodes().isEmpty(); }
+        public boolean isLeafNode() {
+            return getChildNodes().isEmpty();
+        }
 
         public ArrayList<Node> getChildNodes() {
             return childNodes;
+        }
+
+        public void setChildNodes(ArrayList<Node> childNodes) {
+            this.childNodes = childNodes;
         }
 
         public int getNumberOfChildren() {
@@ -43,10 +89,6 @@ public class CategoryTree {
 
         public boolean hasChildren() {
             return childNodes.size() > 0;
-        }
-
-        public void setChildNodes(ArrayList<Node> childNodes) {
-            this.childNodes = childNodes;
         }
 
         public void addChild(Node node) {
@@ -65,46 +107,5 @@ public class CategoryTree {
             return addItem;
         }
 
-    }
-
-    public Node getRoot() {
-        return root;
-    }
-
-    public void setRoot(Node root) {
-        this.root = root;
-    }
-
-
-    public void walkTree(Node node, ArrayList<Node> nodes) {
-        nodes.add(node);
-        Log.d("Tree", "Name " + node.getItem().getType());
-        for (Node data : node.getChildNodes()) {
-            walkTree(data, nodes);
-        }
-    }
-
-    public int getNodeChildrenAmount() {
-        return root.childNodes.size();
-    }
-
-    public int getNumberOfChildrenNodes() {
-        return root.childNodes.size();
-    }
-
-    public void setChildNodes(ArrayList<Node> childNodes) {
-        root.childNodes = childNodes;
-    }
-
-    public ArrayList<Node> getChildNodes() {
-        return root.childNodes;
-    }
-
-    public void addNode(Node node) {
-        if (!root.hasChildren()) {
-            root.childNodes.add(node);
-        } else {
-
-        }
     }
 }

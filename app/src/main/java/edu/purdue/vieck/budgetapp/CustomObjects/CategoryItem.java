@@ -9,7 +9,10 @@ public class CategoryItem {
     float amount;
     int drawableId;
 
-    public CategoryItem() { };
+    public CategoryItem() {
+    }
+
+    ;
 
     public CategoryItem(int drawableId, String name, float amount) {
         this.drawableId = drawableId;
@@ -17,7 +20,9 @@ public class CategoryItem {
         this.amount = amount;
     }
 
-    public int getDrawableId() { return drawableId; }
+    public int getDrawableId() {
+        return drawableId;
+    }
 
     public void setDrawableId(int drawableId) {
         this.drawableId = drawableId;

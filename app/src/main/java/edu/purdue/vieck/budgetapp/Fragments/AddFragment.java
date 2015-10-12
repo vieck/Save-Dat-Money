@@ -3,7 +3,6 @@ package edu.purdue.vieck.budgetapp.Fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -30,22 +29,14 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class AddFragment extends Fragment {
 
-    private Bundle mSavedState;
-
-    private RelativeLayout relativeLayout;
-
     DatabaseHandler databaseHandler;
-
-    private Calendar calendar;
-
-    private DatePicker datePicker;
-
-    private ToggleButton toggleButton;
-
-    private TextView categories;
-
     int iconResourceId;
-
+    private Bundle mSavedState;
+    private RelativeLayout relativeLayout;
+    private Calendar calendar;
+    private DatePicker datePicker;
+    private ToggleButton toggleButton;
+    private TextView categories;
     private EditText amount, category, subcategory, month, day, year, note;
 
     private ImageButton submitButton;
@@ -99,7 +90,7 @@ public class AddFragment extends Fragment {
         if (bundle != null) {
             categories.setText(bundle.getString("Subcategory") + "");
             subcategory.setText(bundle.getString("Category") + "");
-            iconResourceId = bundle.getInt("Icon",R.drawable.cell_bill);
+            iconResourceId = bundle.getInt("Icon", R.drawable.cell_bill);
         }
         iconResourceId = R.drawable.fuel14;
         final Activity currentActivity = getActivity();

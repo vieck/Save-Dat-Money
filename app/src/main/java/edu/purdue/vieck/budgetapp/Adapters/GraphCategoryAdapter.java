@@ -3,7 +3,6 @@ package edu.purdue.vieck.budgetapp.Adapters;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
-import com.github.mikephil.charting.charts.HorizontalBarChart;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ import edu.purdue.vieck.budgetapp.R;
 /**
  * Created by mvieck on 10/7/2015.
  */
-public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdapter.mViewHolder>{
+public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdapter.mViewHolder> {
 
     private Context mContext;
     private DatabaseHandler databaseHandler;

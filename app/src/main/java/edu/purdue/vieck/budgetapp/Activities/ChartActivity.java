@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -123,7 +122,7 @@ public class ChartActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-         if (id == R.id.action_delete) {
+        if (id == R.id.action_delete) {
             mDatabaseHandler.deleteAll();
             return true;
         }

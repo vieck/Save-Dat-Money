@@ -24,14 +24,12 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PercentFormatter;
 
 import java.util.ArrayList;
 
 import edu.purdue.vieck.budgetapp.Adapters.ChartAdapter;
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -39,6 +37,7 @@ import edu.purdue.vieck.budgetapp.R;
 public class ChartFragment extends Fragment implements OnChartValueSelectedListener {
 
     int month, year;
+    DatabaseHandler mDatabaseHandler;
     private int mInstance;
     private int yInstance;
     private PieChart mPieChart;
@@ -46,7 +45,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     private RecyclerView mRecyclerView;
     private ChartAdapter mChartAdapter;
     private Button chartButton;
-    DatabaseHandler mDatabaseHandler;
     private Context mContext;
     private String fragmentName;
 
@@ -192,7 +190,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             xVals.add("Insurance");
             colors.add(getResources().getColor(R.color.SheetBlue));
         }
-
 
 
         PieDataSet dataSet = new PieDataSet(yVals, "Category Legend");

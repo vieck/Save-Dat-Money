@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.purdue.vieck.budgetapp" >
+    package="edu.purdue.vieck.budgetapp">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".Activities.ChartActivity"
-            android:label="@string/app_name" >
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".Activities.DataActivity"
-            android:label="@string/title_activity_data" >
+            android:label="@string/title_activity_data">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -27,7 +26,7 @@
         </activity>
         <activity
             android:name=".Activities.DashboardActivity"
-            android:label="@string/title_activity_dashboard" >
+            android:label="@string/title_activity_dashboard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,16 +35,13 @@
         </activity>
         <activity
             android:name=".Activities.GraphActivity"
-            android:label="@string/title_activity_graph" >
-        </activity>
+            android:label="@string/title_activity_graph"></activity>
         <activity
             android:name=".Activities.AddActivity"
-            android:label="@string/title_activity_submit" >
-        </activity>
+            android:label="@string/title_activity_submit"></activity>
         <activity
             android:name=".Activities.CategoryActivity"
-            android:label="@string/title_activity_category" >
-        </activity>
+            android:label="@string/title_activity_category"></activity>
     </application>
 
 </manifest>

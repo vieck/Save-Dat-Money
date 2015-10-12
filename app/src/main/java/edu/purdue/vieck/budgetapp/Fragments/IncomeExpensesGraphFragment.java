@@ -75,23 +75,6 @@ public class IncomeExpensesGraphFragment extends GraphParentFragment {
                 .build();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         seriesIndexOne = decoView.addSeries(incomeSeriesItem);
 
         SeriesItem expenseSeriesItem = new SeriesItem.Builder(getResources().getColor(R.color.Lime))
