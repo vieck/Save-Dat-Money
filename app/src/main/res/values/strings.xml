@@ -31,9 +31,10 @@
 
     <string name="edittext_add_hint">Tap me to add category</string>
 
-    <string name="switch_chart">Switch To Chart</string>
-    <string name="switch_data">Switch to Data</string>
-
+    <!-- FRAGMENT GRAPH -->
+    <string name="yearly">Yearly</string>
+    <string name="monthly">Montly</string>
+    <string name="weekly">Weekly</string>
 
     <string-array name="categoryarray">
         <item>Food</item>
@@ -87,52 +88,52 @@
 
     <!-- Category Types -->
     <integer-array name="icons">
-        <item>@drawable/groceries</item>
-        <item>@drawable/utilities</item>
-        <item>@drawable/entertainment_main</item>
-        <item>@drawable/medical_insurance</item>
-        <item>@drawable/insurance</item>
+        <item>@drawable/food_groceries_dark</item>
+        <item>@drawable/utility_misc_dark</item>
+        <item>@drawable/entertainment_misc_dark</item>
+        <item>@drawable/medical_misc_dark</item>
+        <item>@drawable/insurance_dark</item>
     </integer-array>
 
     <integer-array name="icons_groceries">
-        <item>@drawable/groceries</item>
-        <item>@drawable/groceries</item>
-        <item>@drawable/groceries</item>
+        <item>@drawable/food_groceries_dark</item>
+        <item>@drawable/food_groceries_dark</item>
+        <item>@drawable/food_groceries_dark</item>
     </integer-array>
 
     <integer-array name="icons_utilities">
-        <item>@drawable/utilities</item>
-        <item>@drawable/industry4</item>
-        <item>@drawable/home_phone</item>
-        <item>@drawable/cell_bill</item>
-        <item>@drawable/web</item>
-        <item>@drawable/satellite_tv</item>
-        <item>@drawable/water</item>
-        <item>@drawable/trash</item>
-        <item>@drawable/utilities</item>
+        <item>@drawable/utility_misc_dark</item>
+        <item>@drawable/utility_gas_dark</item>
+        <item>@drawable/landline_phone_bill_dark</item>
+        <item>@drawable/cell_phone_bill_dark</item>
+        <item>@drawable/entertainment_web_dark</item>
+        <item>@drawable/satellite_bill_dark</item>
+        <item>@drawable/utility_water_dark</item>
+        <item>@drawable/utility_trash_dark</item>
+        <item>@drawable/utility_misc_dark</item>
     </integer-array>
 
     <integer-array name="icons_entertainment">
-        <item>@drawable/theater</item>
-        <item>@drawable/vacation</item>
-        <item>@drawable/digital_media</item>
-        <item>@drawable/digitial_music</item>
-        <item>@drawable/ecommerce</item>
-        <item>@drawable/entertainment_misc</item>
+        <item>@drawable/entertainment_theater_dark</item>
+        <item>@drawable/entertainment_vaction_dark</item>
+        <item>@drawable/digital_media_dark</item>
+        <item>@drawable/digital_music_dark</item>
+        <item>@drawable/ecommerce_dark</item>
+        <item>@drawable/entertainment_misc_dark</item>
     </integer-array>
 
     <integer-array name="icons_medical">
-        <item>@drawable/medical_visit</item>
-        <item>@drawable/emergency_room</item>
-        <item>@drawable/medication</item>
-        <item>@drawable/medical_misc</item>
+        <item>@drawable/medical_visit_dark</item>
+        <item>@drawable/emergence_room_dark</item>
+        <item>@drawable/medical_prescription_dark</item>
+        <item>@drawable/medical_misc_dark</item>
     </integer-array>
 
     <integer-array name="icons_insurance">
-        <item>@drawable/home_insurance</item>
-        <item>@drawable/car_insurance</item>
-        <item>@drawable/medical_insurance</item>
-        <item>@drawable/life_insurance</item>
+        <item>@drawable/home_insurance_dark</item>
+        <item>@drawable/car_insurance_dark</item>
+        <item>@drawable/medical_misc_dark</item>
+        <item>@drawable/life_insurance_dark</item>
     </integer-array>
 
     <string name="title_activity_data">DataActivity</string>

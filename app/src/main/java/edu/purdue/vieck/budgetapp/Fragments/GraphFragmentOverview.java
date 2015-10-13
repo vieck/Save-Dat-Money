@@ -1,5 +1,7 @@
 package edu.purdue.vieck.budgetapp.Fragments;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -10,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.SeekBar;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -20,13 +24,23 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
+import edu.purdue.vieck.budgetapp.CustomObjects.BarChartItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.ChartItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.LineChartItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.PieChartItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -43,143 +57,171 @@ public class GraphFragmentOverview extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph_overview, container, false);
         databaseHandler = new DatabaseHandler(getActivity());
-        barChart = (BarChart) view.findViewById(R.id.bar_chart);
-        seekBar = (SeekBar) view.findViewById(R.id.x_seekbar);
-        seekBar.setMax((int) ((databaseHandler.getTotalAmount(false, "") + 99) / 100) * 100);
-        setupBarChart();
+        //barChart = (BarChart) view.findViewById(R.id.bar_chart);
+        // seekBar = (SeekBar) view.findViewById(R.id.x_seekbar);
+        // seekBar.setMax((int) ((databaseHandler.getTotalAmount(false, "") + 99) / 100) * 100);
+        ListView lv = (ListView) view.findViewById(R.id.listview);
+
+        ArrayList<ChartItem> list = new ArrayList<ChartItem>();
+
+        list.add(new LineChartItem(generateDataLine(0), getActivity()));
+        list.add(new BarChartItem(generateDataBar(0), getActivity()));
+        list.add(new PieChartItem(generateDataPie(0), getActivity()));
+
+        ChartDataAdapter cda = new ChartDataAdapter(getActivity(), list);
+        lv.setAdapter(cda);
+
         return view;
     }
 
-    public void setupBarChart() {
+    /**
+     * generates a random ChartData object with just one DataSet
+     *
+     * @return
+     */
+    private LineData generateDataLine(int cnt) {
 
-        barChart.setDrawBarShadow(false);
-        barChart.setDrawValueAboveBar(true);
+        switch (cnt) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
 
-        barChart.setDescription("");
+        ArrayList<Entry> e1 = new ArrayList<Entry>();
 
-        // if more than 60 entries are displayed in the chart, no values will be
-        // drawn
-        barChart.setMaxVisibleValueCount(60);
+        for (int i = 0; i < 12; i++) {
+            e1.add(new Entry((int) (Math.random() * 65) + 40, i));
+        }
 
-        // scaling can now only be done on x- and y-axis separately
-        barChart.setPinchZoom(false);
+        LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
+        d1.setLineWidth(2.5f);
+        d1.setCircleSize(4.5f);
+        d1.setHighLightColor(Color.rgb(244, 117, 117));
+        d1.setDrawValues(false);
 
-        // draw shadows for each bar that show the maximum value
-        // mChart.setDrawBarShadow(true);
+        ArrayList<Entry> e2 = new ArrayList<Entry>();
 
-        // mChart.setDrawXLabels(false);
+        for (int i = 0; i < 12; i++) {
+            e2.add(new Entry(e1.get(i).getVal() - 30, i));
+        }
 
-        barChart.setDrawGridBackground(false);
-        // mChart.setDrawYLabels(false);
+        LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
+        d2.setLineWidth(2.5f);
+        d2.setCircleSize(4.5f);
+        d2.setHighLightColor(Color.rgb(244, 117, 117));
+        d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        d2.setDrawValues(false);
 
-        Typeface mTf = Typeface.SANS_SERIF;
+        ArrayList<LineDataSet> sets = new ArrayList<LineDataSet>();
+        sets.add(d1);
+        sets.add(d2);
 
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTypeface(mTf);
-        xAxis.setDrawGridLines(false);
-        xAxis.setSpaceBetweenLabels(2);
-
-        // YAxisValueFormatter custom = new MyYAxisValueFormatter();
-
-        YAxis leftAxis = barChart.getAxisLeft();
-        leftAxis.setTypeface(mTf);
-        leftAxis.setLabelCount(8);
-        //leftAxis.setValueFormatter(custom);
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(15f);
-
-        YAxis rightAxis = barChart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(mTf);
-        rightAxis.setLabelCount(8);
-        // rightAxis.setValueFormatter(custom);
-        rightAxis.setSpaceTop(15f);
-
-        Legend l = barChart.getLegend();
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
-        l.setForm(Legend.LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-        l.setXEntrySpace(4f);
-        // l.setExtra(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
-        // "def", "ghj", "ikl", "mno" });
-        // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
-        // "def", "ghj", "ikl", "mno" });
-
-        setData(12, ((databaseHandler.getTotalAmount(false, "") + 99) / 100) * 100, databaseHandler.getAllData());
-
-        // setting data
-        seekBar.setProgress(12);
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                setData(seekBar.getProgress(), (int) ((databaseHandler.getTotalAmount(false, "") + 99) / 100) * 100, databaseHandler.getAllData());
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-
-        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-                if (e == null)
-                    return;
-
-                RectF bounds = barChart.getBarBounds((BarEntry) e);
-                PointF position = barChart.getPosition(e, YAxis.AxisDependency.LEFT);
-
-                Log.i("bounds", bounds.toString());
-                Log.i("position", position.toString());
-
-                Log.i("x-index",
-                        "low: " + barChart.getLowestVisibleXIndex() + ", high: "
-                                + barChart.getHighestVisibleXIndex());
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
+        LineData cd = new LineData(getMonths(), sets);
+        return cd;
     }
 
-    private void setData(int count, float range, Stack<BudgetItem> items) {
+    /**
+     * generates a random ChartData object with just one DataSet
+     *
+     * @return
+     */
+    private BarData generateDataBar(int cnt) {
 
-        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"};
+        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add(months[i % 12]);
+        for (int i = 0; i < 12; i++) {
+            entries.add(new BarEntry((int) (Math.random() * 70) + 30, i));
         }
 
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
+        d.setBarSpacePercent(20f);
+        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        d.setHighLightAlpha(255);
 
-        int i = 0;
-        while (!items.isEmpty()) {
-            yVals1.add(new BarEntry(items.pop().getAmount(), i));
-            i++;
+        BarData cd = new BarData(getMonths(), d);
+        return cd;
+    }
+
+    /**
+     * generates a random ChartData object with just one DataSet
+     *
+     * @return
+     */
+    private PieData generateDataPie(int cnt) {
+
+        ArrayList<Entry> entries = new ArrayList<Entry>();
+
+        for (int i = 0; i < 4; i++) {
+            entries.add(new Entry((int) (Math.random() * 70) + 30, i));
         }
 
-        BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
-        set1.setBarSpacePercent(35f);
+        PieDataSet d = new PieDataSet(entries, "");
 
-        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
-        dataSets.add(set1);
+        // space between slices
+        d.setSliceSpace(2f);
+        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
-        BarData data = new BarData(xVals, dataSets);
-        data.setValueTextSize(10f);
+        PieData cd = new PieData(getQuarters(), d);
+        return cd;
+    }
 
-        barChart.setData(data);
+    private ArrayList<String> getQuarters() {
+
+        ArrayList<String> q = new ArrayList<String>();
+        q.add("1st Quarter");
+        q.add("2nd Quarter");
+        q.add("3rd Quarter");
+        q.add("4th Quarter");
+
+        return q;
+    }
+
+    private ArrayList<String> getMonths() {
+
+        ArrayList<String> m = new ArrayList<String>();
+        m.add("Jan");
+        m.add("Feb");
+        m.add("Mar");
+        m.add("Apr");
+        m.add("May");
+        m.add("Jun");
+        m.add("Jul");
+        m.add("Aug");
+        m.add("Sep");
+        m.add("Okt");
+        m.add("Nov");
+        m.add("Dec");
+
+        return m;
+    }
+
+    /**
+     * adapter that supports 3 different item types
+     */
+    private class ChartDataAdapter extends ArrayAdapter<ChartItem> {
+
+        public ChartDataAdapter(Context context, List<ChartItem> objects) {
+            super(context, 0, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return getItem(position).getView(position, convertView, getContext());
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            // return the views type
+            return getItem(position).getItemType();
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 3; // we have 3 different item-types
+        }
     }
 }

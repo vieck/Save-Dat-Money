@@ -64,8 +64,14 @@
         <item name="android:textColor">@color/CottonBlue</item>
     </style>
 
-    <style name="textview_category_item">
-        <item name="android:textSize">12pt</item>
+    <style name="textview_add_item">
+        <item name="android:textColor">@color/CottonBlue</item>
+        <item name="android:textSize">10pt</item>
+    </style>
+
+    <style name="textview_add_amount">
+        <item name="android:textColor">@color/Red</item>
+        <item name="android:textSize">14pt</item>
     </style>
 
     <!-- DASHBOARD STYLES -->

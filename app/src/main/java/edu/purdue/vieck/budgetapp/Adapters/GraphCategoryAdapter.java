@@ -13,7 +13,7 @@ import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import java.util.List;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.CategoryItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.AddTreeItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -25,9 +25,9 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
     private Context mContext;
     private DatabaseHandler databaseHandler;
     private float max;
-    private List<CategoryItem> list;
+    private List<AddTreeItem> list;
 
-    public GraphCategoryAdapter(Context mContext, List<CategoryItem> list) {
+    public GraphCategoryAdapter(Context mContext, List<AddTreeItem> list) {
         this.mContext = mContext;
         this.list = list;
         databaseHandler = new DatabaseHandler(mContext);
@@ -43,7 +43,7 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
 
     @Override
     public void onBindViewHolder(mViewHolder viewHolder, int position) {
-        final CategoryItem item = list.get(position);
+        final AddTreeItem item = list.get(position);
         viewHolder.imageView.setImageDrawable(mContext.getDrawable(item.getDrawableId()));
         viewHolder.labelCategory.setText(item.getName());
         viewHolder.amount.setText("$ " + item.getAmount());
@@ -65,7 +65,7 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
         public mViewHolder(View v) {
             super(v);
             cardView = (CardView) v.findViewById(R.id.cardview);
-            imageView = (ImageView) v.findViewById(R.id.imageview_category_item);
+            imageView = (ImageView) v.findViewById(R.id.imageview);
             labelCategory = (TextView) v.findViewById(R.id.label_category);
             labelAmount = (TextView) v.findViewById(R.id.label_amount);
             amount = (TextView) v.findViewById(R.id.textview_amount);

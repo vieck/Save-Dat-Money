@@ -3,6 +3,7 @@ package edu.purdue.vieck.budgetapp.Fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,7 @@ import android.widget.ToggleButton;
 
 import java.util.Calendar;
 
+import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
@@ -90,9 +92,9 @@ public class AddFragment extends Fragment {
         if (bundle != null) {
             categories.setText(bundle.getString("Subcategory") + "");
             subcategory.setText(bundle.getString("Category") + "");
-            iconResourceId = bundle.getInt("Icon", R.drawable.cell_bill);
+            iconResourceId = bundle.getInt("Icon", R.drawable.cell_phone_bill_dark);
         }
-        iconResourceId = R.drawable.fuel14;
+        iconResourceId = R.drawable.gas_station_dark;
         final Activity currentActivity = getActivity();
         categories.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +102,7 @@ public class AddFragment extends Fragment {
                 CategoryFragment categoryFragment = new CategoryFragment();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, categoryFragment);
-                Log.d("Add Fragment", "Started Category Fragment");
+                Log.d("Add Fragment", "Started AddTree Fragment");
                 fragmentTransaction.commit();
             }
         });
@@ -140,6 +142,9 @@ public class AddFragment extends Fragment {
                 databaseHandler.addData(budgetItem);
                 showSnackBar("Added Data");
                 Toast.makeText(getActivity(), "Added Data", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getActivity(), ChartActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                getActivity().startActivity(intent);
                 getActivity().finish();
             }
         });

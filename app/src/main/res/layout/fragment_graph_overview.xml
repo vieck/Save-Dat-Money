@@ -1,23 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MyAppBarLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <RadioGroup
+        android:id="@+id/radio_group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/bar_chart"
+        <RadioButton
+            android:id="@+id/radio_button_yearly"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/yearly" />
 
-        <SeekBar
-            android:id="@+id/x_seekbar"
+        <RadioButton
+            android:id="@+id/radio_button_montly"
             android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:layout_below="@id/bar_chart" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/monthly" />
 
-    </RelativeLayout>
-</ScrollView>
+        <RadioButton
+            android:id="@+id/radio_button_weekly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/weekly" />
+    </RadioGroup>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -179,9 +179,9 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             colors.add(getResources().getColor(R.color.PaleTurquoise));
         }
 
-        if (mDatabaseHandler.getPercentage("Groceries", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Groceries", month, year), 0));
-            xVals.add("Groceries");
+        if (mDatabaseHandler.getPercentage("Food", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getPercentage("Food", month, year), 0));
+            xVals.add("Food");
             colors.add(getResources().getColor(R.color.NeonBlue));
         }
 

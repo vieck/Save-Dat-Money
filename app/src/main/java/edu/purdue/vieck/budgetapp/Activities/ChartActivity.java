@@ -103,6 +103,7 @@ public class ChartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 context.startActivity(new Intent(context, AddActivity.class));
+                finish();
             }
         });
     }

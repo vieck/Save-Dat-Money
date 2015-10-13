@@ -6,14 +6,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        style="@style/MyAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_alignParentTop="true">
+
+        <EditText
+            android:id="@+id/edittext_amount"
+            style="@style/textview_add_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="end|center_vertical"
+            android:hint="Enter amount"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+
+    <!--TextView
         android:id="@+id/label_input"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/edittext_amount"
         android:layout_centerHorizontal="true"
-        android:text="@string/data_input" />
+        android:text="@string/data_input" /-->
 
     <TextView
         android:id="@+id/label_category"
@@ -21,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/label_input"
+        android:layout_below="@id/linear_layout"
         android:text="@string/category" />
 
     <EditText
@@ -50,38 +69,19 @@
         android:layout_alignBaseline="@id/label_sub_category"
         android:layout_toEndOf="@id/label_sub_category" />
 
-    <TextView
-        android:id="@+id/label_amount"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_sub_category"
-        android:text="@string/amount" />
-
-    <EditText
-        android:id="@+id/edittext_amount"
-        style="@style/edittext_amount_add_fragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/label_amount"
-        android:layout_toEndOf="@id/label_amount"
-        android:hint="Enter amount"
-        android:inputType="numberDecimal" />
-
     <ToggleButton
         android:id="@+id/income_or_expense_button"
         style="@style/button_add_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/edittext_amount"
-        android:layout_toEndOf="@id/edittext_amount" />
+        android:layout_below="@id/label_sub_category" />
 
     <TextView
         android:id="@+id/label_note"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/label_amount"
+        android:layout_below="@id/income_or_expense_button"
         android:text="@string/note" />
 
     <EditText

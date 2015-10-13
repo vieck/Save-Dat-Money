@@ -15,7 +15,7 @@
         android:layout_margin="5dp">
 
         <ImageView
-            android:id="@+id/imageview_category_item"
+            android:id="@+id/imageview"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_margin="1dp" />
@@ -24,9 +24,10 @@
             android:id="@+id/label_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/imageview_category_item"
+            android:layout_alignTop="@id/imageview"
             android:layout_margin="5dp"
-            android:layout_toEndOf="@id/imageview_category_item"
+            android:layout_toEndOf="@id/imageview"
+            android:textColor="@color/CottonBlue"
             android:textSize="8pt" />
 
         <TextView
@@ -37,7 +38,8 @@
             android:layout_below="@id/label_category"
             android:layout_marginBottom="12dp"
             android:layout_marginRight="12dp"
-            android:text="@string/amount" />
+            android:text="@string/amount"
+            android:textColor="@color/CottonBlue" />
 
         <TextView
             android:id="@+id/textview_amount"
@@ -52,9 +54,9 @@
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:layout_below="@id/label_amount"
-            app:rcBackgroundColor="@color/Black"
+            app:rcBackgroundColor="@color/White"
             app:rcBackgroundPadding="2dp"
-            app:rcProgressColor="@color/White"
+            app:rcProgressColor="@color/LimeGreen"
             app:rcRadius="10dp" />
 
     </RelativeLayout>

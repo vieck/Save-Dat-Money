@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.Adapters.GraphCategoryAdapter;
-import edu.purdue.vieck.budgetapp.CustomObjects.CategoryItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.AddTreeItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -39,13 +39,13 @@ public class GraphFragmentCategory extends Fragment {
     }
 
     private GraphCategoryAdapter makeAdapter(GraphCategoryAdapter adapter) {
-        List<CategoryItem> list = new ArrayList<>();
+        List<AddTreeItem> list = new ArrayList<>();
         databaseHandler = new DatabaseHandler(getActivity());
-        int[] categoryImages = {R.drawable.groceries, R.drawable.utilities, R.drawable.entertainment_main, R.drawable.medical_insurance, R.drawable.insurance, R.drawable.charts};
+        int[] categoryImages = {R.drawable.food_groceries_dark, R.drawable.utility_misc_dark, R.drawable.entertainment_dark, R.drawable.medical_misc_dark, R.drawable.insurance_dark, R.drawable.chart_dark};
         String[] categories = getResources().getStringArray(R.array.categoryarray);
-        CategoryItem item;
+        AddTreeItem item;
         for (int i = 0; i < categories.length; i++) {
-            item = new CategoryItem();
+            item = new AddTreeItem();
             item.setDrawableId(categoryImages[i]);
             item.setName(categories[i]);
             item.setAmount(databaseHandler.getTotalAmount(true, categories[i]));
