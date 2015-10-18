@@ -10,9 +10,9 @@
     <string name="category">Category</string>
     <string name="subcategory">Subcategory</string>
     <string name="amount">Amount</string>
-    <string name="expense">expense</string>
+    <string name="expense">Expense</string>
     <string name="expenses">Expenses</string>
-    <string name="income">income</string>
+    <string name="income">Income</string>
     <string name="budget">Budget</string>
     <string name="note">Note</string>
 

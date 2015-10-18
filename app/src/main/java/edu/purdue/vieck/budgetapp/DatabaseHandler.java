@@ -109,6 +109,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
+    public List<BudgetItem> getAllMonths() {
+        List<BudgetItem> mDataset = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_DATA
+                + " ORDER BY " + COLUMN_MONTH + " ASC," + COLUMN_YEAR + " DESC";
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+        if (!cursor.isAfterLast()) {
+            do {
+                mDataset.add(convertCursorToItem(cursor));
+            } while (cursor.moveToNext());
+        }
+        return mDataset;
+    }
+
     public HashMap<Integer, List<BudgetItem>> getAllYears() {
         HashMap<Integer, List<BudgetItem>> mDataset = new HashMap<>();
         String selectQuery = "SELECT * FROM " + TABLE_DATA
@@ -193,29 +208,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.close();
     }
 
-    public float getTotalAmount(boolean isCategory, String type) {
-        float categoryAmount = 0;
-        String selectQuery;
-        if (isCategory) {
-            selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'";
-        } else {
-            selectQuery = "SELECT * FROM " + TABLE_DATA;
-        }
+    public float getSpecificDateAmount(int month, int year) {
+        float amount = 0;
+        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
+                + " and " + COLUMN_YEAR + " = " + year
+                + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                categoryAmount += cursor.getFloat(3);
+                amount += cursor.getFloat(3);
             } while (cursor.moveToNext());
         }
-        cursor = sqLiteDatabase.rawQuery(selectQuery, null);
-        int total = cursor.getCount();
 
         sqLiteDatabase.close();
-        return categoryAmount;
+        return amount;
     }
 
-    public float getPercentage(String type, int month, int year) {
+    public float getSpecificDateAmountByType(String type, int month, int year) {
         float categoryPercent = 0;
         String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'";
         String totalQuery = "SELECT * FROM " + TABLE_DATA;
@@ -237,6 +247,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor = sqLiteDatabase.rawQuery(totalQuery, null);
+
         int total = cursor.getCount();
 
         sqLiteDatabase.close();

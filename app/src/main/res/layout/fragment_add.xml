@@ -6,41 +6,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/linear_layout"
-        style="@style/MyAppBarLayout"
+    <EditText
+        android:id="@+id/edittext_amount"
+        style="@style/edittext_amount_add_fragment"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_alignParentTop="true">
-
-        <EditText
-            android:id="@+id/edittext_amount"
-            style="@style/textview_add_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="end|center_vertical"
-            android:hint="Enter amount"
-            android:inputType="numberDecimal" />
-    </LinearLayout>
-
-
-    <!--TextView
-        android:id="@+id/label_input"
-        style="@style/textview_label"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edittext_amount"
-        android:layout_centerHorizontal="true"
-        android:text="@string/data_input" /-->
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="end"
+        android:hint="Enter amount"
+        android:inputType="numberDecimal" />
 
     <TextView
         android:id="@+id/label_category"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/linear_layout"
+        android:layout_alignStart="@id/edittext_amount"
+        android:layout_below="@id/edittext_amount"
         android:text="@string/category" />
 
     <EditText
@@ -57,36 +41,52 @@
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignStart="@id/edittext_amount"
         android:layout_below="@id/label_category"
         android:text="@string/subcategory" />
 
     <EditText
         android:id="@+id/edittext_subcategory"
         style="@style/edittext_add_fragment"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/label_sub_category"
-        android:layout_toEndOf="@id/label_sub_category" />
+        android:layout_toEndOf="@id/label_sub_category"/>
 
-    <ToggleButton
-        android:id="@+id/income_or_expense_button"
-        style="@style/button_add_fragment"
-        android:layout_width="wrap_content"
+    <RadioGroup android:id="@+id/radio_group"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/label_sub_category" />
+        android:layout_below="@id/label_sub_category"
+        android:layout_alignStart="@id/edittext_amount"
+        android:layout_marginBottom="12dp"
+        android:orientation="horizontal">
+
+        <RadioButton android:id="@+id/income__button"
+            style="@style/button_add_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/income" />
+
+        <RadioButton android:id="@+id/expense_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/button_add_fragment"
+            android:text="@string/expense"
+            android:checked="true"/>
+    </RadioGroup>
 
     <TextView
         android:id="@+id/label_note"
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/income_or_expense_button"
+        android:layout_below="@id/radio_group"
+        android:layout_alignStart="@id/edittext_amount"
         android:text="@string/note" />
 
     <EditText
-        android:id="@+id/eddittext_note"
-        style="@style/edittext_amount_add_fragment"
+        android:id="@+id/edittext_note"
+        style="@style/edittext_note_add_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/label_note"

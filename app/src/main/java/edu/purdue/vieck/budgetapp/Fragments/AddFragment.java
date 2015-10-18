@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,7 @@ public class AddFragment extends Fragment {
     private RelativeLayout relativeLayout;
     private Calendar calendar;
     private DatePicker datePicker;
-    private ToggleButton toggleButton;
+    private RadioButton incomeButton, expenseButton;
     private TextView categories;
     private EditText amount, category, subcategory, month, day, year, note;
 
@@ -109,11 +110,13 @@ public class AddFragment extends Fragment {
 
         calendar = Calendar.getInstance();
 
-        toggleButton = (ToggleButton) view.findViewById(R.id.income_or_expense_button);
+        incomeButton = (RadioButton) view.findViewById(R.id.income__button);
+
+        expenseButton = (RadioButton) view.findViewById(R.id.expense_button);
 
         amount = (EditText) view.findViewById(R.id.edittext_amount);
 
-        note = (EditText) view.findViewById(R.id.eddittext_note);
+        note = (EditText) view.findViewById(R.id.edittext_note);
 
         datePicker = (DatePicker) view.findViewById(R.id.datepicker);
 
@@ -129,7 +132,12 @@ public class AddFragment extends Fragment {
                     return;
                 }
                 Float amountV = Float.parseFloat(amount.getText().toString());
-                Boolean toggleV = toggleButton.isChecked();
+                Boolean incomeOrExpense;
+                if (incomeButton.isChecked()) {
+                    incomeOrExpense = true;
+                } else {
+                    incomeOrExpense = false;
+                }
                 int dayNum = datePicker.getDayOfMonth();
                 int monthNum = datePicker.getMonth() + 1;
                 int yearNum = datePicker.getYear();
@@ -137,7 +145,7 @@ public class AddFragment extends Fragment {
                 String subcategoryString = subcategory.getText().toString();
                 String noteString = note.getText().toString();
                 BudgetItem budgetItem = new BudgetItem(
-                        amountV, categoryString, subcategoryString, toggleV,
+                        amountV, categoryString, subcategoryString, incomeOrExpense,
                         dayNum, monthNum, yearNum, noteString, iconResourceId);
                 databaseHandler.addData(budgetItem);
                 showSnackBar("Added Data");

@@ -9,6 +9,9 @@ public class BudgetItem {
     private int day, month, year, image;
     private float amount;
 
+    String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
+
     public BudgetItem() {
 
     }
@@ -75,6 +78,10 @@ public class BudgetItem {
 
     public int getMonth() {
         return month;
+    }
+
+    public String getMonthName() {
+        return months[month-1];
     }
 
     public void setMonth(int month) {

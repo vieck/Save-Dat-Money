@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -51,16 +53,52 @@ public class GraphFragmentOverview extends Fragment {
     DatabaseHandler databaseHandler;
     BarChart barChart;
     SeekBar seekBar;
+    ListView lv;
+    private List<BudgetItem> months;
+    ImageButton left, right;
+    TextView monthTxt, yearTxt;
+    int count;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph_overview, container, false);
-        databaseHandler = new DatabaseHandler(getActivity());
         //barChart = (BarChart) view.findViewById(R.id.bar_chart);
         // seekBar = (SeekBar) view.findViewById(R.id.x_seekbar);
         // seekBar.setMax((int) ((databaseHandler.getTotalAmount(false, "") + 99) / 100) * 100);
-        ListView lv = (ListView) view.findViewById(R.id.listview);
+        lv = (ListView) view.findViewById(R.id.listview);
+
+        databaseHandler = new DatabaseHandler(getActivity());
+        months = databaseHandler.getAllMonths();
+        count = months.size()-1;
+        monthTxt = (TextView) view.findViewById(R.id.label_month);
+        monthTxt.setText(months.get(count).getMonthName());
+        yearTxt = (TextView) view.findViewById(R.id.label_year);
+        yearTxt.setText(""+months.get(count).getYear());
+        left = (ImageButton) view.findViewById(R.id.left_arrow);
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (count + 1 < months.size()) {
+                    count++;
+                    BudgetItem item = months.get(count);
+                    monthTxt.setText(item.getMonthName());
+                    yearTxt.setText(""+item.getYear());
+                }
+            }
+        });
+        right = (ImageButton) view.findViewById(R.id.right_arrow);
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (count > 0) {
+                    count--;
+                    BudgetItem item = months.get(count);
+                    monthTxt.setText(item.getMonthName());
+                    yearTxt.setText(""+item.getYear());
+                }
+            }
+        });
 
         ArrayList<ChartItem> list = new ArrayList<ChartItem>();
 

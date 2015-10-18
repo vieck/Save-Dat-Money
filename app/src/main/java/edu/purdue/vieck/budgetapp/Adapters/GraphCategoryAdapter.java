@@ -12,8 +12,10 @@ import android.widget.TextView;
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import java.util.List;
+import java.util.Stack;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTreeItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -31,7 +33,16 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
         this.mContext = mContext;
         this.list = list;
         databaseHandler = new DatabaseHandler(mContext);
-        max = databaseHandler.getTotalAmount(false, "");
+    }
+
+    public void changeMonth(int month, int year) {
+        max = databaseHandler.getSpecificDateAmount(month,year);
+       Stack<BudgetItem> stack = databaseHandler.getSpecificMonthYear(month, year);
+        String[] categories = mContext.getResources().getStringArray(R.array.categoryarray);
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).setAmount(databaseHandler.getSpecificDateAmountByType(categories[i], month, year));
+        }
+        notifyDataSetChanged();
     }
 
     @Override

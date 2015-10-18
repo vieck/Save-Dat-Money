@@ -6,33 +6,74 @@
     android:fillViewport="true"
     android:orientation="vertical">
 
-    <RadioGroup
-        android:id="@+id/radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/radio_button_yearly"
+    <!--RadioGroup
+            android:id="@+id/radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/yearly" />
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/radio_button_yearly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/yearly" />
 
-        <RadioButton
-            android:id="@+id/radio_button_montly"
+            <RadioButton
+                android:id="@+id/radio_button_montly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/monthly" />
+
+            <RadioButton
+                android:id="@+id/radio_button_weekly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/weekly" />
+        </RadioGroup-->
+
+        <LinearLayout android:id="@+id/linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/monthly" />
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            android:weightSum="3"
+            android:background="@color/CottonBlue">
+            <ImageButton android:id="@+id/left_arrow"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:layout_weight="1"/>
 
-        <RadioButton
-            android:id="@+id/radio_button_weekly"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/weekly" />
-    </RadioGroup>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1">
+                <TextView android:id="@+id/label_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"
+                    android:text="@string/month"/>
+
+                <TextView android:id="@+id/label_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"
+                    android:text="@string/year"/>
+            </LinearLayout>
+
+            <ImageButton android:id="@+id/right_arrow"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_forward_black_24dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
 
     <ListView
         android:id="@+id/listview"

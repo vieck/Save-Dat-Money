@@ -54,9 +54,9 @@
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:layout_below="@id/label_amount"
-            app:rcBackgroundColor="@color/White"
+            app:rcBackgroundColor="@color/Black"
             app:rcBackgroundPadding="2dp"
-            app:rcProgressColor="@color/LimeGreen"
+            app:rcProgressColor="@color/CottonBlue"
             app:rcRadius="10dp" />
 
     </RelativeLayout>

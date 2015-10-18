@@ -155,38 +155,38 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         ArrayList<String> xVals = new ArrayList<String>();
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        if (mDatabaseHandler.getPercentage("Income", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Income", month, year), 4));
+        if (mDatabaseHandler.getSpecificDateAmountByType("Income", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Income", month, year), 4));
             xVals.add("Income");
             colors.add(getResources().getColor(R.color.DarkNavy));
         }
 
-        if (mDatabaseHandler.getPercentage("Utilities", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Utilities", month, year), 1));
+        if (mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year), 1));
             xVals.add("Utilities");
             colors.add(getResources().getColor(R.color.PaleBlue));
         }
 
-        if (mDatabaseHandler.getPercentage("Entertainment", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Entertainment", month, year), 2));
+        if (mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year), 2));
             xVals.add("Entertainment");
             colors.add(getResources().getColor(R.color.CottonBlue));
         }
 
-        if (mDatabaseHandler.getPercentage("Medical", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Medical", month, year), 3));
+        if (mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year), 3));
             xVals.add("Medical");
             colors.add(getResources().getColor(R.color.PaleTurquoise));
         }
 
-        if (mDatabaseHandler.getPercentage("Food", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Food", month, year), 0));
+        if (mDatabaseHandler.getSpecificDateAmountByType("Food", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Food", month, year), 0));
             xVals.add("Food");
             colors.add(getResources().getColor(R.color.NeonBlue));
         }
 
-        if (mDatabaseHandler.getPercentage("Insurance", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getPercentage("Insurance", month, year), 5));
+        if (mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year) != 0) {
+            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year), 5));
             xVals.add("Insurance");
             colors.add(getResources().getColor(R.color.SheetBlue));
         }

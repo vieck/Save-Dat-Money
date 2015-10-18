@@ -52,6 +52,15 @@
     </style>
 
     <style name="edittext_amount_add_fragment">
+        <item name="android:editable">false</item>
+        <item name="android:textSize">40sp</item>
+        <item name="android:textColor">@color/White</item>
+        <item name="android:textColorHint">@color/SheetBlue</item>
+        <item name="android:shadowColor">@color/CottonBlue</item>
+        <item name="android:shadowRadius">3</item>
+    </style>
+    
+    <style name="edittext_note_add_fragment">
         <item name="android:textColor">@color/White</item>
         <item name="android:textColorHint">@color/SheetBlue</item>
     </style>
@@ -59,7 +68,6 @@
     <style name="button_add_fragment">
         <item name="android:textOff">@string/expense</item>
         <item name="android:textOn">@string/income</item>
-        <item name="android:background">@color/SlateGray</item>
         <item name="android:buttonTint">@color/PaleBlue</item>
         <item name="android:textColor">@color/CottonBlue</item>
     </style>
