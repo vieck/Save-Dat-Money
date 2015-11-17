@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -86,18 +87,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         budgetItem.setDay(cursor.getInt(5));
         budgetItem.setMonth(cursor.getInt(6));
         budgetItem.setYear(cursor.getInt(7));
-        Log.d("Database", "Category" + budgetItem.getSubcategory() +
-                "\nAmount " + budgetItem.getAmount() +
-                "\nType " + budgetItem.isType());
+                //"\nType " +
         return budgetItem;
     }
 
+    public boolean isEmpty() {
+        Cursor mCursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_DATA, null);
+        Boolean rowExists;
 
-    public Stack<BudgetItem> getAllData() {
+        if (mCursor.moveToFirst())
+        {
+            // Contains elements
+            return false;
+
+        } else
+        {
+            // Empty
+            return true;
+        }
+    }
+
+
+    public Stack<BudgetItem> getAllDataAsStack() {
         Stack<BudgetItem> mDataset = new Stack<>();
         String selectQuery = "SELECT  * FROM " + TABLE_DATA
                 + " ORDER BY " + COLUMN_MONTH + " ASC," + COLUMN_YEAR + " DESC";
-
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         cursor.moveToFirst();
@@ -109,7 +123,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
-    public List<BudgetItem> getAllMonths() {
+    public List<BudgetItem> getAllMonthsAsList() {
         List<BudgetItem> mDataset = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_DATA
                 + " ORDER BY " + COLUMN_MONTH + " ASC," + COLUMN_YEAR + " DESC";
@@ -124,7 +138,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
-    public HashMap<Integer, List<BudgetItem>> getAllYears() {
+    public HashMap<Integer, List<BudgetItem>> getAllYearsAsHashmap() {
         HashMap<Integer, List<BudgetItem>> mDataset = new HashMap<>();
         String selectQuery = "SELECT * FROM " + TABLE_DATA
                 + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
@@ -147,7 +161,52 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
-    public Stack<BudgetItem> getSpecificMonthYear(int month, int year) {
+    public List<BudgetItem> getAllUniqueMonthsAsList() {
+        List<BudgetItem> months = new ArrayList<>();
+        String selectQuery = "SELECT " + COLUMN_MONTH + "," + COLUMN_YEAR + ",COUNT(*)"
+                + " FROM " + TABLE_DATA
+                + " GROUP BY " + COLUMN_MONTH + "," + COLUMN_YEAR;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                BudgetItem item = new BudgetItem();
+                item.setMonth(cursor.getInt(0));
+                item.setYear(cursor.getInt(1));
+                months.add(item);
+            } while (cursor.moveToNext());
+        }
+        return months;
+    }
+
+    public LinkedList<BudgetItem> getAllUniqueMonthsAsLinkedList() {
+        LinkedList<BudgetItem> months = new LinkedList<>();
+        String selectQuery = "SELECT " + COLUMN_MONTH + "," + COLUMN_YEAR + ",COUNT(*)"
+                + " FROM " + TABLE_DATA
+                + " GROUP BY " + COLUMN_MONTH + "," + COLUMN_YEAR;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                BudgetItem item = new BudgetItem();
+                item.setMonth(cursor.getInt(0));
+                item.setYear(cursor.getInt(1));
+                months.add(item);
+            } while (cursor.moveToNext());
+        }
+        return months;
+    }
+
+    public int getNumberOfMonths() {
+        String selectQuery = "SELECT " + COLUMN_MONTH + " , " + COLUMN_YEAR + ",COUNT(*)"
+                + " FROM " + TABLE_DATA
+                + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+        return cursor.getCount();
+    }
+
+    public Stack<BudgetItem> getSpecificMonthYearAsStack(int month, int year) {
         Stack<BudgetItem> mDataset = new Stack<>();
         String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
                 + " and " + COLUMN_YEAR + " = " + year
@@ -163,7 +222,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
-    public ArrayList<BudgetItem> getFilteredData(String filter) {
+    public ArrayList<BudgetItem> getFilteredDataAsArrayList(String filter) {
         ArrayList<BudgetItem> mDataset = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + filter + "%'";
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
@@ -251,9 +310,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         int total = cursor.getCount();
 
         sqLiteDatabase.close();
-        if (total > 0) {
-            categoryPercent = categoryPercent / total;
-        }
         return categoryPercent;
     }
 }

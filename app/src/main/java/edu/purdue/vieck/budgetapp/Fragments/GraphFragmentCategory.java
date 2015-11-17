@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.Adapters.GraphCategoryAdapter;
@@ -28,50 +30,76 @@ public class GraphFragmentCategory extends Fragment {
     private GridLayoutManager layoutManager;
     private GraphCategoryAdapter adapter;
     private DatabaseHandler databaseHandler;
-    private List<BudgetItem> months;
+    private LinkedList<BudgetItem> months;
     ImageButton left, right;
     TextView monthTxt, yearTxt;
     int count;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph_category, container, false);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
+
         databaseHandler = new DatabaseHandler(getActivity());
-        months = databaseHandler.getAllMonths();
-        count = months.size()-1;
+
         monthTxt = (TextView) view.findViewById(R.id.label_month);
         yearTxt = (TextView) view.findViewById(R.id.label_year);
         left = (ImageButton) view.findViewById(R.id.left_arrow);
-        left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (count + 1 < months.size()) {
-                    count++;
-                    BudgetItem item = months.get(count);
-                    adapter.changeMonth(item.getMonth(), item.getYear());
-                    monthTxt.setText(item.getMonthName());
-                    yearTxt.setText(""+item.getYear());
-                }
-            }
-        });
         right = (ImageButton) view.findViewById(R.id.right_arrow);
-        right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (count > 0) {
-                    count--;
-                    BudgetItem item = months.get(count);
-                    adapter.changeMonth(item.getMonth(), item.getYear());
-                    monthTxt.setText(item.getMonthName());
-                    yearTxt.setText(""+item.getYear());
+
+        if (!databaseHandler.isEmpty()) {
+            months = databaseHandler.getAllUniqueMonthsAsLinkedList();
+            count = months.size();
+
+            left.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (count < months.size() - 1) {
+                        count++;
+                        BudgetItem item = months.get(count);
+                        adapter.changeMonth(item.getMonth(), item.getYear());
+                        monthTxt.setText(item.getMonthName());
+                        yearTxt.setText("" + item.getYear());
+                    } else {
+                        count = 0;
+                        BudgetItem item = months.get(count);
+                        adapter.changeMonth(item.getMonth(), item.getYear());
+                        monthTxt.setText(item.getMonthName());
+                        yearTxt.setText("" + item.getYear());
+                    }
                 }
-            }
-        });
-        adapter = makeAdapter(adapter);
-        recyclerView.setAdapter(adapter);
+            });
+
+            right.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("Category Count", "" + count);
+                    if (count > 0) {
+                        count--;
+                        BudgetItem item = months.get(count);
+                        adapter.changeMonth(item.getMonth(), item.getYear());
+                        monthTxt.setText(item.getMonthName());
+                        yearTxt.setText("" + item.getYear());
+                    } else {
+                        count = months.size() - 1;
+                        BudgetItem item = months.get(count);
+                        adapter.changeMonth(item.getMonth(), item.getYear());
+                        monthTxt.setText(item.getMonthName());
+                        yearTxt.setText("" + item.getYear());
+                    }
+                }
+            });
+            adapter = makeAdapter(adapter);
+            recyclerView.setAdapter(adapter);
+        } else {
+            monthTxt.setText("No Data");
+            yearTxt.setText("");
+        }
+
         return view;
     }
 
@@ -79,8 +107,8 @@ public class GraphFragmentCategory extends Fragment {
         List<AddTreeItem> list = new ArrayList<>();
         int[] categoryImages = {R.drawable.food_groceries_dark, R.drawable.utility_misc_dark, R.drawable.entertainment_dark, R.drawable.medical_misc_dark, R.drawable.insurance_dark, R.drawable.chart_dark};
         String[] categories = getResources().getStringArray(R.array.categoryarray);
-        monthTxt.setText(months.get(count).getMonthName());
-        yearTxt.setText(""+months.get(count).getYear());
+        monthTxt.setText(months.get(count - 1).getMonthName());
+        yearTxt.setText("" + months.get(count - 1).getYear());
         AddTreeItem item;
         for (int i = 0; i < categories.length; i++) {
             item = new AddTreeItem();

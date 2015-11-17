@@ -13,15 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import edu.purdue.vieck.budgetapp.Fragments.DataFragment;
+import edu.purdue.vieck.budgetapp.Fragments.SummaryFragment;
 import edu.purdue.vieck.budgetapp.R;
 
-public class DataActivity extends AppCompatActivity {
+public class SummaryActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
-    DataFragment dataFragment;
+    SummaryFragment summaryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,8 @@ public class DataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_data);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation_layout);
         final Activity currentActivity = this;
@@ -54,7 +56,12 @@ public class DataActivity extends AppCompatActivity {
                         currentActivity.startActivity(intent);
                         break;
                     case R.id.nav_item_list:
-                        intent = new Intent(currentActivity, DataActivity.class);
+                        intent = new Intent(currentActivity, SummaryActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+                    case R.id.nav_item_settings:
+                        intent = new Intent(currentActivity, SettingsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
@@ -63,7 +70,7 @@ public class DataActivity extends AppCompatActivity {
             }
         });
 
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, dataFragment = new DataFragment()).commit();
+       // getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, summaryFragment = new SummaryFragment()).commit();
     }
 
     @Override
@@ -89,7 +96,7 @@ public class DataActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             //use the query to search
-            dataFragment.filterQuery(query);
+            summaryFragment.filterQuery(query);
         }
     }
 

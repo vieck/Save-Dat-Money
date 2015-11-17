@@ -2,9 +2,6 @@ package edu.purdue.vieck.budgetapp.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PointF;
-import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,9 +16,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -30,13 +24,11 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Highlight;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.BarChartItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
@@ -51,65 +43,83 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class GraphFragmentOverview extends Fragment {
     DatabaseHandler databaseHandler;
-    BarChart barChart;
-    SeekBar seekBar;
     ListView lv;
     private List<BudgetItem> months;
     ImageButton left, right;
     TextView monthTxt, yearTxt;
     int count;
+    String[] categories;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph_overview, container, false);
-        //barChart = (BarChart) view.findViewById(R.id.bar_chart);
-        // seekBar = (SeekBar) view.findViewById(R.id.x_seekbar);
-        // seekBar.setMax((int) ((databaseHandler.getTotalAmount(false, "") + 99) / 100) * 100);
         lv = (ListView) view.findViewById(R.id.listview);
-
+        categories = getResources().getStringArray(R.array.categoryarray);
         databaseHandler = new DatabaseHandler(getActivity());
-        months = databaseHandler.getAllMonths();
-        count = months.size()-1;
         monthTxt = (TextView) view.findViewById(R.id.label_month);
-        monthTxt.setText(months.get(count).getMonthName());
         yearTxt = (TextView) view.findViewById(R.id.label_year);
-        yearTxt.setText(""+months.get(count).getYear());
-        left = (ImageButton) view.findViewById(R.id.left_arrow);
-        left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (count + 1 < months.size()) {
-                    count++;
-                    BudgetItem item = months.get(count);
-                    monthTxt.setText(item.getMonthName());
-                    yearTxt.setText(""+item.getYear());
+        if (!databaseHandler.isEmpty()) {
+            months = databaseHandler.getAllUniqueMonthsAsList();
+            count = months.size() - 1;
+            monthTxt.setText(months.get(count).getMonthName());
+            yearTxt.setText("" + months.get(count).getYear());
+            left = (ImageButton) view.findViewById(R.id.left_arrow);
+            left.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (count + 1 < months.size()) {
+                        count++;
+                        BudgetItem item = months.get(count);
+                        monthTxt.setText(item.getMonthName());
+                        yearTxt.setText("" + item.getYear());
+                        changeAdapterMonth(item.getMonth(), item.getYear());
+                    } else {
+                        count = 0;
+                        BudgetItem item = months.get(count);
+                        monthTxt.setText(item.getMonthName());
+                        yearTxt.setText("" + item.getYear());
+                        changeAdapterMonth(item.getMonth(), item.getYear());
+                    }
                 }
-            }
-        });
-        right = (ImageButton) view.findViewById(R.id.right_arrow);
-        right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (count > 0) {
-                    count--;
-                    BudgetItem item = months.get(count);
-                    monthTxt.setText(item.getMonthName());
-                    yearTxt.setText(""+item.getYear());
+            });
+            right = (ImageButton) view.findViewById(R.id.right_arrow);
+            right.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (count > 0) {
+                        count--;
+                        BudgetItem item = months.get(count);
+                        monthTxt.setText(item.getMonthName());
+                        yearTxt.setText("" + item.getYear());
+                        changeAdapterMonth(item.getMonth(), item.getYear());
+                    } else {
+                        count = months.size() - 1;
+                        BudgetItem item = months.get(count);
+                        monthTxt.setText(item.getMonthName());
+                        yearTxt.setText("" + item.getYear());
+                        changeAdapterMonth(item.getMonth(), item.getYear());
+                    }
                 }
-            }
-        });
+            });
+            BudgetItem item = months.get(count++);
+            changeAdapterMonth(item.getMonth(), item.getYear());
+        } else {
+            monthTxt.setText("No Data");
+            yearTxt.setText("");
+        }
+        return view;
+    }
 
+    private void changeAdapterMonth(int month, int year) {
         ArrayList<ChartItem> list = new ArrayList<ChartItem>();
 
-        list.add(new LineChartItem(generateDataLine(0), getActivity()));
-        list.add(new BarChartItem(generateDataBar(0), getActivity()));
-        list.add(new PieChartItem(generateDataPie(0), getActivity()));
+        list.add(new LineChartItem(generateDataLine(0, month, year), getActivity()));
+        list.add(new BarChartItem(generateDataBar(0, month, year), getActivity()));
+        list.add(new PieChartItem(generateDataPie(0, month, year), getActivity()));
 
         ChartDataAdapter cda = new ChartDataAdapter(getActivity(), list);
         lv.setAdapter(cda);
-
-        return view;
     }
 
     /**
@@ -117,48 +127,39 @@ public class GraphFragmentOverview extends Fragment {
      *
      * @return
      */
-    private LineData generateDataLine(int cnt) {
-
-        switch (cnt) {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-        }
-
+    private LineData generateDataLine(int cnt, int month, int year) {
         ArrayList<Entry> e1 = new ArrayList<Entry>();
-
-        for (int i = 0; i < 12; i++) {
-            e1.add(new Entry((int) (Math.random() * 65) + 40, i));
+        int num = 0;
+        for (String category : categories) {
+            e1.add(new Entry(databaseHandler.getSpecificDateAmountByType(category,month,year),num++));
         }
-
         LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
         d1.setLineWidth(2.5f);
         d1.setCircleSize(4.5f);
         d1.setHighLightColor(Color.rgb(244, 117, 117));
         d1.setDrawValues(false);
+        d1.setValueTextColor(getResources().getColor(R.color.CottonBlue));
 
-        ArrayList<Entry> e2 = new ArrayList<Entry>();
+        /*ArrayList<Entry> e2 = new ArrayList<Entry>();
+        for (String category : categories) {
+            e1.add(new Entry(databaseHandler.getSpecificDateAmountByType(category,month,year),num++));
+        }*/
 
-        for (int i = 0; i < 12; i++) {
-            e2.add(new Entry(e1.get(i).getVal() - 30, i));
-        }
 
-        LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
+        /*LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
         d2.setLineWidth(2.5f);
         d2.setCircleSize(4.5f);
         d2.setHighLightColor(Color.rgb(244, 117, 117));
         d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        d2.setValueTextColor(getResources().getColor(R.color.CottonBlue));
         d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        d2.setDrawValues(false);
+        d2.setDrawValues(false);*/
 
         ArrayList<LineDataSet> sets = new ArrayList<LineDataSet>();
         sets.add(d1);
-        sets.add(d2);
+        //sets.add(d2);
 
-        LineData cd = new LineData(getMonths(), sets);
+        LineData cd = new LineData(getMonths(), sets);;
         return cd;
     }
 
@@ -167,16 +168,15 @@ public class GraphFragmentOverview extends Fragment {
      *
      * @return
      */
-    private BarData generateDataBar(int cnt) {
+    private BarData generateDataBar(int cnt, int month, int year) {
 
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-
-        for (int i = 0; i < 12; i++) {
-            entries.add(new BarEntry((int) (Math.random() * 70) + 30, i));
+        for (int i = 0; i < categories.length; i++) {
+            entries.add(new BarEntry(databaseHandler.getSpecificDateAmountByType(categories[i], month, year), i));
         }
 
-        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
-        d.setBarSpacePercent(20f);
+        BarDataSet d = new BarDataSet(entries, "Categories " + cnt);
+        d.setBarSpacePercent(10f);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setHighLightAlpha(255);
 
@@ -189,12 +189,11 @@ public class GraphFragmentOverview extends Fragment {
      *
      * @return
      */
-    private PieData generateDataPie(int cnt) {
+    private PieData generateDataPie(int cnt, int month, int year) {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
-
-        for (int i = 0; i < 4; i++) {
-            entries.add(new Entry((int) (Math.random() * 70) + 30, i));
+        for (int i = 0; i < categories.length; i++) {
+            entries.add(new Entry(databaseHandler.getSpecificDateAmountByType(categories[i],month,year),i));
         }
 
         PieDataSet d = new PieDataSet(entries, "");
@@ -202,39 +201,18 @@ public class GraphFragmentOverview extends Fragment {
         // space between slices
         d.setSliceSpace(2f);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
-
         PieData cd = new PieData(getQuarters(), d);
         return cd;
     }
 
-    private ArrayList<String> getQuarters() {
+    private String[] getQuarters() {
 
-        ArrayList<String> q = new ArrayList<String>();
-        q.add("1st Quarter");
-        q.add("2nd Quarter");
-        q.add("3rd Quarter");
-        q.add("4th Quarter");
-
-        return q;
+        return getResources().getStringArray(R.array.categoryarray);
     }
 
-    private ArrayList<String> getMonths() {
+    private String[] getMonths() {
 
-        ArrayList<String> m = new ArrayList<String>();
-        m.add("Jan");
-        m.add("Feb");
-        m.add("Mar");
-        m.add("Apr");
-        m.add("May");
-        m.add("Jun");
-        m.add("Jul");
-        m.add("Aug");
-        m.add("Sep");
-        m.add("Okt");
-        m.add("Nov");
-        m.add("Dec");
-
-        return m;
+        return getResources().getStringArray(R.array.categoryarray);
     }
 
     /**

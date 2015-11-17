@@ -19,11 +19,12 @@ import edu.purdue.vieck.budgetapp.R;
 public class LineChartItem extends ChartItem {
 
     private Typeface mTf;
+    private Context context;
 
     public LineChartItem(ChartData<?> cd, Context c) {
         super(cd);
-
         mTf = Typeface.SANS_SERIF;
+        context = c;
     }
 
     @Override
@@ -54,21 +55,25 @@ public class LineChartItem extends ChartItem {
         // holder.chart.setValueTypeface(mTf);
         holder.chart.setDescription("");
         holder.chart.setDrawGridBackground(false);
+        holder.chart.setDescriptionColor(context.getResources().getColor(R.color.CottonBlue));
 
         XAxis xAxis = holder.chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(true);
+        xAxis.setTextColor(context.getResources().getColor(R.color.CottonBlue));
 
         YAxis leftAxis = holder.chart.getAxisLeft();
         leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(5);
+        leftAxis.setTextColor(context.getResources().getColor(R.color.CottonBlue));
 
         YAxis rightAxis = holder.chart.getAxisRight();
         rightAxis.setTypeface(mTf);
         rightAxis.setLabelCount(5);
         rightAxis.setDrawGridLines(false);
+        rightAxis.setTextColor(context.getResources().getColor(R.color.CottonBlue));
 
         // set data
         holder.chart.setData((LineData) mChartData);

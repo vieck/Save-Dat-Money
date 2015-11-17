@@ -67,6 +67,9 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         Bundle bundle = getArguments();
         month = bundle.getInt("month", -1);
         year = bundle.getInt("year", -1);
+
+        mDatabaseHandler = new DatabaseHandler(mContext);
+
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.budget_recycler_view);
         mChartAdapter = new ChartAdapter(mContext, month, year);
@@ -83,10 +86,9 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             }
         });
 
-        mDatabaseHandler = new DatabaseHandler(mContext);
 
         mPieChart = (PieChart) view.findViewById(R.id.pie_chart);
-        mPieChart.setDescription("Budget Wheel");
+        mPieChart.setDescription("");
         mPieChart.setDescriptionColor(getResources().getColor(R.color.White));
         mPieChart.setUsePercentValues(true);
         mPieChart.setDragDecelerationFrictionCoef(0.95f);
@@ -147,56 +149,54 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
-        /*for (int i = 0; i < count + 1; i++) {
-            yVals.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
-        }*/
-
 
         ArrayList<String> xVals = new ArrayList<String>();
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        if (mDatabaseHandler.getSpecificDateAmountByType("Income", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Income", month, year), 4));
-            xVals.add("Income");
-            colors.add(getResources().getColor(R.color.DarkNavy));
-        }
+        if (!mDatabaseHandler.isEmpty()) {
 
-        if (mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year), 1));
-            xVals.add("Utilities");
-            colors.add(getResources().getColor(R.color.PaleBlue));
-        }
+            if (mDatabaseHandler.getSpecificDateAmountByType("Income", month, year) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Income", month, year), 4));
+                xVals.add("Income");
+                colors.add(getResources().getColor(R.color.DarkNavy));
+            }
 
-        if (mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year), 2));
-            xVals.add("Entertainment");
-            colors.add(getResources().getColor(R.color.CottonBlue));
-        }
+            if (mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year), 1));
+                xVals.add("Utilities");
+                colors.add(getResources().getColor(R.color.PaleBlue));
+            }
 
-        if (mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year), 3));
-            xVals.add("Medical");
-            colors.add(getResources().getColor(R.color.PaleTurquoise));
-        }
+            if (mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year), 2));
+                xVals.add("Entertainment");
+                colors.add(getResources().getColor(R.color.CottonBlue));
+            }
 
-        if (mDatabaseHandler.getSpecificDateAmountByType("Food", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Food", month, year), 0));
-            xVals.add("Food");
-            colors.add(getResources().getColor(R.color.NeonBlue));
-        }
+            if (mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year), 3));
+                xVals.add("Medical");
+                colors.add(getResources().getColor(R.color.PaleTurquoise));
+            }
 
-        if (mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year) != 0) {
-            yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year), 5));
-            xVals.add("Insurance");
-            colors.add(getResources().getColor(R.color.SheetBlue));
-        }
+            if (mDatabaseHandler.getSpecificDateAmountByType("Food", month, year) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Food", month, year), 0));
+                xVals.add("Food");
+                colors.add(getResources().getColor(R.color.NeonBlue));
+            }
+
+            if (mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year), 5));
+                xVals.add("Insurance");
+                colors.add(getResources().getColor(R.color.SheetBlue));
+            }
 
 
-        PieDataSet dataSet = new PieDataSet(yVals, "Category Legend");
-        dataSet.setSliceSpace(5f);
-        dataSet.setSelectionShift(5f);
+            PieDataSet dataSet = new PieDataSet(yVals, "Category Legend");
+            dataSet.setSliceSpace(0f);
+            dataSet.setSelectionShift(5f);
 
-        // add a lot of colors
+            // add a lot of colors
 
         /*for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
@@ -216,18 +216,19 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         colors.add(ColorTemplate.getHoloBlue());
         */
 
-        dataSet.setColors(colors);
+            dataSet.setColors(colors);
 
-        PieData data = new PieData(xVals, dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.BLACK);
-        mPieChart.setData(data);
+            PieData data = new PieData(xVals, dataSet);
+            data.setValueFormatter(new PercentFormatter());
+            data.setValueTextSize(11f);
+            data.setValueTextColor(Color.BLACK);
+            mPieChart.setData(data);
 
-        // undo all highlights
-        mPieChart.highlightValues(null);
+            // undo all highlights
+            mPieChart.highlightValues(null);
 
-        mPieChart.invalidate();
+            mPieChart.invalidate();
+        }
     }
 
     @Override

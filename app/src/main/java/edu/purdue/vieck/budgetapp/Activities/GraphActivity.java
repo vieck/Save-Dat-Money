@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragment;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentCategory;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentOverview;
-import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentSubcategory;
 import edu.purdue.vieck.budgetapp.R;
 
 public class GraphActivity extends AppCompatActivity {
@@ -42,6 +41,8 @@ public class GraphActivity extends AppCompatActivity {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation_layout);
         mTabLayout = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -68,7 +69,12 @@ public class GraphActivity extends AppCompatActivity {
                         currentActivity.startActivity(intent);
                         break;
                     case R.id.nav_item_list:
-                        intent = new Intent(currentActivity, DataActivity.class);
+                        intent = new Intent(currentActivity, SummaryActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+                    case R.id.nav_item_settings:
+                        intent = new Intent(currentActivity, SettingsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
@@ -119,8 +125,8 @@ public class GraphActivity extends AppCompatActivity {
         adapter.addFragment(fragmentOverview, "Overview");
         GraphFragmentCategory fragmentCategory = new GraphFragmentCategory();
         adapter.addFragment(fragmentCategory, "Category");
-        GraphFragmentSubcategory fragmentSubcategory = new GraphFragmentSubcategory();
-        adapter.addFragment(fragmentSubcategory, "Subcategories");
+        //GraphFragmentSubcategory fragmentSubcategory = new GraphFragmentSubcategory();
+        //adapter.addFragment(fragmentSubcategory, "Subcategories");
         viewPager.setAdapter(adapter);
     }
 

@@ -49,6 +49,7 @@ public class ChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chart);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         mDatabaseHandler = new DatabaseHandler(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation_layout);
@@ -75,7 +76,7 @@ public class ChartActivity extends AppCompatActivity {
                         currentActivity.startActivity(intent);
                         break;
                     case R.id.nav_item_list:
-                        intent = new Intent(currentActivity, DataActivity.class);
+                        intent = new Intent(currentActivity, SummaryActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
@@ -131,7 +132,9 @@ public class ChartActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    /*
+    * Get a list of all years back as a hashmap and sort them accorrding to year
+     */
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         String[] list = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
@@ -141,41 +144,42 @@ public class ChartActivity extends AppCompatActivity {
         bundle.putInt("year", -1);
         chartFragment.setArguments(bundle);
         adapter.addFragment(chartFragment, "Total");
-        HashMap<Integer, List<BudgetItem>> years = mDatabaseHandler.getAllYears();
-        ArrayList<Integer> uniqueMonths = new ArrayList<>();
-        Integer[] keys = years.keySet().toArray(new Integer[years.keySet().size()]);
+        HashMap<Integer, List<BudgetItem>> years = mDatabaseHandler.getAllYearsAsHashmap();
+        if (years != null) {
+            ArrayList<Integer> uniqueMonths = new ArrayList<>();
+            Integer[] keys = years.keySet().toArray(new Integer[years.keySet().size()]);
 
-        //Insertion sorting hashmap keys
-        for (int i = 0; i < keys.length; i++) {
-            int temp = keys[i];
-            for (int j = i + 1; j < keys.length; j++) {
-                if (keys[j] > keys[i]) {
-                    int hold = keys[i];
-                    keys[i] = keys[j];
-                    keys[j] = hold;
+            //Insertion sorting hashmap keys
+            for (int i = 0; i < keys.length; i++) {
+                int temp = keys[i];
+                for (int j = i + 1; j < keys.length; j++) {
+                    if (keys[j] > keys[i]) {
+                        int hold = keys[i];
+                        keys[i] = keys[j];
+                        keys[j] = hold;
+                    }
                 }
             }
-        }
 
-        for (int i : keys) {
-            List<BudgetItem> budgetItems = years.get(i);
-            for (BudgetItem element : budgetItems) {
-                bundle = new Bundle();
-                bundle.putInt("year", i);
-                bundle.putInt("month", element.getMonth());
-                chartFragment = new ChartFragment();
-                chartFragment.setArguments(bundle);
-                Log.d("Tabs", "YEAR " + i + " AND  MONTH " + element.getMonth() + " SIZE " + years.size());
-                if (!uniqueMonths.contains(element.getMonth())) {
-                    adapter.addFragment(chartFragment, element.getMonthName()  + " " + i);
-                    uniqueMonths.add(element.getMonth());
+            for (int i : keys) {
+                List<BudgetItem> budgetItems = years.get(i);
+                for (BudgetItem element : budgetItems) {
+                    bundle = new Bundle();
+                    bundle.putInt("year", i);
+                    bundle.putInt("month", element.getMonth());
+                    chartFragment = new ChartFragment();
+                    chartFragment.setArguments(bundle);
+                    Log.d("Tabs", "YEAR " + i + " AND  MONTH " + element.getMonth() + " SIZE " + years.size());
+                    if (!uniqueMonths.contains(element.getMonth())) {
+                        adapter.addFragment(chartFragment, element.getMonthName() + " " + i);
+                        uniqueMonths.add(element.getMonth());
+                    }
                 }
+                uniqueMonths = new ArrayList<>();
             }
-            uniqueMonths = new ArrayList<>();
         }
 
         for (int i = 0; i < list.length; i++)
-            //adapter.addFragment(null, list[i]);
             viewPager.setAdapter(adapter);
     }
 

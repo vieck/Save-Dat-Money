@@ -21,7 +21,6 @@ public class DashboardActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation_layout);
@@ -48,7 +47,12 @@ public class DashboardActivity extends Activity {
                         currentActivity.startActivity(intent);
                         break;
                     case R.id.nav_item_list:
-                        intent = new Intent(currentActivity, DataActivity.class);
+                        intent = new Intent(currentActivity, SummaryActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+                    case R.id.nav_item_settings:
+                        intent = new Intent(currentActivity, SettingsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;

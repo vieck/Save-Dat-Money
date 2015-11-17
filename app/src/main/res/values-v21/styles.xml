@@ -44,7 +44,12 @@
         <item name="android:textColor">@color/CottonBlue</item>
     </style>
 
-    <!-- CATEGORY STYLES -->
+    <!-- Left Right Date Styles -->
+    <style name="date_textview">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Category Styles -->
     <style name="edittext_add_fragment">
         <item name="android:editable">false</item>
         <item name="android:textColor">@color/White</item>

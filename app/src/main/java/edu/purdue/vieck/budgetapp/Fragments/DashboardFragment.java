@@ -15,9 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
-import edu.purdue.vieck.budgetapp.Activities.DataActivity;
+import edu.purdue.vieck.budgetapp.Activities.SummaryActivity;
 import edu.purdue.vieck.budgetapp.Activities.GraphActivity;
 import edu.purdue.vieck.budgetapp.Adapters.DashboardAdapter;
+import edu.purdue.vieck.budgetapp.Activities.SettingsActivity;
 import edu.purdue.vieck.budgetapp.CustomObjects.DashboardItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
@@ -43,13 +44,13 @@ public class DashboardFragment extends Fragment {
         // <div>Icon made by <a href="http://www.simpleicon.com" title="SimpleIcon">SimpleIcon</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
         cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.chart_dark), "Charts", getResources().getColor(R.color.Silver), new Intent(getActivity(), ChartActivity.class)));
         cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.chart_panel_dark), "Graphs", getResources().getColor(R.color.Silver), new Intent(getActivity(), GraphActivity.class)));
-        cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.currency_dark), "Expenses", getResources().getColor(R.color.Silver), new Intent(getActivity(), DataActivity.class)));
+        cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.currency_dark), "Expenses", getResources().getColor(R.color.Silver), new Intent(getActivity(), SummaryActivity.class)));
+        cards.add(new DashboardItem(getActivity().getDrawable(R.mipmap.settings), "Settings", getResources().getColor(R.color.Silver), new Intent(getActivity(), SettingsActivity.class)));
         //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.currency_symbol), "Currency", getResources().getColor(R.color.Lime), new Intent(getActivity(), ChartActivity.class)));
         //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.hand_coin), "Cash Flow", getResources().getColor(R.color.Gold), new Intent(getActivity(), ChartActivity.class)));
         //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.calculator), "Calculator", getResources().getColor(R.color.BlueViolet), new Intent(getActivity(), ChartActivity.class)));
         //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.graph), "Charts", getResources().getColor(R.color.Black), new Intent(getActivity(), ChartActivity.class)));
-        //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.exit), "Existential", getResources().getColor(R.color.PaleGreen), new Intent(getActivity(), DataActivity.class)));
-
+        //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.exit), "Existential", getResources().getColor(R.color.PaleGreen), new Intent(getActivity(), SummaryActivity.class)));
 
         dashboardAdapter = new DashboardAdapter(getActivity(), getActivity(), cards);
         recyclerView.setAdapter(dashboardAdapter);

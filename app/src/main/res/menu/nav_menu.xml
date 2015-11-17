@@ -22,5 +22,10 @@
             android:icon="@android:drawable/ic_menu_compass"
             android:title="@string/data" />
 
+        <item
+            android:id="@+id/nav_item_settings"
+            android:icon="@drawable/settings"
+            android:title="@string/action_settings"/>
+
     </group>
 </menu>

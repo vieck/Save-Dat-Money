@@ -27,7 +27,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.mViewHolder> {
         this.context = context;
         databaseHandler = new DatabaseHandler(context);
         if (filter == "") {
-            mDataset = databaseHandler.getAllData();
+            mDataset = databaseHandler.getAllDataAsStack();
         } else {
             mDataset = databaseHandler.searchDatabase(filter);
         }

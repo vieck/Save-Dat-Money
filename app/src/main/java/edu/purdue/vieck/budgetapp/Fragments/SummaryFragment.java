@@ -18,7 +18,7 @@ import edu.purdue.vieck.budgetapp.R;
 /**
  * Created by mvieck on 9/22/2015.
  */
-public class DataFragment extends Fragment {
+public class SummaryFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private DataAdapter mDataAdapter;
     DatabaseHandler mDatabaseHandler;
@@ -43,6 +43,6 @@ public class DataFragment extends Fragment {
     public void filterQuery(String filter) {
         mDataAdapter = new DataAdapter(getActivity(), filter);
         mRecyclerView.setAdapter(mDataAdapter);
-        Log.d("DataFragment", "Filter " + filter);
+        Log.d("SummaryFragment", "Filter " + filter);
     }
 }

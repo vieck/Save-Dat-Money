@@ -25,12 +25,14 @@ public class PieChartItem extends ChartItem {
 
     private Typeface mTf;
     private SpannableString mCenterText;
+    private Context context;
 
     public PieChartItem(ChartData<?> cd, Context c) {
         super(cd);
 
         mTf = Typeface.SANS_SERIF;
         mCenterText = generateCenterText();
+        context = c;
     }
 
     @Override
@@ -61,22 +63,28 @@ public class PieChartItem extends ChartItem {
         holder.chart.setDescription("");
         holder.chart.setHoleRadius(52f);
         holder.chart.setTransparentCircleRadius(57f);
-        holder.chart.setCenterText(mCenterText.toString());
-        holder.chart.setCenterTextTypeface(mTf);
-        holder.chart.setCenterTextSize(9f);
-        holder.chart.setUsePercentValues(true);
+        holder.chart.setDrawCenterText(false);
+        //holder.chart.setCenterText(mCenterText.toString());
+        //holder.chart.setCenterTextTypeface(mTf);
+        //holder.chart.setCenterTextSize(9f);
+
+       /* holder.chart.setUsePercentValues(true);
 
         mChartData.setValueFormatter(new PercentFormatter());
         mChartData.setValueTypeface(mTf);
         mChartData.setValueTextSize(11f);
-        mChartData.setValueTextColor(Color.WHITE);
+        mChartData.setValueTextColor(Color.WHITE);*/
+
         // set data
         holder.chart.setData((PieData) mChartData);
+        holder.chart.setDrawSliceText(false);
+        holder.chart.getData().setDrawValues(false);
 
         Legend l = holder.chart.getLegend();
         l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-        l.setYEntrySpace(0f);
-        l.setYOffset(0f);
+        l.setYEntrySpace(10f);
+        l.setYOffset(5f);
+        l.setTextColor(context.getResources().getColor(R.color.CottonBlue));
 
         // do not forget to refresh the chart
         // holder.chart.invalidate();

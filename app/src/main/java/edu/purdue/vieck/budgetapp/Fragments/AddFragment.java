@@ -128,7 +128,7 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (amount.getText().toString().equals("")) {
-                    showSnackBar("Invalid Amount");
+                    Toast.makeText(getActivity(),"Invalid Amount",Toast.LENGTH_LONG).show();
                     return;
                 }
                 Float amountV = Float.parseFloat(amount.getText().toString());
@@ -148,7 +148,6 @@ public class AddFragment extends Fragment {
                         amountV, categoryString, subcategoryString, incomeOrExpense,
                         dayNum, monthNum, yearNum, noteString, iconResourceId);
                 databaseHandler.addData(budgetItem);
-                showSnackBar("Added Data");
                 Toast.makeText(getActivity(), "Added Data", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), ChartActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

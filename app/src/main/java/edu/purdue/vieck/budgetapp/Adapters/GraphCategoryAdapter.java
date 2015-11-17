@@ -1,6 +1,8 @@
 package edu.purdue.vieck.budgetapp.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import java.util.Stack;
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTreeItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
+import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentSubcategory;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -37,7 +40,7 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
 
     public void changeMonth(int month, int year) {
         max = databaseHandler.getSpecificDateAmount(month,year);
-       Stack<BudgetItem> stack = databaseHandler.getSpecificMonthYear(month, year);
+       Stack<BudgetItem> stack = databaseHandler.getSpecificMonthYearAsStack(month, year);
         String[] categories = mContext.getResources().getStringArray(R.array.categoryarray);
         for (int i = 0; i < list.size(); i++) {
             list.get(i).setAmount(databaseHandler.getSpecificDateAmountByType(categories[i], month, year));
@@ -53,8 +56,20 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
     }
 
     @Override
-    public void onBindViewHolder(mViewHolder viewHolder, int position) {
+    public void onBindViewHolder(mViewHolder viewHolder, final int position) {
         final AddTreeItem item = list.get(position);
+        viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentActivity fragmentActivity = ((FragmentActivity) mContext);
+                Bundle bundle = new Bundle();
+                bundle.putString("Category", item.getName());
+                GraphFragmentSubcategory fragmentSubcategory = new GraphFragmentSubcategory();
+                fragmentSubcategory.setArguments(bundle);
+                fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragmentSubcategory).commit();
+
+            }
+        });
         viewHolder.imageView.setImageDrawable(mContext.getDrawable(item.getDrawableId()));
         viewHolder.labelCategory.setText(item.getName());
         viewHolder.amount.setText("$ " + item.getAmount());

@@ -19,10 +19,11 @@ import edu.purdue.vieck.budgetapp.R;
 public class BarChartItem extends ChartItem {
 
     Typeface mTf;
-
+    Context context;
     public BarChartItem(ChartData<?> cd, Context c) {
         super(cd);
         mTf = Typeface.SANS_SERIF;
+        context = c;
     }
 
     @Override
@@ -59,6 +60,7 @@ public class BarChartItem extends ChartItem {
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(true);
+        xAxis.setTextColor(context.getResources().getColor(R.color.CottonBlue));
 
         YAxis leftAxis = holder.chart.getAxisLeft();
         leftAxis.setTypeface(mTf);
@@ -69,6 +71,7 @@ public class BarChartItem extends ChartItem {
         rightAxis.setTypeface(mTf);
         rightAxis.setLabelCount(5);
         rightAxis.setSpaceTop(20f);
+        rightAxis.setTextColor(context.getResources().getColor(R.color.CottonBlue));
 
         mChartData.setValueTypeface(mTf);
 
