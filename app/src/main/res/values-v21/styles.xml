@@ -8,6 +8,13 @@
         <item name="android:textColorSecondary">@color/PaleGray</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
     <style name="MyAppBarLayout" parent="AppTheme">
         <item name="android:background">@color/DarkNavy</item>
     </style>
@@ -91,5 +98,11 @@
     <style name="dashboard_item_label">
         <item name="android:textSize">10pt</item>
         <item name="android:textStyle">normal</item>
+    </style>
+    
+    <!-- Settings Styles -->
+    <style name="settings_textview_label">
+        <item name="android:textSize">10pt</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

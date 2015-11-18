@@ -25,6 +25,11 @@
     <string name="charts">Charts</string>
     <string name="graphs">Graphs</string>
     <string name="data">Data</string>
+    <string name="settings">Settings</string>
+
+    <!-- Setting Activity Strings -->
+    <string name="general">General</string>
+    <string name="theme">Themes</string>
 
     <!-- FRAGMENT DASHBOARD -->
     <string name="dashboard_title">Overview</string>
