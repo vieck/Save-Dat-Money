@@ -49,7 +49,7 @@ public class ChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chart);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mDatabaseHandler = new DatabaseHandler(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation_layout);

@@ -53,11 +53,12 @@ public class GraphFragmentCategory extends Fragment {
 
         if (!databaseHandler.isEmpty()) {
             months = databaseHandler.getAllUniqueMonthsAsLinkedList();
-            count = months.size();
+            count = months.size() - 1;
 
             left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.d("Category Position",""+count);
                     if (count < months.size() - 1) {
                         count++;
                         BudgetItem item = months.get(count);

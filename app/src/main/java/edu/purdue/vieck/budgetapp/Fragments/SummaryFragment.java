@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import edu.purdue.vieck.budgetapp.Adapters.DataAdapter;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
@@ -19,14 +20,14 @@ import edu.purdue.vieck.budgetapp.R;
  * Created by mvieck on 9/22/2015.
  */
 public class SummaryFragment extends Fragment {
-    private RecyclerView mRecyclerView;
+    private ListView mList;
     private DataAdapter mDataAdapter;
     DatabaseHandler mDatabaseHandler;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_data, container, false);
+        View view = inflater.inflate(R.layout.fragment_summary, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.data_list_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mDataAdapter = new DataAdapter(getActivity(), "");

@@ -5,6 +5,7 @@ import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import edu.purdue.vieck.budgetapp.Fragments.SettingsFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -18,5 +19,6 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getFragmentManager().beginTransaction().add(R.id.fragment_container,new SettingsFragment()).commit();
     }
 }
