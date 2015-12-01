@@ -54,6 +54,7 @@ public class BarChartItem extends ChartItem {
         holder.chart.setDescription("");
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
+        holder.chart.setDescriptionColor(context.getResources().getColor(R.color.CottonBlue));
 
         XAxis xAxis = holder.chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -66,6 +67,7 @@ public class BarChartItem extends ChartItem {
         leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(5);
         leftAxis.setSpaceTop(20f);
+        leftAxis.setTextColor(context.getResources().getColor(R.color.CottonBlue));
 
         YAxis rightAxis = holder.chart.getAxisRight();
         rightAxis.setTypeface(mTf);
@@ -74,6 +76,7 @@ public class BarChartItem extends ChartItem {
         rightAxis.setTextColor(context.getResources().getColor(R.color.CottonBlue));
 
         mChartData.setValueTypeface(mTf);
+        mChartData.setValueTextColor(R.color.CottonBlue);
 
         // set data
         holder.chart.setData((BarData) mChartData);

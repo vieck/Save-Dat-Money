@@ -12,11 +12,12 @@
             android:orientation="horizontal"
             android:layout_alignParentTop="true"
             android:weightSum="3"
-            android:background="@color/CottonBlue">
+            style="@style/date_container">
             <ImageButton android:id="@+id/left_arrow"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:src="@drawable/ic_action_back"
+                android:background="?android:colorPrimaryDark"
                 android:layout_weight="1"/>
 
             <LinearLayout
@@ -43,7 +44,8 @@
             <ImageButton android:id="@+id/right_arrow"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/ic_arrow_forward_black_24dp"
+                android:src="@drawable/ic_action_forward"
+                android:background="?android:colorPrimaryDark"
                 android:layout_weight="1"/>
         </LinearLayout>
 

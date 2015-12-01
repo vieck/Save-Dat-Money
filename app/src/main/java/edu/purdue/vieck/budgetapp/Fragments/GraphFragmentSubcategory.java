@@ -48,10 +48,10 @@ public class GraphFragmentSubcategory extends Fragment {
             item = new AddTreeItem();
             item.setDrawableId(categoryImages[i]);
             item.setName(subcategories[i]);
-            item.setAmount(databaseHandler.getSpecificDateAmountByType(subcategories[i], months.get(0).getMonth(), months.get(0).getYear()));
+            item.setAmount(databaseHandler.getSpecificDateAmountByType(subcategories[i], months.get(0).getMonth(), months.get(0).getYear(), 0));
             list.add(item);
         }
-        adapter = new GraphCategoryAdapter(getActivity(), list);
+        adapter = new GraphCategoryAdapter(getActivity(), list, months.get(0).getMonth(), months.get(0).getYear());
         return adapter;
     }
 }

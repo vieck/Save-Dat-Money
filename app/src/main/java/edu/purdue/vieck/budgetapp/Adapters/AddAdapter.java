@@ -30,10 +30,12 @@ public class AddAdapter extends BaseAdapter {
 
     Context context;
     List<AddTree.Node> categoryNodes;
+    Bundle bundle;
 
-    public AddAdapter(Context context, List<AddTree.Node> objects) {
+    public AddAdapter(Context context, List<AddTree.Node> objects, Bundle bundle) {
         this.context = context;
         this.categoryNodes = objects;
+        this.bundle = bundle;
     }
 
     @Override
@@ -69,7 +71,6 @@ public class AddAdapter extends BaseAdapter {
                     AddItem item = categoryNodes.get(i).getItem();
 
                     FragmentActivity fragmentActivity = ((FragmentActivity) context);
-                    Bundle bundle = new Bundle();
                     bundle.putString("Category", item.getType());
                     bundle.putString("Subcategory", item.getSubType());
                     AddFragment addFragment = new AddFragment();

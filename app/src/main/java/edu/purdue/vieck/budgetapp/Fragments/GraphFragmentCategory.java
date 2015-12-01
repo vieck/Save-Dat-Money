@@ -108,17 +108,17 @@ public class GraphFragmentCategory extends Fragment {
         List<AddTreeItem> list = new ArrayList<>();
         int[] categoryImages = {R.drawable.food_groceries_dark, R.drawable.utility_misc_dark, R.drawable.entertainment_dark, R.drawable.medical_misc_dark, R.drawable.insurance_dark, R.drawable.chart_dark};
         String[] categories = getResources().getStringArray(R.array.categoryarray);
-        monthTxt.setText(months.get(count - 1).getMonthName());
-        yearTxt.setText("" + months.get(count - 1).getYear());
+        monthTxt.setText(months.get(count).getMonthName());
+        yearTxt.setText("" + months.get(count).getYear());
         AddTreeItem item;
         for (int i = 0; i < categories.length; i++) {
             item = new AddTreeItem();
             item.setDrawableId(categoryImages[i]);
             item.setName(categories[i]);
-            item.setAmount(databaseHandler.getSpecificDateAmountByType(categories[i], months.get(0).getMonth(), months.get(0).getYear()));
+            item.setAmount(databaseHandler.getSpecificDateAmountByType(categories[i], months.get(0).getMonth(), months.get(0).getYear(), 0));
             list.add(item);
         }
-        adapter = new GraphCategoryAdapter(getActivity(), list);
+        adapter = new GraphCategoryAdapter(getActivity(), list, months.get(count).getMonth(), months.get(count).getYear());
         return adapter;
     }
 }

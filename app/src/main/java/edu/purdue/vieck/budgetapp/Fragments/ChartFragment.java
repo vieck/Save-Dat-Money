@@ -29,6 +29,7 @@ import com.github.mikephil.charting.utils.PercentFormatter;
 
 import java.util.ArrayList;
 
+import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
 import edu.purdue.vieck.budgetapp.Adapters.ChartAdapter;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
@@ -44,9 +45,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private ChartAdapter mChartAdapter;
-    private Button chartButton;
     private Context mContext;
-    private String fragmentName;
 
     @Override
     public void onAttach(final Activity activity) {
@@ -155,38 +154,38 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
         if (!mDatabaseHandler.isEmpty()) {
 
-            if (mDatabaseHandler.getSpecificDateAmountByType("Income", month, year) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Income", month, year), 4));
+            if (mDatabaseHandler.getSpecificDateAmountByType("Income", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Income", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 4));
                 xVals.add("Income");
                 colors.add(getResources().getColor(R.color.DarkNavy));
             }
 
-            if (mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year), 1));
+            if (mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 1));
                 xVals.add("Utilities");
                 colors.add(getResources().getColor(R.color.PaleBlue));
             }
 
-            if (mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year), 2));
+            if (mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 2));
                 xVals.add("Entertainment");
                 colors.add(getResources().getColor(R.color.CottonBlue));
             }
 
-            if (mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year), 3));
+            if (mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 3));
                 xVals.add("Medical");
                 colors.add(getResources().getColor(R.color.PaleTurquoise));
             }
 
-            if (mDatabaseHandler.getSpecificDateAmountByType("Food", month, year) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Food", month, year), 0));
+            if (mDatabaseHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 0));
                 xVals.add("Food");
                 colors.add(getResources().getColor(R.color.NeonBlue));
             }
 
-            if (mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year), 5));
+            if (mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 5));
                 xVals.add("Insurance");
                 colors.add(getResources().getColor(R.color.SheetBlue));
             }
@@ -240,9 +239,9 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
                 "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
                         + ", DataSet index: " + dataSetIndex);
     }
-
     @Override
     public void onNothingSelected() {
         Log.i("PieChart", "nothing selected");
     }
+
 }

@@ -1,8 +1,11 @@
 package edu.purdue.vieck.budgetapp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.Stack;
 
+import edu.purdue.vieck.budgetapp.Activities.DescriptionActivity;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
@@ -44,13 +48,13 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(mViewHolder viewHolder, int i) {
+    public void onBindViewHolder(mViewHolder viewHolder, final int i) {
         final BudgetItem budgetItem = mDataset.get(i);
         viewHolder.date.setText(budgetItem.getMonth() + "-" + budgetItem.getDay() + "-" + budgetItem.getYear());
         viewHolder.category.setText("" + budgetItem.getCategory());
         viewHolder.subcategory.setText("" + budgetItem.getSubcategory());
         viewHolder.amount.setText("$ " + budgetItem.getAmount());
-        if (budgetItem.getAmount() > 0) {
+        if (budgetItem.isType()) {
             viewHolder.amount.setTextColor(context.getResources().getColor(R.color.Lime));
         } else {
             viewHolder.amount.setTextColor(context.getResources().getColor(R.color.Red));
@@ -59,7 +63,25 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseHandler.delete(budgetItem);
+                Log.d("Deleted", "Deleted Item");
+                Bundle bundle = new Bundle();
+                if (budgetItem.isType()) {
+                    bundle.putString("Type", "Income");
+                } else {
+                    bundle.putString("Type", "Expense");
+                }
+                bundle.putString("Category", budgetItem.getCategory());
+                bundle.putString("Subcategory", budgetItem.getSubcategory());
+                bundle.putDouble("Amount",budgetItem.getAmount());
+                bundle.putString("Note", budgetItem.getNote());
+                bundle.putInt("Month", budgetItem.getMonth());
+                bundle.putInt("Day", budgetItem.getDay());
+                bundle.putInt("Year", budgetItem.getYear());
+                Intent intent = new Intent(context, DescriptionActivity.class);
+                intent.putExtras(bundle);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+               // databaseHandler.delete(budgetItem);
             }
         });
     }

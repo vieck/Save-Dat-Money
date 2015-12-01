@@ -63,22 +63,10 @@ public class AddFragment extends Fragment {
         outState.putInt("Year", datePicker.getYear());
         outState.putString("Category", categories.getText().toString());
         outState.putString("Subcategory", subcategory.getText().toString());
-        outState.putInt("Amount", Integer.parseInt(amount.getText().toString()));
-        outState.putString("Note", note.getText().toString());
-    }
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState != null) {
-            datePicker.setX(savedInstanceState.getInt("Month"));
-            datePicker.setY(savedInstanceState.getInt("Day"));
-            datePicker.setZ(savedInstanceState.getInt("Year"));
-            category.setText(savedInstanceState.getString("Category"));
-            subcategory.setText(savedInstanceState.getString("Subcategory"));
-            amount.setText(savedInstanceState.getString("Amount"));
-            note.setText(savedInstanceState.getString("Note"));
+        if (!amount.getText().toString().equals("")) {
+            outState.putDouble("Amount", Double.parseDouble(amount.getText().toString()));
         }
+        outState.putString("Note", note.getText().toString());
     }
 
     @Nullable
@@ -89,11 +77,28 @@ public class AddFragment extends Fragment {
         Bundle bundle = getArguments();
         categories = (EditText) view.findViewById(R.id.edittext_category);
         subcategory = (EditText) view.findViewById(R.id.edittext_subcategory);
+        incomeButton = (RadioButton) view.findViewById(R.id.income__button);
+        expenseButton = (RadioButton) view.findViewById(R.id.expense_button);
+        amount = (EditText) view.findViewById(R.id.edittext_amount);
+        note = (EditText) view.findViewById(R.id.edittext_note);
+        datePicker = (DatePicker) view.findViewById(R.id.datepicker);
+        submitButton = (ImageButton) view.findViewById(R.id.imagebtn_submit);
+
+        databaseHandler = new DatabaseHandler(getActivity());
 
         if (bundle != null) {
+            Log.d("Bundle", bundle.toString());
+            amount.setText(bundle.getDouble("Amount")+"");
             categories.setText(bundle.getString("Subcategory") + "");
             subcategory.setText(bundle.getString("Category") + "");
+            if (bundle.getBoolean("Type")) {
+                incomeButton.toggle();
+            } else {
+                expenseButton.toggle();
+            }
+            note.setText(bundle.getString("Note"));
             iconResourceId = bundle.getInt("Icon", R.drawable.cell_phone_bill_dark);
+            datePicker.updateDate(bundle.getInt("Year"), bundle.getInt("Month"), bundle.getInt("Day"));
         }
         iconResourceId = R.drawable.gas_station_dark;
         final Activity currentActivity = getActivity();
@@ -101,28 +106,29 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 CategoryFragment categoryFragment = new CategoryFragment();
+                Bundle bundle = new Bundle();
+                if (incomeButton.isChecked()) {
+                    bundle.putBoolean("Type", true);
+                } else {
+                    bundle.putBoolean("Type", false);
+                }
+                bundle.putString("Category", categories.getText().toString());
+                bundle.putString("Subcategory", subcategory.getText().toString());
+                if (!amount.getText().toString().equals("")) {
+                    bundle.putDouble("Amount", Double.parseDouble(amount.getText().toString()));
+                }
+                bundle.putString("Note", note.getText().toString());
+                bundle.putInt("Month", datePicker.getMonth());
+                bundle.putInt("Day", datePicker.getDayOfMonth());
+                bundle.putInt("Year", datePicker.getYear());
+                categoryFragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, categoryFragment);
-                Log.d("Add Fragment", "Started AddTree Fragment");
                 fragmentTransaction.commit();
             }
         });
 
         calendar = Calendar.getInstance();
-
-        incomeButton = (RadioButton) view.findViewById(R.id.income__button);
-
-        expenseButton = (RadioButton) view.findViewById(R.id.expense_button);
-
-        amount = (EditText) view.findViewById(R.id.edittext_amount);
-
-        note = (EditText) view.findViewById(R.id.edittext_note);
-
-        datePicker = (DatePicker) view.findViewById(R.id.datepicker);
-
-        databaseHandler = new DatabaseHandler(getActivity());
-
-        submitButton = (ImageButton) view.findViewById(R.id.imagebtn_submit);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override

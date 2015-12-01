@@ -21,12 +21,13 @@ public class CategoryFragment extends Fragment {
     private ListView listView;
     private LinearLayoutManager layoutManager;
     private AddAdapter addAdapter;
+    private Bundle bundle;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
-
+        bundle = getArguments();
         listView = (ListView) view.findViewById(R.id.listview);
         layoutManager = new LinearLayoutManager(getActivity());
 
@@ -95,7 +96,7 @@ public class CategoryFragment extends Fragment {
             }
         }
 
-        addAdapter = new AddAdapter(getActivity(), tree.getChildNodes());
+        addAdapter = new AddAdapter(getActivity(), tree.getChildNodes(), bundle);
 
         listView.setAdapter(addAdapter);
 

@@ -1,55 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.purdue.vieck.budgetapp">
+    package="edu.purdue.vieck.budgetapp" >
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_dvd"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".Activities.DashboardActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activities.ChartActivity"
-            android:label="@string/app_name"
+            android:label="@string/title_activity_chart"
             android:parentActivityName=".Activities.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.SummaryActivity"
             android:label="@string/title_activity_data"
             android:parentActivityName=".Activities.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.GraphActivity"
             android:label="@string/title_activity_graph"
             android:parentActivityName=".Activities.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.AddActivity"
             android:label="@string/title_activity_submit"
             android:parentActivityName=".Activities.ChartActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.CategoryActivity"
             android:label="@string/title_activity_category"
             android:parentActivityName=".Activities.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.SettingsActivity"
             android:label="@string/action_settings"
             android:parentActivityName=".Activities.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.DescriptionActivity"
+            android:label="@string/title_activity_description"
+            android:parentActivityName=".Activities.ChartActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.purdue.vieck.budgetapp.Activities.ChartActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -36,6 +36,13 @@
 
     <string name="edittext_add_hint">Tap me to add category</string>
 
+    <!-- FRAGMENT CHART -->
+    <string-array name="chartarray">
+        <item>Both</item>
+        <item>Income</item>
+        <item>Expense</item>
+    </string-array>
+
     <!-- FRAGMENT GRAPH -->
     <string name="yearly">Yearly</string>
     <string name="monthly">Montly</string>
@@ -141,10 +148,13 @@
         <item>@drawable/life_insurance_dark</item>
     </integer-array>
 
-    <string name="title_activity_data">DataActivity</string>
+
 
     <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_activity_chart">Charts</string>
     <string name="title_activity_graph">Graphs</string>
     <string name="title_activity_submit">Add Data</string>
+    <string name="title_activity_data">Data</string>
     <string name="title_activity_category">Categories</string>
+    <string name="title_activity_description">Description</string>
 </resources>

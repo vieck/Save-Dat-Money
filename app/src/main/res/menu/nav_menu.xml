@@ -19,12 +19,12 @@
 
         <item
             android:id="@+id/nav_item_list"
-            android:icon="@android:drawable/ic_menu_compass"
+            android:icon="@drawable/insurance_dark"
             android:title="@string/data" />
 
         <item
             android:id="@+id/nav_item_settings"
-            android:icon="@drawable/settings"
+            android:icon="@drawable/ic_action_settings"
             android:title="@string/action_settings"/>
 
     </group>

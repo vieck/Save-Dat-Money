@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView android:id="@+id/label_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/amount"
+        android:layout_marginStart="10dp"
+        style="@style/textview_label"/>
+
     <EditText
         android:id="@+id/edittext_amount"
         style="@style/edittext_amount_add_fragment"
@@ -14,6 +21,8 @@
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="12dp"
+        android:layout_alignBaseline="@id/label_amount"
+        android:layout_toEndOf="@id/label_amount"
         android:gravity="end"
         android:hint="Enter amount"
         android:inputType="numberDecimal" />
@@ -23,8 +32,7 @@
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/edittext_amount"
-        android:layout_below="@id/edittext_amount"
+        android:layout_below="@id/label_amount"
         android:text="@string/category" />
 
     <EditText
@@ -41,7 +49,6 @@
         style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/edittext_amount"
         android:layout_below="@id/label_category"
         android:text="@string/subcategory" />
 
@@ -57,7 +64,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/label_sub_category"
-        android:layout_alignStart="@id/edittext_amount"
         android:layout_marginBottom="12dp"
         android:orientation="horizontal">
 
@@ -81,7 +87,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/radio_group"
-        android:layout_alignStart="@id/edittext_amount"
         android:text="@string/note" />
 
     <EditText

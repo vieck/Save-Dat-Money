@@ -92,7 +92,7 @@ public class GraphFragmentOverview extends Fragment {
                         BudgetItem item = months.get(count);
                         monthTxt.setText(item.getMonthName());
                         yearTxt.setText("" + item.getYear());
-                        changeAdapterMonth(item.getMonth(), item.getYear());
+                         changeAdapterMonth(item.getMonth(), item.getYear());
                     } else {
                         count = months.size() - 1;
                         BudgetItem item = months.get(count);
@@ -102,7 +102,7 @@ public class GraphFragmentOverview extends Fragment {
                     }
                 }
             });
-            BudgetItem item = months.get(count++);
+            BudgetItem item = months.get(count);
             changeAdapterMonth(item.getMonth(), item.getYear());
         } else {
             monthTxt.setText("No Data");
@@ -120,6 +120,7 @@ public class GraphFragmentOverview extends Fragment {
 
         ChartDataAdapter cda = new ChartDataAdapter(getActivity(), list);
         lv.setAdapter(cda);
+        cda.notifyDataSetChanged();
     }
 
     /**
@@ -131,7 +132,7 @@ public class GraphFragmentOverview extends Fragment {
         ArrayList<Entry> e1 = new ArrayList<Entry>();
         int num = 0;
         for (String category : categories) {
-            e1.add(new Entry(databaseHandler.getSpecificDateAmountByType(category,month,year),num++));
+            e1.add(new Entry(databaseHandler.getSpecificDateAmountByType(category,month,year, 0),num++));
         }
         LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
         d1.setLineWidth(2.5f);
@@ -172,10 +173,11 @@ public class GraphFragmentOverview extends Fragment {
 
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
         for (int i = 0; i < categories.length; i++) {
-            entries.add(new BarEntry(databaseHandler.getSpecificDateAmountByType(categories[i], month, year), i));
+            entries.add(new BarEntry(databaseHandler.getSpecificDateAmountByType(categories[i], month, year, 0), i));
         }
 
         BarDataSet d = new BarDataSet(entries, "Categories " + cnt);
+        d.setValueTextColor(R.color.CottonBlue);
         d.setBarSpacePercent(10f);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setHighLightAlpha(255);
@@ -193,7 +195,7 @@ public class GraphFragmentOverview extends Fragment {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
         for (int i = 0; i < categories.length; i++) {
-            entries.add(new Entry(databaseHandler.getSpecificDateAmountByType(categories[i],month,year),i));
+            entries.add(new Entry(databaseHandler.getSpecificDateAmountByType(categories[i],month,year, 0),i));
         }
 
         PieDataSet d = new PieDataSet(entries, "");

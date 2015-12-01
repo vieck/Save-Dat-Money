@@ -8,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +18,10 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -32,14 +36,16 @@ import edu.purdue.vieck.budgetapp.R;
 
 
 public class ChartActivity extends AppCompatActivity {
-
     ViewPagerAdapter adapter;
     private Toolbar mToolbar;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
+    private Spinner mSpinner;
     private ViewPager mViewPager;
     private PagerSlidingTabStrip mTabLayout;
     private DatabaseHandler mDatabaseHandler;
+
+    private int spinnerPosition;
 
     private ImageButton addButton;
 
@@ -47,44 +53,20 @@ public class ChartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setUpToolbar();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        setUpNavigationDrawer();
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
+        setUpNavigationView();
+
         mDatabaseHandler = new DatabaseHandler(this);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.navigation_layout);
-        final Activity currentActivity = this;
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                int id = menuItem.getItemId();
-                Intent intent;
-                switch (id) {
-                    case R.id.nav_item_dashboard:
-                        intent = new Intent(currentActivity, DashboardActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        currentActivity.startActivity(intent);
-                        break;
-                    case R.id.nav_item_chart:
-                        intent = new Intent(currentActivity, ChartActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        currentActivity.startActivity(intent);
-                        break;
-                    case R.id.nav_item_graph:
-                        intent = new Intent(currentActivity, GraphActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        currentActivity.startActivity(intent);
-                        break;
-                    case R.id.nav_item_list:
-                        intent = new Intent(currentActivity, SummaryActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        currentActivity.startActivity(intent);
-                        break;
-                }
-                return true;
-            }
-        });
-        mDatabaseHandler = new DatabaseHandler(this);
+
+        mSpinner = (Spinner) findViewById(R.id.spinner);
+        spinnerPosition = 0;
+        ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(mToolbar.getContext(), R.array.chartarray, R.layout.simple_spinner_item);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        mSpinner.setAdapter(spinnerArrayAdapter);
+
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(mViewPager);
         mTabLayout = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -130,6 +112,64 @@ public class ChartActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setUpToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    private void setUpNavigationDrawer() {
+        if (mToolbar != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mToolbar.setNavigationIcon(R.drawable.ic_drawer);
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDrawerLayout.openDrawer(GravityCompat.START);
+                }
+            });
+        }
+    }
+
+    private void setUpNavigationView() {
+        final Activity currentActivity = this;
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                Intent intent;
+                switch (id) {
+                    case R.id.nav_item_dashboard:
+                        intent = new Intent(currentActivity, DashboardActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+                    case R.id.nav_item_chart:
+                        intent = new Intent(currentActivity, ChartActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+                    case R.id.nav_item_graph:
+                        intent = new Intent(currentActivity, GraphActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+                    case R.id.nav_item_list:
+                        intent = new Intent(currentActivity, SummaryActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+                    case R.id.nav_item_settings:
+                        intent = new Intent(currentActivity, SettingsActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     /*
@@ -193,6 +233,7 @@ public class ChartActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            mFragmentList.get(position);
             return mFragmentList.get(position);
         }
 
@@ -220,5 +261,9 @@ public class ChartActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mTitleList.get(position);
         }
+    }
+
+    public int getSpinnerPosition() {
+        return spinnerPosition;
     }
 }

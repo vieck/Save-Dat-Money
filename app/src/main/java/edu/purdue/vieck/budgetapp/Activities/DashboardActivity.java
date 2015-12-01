@@ -5,10 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 
-import edu.purdue.vieck.budgetapp.Fragments.DashboardFragment;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.purdue.vieck.budgetapp.Adapters.DashboardAdapter;
+import edu.purdue.vieck.budgetapp.CustomObjects.DashboardItem;
+import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 public class DashboardActivity extends Activity {
@@ -17,50 +24,34 @@ public class DashboardActivity extends Activity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private RecyclerView mRecyclerView;
+    private DashboardAdapter dashboardAdapter;
+    private DatabaseHandler databaseHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.navigation_layout);
-        final Activity currentActivity = this;
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                int id = menuItem.getItemId();
-                Intent intent;
-                switch (id) {
-                    case R.id.nav_item_dashboard:
-                        intent = new Intent(currentActivity, DashboardActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        currentActivity.startActivity(intent);
-                        break;
-                    case R.id.nav_item_chart:
-                        intent = new Intent(currentActivity, ChartActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        currentActivity.startActivity(intent);
-                        break;
-                    case R.id.nav_item_graph:
-                        intent = new Intent(currentActivity, GraphActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        currentActivity.startActivity(intent);
-                        break;
-                    case R.id.nav_item_list:
-                        intent = new Intent(currentActivity, SummaryActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        currentActivity.startActivity(intent);
-                        break;
-                    case R.id.nav_item_settings:
-                        intent = new Intent(currentActivity, SettingsActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        currentActivity.startActivity(intent);
-                        break;
-                }
-                return true;
-            }
-        });
-        getFragmentManager().beginTransaction().add(R.id.fragment_container, new DashboardFragment()).commit();
+        mRecyclerView = (RecyclerView) findViewById(R.id.dashboard_recyclerview);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
+        List<DashboardItem> cards = new ArrayList<>();
+        // <div>Icon made by <a href="http://www.simpleicon.com" title="SimpleIcon">SimpleIcon</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
+        cards.add(new DashboardItem(getDrawable(R.drawable.chart_dark), "Charts", getResources().getColor(R.color.Silver), new Intent(this, ChartActivity.class)));
+        cards.add(new DashboardItem(getDrawable(R.drawable.chart_panel_dark), "Graphs", getResources().getColor(R.color.Silver), new Intent(this, GraphActivity.class)));
+        cards.add(new DashboardItem(getDrawable(R.drawable.insurance_dark), "Data", getResources().getColor(R.color.Silver), new Intent(this, SummaryActivity.class)));
+        cards.add(new DashboardItem(getDrawable(R.drawable.ic_action_settings), "Settings", getResources().getColor(R.color.Silver), new Intent(this, SettingsActivity.class)));
+        //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.currency_symbol), "Currency", getResources().getColor(R.color.Lime), new Intent(getActivity(), ChartActivity.class)));
+        //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.hand_coin), "Cash Flow", getResources().getColor(R.color.Gold), new Intent(getActivity(), ChartActivity.class)));
+        //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.calculator), "Calculator", getResources().getColor(R.color.BlueViolet), new Intent(getActivity(), ChartActivity.class)));
+        //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.graph), "Charts", getResources().getColor(R.color.Black), new Intent(getActivity(), ChartActivity.class)));
+        //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.exit), "Existential", getResources().getColor(R.color.PaleGreen), new Intent(getActivity(), SummaryActivity.class)));
+
+        dashboardAdapter = new DashboardAdapter(this, this, cards);
+        mRecyclerView.setAdapter(dashboardAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
 }

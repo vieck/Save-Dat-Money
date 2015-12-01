@@ -3,7 +3,7 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorPrimary">@color/CottonBlue</item>
-        <item name="android:colorPrimaryDark">@color/PaleGray</item>
+        <item name="android:colorPrimaryDark">@color/DarkNavy</item>
         <item name="android:textColorPrimary">@color/CottonBlue</item>
         <item name="android:textColorSecondary">@color/PaleGray</item>
     </style>
@@ -16,7 +16,7 @@
     </style>
 
     <style name="MyAppBarLayout" parent="AppTheme">
-        <item name="android:background">@color/DarkNavy</item>
+        <item name="android:background">?android:colorPrimaryDark</item>
     </style>
 
     <style name="StyleActivityAdd" parent="AppTheme">
@@ -45,6 +45,16 @@
         <item name="android:textColor">@color/White</item>
     </style>
 
+    <!-- Chart Style -->
+    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:background">?android:colorPrimaryDark</item>
+    </style>
+
     <!-- Graph Style -->
     <style name="cardview_categories">
         <item name="android:background">@color/PaleBlue</item>
@@ -52,7 +62,12 @@
     </style>
 
     <!-- Left Right Date Styles -->
+    <style name="date_container">
+        <item name="android:background">?android:colorPrimaryDark</item>
+    </style>
+    
     <style name="date_textview">
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -65,7 +80,7 @@
 
     <style name="edittext_amount_add_fragment">
         <item name="android:editable">false</item>
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/White</item>
         <item name="android:textColorHint">@color/SheetBlue</item>
         <item name="android:shadowColor">@color/CottonBlue</item>

@@ -20,7 +20,7 @@ import edu.purdue.vieck.budgetapp.R;
  * Created by mvieck on 9/22/2015.
  */
 public class SummaryFragment extends Fragment {
-    private ListView mList;
+    private RecyclerView mRecyclerView;
     private DataAdapter mDataAdapter;
     DatabaseHandler mDatabaseHandler;
 
@@ -28,7 +28,7 @@ public class SummaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_summary, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.data_list_recycler);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.data_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mDataAdapter = new DataAdapter(getActivity(), "");
         mRecyclerView.setAdapter(mDataAdapter);

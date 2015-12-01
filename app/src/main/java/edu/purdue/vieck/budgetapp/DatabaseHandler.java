@@ -98,11 +98,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (mCursor.moveToFirst())
         {
             // Contains elements
+            this.getReadableDatabase().close();
             return false;
 
         } else
         {
             // Empty
+            this.getReadableDatabase().close();
             return true;
         }
     }
@@ -284,19 +286,41 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return amount;
     }
 
-    public float getSpecificDateAmountByType(String type, int month, int year) {
+    public float getSpecificDateAmountByType(String type, int month, int year, int category) {
         float categoryPercent = 0;
         String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'";
         String totalQuery = "SELECT * FROM " + TABLE_DATA;
         if (month != -1 && year != -1) {
-            selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'"
-                    + " and " + COLUMN_MONTH + " = " + month
-                    + " and " + COLUMN_YEAR + " = " + year
-                    + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+            if (category == 0) {
+                selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'"
+                        + " and " + COLUMN_MONTH + " = " + month
+                        + " and " + COLUMN_YEAR + " = " + year
+                        + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
 
-            totalQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
-                    + " and " + COLUMN_YEAR + " = " + year
-                    + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+                totalQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
+                        + " and " + COLUMN_YEAR + " = " + year
+                        + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+            } else if (category == 1) {
+                selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'"
+                        + " and " + COLUMN_MONTH + " = " + month
+                        + " and " + COLUMN_YEAR + " = " + year
+                        + " and " + COLUMN_TYPE + " = " + 1
+                        + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+
+                totalQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
+                        + " and " + COLUMN_YEAR + " = " + year + " and " + COLUMN_TYPE + " = " + 1
+                        + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+            } else {
+                selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'"
+                        + " and " + COLUMN_MONTH + " = " + month
+                        + " and " + COLUMN_YEAR + " = " + year
+                        + " and " + COLUMN_TYPE + " = " + 0
+                        + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+
+                totalQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
+                        + " and " + COLUMN_YEAR + " = " + year + " and " + COLUMN_TYPE + " = " + 0
+                        + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+            }
         }
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);

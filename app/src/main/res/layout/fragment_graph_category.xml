@@ -8,16 +8,17 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/CottonBlue"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="3"
+        style="@style/date_container">
 
         <ImageButton
             android:id="@+id/left_arrow"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_arrow_back_black_24dp" />
+            android:src="@drawable/ic_action_back"
+            android:background="?android:colorPrimaryDark"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -49,7 +50,8 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_arrow_forward_black_24dp" />
+            android:src="@drawable/ic_action_forward"
+            android:background="?android:colorPrimaryDark"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
