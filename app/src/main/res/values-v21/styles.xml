@@ -2,38 +2,38 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorPrimary">@color/CottonBlue</item>
-        <item name="android:colorPrimaryDark">@color/DarkNavy</item>
-        <item name="android:textColorPrimary">@color/CottonBlue</item>
-        <item name="android:textColorSecondary">@color/PaleGray</item>
+        <item name="android:colorPrimary">@color/md_white_1000</item>
+        <item name="android:colorPrimaryDark">@color/md_grey_200</item>
+        <item name="android:colorAccent">@color/md_light_blue_300</item>
+        <item name="android:textColorPrimary">@color/md_black_1000</item>
+        <item name="android:textColorSecondary">@color/md_blue_grey_50</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/background_dark</item>
     </style>
 
     <style name="MyAppBarLayout" parent="AppTheme">
-        <item name="android:background">?android:colorPrimaryDark</item>
+        <item name="android:background">?android:attr/colorPrimary</item>
     </style>
 
     <style name="StyleActivityAdd" parent="AppTheme">
-        <item name="android:background">@color/DarkNavy</item>
-        <item name="android:textColorPrimary">@color/CottonBlue</item>
-        <item name="android:textColor">@color/CottonBlue</item>
+        <item name="android:background">?android:attr/colorPrimaryDark</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="StyleFragment">
-        <item name="android:background">@color/DarkNavy</item>
-        <item name="android:textColor">@color/CottonBlue</item>
-        <item name="android:textColorHint">@color/NeonBlue</item>
+        <item name="android:background">?android:attr/colorPrimaryDark</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textColorHint">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="StyleCategoryItem">
-        <item name="android:textColor">@color/CottonBlue</item>
-        <item name="android:textColorHint">@color/NeonBlue</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textColorHint">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="textview_label">
@@ -55,6 +55,11 @@
         <item name="android:background">?android:colorPrimaryDark</item>
     </style>
 
+    <!-- Add Style -->
+    <style name="transparent_button">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <!-- Graph Style -->
     <style name="cardview_categories">
         <item name="android:background">@color/PaleBlue</item>
@@ -74,39 +79,37 @@
     <!-- Category Styles -->
     <style name="edittext_add_fragment">
         <item name="android:editable">false</item>
-        <item name="android:textColor">@color/White</item>
-        <item name="android:textColorHint">@color/NeonBlue</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textColorHint">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="edittext_amount_add_fragment">
         <item name="android:editable">false</item>
         <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/White</item>
-        <item name="android:textColorHint">@color/SheetBlue</item>
-        <item name="android:shadowColor">@color/CottonBlue</item>
-        <item name="android:shadowRadius">3</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textColorHint">?android:attr/textColorSecondary</item>
     </style>
     
     <style name="edittext_note_add_fragment">
-        <item name="android:textColor">@color/White</item>
-        <item name="android:textColorHint">@color/SheetBlue</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textColorHint">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="button_add_fragment">
         <item name="android:textOff">@string/expense</item>
         <item name="android:textOn">@string/income</item>
-        <item name="android:buttonTint">@color/PaleBlue</item>
-        <item name="android:textColor">@color/CottonBlue</item>
+        <item name="android:buttonTint">?android:attr/colorAccent</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="textview_add_item">
-        <item name="android:textColor">@color/CottonBlue</item>
-        <item name="android:textSize">10pt</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textSize">24sp</item>
     </style>
 
     <style name="textview_add_amount">
-        <item name="android:textColor">@color/Red</item>
-        <item name="android:textSize">14pt</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">24sp</item>
     </style>
 
     <!-- DASHBOARD STYLES -->

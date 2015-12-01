@@ -4,9 +4,11 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import edu.purdue.vieck.budgetapp.Adapters.AddAdapter;
@@ -21,6 +23,8 @@ public class CategoryFragment extends Fragment {
     private ListView listView;
     private LinearLayoutManager layoutManager;
     private AddAdapter addAdapter;
+    TypedValue primaryDarkColor;
+    TypedValue primaryColor;
     private Bundle bundle;
 
     @Nullable
@@ -30,6 +34,10 @@ public class CategoryFragment extends Fragment {
         bundle = getArguments();
         listView = (ListView) view.findViewById(R.id.listview);
         layoutManager = new LinearLayoutManager(getActivity());
+        primaryColor = new TypedValue();
+        primaryDarkColor = new TypedValue();
+        getActivity().getTheme().resolveAttribute(R.attr.colorPrimary, primaryColor, true);
+        getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, primaryDarkColor, true);
 
         String[] categoryNames = getResources().getStringArray(R.array.categoryarray);
         String[] subCategoryFood = getResources().getStringArray(R.array.subgroceryarray);
@@ -98,7 +106,20 @@ public class CategoryFragment extends Fragment {
 
         addAdapter = new AddAdapter(getActivity(), tree.getChildNodes(), bundle);
 
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter(addAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                int prevPosition = listView.getCheckedItemPosition();
+                if (prevPosition != ListView.INVALID_POSITION) {
+                    listView.getAdapter().getView(prevPosition, null, listView).setBackgroundColor(primaryColor.data);
+                }
+                listView.setItemChecked(position, true);
+                view.setBackgroundColor(primaryDarkColor.data);
+            }
+        });
+        listView.getCheckedItemPosition();
 
         return view;
     }

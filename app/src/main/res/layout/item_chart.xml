@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
-    cardview:cardBackgroundColor="@color/material_blue_grey_800"
+    cardview:cardBackgroundColor="?android:attr/colorPrimary"
     cardview:theme="@style/StyleCategoryItem">
 
     <RelativeLayout

@@ -84,7 +84,7 @@ public class PieChartItem extends ChartItem {
         l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
         l.setYEntrySpace(10f);
         l.setYOffset(5f);
-        l.setTextColor(context.getResources().getColor(R.color.CottonBlue));
+        l.setTextColor(context.getResources().getColor(R.color.md_black_1000));
 
         // do not forget to refresh the chart
         // holder.chart.invalidate();

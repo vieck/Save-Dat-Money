@@ -118,5 +118,5 @@
         android:background="@drawable/ripple"
         android:src="@android:drawable/ic_input_add"
         android:stateListAnimator="@anim/button_elevation"
-        android:tint="@color/DarkNavy" />
+        android:tint="?android:textColorPrimary" />
 </RelativeLayout>

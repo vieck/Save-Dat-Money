@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize">
                 <Spinner android:id="@+id/spinner"
-                    android:background="?android:colorPrimaryDark"
+                    android:background="?android:colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 </android.support.v7.widget.Toolbar>
@@ -44,7 +44,7 @@
                     android:background="@drawable/ripple"
                     android:src="@android:drawable/ic_input_add"
                     android:stateListAnimator="@anim/button_elevation"
-                    android:tint="?android:colorPrimary" />
+                    android:tint="?android:textColorPrimary" />
 
                 <RelativeLayout
                     android:id="@+id/fragment_container"
@@ -55,7 +55,7 @@
                         android:id="@+id/tabs"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:background="@color/DarkNavy" />
+                        android:background="?android:attr/colorPrimaryDark" />
 
                     <android.support.v4.view.ViewPager
                         android:id="@+id/viewpager"

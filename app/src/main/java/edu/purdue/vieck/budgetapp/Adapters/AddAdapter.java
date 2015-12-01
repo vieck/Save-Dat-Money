@@ -31,11 +31,13 @@ public class AddAdapter extends BaseAdapter {
     Context context;
     List<AddTree.Node> categoryNodes;
     Bundle bundle;
+    int selection;
 
     public AddAdapter(Context context, List<AddTree.Node> objects, Bundle bundle) {
         this.context = context;
         this.categoryNodes = objects;
         this.bundle = bundle;
+        selection = -1;
     }
 
     @Override
@@ -54,21 +56,21 @@ public class AddAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.item_add, parent, false);
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linear_layout);
-        final int i = position;
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Log.d("OnListViewClick", "Clicked");
-                if (!categoryNodes.get(i).isLeafNode()) {
-                    categoryNodes = categoryNodes.get(i).getChildNodes();
+                if (!categoryNodes.get(position).isLeafNode()) {
+                    categoryNodes = categoryNodes.get(position).getChildNodes();
                     notifyDataSetChanged();
                 } else {
-                    AddItem item = categoryNodes.get(i).getItem();
+                    AddItem item = categoryNodes.get(position).getItem();
 
                     FragmentActivity fragmentActivity = ((FragmentActivity) context);
                     bundle.putString("Category", item.getType());
