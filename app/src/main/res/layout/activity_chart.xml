@@ -44,7 +44,7 @@
                     android:background="@drawable/ripple"
                     android:src="@android:drawable/ic_input_add"
                     android:stateListAnimator="@anim/button_elevation"
-                    android:tint="?android:textColorPrimary" />
+                    android:tint="?android:colorPrimary" />
 
                 <RelativeLayout
                     android:id="@+id/fragment_container"

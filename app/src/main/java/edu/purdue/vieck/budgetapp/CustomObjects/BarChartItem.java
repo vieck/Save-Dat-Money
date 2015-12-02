@@ -54,29 +54,29 @@ public class BarChartItem extends ChartItem {
         holder.chart.setDescription("");
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
-        holder.chart.setDescriptionColor(context.getResources().getColor(R.color.CottonBlue));
+        holder.chart.setDescriptionColor(context.getResources().getColor(R.color.md_black_1000));
 
         XAxis xAxis = holder.chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(true);
-        xAxis.setTextColor(context.getResources().getColor(R.color.CottonBlue));
+        xAxis.setTextColor(context.getResources().getColor(R.color.md_black_1000));
 
         YAxis leftAxis = holder.chart.getAxisLeft();
         leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(5);
         leftAxis.setSpaceTop(20f);
-        leftAxis.setTextColor(context.getResources().getColor(R.color.CottonBlue));
+        leftAxis.setTextColor(context.getResources().getColor(R.color.md_black_1000));
 
         YAxis rightAxis = holder.chart.getAxisRight();
         rightAxis.setTypeface(mTf);
         rightAxis.setLabelCount(5);
         rightAxis.setSpaceTop(20f);
-        rightAxis.setTextColor(context.getResources().getColor(R.color.CottonBlue));
+        rightAxis.setTextColor(context.getResources().getColor(R.color.md_black_1000));
 
         mChartData.setValueTypeface(mTf);
-        mChartData.setValueTextColor(R.color.CottonBlue);
+        mChartData.setValueTextColor(R.color.md_black_1000);
 
         // set data
         holder.chart.setData((BarData) mChartData);

@@ -7,12 +7,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import edu.purdue.vieck.budgetapp.Fragments.AddCategoryFragment;
 import edu.purdue.vieck.budgetapp.Fragments.AddFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 public class AddActivity extends AppCompatActivity {
 
     AddFragment addFragment;
+    AddCategoryFragment addCategoryFragment;
     private Toolbar toolbar;
 
     @Override
@@ -22,26 +24,17 @@ public class AddActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                //if (getFragmentManager().getBackStackEntryCount() > 1) {
-                // FragmentTransaction ft = getFragmentManager().beginTransaction();
-                // ft.replace(R.id.fragment_container, new AddFragment()).addToBackStack("category").commit();
-                //}
-            }
-        });
         if (savedInstanceState == null) {
-            addFragment = new AddFragment();
-            getFragmentManager().beginTransaction().add(R.id.fragment_container, addFragment, "addFragment").commit();
+            addCategoryFragment = new AddCategoryFragment();
+            getFragmentManager().beginTransaction().add(R.id.fragment_container, addCategoryFragment, "addCategory").commit();
         } else {
-            addFragment = (AddFragment) getFragmentManager().findFragmentByTag("addFragment");
+            addCategoryFragment = (AddCategoryFragment) getFragmentManager().findFragmentByTag("addCategory");
 
             if (addFragment == null) {
-                addFragment = new AddFragment();
-                getFragmentManager().beginTransaction().add(R.id.fragment_container, addFragment, "addFragment");
+                addCategoryFragment = new AddCategoryFragment();
+                getFragmentManager().beginTransaction().add(R.id.fragment_container, addCategoryFragment, "addCategory");
             } else {
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, addFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, addCategoryFragment).commit();
             }
         }
 

@@ -1,6 +1,7 @@
 package edu.purdue.vieck.budgetapp.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -40,9 +41,25 @@ public class AddAdapter extends BaseAdapter {
         selection = -1;
     }
 
+    public void setSelection(int selection) {
+        this.selection = selection;
+    }
+
+    public int getSelection() {
+        return selection;
+    }
+
+    public void updateSelection() {
+
+    }
+
     @Override
     public int getCount() {
         return categoryNodes.size();
+    }
+
+    public List<AddTree.Node> getCategoryNodes() {
+        return categoryNodes;
     }
 
     @Override
@@ -61,26 +78,9 @@ public class AddAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.item_add, parent, false);
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linear_layout);
-        linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.d("OnListViewClick", "Clicked");
-                if (!categoryNodes.get(position).isLeafNode()) {
-                    categoryNodes = categoryNodes.get(position).getChildNodes();
-                    notifyDataSetChanged();
-                } else {
-                    AddItem item = categoryNodes.get(position).getItem();
-
-                    FragmentActivity fragmentActivity = ((FragmentActivity) context);
-                    bundle.putString("Category", item.getType());
-                    bundle.putString("Subcategory", item.getSubType());
-                    AddFragment addFragment = new AddFragment();
-                    addFragment.setArguments(bundle);
-                    fragmentActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container, addFragment).commit();
-                }
-            }
-        });
+        if (position == selection) {
+            view.setBackgroundColor(Color.BLACK);
+        }
         ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
         TextView textView = (TextView) view.findViewById(R.id.textview);
         final AddItem addItem = categoryNodes.get(position).getItem();

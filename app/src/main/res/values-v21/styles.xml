@@ -3,10 +3,16 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorPrimaryInverse">@color/md_black_1000</item>
         <item name="android:colorPrimaryDark">@color/md_grey_200</item>
-        <item name="android:colorAccent">@color/md_light_blue_300</item>
+        <item name="android:colorBackground">@color/md_deep_purple_50</item>
+        <item name="android:colorAccent">@color/md_deep_purple_200</item>
         <item name="android:textColorPrimary">@color/md_black_1000</item>
+        <item name="android:textColorHint">@color/md_deep_purple_100</item>
         <item name="android:textColorSecondary">@color/md_blue_grey_50</item>
+        <item name="colorControlNormal">@color/md_deep_purple_400</item>
+        <item name="colorControlActivated">@color/md_deep_purple_50</item>
+        <item name="colorControlHighlight">@color/md_deep_purple_50</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -21,7 +27,7 @@
     </style>
 
     <style name="StyleActivityAdd" parent="AppTheme">
-        <item name="android:background">?android:attr/colorPrimaryDark</item>
+        <item name="android:background">?android:attr/colorPrimary</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
@@ -62,8 +68,8 @@
 
     <!-- Graph Style -->
     <style name="cardview_categories">
-        <item name="android:background">@color/PaleBlue</item>
-        <item name="android:textColor">@color/CottonBlue</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <!-- Left Right Date Styles -->
@@ -76,40 +82,53 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <!-- Category Styles -->
-    <style name="edittext_add_fragment">
-        <item name="android:editable">false</item>
+    <!-- Add Fragment Styles -->
+    
+    <style name="edittext_add_fragment"  >
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textColorHint">?android:attr/textColorSecondary</item>
-    </style>
-
-    <style name="edittext_amount_add_fragment">
-        <item name="android:editable">false</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textColorHint">?android:attr/textColorSecondary</item>
+        <item name="android:textColorHint">?android:attr/textColorHint</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginStart">50dp</item>
+        <item name="android:layout_marginBottom">24dp</item>
     </style>
     
-    <style name="edittext_note_add_fragment">
+    <style name="edittext_add_category" parent="edittext_add_fragment">
+        <item name="android:editable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+    </style>
+
+    <style name="edittext_amount_add_fragment" parent="edittext_add_fragment">
+        <item name="android:editable">false</item>
+        <item name="android:textSize">36sp</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textColorHint">?android:attr/textColorPrimary</item>
+        <item name="android:textColorHint">?android:attr/textColorHint</item>
+    </style>
+    
+    <style name="edittext_note_add_fragment" parent="edittext_add_fragment">
+        <item name="android:layout_marginBottom">0dp</item>
     </style>
 
     <style name="button_add_fragment">
         <item name="android:textOff">@string/expense</item>
         <item name="android:textOn">@string/income</item>
-        <item name="android:buttonTint">?android:attr/colorAccent</item>
+        <item name="android:buttonTint">?android:attr/textColorHint</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
-    <style name="textview_add_item">
-        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+    <style name="textview_add_item" parent="edittext_add_fragment">
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:textSize">24sp</item>
+        <item name="android:layout_centerVertical">true</item>
     </style>
 
     <style name="textview_add_amount">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="textview_add_note" parent="edittext_add_fragment">
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginStart">0dp</item>
     </style>
 
     <!-- DASHBOARD STYLES -->

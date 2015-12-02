@@ -34,7 +34,10 @@
     <!-- FRAGMENT DASHBOARD -->
     <string name="dashboard_title">Overview</string>
 
+    <!-- Fragment Add Data -->
     <string name="edittext_add_hint">Tap me to add category</string>
+    <string name="edittext_note_hint">Description</string>
+    <string name="textview_note_description">Write a note that is no more than 150 words</string>
 
     <!-- FRAGMENT CHART -->
     <string-array name="chartarray">

@@ -18,7 +18,6 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import java.util.Calendar;
 
@@ -88,7 +87,16 @@ public class AddFragment extends Fragment {
 
         if (bundle != null) {
             Log.d("Bundle", bundle.toString());
-            amount.setText(bundle.getDouble("Amount")+"");
+            if (bundle.size() > 2) {
+                amount.setText(bundle.getDouble("Amount") + "");
+                if (bundle.getString("Note") != "") {
+                    note.setText(bundle.getString("Note"));
+                } else {
+                    note.setHint("Type a description");
+                }
+                iconResourceId = bundle.getInt("Icon", R.drawable.cell_phone_bill_dark);
+                datePicker.updateDate(bundle.getInt("Year"), bundle.getInt("Month"), bundle.getInt("Day"));
+            }
             categories.setText(bundle.getString("Subcategory") + "");
             subcategory.setText(bundle.getString("Category") + "");
             if (bundle.getBoolean("Type")) {
@@ -96,16 +104,14 @@ public class AddFragment extends Fragment {
             } else {
                 expenseButton.toggle();
             }
-            note.setText(bundle.getString("Note"));
-            iconResourceId = bundle.getInt("Icon", R.drawable.cell_phone_bill_dark);
-            datePicker.updateDate(bundle.getInt("Year"), bundle.getInt("Month"), bundle.getInt("Day"));
+
         }
         iconResourceId = R.drawable.gas_station_dark;
         final Activity currentActivity = getActivity();
         categories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CategoryFragment categoryFragment = new CategoryFragment();
+                AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
                 Bundle bundle = new Bundle();
                 if (incomeButton.isChecked()) {
                     bundle.putBoolean("Type", true);
@@ -121,9 +127,9 @@ public class AddFragment extends Fragment {
                 bundle.putInt("Month", datePicker.getMonth());
                 bundle.putInt("Day", datePicker.getDayOfMonth());
                 bundle.putInt("Year", datePicker.getYear());
-                categoryFragment.setArguments(bundle);
+                addCategoryFragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, categoryFragment);
+                fragmentTransaction.replace(R.id.fragment_container, addCategoryFragment);
                 fragmentTransaction.commit();
             }
         });
@@ -134,7 +140,7 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (amount.getText().toString().equals("")) {
-                    Toast.makeText(getActivity(),"Invalid Amount",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Invalid Amount", Toast.LENGTH_LONG).show();
                     return;
                 }
                 Float amountV = Float.parseFloat(amount.getText().toString());
