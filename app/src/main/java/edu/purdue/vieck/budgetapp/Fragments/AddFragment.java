@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +42,7 @@ public class AddFragment extends Fragment {
     private TextView categories;
     private EditText amount, category, subcategory, month, day, year, note;
 
-    private ImageButton submitButton;
+    private FloatingActionButton floatingActionButton;
 
     @Override
     public void onAttach(Activity activity) {
@@ -81,7 +82,7 @@ public class AddFragment extends Fragment {
         amount = (EditText) view.findViewById(R.id.edittext_amount);
         note = (EditText) view.findViewById(R.id.edittext_note);
         datePicker = (DatePicker) view.findViewById(R.id.datepicker);
-        submitButton = (ImageButton) view.findViewById(R.id.imagebtn_submit);
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab_next);
 
         databaseHandler = new DatabaseHandler(getActivity());
 
@@ -136,7 +137,7 @@ public class AddFragment extends Fragment {
 
         calendar = Calendar.getInstance();
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (amount.getText().toString().equals("")) {

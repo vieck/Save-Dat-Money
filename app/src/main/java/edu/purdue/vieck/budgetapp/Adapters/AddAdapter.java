@@ -3,25 +3,20 @@ package edu.purdue.vieck.budgetapp.Adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.AddItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTree;
-import edu.purdue.vieck.budgetapp.Fragments.AddFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -33,12 +28,16 @@ public class AddAdapter extends BaseAdapter {
     List<AddTree.Node> categoryNodes;
     Bundle bundle;
     int selection;
+    int primaryColor, primaryColorDark, accentColor;
 
-    public AddAdapter(Context context, List<AddTree.Node> objects, Bundle bundle) {
+    public AddAdapter(Context context, List<AddTree.Node> objects, Bundle bundle, int primaryColor, int primaryColorDark, int accentColor) {
         this.context = context;
         this.categoryNodes = objects;
         this.bundle = bundle;
         selection = -1;
+        this.primaryColor = primaryColor;
+        this.primaryColorDark = primaryColorDark;
+        this.accentColor = accentColor;
     }
 
     public void setSelection(int selection) {
@@ -49,8 +48,9 @@ public class AddAdapter extends BaseAdapter {
         return selection;
     }
 
-    public void updateSelection() {
-
+    public void updateSelection(int selection) {
+        this.selection = selection;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class AddAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.item_add, parent, false);
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linear_layout);
+        RelativeLayout linearLayout = (RelativeLayout) view.findViewById(R.id.relative_layout);
         if (position == selection) {
             view.setBackgroundColor(Color.BLACK);
         }

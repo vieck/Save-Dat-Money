@@ -3,6 +3,7 @@ package edu.purdue.vieck.budgetapp.Fragments;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.TypedValue;
@@ -10,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import edu.purdue.vieck.budgetapp.Adapters.AddAdapter;
@@ -25,28 +25,32 @@ public class AddSubCategoryFragment extends Fragment {
     private ListView listView;
     private LinearLayoutManager layoutManager;
     private AddAdapter addAdapter;
-    private ImageView imageView;
+    private FloatingActionButton floatingActionButtonFoward, floatingActionButtonBackwards;
     TypedValue primaryDarkColor;
     TypedValue primaryColor;
+    private TypedValue accentColor;
     private Bundle bundle;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_category, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_subcategory, container, false);
         bundle = getArguments();
         int position = bundle.getInt("Position");
         bundle.remove("Position");
         listView = (ListView) view.findViewById(R.id.listview);
-        imageView = (ImageView) view.findViewById(R.id.imagebtn_submit);
+        floatingActionButtonBackwards = (FloatingActionButton) view.findViewById(R.id.fab_back);
+        floatingActionButtonFoward = (FloatingActionButton) view.findViewById(R.id.fab_next);
         layoutManager = new LinearLayoutManager(getActivity());
         primaryColor = new TypedValue();
         primaryDarkColor = new TypedValue();
+        accentColor = new TypedValue();
         getActivity().getTheme().resolveAttribute(R.attr.colorPrimary, primaryColor, true);
         getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, primaryDarkColor, true);
+        getActivity().getTheme().resolveAttribute(R.attr.colorAccent, accentColor, true);
 
         final AddTree tree = createTree(position);
-        addAdapter = new AddAdapter(getActivity(), tree.getChildNodes(), bundle);
+        addAdapter = new AddAdapter(getActivity(), tree.getChildNodes(), bundle, primaryColor.data, primaryDarkColor.data, accentColor.data);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter(addAdapter);
@@ -54,21 +58,26 @@ public class AddSubCategoryFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 int prevPosition = listView.getCheckedItemPosition();
-                if (prevPosition != ListView.INVALID_POSITION) {
-                    listView.getAdapter().getView(prevPosition, null, listView).setBackgroundColor(primaryColor.data);
-                }
-                listView.setItemChecked(position, true);
-                view.setBackgroundColor(primaryDarkColor.data);
+                addAdapter.updateSelection(position);
             }
         });
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        floatingActionButtonBackwards.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
+                addCategoryFragment.setArguments(bundle);
+                getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container, addCategoryFragment).commit();
+            }
+        });
+
+        floatingActionButtonFoward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = listView.getCheckedItemPosition();
                 if (position != ListView.INVALID_POSITION) {
                     AddItem item = tree.getChildNodes().get(position).getItem();
-                    bundle.putString("Category", item.getType());
+                    bundle.putString("Category",item.getType());
                     bundle.putString("Subcategory", item.getSubType());
                     AddFragment addFragment = new AddFragment();
                     addFragment.setArguments(bundle);

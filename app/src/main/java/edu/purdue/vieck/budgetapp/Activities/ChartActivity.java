@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,9 +19,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -47,7 +46,7 @@ public class ChartActivity extends AppCompatActivity {
 
     private int spinnerPosition;
 
-    private ImageButton addButton;
+    private FloatingActionButton addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +80,7 @@ public class ChartActivity extends AppCompatActivity {
             }
         });
         final Context context = this;
-        addButton = (ImageButton) findViewById(R.id.imagebtn_submit);
+        addButton = (FloatingActionButton) findViewById(R.id.fab_next);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

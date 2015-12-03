@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorPrimary">@color/md_white_1000</item>
         <item name="android:textColorPrimaryInverse">@color/md_black_1000</item>
-        <item name="android:colorPrimaryDark">@color/md_grey_200</item>
+        <item name="android:colorPrimaryDark">@color/md_indigo_300</item>
         <item name="android:colorBackground">@color/md_deep_purple_50</item>
         <item name="android:colorAccent">@color/md_deep_purple_200</item>
         <item name="android:textColorPrimary">@color/md_black_1000</item>
@@ -31,8 +31,8 @@
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
-    <style name="StyleFragment">
-        <item name="android:background">?android:attr/colorPrimaryDark</item>
+    <style name="StyleFragment" parent="AppTheme">
+        <item name="android:background">?android:attr/colorPrimary</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textColorHint">?android:attr/textColorSecondary</item>
     </style>

@@ -2,16 +2,15 @@ package edu.purdue.vieck.budgetapp.Fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,9 +26,10 @@ public class AddCategoryFragment extends Fragment {
     private ListView listView;
     private LinearLayoutManager layoutManager;
     private AddAdapter addAdapter;
-    private ImageView imageView;
+    private FloatingActionButton floatingActionButton;
     private TypedValue primaryColorDark;
     private TypedValue primaryColor;
+    private TypedValue accentColor;
     private Bundle bundle;
 
     @Nullable
@@ -42,15 +42,18 @@ public class AddCategoryFragment extends Fragment {
             bundle = getArguments();
         }
         listView = (ListView) view.findViewById(R.id.listview);
-        imageView = (ImageView) view.findViewById(R.id.imagebtn_submit);
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab_next);
         layoutManager = new LinearLayoutManager(getActivity());
         primaryColor = new TypedValue();
         primaryColorDark = new TypedValue();
+        accentColor = new TypedValue();
         getActivity().getTheme().resolveAttribute(R.attr.colorPrimary, primaryColor, true);
-        getActivity().getTheme().resolveAttribute(R.attr.colorPrimary, primaryColorDark, true);
+        getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, primaryColorDark, true);
+        getActivity().getTheme().resolveAttribute(R.attr.colorAccent, accentColor, true);
+
         final AddTree tree = createTree();
 
-        addAdapter = new AddAdapter(getActivity(), tree.getChildNodes(), bundle);
+        addAdapter = new AddAdapter(getActivity(), tree.getChildNodes(), bundle, primaryColor.data, primaryColorDark.data, accentColor.data);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter(addAdapter);
@@ -58,16 +61,11 @@ public class AddCategoryFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 int prevPosition = listView.getCheckedItemPosition();
-                if (addAdapter.getSelection() == -1) {
-                    addAdapter.setSelection(position);
-                    addAdapter.updateSelection();
-                } else {
-                    addAdapter.setSelection(position);
-                }
+                addAdapter.updateSelection(position);
             }
         });
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = listView.getCheckedItemPosition();

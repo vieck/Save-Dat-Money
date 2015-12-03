@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MyAppBarLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,26 +11,27 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" />
 
-    <ImageButton
-        android:id="@+id/imagebtn_submit"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_next"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@id/listview"
-        android:layout_marginBottom="-25dp"
-        android:layout_marginEnd="25dp"
-        android:background="@drawable/ripple_category"
-        android:elevation="1dp"
+        android:layout_marginBottom="-28dp"
+        android:layout_marginEnd="28dp"
+        android:scaleType="center"
         android:src="@drawable/ic_action_next_item"
         android:stateListAnimator="@anim/button_elevation"
-        android:tint="?android:textColorSecondary" />
+        android:tint="?android:colorPrimary"
+        app:backgroundTint="?android:attr/colorPrimaryDark"
+        app:borderWidth="0dp" />
 
     <View
         android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/listview"
-        android:background="?android:attr/colorPrimary"/>
+        android:background="?android:attr/colorPrimary" />
 
 
 </RelativeLayout>

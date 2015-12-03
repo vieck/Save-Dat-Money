@@ -34,17 +34,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageButton
-                    android:id="@+id/imagebtn_submit"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="end|bottom|right"
-                    android:layout_marginBottom="24dp"
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_next"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="end|bottom"
                     android:layout_marginEnd="24dp"
-                    android:background="@drawable/ripple"
+                    android:layout_marginBottom="24dp"
                     android:src="@android:drawable/ic_input_add"
+                    android:scaleType="center"
                     android:stateListAnimator="@anim/button_elevation"
-                    android:tint="?android:colorPrimary" />
+                    android:tint="?android:colorPrimary"
+                    app:backgroundTint="?android:attr/colorPrimaryDark"
+                    app:borderWidth="0dp"/>
 
                 <RelativeLayout
                     android:id="@+id/fragment_container"
@@ -54,8 +56,7 @@
                     <com.astuetz.PagerSlidingTabStrip
                         android:id="@+id/tabs"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:background="?android:attr/colorPrimaryDark" />
+                        android:layout_height="30dp" />
 
                     <android.support.v4.view.ViewPager
                         android:id="@+id/viewpager"
