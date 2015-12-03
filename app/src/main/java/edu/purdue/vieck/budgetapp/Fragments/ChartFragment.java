@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PercentFormatter;
 
@@ -154,40 +155,40 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
         if (!mDatabaseHandler.isEmpty()) {
 
-            if (mDatabaseHandler.getSpecificDateAmountByType("Income", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Income", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 4));
-                xVals.add("Income");
-                colors.add(getResources().getColor(R.color.DarkNavy));
+            if (mDatabaseHandler.getSpecificDateAmountByType("Misc", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Misc", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 4));
+                xVals.add("Misc");
+                colors.add(getResources().getColor(R.color.md_white_1000));
             }
 
             if (mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 1));
                 xVals.add("Utilities");
-                colors.add(getResources().getColor(R.color.PaleBlue));
+                colors.add(ColorTemplate.VORDIPLOM_COLORS[0]);
             }
 
             if (mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 2));
                 xVals.add("Entertainment");
-                colors.add(getResources().getColor(R.color.CottonBlue));
+                colors.add(ColorTemplate.VORDIPLOM_COLORS[1]);
             }
 
             if (mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 3));
                 xVals.add("Medical");
-                colors.add(getResources().getColor(R.color.PaleTurquoise));
+                colors.add(ColorTemplate.VORDIPLOM_COLORS[2]);
             }
 
             if (mDatabaseHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 0));
                 xVals.add("Food");
-                colors.add(getResources().getColor(R.color.NeonBlue));
+                colors.add(ColorTemplate.VORDIPLOM_COLORS[3]);
             }
 
             if (mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 5));
                 xVals.add("Insurance");
-                colors.add(getResources().getColor(R.color.SheetBlue));
+                colors.add(ColorTemplate.VORDIPLOM_COLORS[4]);
             }
 
 

@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <android.support.design.widget.FloatingActionButton
+                <!--android.support.design.widget.FloatingActionButton
                     android:id="@+id/fab_next"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
@@ -47,7 +47,7 @@
                     android:stateListAnimator="@anim/button_elevation"
                     android:tint="?android:colorPrimary"
                     app:backgroundTint="?android:attr/colorPrimaryDark"
-                    app:borderWidth="0dp" />
+                    app:borderWidth="0dp" /-->
 
                 <RelativeLayout
                     android:id="@+id/fragment_container"
@@ -57,7 +57,7 @@
                     <com.astuetz.PagerSlidingTabStrip
                         android:id="@+id/tabs"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
+                        android:layout_height="45dp" />
 
                     <android.support.v4.view.ViewPager
                         android:id="@+id/viewpager"
@@ -74,9 +74,10 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_layout"
-        style="@style/MyAppBarLayout"
+        style="@style/NavigationMenu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/nav_menu" />
+        app:menu="@menu/nav_menu"
+        app:itemIconTint="?android:attr/textColorPrimary"/>
 </android.support.v4.widget.DrawerLayout>

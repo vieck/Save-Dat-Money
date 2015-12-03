@@ -30,9 +30,10 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_layout"
-        style="@style/MyAppBarLayout"
+        style="@style/NavigationMenu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/nav_menu" />
+        app:menu="@menu/nav_menu"
+        app:itemIconTint="?android:attr/textColorPrimary"/>
 </android.support.v4.widget.DrawerLayout>

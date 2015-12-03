@@ -26,6 +26,10 @@
         <item name="android:background">?android:attr/colorPrimary</item>
     </style>
 
+    <style name="NavigationMenu" parent="AppTheme">
+        <item name="android:background">?android:attr/colorPrimary</item>
+    </style>
+
     <style name="StyleActivityAdd" parent="AppTheme">
         <item name="android:background">?android:attr/colorPrimary</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
@@ -58,7 +62,7 @@
 
     <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
         <item name="android:textColor">?android:textColorPrimary</item>
-        <item name="android:background">?android:colorPrimaryDark</item>
+        <item name="android:background">?android:colorPrimary</item>
     </style>
 
     <!-- Add Style -->

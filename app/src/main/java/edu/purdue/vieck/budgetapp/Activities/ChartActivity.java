@@ -46,8 +46,6 @@ public class ChartActivity extends AppCompatActivity {
 
     private int spinnerPosition;
 
-    private FloatingActionButton addButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,21 +77,12 @@ public class ChartActivity extends AppCompatActivity {
                 mViewPager.setCurrentItem(i);
             }
         });
-        final Context context = this;
-        addButton = (FloatingActionButton) findViewById(R.id.fab_next);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context, AddActivity.class));
-                finish();
-            }
-        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_budget, menu);
+        getMenuInflater().inflate(R.menu.menu_chart, menu);
         return true;
     }
 
@@ -106,7 +95,11 @@ public class ChartActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
-            mDatabaseHandler.deleteAll();
+           // mDatabaseHandler.deleteAll();
+            return true;
+        } else if (id == R.id.action_add) {
+            startActivity(new Intent(this, AddActivity.class));
+            finish();
             return true;
         }
 

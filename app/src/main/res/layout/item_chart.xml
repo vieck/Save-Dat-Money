@@ -22,7 +22,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:text="8-12-15"
-            android:textSize="6pt" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/budget_form_layout"
@@ -38,28 +38,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="5pt" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/cardview_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="5pt" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/cardview_subcategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="5pt" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/cardview_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="5pt" />
+                android:textSize="12sp" />
         </LinearLayout>
 
     </RelativeLayout>
