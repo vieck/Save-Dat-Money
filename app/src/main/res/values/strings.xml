@@ -12,8 +12,10 @@
     <string name="amount">Amount</string>
     <string name="expense">Expense</string>
     <string name="expenses">Expenses</string>
+    <string name="type">Type</string>
     <string name="income">Income</string>
     <string name="budget">Budget</string>
+    <string name="date">Date</string>
     <string name="note">Note</string>
 
     <string name="day">Day</string>

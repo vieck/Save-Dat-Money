@@ -24,11 +24,11 @@ public class DescriptionActivity extends AppCompatActivity {
         subcategory = (TextView) findViewById(R.id.textview_subcategory);
         date = (TextView) findViewById(R.id.textview_date);
         note = (TextView) findViewById(R.id.textview_note);
-
         amount.setText(extras.getDouble("Amount")+"");
         type.setText(extras.getString("Type"));
         category.setText(extras.getString("Category"));
         subcategory.setText(extras.getString("Subcategory"));
+        note.setText(extras.getString("Note","No note available"));
         date.setText(extras.getInt("Month") + "-" + extras.getInt("Day") + "-" + extras.getInt("Year"));
     }
 

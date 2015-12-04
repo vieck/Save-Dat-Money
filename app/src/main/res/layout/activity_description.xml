@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textview_amount"
         android:layout_alignParentStart="true"
-        style="@style/textview_label"/>
+        style="@style/textview_label"
+        android:text="@string/category"/>
 
     <TextView android:id="@+id/textview_category"
         android:layout_width="wrap_content"
@@ -33,7 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textview_amount"
         android:layout_alignParentEnd="true"
-        style="@style/textview_label"/>
+        style="@style/textview_label"
+        android:text="@string/subcategory"/>
 
     <TextView android:id="@+id/textview_subcategory"
         android:layout_width="wrap_content"
@@ -47,7 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textview_category"
         android:layout_centerHorizontal="true"
-        style="@style/textview_label"/>
+        style="@style/textview_label"
+        android:text="@string/type"/>
 
     <TextView android:id="@+id/textview_type"
         android:layout_width="wrap_content"
@@ -60,7 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textview_type"
-        style="@style/textview_label"/>
+        style="@style/textview_label"
+        android:text="@string/note"/>
 
     <TextView android:id="@+id/textview_note"
         android:layout_width="wrap_content"
@@ -73,7 +77,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textview_note"
         android:layout_centerHorizontal="true"
-        style="@style/textview_label"/>
+        style="@style/textview_label"
+        android:text="@string/date"/>
 
     <TextView android:id="@+id/textview_date"
         android:layout_width="wrap_content"

@@ -47,12 +47,12 @@
     </style>
 
     <style name="textview_label">
-        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
-        <item name="android:textSize">8pt</item>
-        <item name="android:color">@color/CottonBlue</item>
-        <item name="android:textColor">@color/White</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:color">?android:attr/colorPrimary</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <!-- Chart Style -->
@@ -137,6 +137,7 @@
 
     <!-- DASHBOARD STYLES -->
     <style name="dashboard_item_label">
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:textSize">10pt</item>
         <item name="android:textStyle">normal</item>
     </style>
