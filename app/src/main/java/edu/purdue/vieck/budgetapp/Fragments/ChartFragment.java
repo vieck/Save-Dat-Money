@@ -88,43 +88,8 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
 
         mPieChart = (PieChart) view.findViewById(R.id.pie_chart);
-        mPieChart.setDescription("");
-        mPieChart.setDescriptionColor(getResources().getColor(R.color.White));
-        mPieChart.setUsePercentValues(true);
-        mPieChart.setDragDecelerationFrictionCoef(0.95f);
-        //mTypeface = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-        mPieChart.setDrawHoleEnabled(true);
-        //mPieChart.setHoleColor(Color.WHITE);
-        mPieChart.setCenterTextColor(Color.BLACK);
-        mPieChart.setTransparentCircleColor(Color.WHITE);
-        mPieChart.setHoleRadius(45f);
-        mPieChart.setTransparentCircleRadius(45f);
-        mPieChart.setDrawCenterText(true);
-
-        mPieChart.setRotationAngle(0);
-        // enable rotation of the chart by touch
-        mPieChart.setRotationEnabled(true);
-
-        // mChart.setUnit(" €");
-        // mChart.setDrawUnitsInChart(true);
-
-        // add a selection listener
-        mPieChart.setOnChartValueSelectedListener(this);
-
-        //mPieChart.setCenterText("MPAndroidChart\nby Philipp Jahoda");
-        mPieChart.setCenterTextSize(9.5f);
-
+        mPieChart = setupPieChart(mPieChart);
         setData(3, 100);
-
-        mPieChart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
-        // mChart.spin(2000, 0, 360);
-
-        Legend l = mPieChart.getLegend();
-        l.setPosition(LegendPosition.PIECHART_CENTER);
-        l.setXEntrySpace(7f);
-        l.setYEntrySpace(7f);
-        l.setYOffset(0f);
-        l.setXOffset(5f);
         return view;
     }
 
@@ -138,6 +103,45 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             mInstance = -1;
             yInstance = -1;
         }
+    }
+
+    private PieChart setupPieChart(PieChart chart) {
+        chart.setDescription("");
+        chart.setDescriptionColor(getResources().getColor(R.color.White));
+        chart.setUsePercentValues(true);
+        chart.setDragDecelerationFrictionCoef(0.95f);
+        //mTypeface = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        chart.setDrawHoleEnabled(true);
+        //mPieChart.setHoleColor(Color.WHITE);
+        chart.setCenterTextColor(Color.BLACK);
+        chart.setTransparentCircleColor(Color.WHITE);
+        chart.setHoleRadius(45f);
+        chart.setTransparentCircleRadius(45f);
+        chart.setDrawCenterText(true);
+
+        chart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        chart.setRotationEnabled(true);
+
+        // mChart.setUnit(" €");
+        // mChart.setDrawUnitsInChart(true);
+
+        // add a selection listener
+        chart.setOnChartValueSelectedListener(this);
+
+        //mPieChart.setCenterText("MPAndroidChart\nby Philipp Jahoda");
+        chart.setCenterTextSize(9.5f);
+
+        chart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
+        // mChart.spin(2000, 0, 360);*/
+
+        Legend l = chart.getLegend();
+        l.setPosition(LegendPosition.PIECHART_CENTER);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(7f);
+        l.setYOffset(0f);
+        l.setXOffset(5f);
+        return chart;
     }
 
     private void setData(int count, float range) {
@@ -154,46 +158,46 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
         if (!mDatabaseHandler.isEmpty()) {
-
+            int index = 0;
             if (mDatabaseHandler.getSpecificDateAmountByType("Misc", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Misc", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 4));
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Misc", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), index++));
                 xVals.add("Misc");
                 colors.add(getResources().getColor(R.color.md_white_1000));
             }
 
             if (mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 1));
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), index++));
                 xVals.add("Utilities");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[0]);
             }
 
             if (mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 2));
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), index++));
                 xVals.add("Entertainment");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[1]);
             }
 
             if (mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 3));
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), index++));
                 xVals.add("Medical");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[2]);
             }
 
             if (mDatabaseHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 0));
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), index++));
                 xVals.add("Food");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[3]);
             }
 
             if (mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), 5));
+                yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()), index++));
                 xVals.add("Insurance");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[4]);
             }
 
 
             PieDataSet dataSet = new PieDataSet(yVals, "Category Legend");
-            dataSet.setSliceSpace(0f);
+            dataSet.setSliceSpace(2f);
             dataSet.setSelectionShift(5f);
 
             // add a lot of colors

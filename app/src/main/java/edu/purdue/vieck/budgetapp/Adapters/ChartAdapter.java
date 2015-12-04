@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Currency;
 import java.util.Stack;
 
 import edu.purdue.vieck.budgetapp.Activities.DescriptionActivity;
@@ -42,7 +43,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
 
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_chart, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_chart, viewGroup, false);
         mViewHolder viewHolder = new mViewHolder(view);
         return viewHolder;
     }
@@ -53,7 +54,8 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
         viewHolder.date.setText(budgetItem.getMonth() + "-" + budgetItem.getDay() + "-" + budgetItem.getYear());
         viewHolder.category.setText("" + budgetItem.getCategory());
         viewHolder.subcategory.setText("" + budgetItem.getSubcategory());
-        viewHolder.amount.setText("$ " + budgetItem.getAmount());
+        Currency currency = Currency.getInstance(context.getResources().getConfiguration().locale);
+        viewHolder.amount.setText(currency.getSymbol() + " " + budgetItem.getAmount());
         if (budgetItem.isType()) {
             viewHolder.amount.setTextColor(context.getResources().getColor(R.color.Lime));
         } else {

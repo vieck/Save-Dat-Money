@@ -36,7 +36,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.mViewHolder> {
 
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_data, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_data, viewGroup, false);
         mViewHolder viewHolder = new mViewHolder(view);
         return viewHolder;
     }

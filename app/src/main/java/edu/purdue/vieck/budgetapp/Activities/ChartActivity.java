@@ -19,8 +19,10 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -43,6 +45,7 @@ public class ChartActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private PagerSlidingTabStrip mTabLayout;
     private DatabaseHandler mDatabaseHandler;
+    private Context mContext;
 
     private int spinnerPosition;
 
@@ -58,14 +61,14 @@ public class ChartActivity extends AppCompatActivity {
 
         mDatabaseHandler = new DatabaseHandler(this);
 
+        mContext = this;
+
         mSpinner = (Spinner) findViewById(R.id.spinner);
-        spinnerPosition = 0;
-        ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(mToolbar.getContext(), R.array.chartarray, R.layout.simple_spinner_item);
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-        mSpinner.setAdapter(spinnerArrayAdapter);
+        mSpinner = setUpSpinner(mSpinner);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(mViewPager);
+
         mTabLayout = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         mTabLayout.setViewPager(mViewPager);
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
@@ -77,6 +80,7 @@ public class ChartActivity extends AppCompatActivity {
                 mViewPager.setCurrentItem(i);
             }
         });
+
     }
 
     @Override
@@ -164,6 +168,27 @@ public class ChartActivity extends AppCompatActivity {
         });
     }
 
+    public Spinner setUpSpinner(final Spinner spinner) {
+        spinnerPosition = 0;
+        ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(mToolbar.getContext(), R.array.chartarray, R.layout.simple_spinner_item);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerArrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                spinnerPosition = position;
+                Toast.makeText(mContext, "Position = " + position, Toast.LENGTH_SHORT).show();
+                adapter.changeTypeFilter(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        return spinner;
+    }
+
     /*
     * Get a list of all years back as a hashmap and sort them accorrding to year
      */
@@ -247,6 +272,12 @@ public class ChartActivity extends AppCompatActivity {
                     return;
                 }
             }
+        }
+
+        public void changeTypeFilter(int position) {
+            for (Fragment fragment : mFragmentList) {
+            }
+            notifyDataSetChanged();
         }
 
         @Override

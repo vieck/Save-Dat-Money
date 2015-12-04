@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+import java.util.Currency;
+
 import edu.purdue.vieck.budgetapp.R;
 
 public class DescriptionActivity extends AppCompatActivity {
@@ -24,7 +27,9 @@ public class DescriptionActivity extends AppCompatActivity {
         subcategory = (TextView) findViewById(R.id.textview_subcategory);
         date = (TextView) findViewById(R.id.textview_date);
         note = (TextView) findViewById(R.id.textview_note);
-        amount.setText(extras.getDouble("Amount")+"");
+        DecimalFormat df = new DecimalFormat(".##");
+        Currency currency = Currency.getInstance(getResources().getConfiguration().locale);
+        amount.setText(currency.getSymbol() + " " + df.format(extras.getDouble("Amount")));
         type.setText(extras.getString("Type"));
         category.setText(extras.getString("Category"));
         subcategory.setText(extras.getString("Subcategory"));

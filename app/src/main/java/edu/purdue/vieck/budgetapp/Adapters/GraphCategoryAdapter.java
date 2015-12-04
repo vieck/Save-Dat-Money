@@ -51,7 +51,7 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
 
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_fragment_category, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_category, parent, false);
         mViewHolder viewHolder = new mViewHolder(view);
         return viewHolder;
     }
