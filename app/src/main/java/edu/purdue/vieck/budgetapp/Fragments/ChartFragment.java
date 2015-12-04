@@ -235,6 +235,12 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         }
     }
 
+    public void updateAdapter(int position) {
+        if (mChartAdapter != null) {
+            mChartAdapter.updatePosition(position);
+        }
+    }
+
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
 

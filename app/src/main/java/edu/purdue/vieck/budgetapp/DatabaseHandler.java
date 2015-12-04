@@ -110,10 +110,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public Stack<BudgetItem> getAllDataAsStack() {
+    public Stack<BudgetItem> getAllDataAsStack(int type) {
         Stack<BudgetItem> mDataset = new Stack<>();
-        String selectQuery = "SELECT  * FROM " + TABLE_DATA
-                + " ORDER BY " + COLUMN_MONTH + " ASC," + COLUMN_YEAR + " DESC";
+        String selectQuery;
+        if (type == 2) {
+            selectQuery = "SELECT  * FROM " + TABLE_DATA
+                    + " ORDER BY " + COLUMN_MONTH + " ASC," + COLUMN_YEAR + " DESC";
+        } else {
+            selectQuery = "SELECT  * FROM " + TABLE_DATA + " WHERE " + COLUMN_TYPE + " = " + type
+                    + " ORDER BY " + COLUMN_MONTH + " ASC," + COLUMN_YEAR + " DESC";
+        }
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         cursor.moveToFirst();
@@ -208,11 +214,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
-    public Stack<BudgetItem> getSpecificMonthYearAsStack(int month, int year) {
+    public Stack<BudgetItem> getSpecificMonthYearAsStack(int month, int year, int type) {
         Stack<BudgetItem> mDataset = new Stack<>();
-        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
-                + " and " + COLUMN_YEAR + " = " + year
-                + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+        String selectQuery;
+        if (type == 2) {
+            selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
+                    + " and " + COLUMN_YEAR + " = " + year
+                    + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+        } else {
+            selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
+                    + " and " + COLUMN_YEAR + " = " + year + " and " + COLUMN_TYPE + " = " + type
+                    + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+        }
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -286,13 +299,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return amount;
     }
 
-    public float getSpecificDateAmountByType(String type, int month, int year, int category) {
+    public float getSpecificDateAmountByType(String category, int month, int year, int type) {
         float categoryPercent = 0;
-        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'";
+        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + category + "%'";
         String totalQuery = "SELECT * FROM " + TABLE_DATA;
         if (month != -1 && year != -1) {
-            if (category == 0) {
-                selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'"
+            if (type == 2) {
+                selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + category + "%'"
                         + " and " + COLUMN_MONTH + " = " + month
                         + " and " + COLUMN_YEAR + " = " + year
                         + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
@@ -300,25 +313,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 totalQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
                         + " and " + COLUMN_YEAR + " = " + year
                         + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
-            } else if (category == 1) {
-                selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'"
+            } else {
+                selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + category + "%'"
                         + " and " + COLUMN_MONTH + " = " + month
                         + " and " + COLUMN_YEAR + " = " + year
                         + " and " + COLUMN_TYPE + " = " + 1
                         + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
 
                 totalQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
-                        + " and " + COLUMN_YEAR + " = " + year + " and " + COLUMN_TYPE + " = " + 1
-                        + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
-            } else {
-                selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + type + "%'"
-                        + " and " + COLUMN_MONTH + " = " + month
-                        + " and " + COLUMN_YEAR + " = " + year
-                        + " and " + COLUMN_TYPE + " = " + 0
-                        + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
-
-                totalQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
-                        + " and " + COLUMN_YEAR + " = " + year + " and " + COLUMN_TYPE + " = " + 0
+                        + " and " + COLUMN_YEAR + " = " + year + " and " + COLUMN_TYPE + " = " + type
                         + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
             }
         }

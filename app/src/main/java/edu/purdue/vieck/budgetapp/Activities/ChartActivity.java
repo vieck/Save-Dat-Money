@@ -276,6 +276,7 @@ public class ChartActivity extends AppCompatActivity {
 
         public void changeTypeFilter(int position) {
             for (Fragment fragment : mFragmentList) {
+                ((ChartFragment) fragment).updateAdapter(position);
             }
             notifyDataSetChanged();
         }

@@ -41,10 +41,10 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
 
     public void changeMonth(int month, int year) {
         max = databaseHandler.getSpecificDateAmount(month,year);
-       Stack<BudgetItem> stack = databaseHandler.getSpecificMonthYearAsStack(month, year);
+       Stack<BudgetItem> stack = databaseHandler.getSpecificMonthYearAsStack(month, year, 2);
         String[] categories = mContext.getResources().getStringArray(R.array.categoryarray);
         for (int i = 0; i < list.size(); i++) {
-            list.get(i).setAmount(databaseHandler.getSpecificDateAmountByType(categories[i], month, year, 0));
+            list.get(i).setAmount(databaseHandler.getSpecificDateAmountByType(categories[i], month, year, 2));
         }
         notifyDataSetChanged();
     }

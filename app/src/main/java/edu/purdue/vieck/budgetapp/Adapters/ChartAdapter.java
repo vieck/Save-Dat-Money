@@ -35,10 +35,19 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
         this.year = year;
         databaseHandler = new DatabaseHandler(context);
         if (month != -1 || year != -1) {
-            mDataset = databaseHandler.getSpecificMonthYearAsStack(month, year);
+            mDataset = databaseHandler.getSpecificMonthYearAsStack(month, year, 0);
         } else {
-            mDataset = databaseHandler.getAllDataAsStack();
+            mDataset = databaseHandler.getAllDataAsStack(0);
         }
+    }
+
+    public void updatePosition(int position) {
+        if (month != -1 || year != -1) {
+            mDataset = databaseHandler.getSpecificMonthYearAsStack(month, year, position);
+        } else {
+            mDataset = databaseHandler.getAllDataAsStack(position);
+        }
+        notifyDataSetChanged();
     }
 
     @Override

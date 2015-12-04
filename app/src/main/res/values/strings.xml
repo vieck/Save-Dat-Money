@@ -43,9 +43,9 @@
 
     <!-- FRAGMENT CHART -->
     <string-array name="chartarray">
-        <item>Both</item>
-        <item>Income</item>
         <item>Expense</item>
+        <item>Income</item>
+        <item>Both</item>
     </string-array>
 
     <!-- FRAGMENT GRAPH -->
