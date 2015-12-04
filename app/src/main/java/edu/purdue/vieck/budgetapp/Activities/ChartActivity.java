@@ -202,11 +202,13 @@ public class ChartActivity extends AppCompatActivity {
         chartFragment.setArguments(bundle);
         adapter.addFragment(chartFragment, "Total");
         HashMap<Integer, List<BudgetItem>> years = mDatabaseHandler.getAllYearsAsHashmap();
+
+        //Check if the arraylist is null first
         if (years != null) {
             ArrayList<Integer> uniqueMonths = new ArrayList<>();
             Integer[] keys = years.keySet().toArray(new Integer[years.keySet().size()]);
 
-            //Insertion sorting hashmap keys
+            //Sort hashmap keys
             for (int i = 0; i < keys.length; i++) {
                 int temp = keys[i];
                 for (int j = i + 1; j < keys.length; j++) {
@@ -218,6 +220,7 @@ public class ChartActivity extends AppCompatActivity {
                 }
             }
 
+            //Sort years in hashmap keys
             for (int i : keys) {
                 List<BudgetItem> budgetItems = years.get(i);
                 for (BudgetItem element : budgetItems) {

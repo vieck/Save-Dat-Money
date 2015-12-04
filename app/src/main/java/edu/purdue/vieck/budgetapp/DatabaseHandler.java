@@ -301,8 +301,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public float getSpecificDateAmountByType(String category, int month, int year, int type) {
         float categoryPercent = 0;
-        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + category + "%'";
-        String totalQuery = "SELECT * FROM " + TABLE_DATA;
+        String selectQuery;
+        String totalQuery;
         if (month != -1 && year != -1) {
             if (type == 2) {
                 selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + category + "%'"
@@ -317,12 +317,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + category + "%'"
                         + " and " + COLUMN_MONTH + " = " + month
                         + " and " + COLUMN_YEAR + " = " + year
-                        + " and " + COLUMN_TYPE + " = " + 1
+                        + " and " + COLUMN_TYPE + " = " + type
                         + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
 
                 totalQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
                         + " and " + COLUMN_YEAR + " = " + year + " and " + COLUMN_TYPE + " = " + type
                         + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+            }
+        } else {
+            if(type == 2) {
+                selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + category + "%'";
+                totalQuery = "SELECT * FROM " + TABLE_DATA;
+            } else {
+                selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + category + "%'"
+                        + " and " + COLUMN_TYPE + " = " + type;
+                totalQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_TYPE + " = " + type;
             }
         }
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
