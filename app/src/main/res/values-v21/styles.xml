@@ -78,7 +78,7 @@
 
     <!-- Left Right Date Styles -->
     <style name="date_container">
-        <item name="android:background">?android:colorPrimaryDark</item>
+        <item name="android:background">?android:colorBackground</item>
     </style>
     
     <style name="date_textview">

@@ -21,9 +21,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize" />
 
-                <RelativeLayout android:id="@+id/fragment_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+            <RelativeLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </android.support.design.widget.AppBarLayout>
     </android.support.design.widget.CoordinatorLayout>
@@ -34,6 +35,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/nav_menu"
-        app:itemIconTint="?android:attr/textColorPrimary"/>
+        app:itemIconTint="?android:attr/textColorPrimary"
+        app:menu="@menu/nav_menu" />
 </android.support.v4.widget.DrawerLayout>

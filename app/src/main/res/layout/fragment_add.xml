@@ -12,8 +12,8 @@
         style="@style/edittext_amount_add_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:hint="@string/amount"
         android:inputType="numberDecimal" />
 
@@ -25,15 +25,16 @@
         android:layout_alignBaseline="@id/label_note"
         android:layout_below="@id/edittext_amount"
         android:hint="@string/edittext_note_hint"
-        android:maxLength="150"/>
+        android:maxLength="150" />
 
-    <TextView android:id="@+id/textview_note"
+    <TextView
+        android:id="@+id/textview_note"
+        style="@style/textview_add_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edittext_note"
-        style="@style/textview_add_note"
         android:layout_alignStart="@id/edittext_note"
-        android:text="@string/textview_note_description"/>
+        android:layout_below="@id/edittext_note"
+        android:text="@string/textview_note_description" />
 
     <EditText
         android:id="@+id/edittext_category"
@@ -41,35 +42,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textview_note"
-        android:hint="@string/category"/>
+        android:hint="@string/category" />
 
     <EditText
         android:id="@+id/edittext_subcategory"
         style="@style/edittext_add_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edittext_category"/>
+        android:layout_below="@id/edittext_category" />
 
-    <RadioGroup android:id="@+id/radio_group"
+    <RadioGroup
+        android:id="@+id/radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/edittext_subcategory"
-        android:layout_marginStart="50dp"
         android:layout_marginBottom="12dp"
+        android:layout_marginStart="50dp"
         android:orientation="horizontal">
 
-        <RadioButton android:id="@+id/income__button"
+        <RadioButton
+            android:id="@+id/income__button"
             style="@style/button_add_fragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/income" />
 
-        <RadioButton android:id="@+id/expense_button"
+        <RadioButton
+            android:id="@+id/expense_button"
+            style="@style/button_add_fragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/button_add_fragment"
-            android:text="@string/expense"
-            android:checked="true"/>
+            android:checked="true"
+            android:text="@string/expense" />
     </RadioGroup>
 
     <DatePicker
@@ -80,7 +84,7 @@
         android:layout_centerHorizontal="true"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
-        android:yearListSelectorColor="?android:attr/colorAccent"/>
+        android:yearListSelectorColor="?android:attr/colorAccent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_next"

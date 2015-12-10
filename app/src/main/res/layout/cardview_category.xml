@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_margin="5dp"
     android:orientation="vertical"
-    cardview:cardBackgroundColor="@color/PaleBlue">
+    cardview:cardBackgroundColor="?android:attr/colorPrimary">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,7 +27,6 @@
             android:layout_alignTop="@id/imageview"
             android:layout_margin="5dp"
             android:layout_toEndOf="@id/imageview"
-            android:textColor="@color/CottonBlue"
             android:textSize="8pt" />
 
         <TextView
@@ -38,16 +37,14 @@
             android:layout_below="@id/label_category"
             android:layout_marginBottom="12dp"
             android:layout_marginRight="12dp"
-            android:text="@string/amount"
-            android:textColor="@color/CottonBlue" />
+            android:text="@string/amount"/>
 
         <TextView
             android:id="@+id/textview_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/label_amount"
-            android:layout_toEndOf="@id/label_amount"
-            android:textColor="@color/LimeGreen" />
+            android:layout_toEndOf="@id/label_amount"/>
 
         <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
             android:id="@+id/percentage_bar"
@@ -56,7 +53,7 @@
             android:layout_below="@id/label_amount"
             app:rcBackgroundColor="@color/Black"
             app:rcBackgroundPadding="2dp"
-            app:rcProgressColor="@color/CottonBlue"
+            app:rcProgressColor="?android:attr/colorAccent"
             app:rcRadius="10dp" />
 
     </RelativeLayout>

@@ -23,11 +23,13 @@
                 style="@style/MyAppBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize">
-                <Spinner android:id="@+id/spinner"
-                    android:background="?android:colorPrimary"
+
+                <Spinner
+                    android:id="@+id/spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                </android.support.v7.widget.Toolbar>
+                    android:layout_height="wrap_content"
+                    android:background="?android:colorPrimary" />
+            </android.support.v7.widget.Toolbar>
 
             <FrameLayout
                 android:id="@+id/frame_layout"
@@ -75,6 +77,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/nav_menu"
-        app:itemIconTint="?android:attr/textColorPrimary"/>
+        app:itemIconTint="?android:attr/textColorPrimary"
+        app:menu="@menu/nav_menu" />
 </android.support.v4.widget.DrawerLayout>

@@ -22,7 +22,12 @@
                 android:id="@+id/toolbar"
                 style="@style/MyAppBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize" />
+                android:layout_height="?attr/actionBarSize" >
+                <Spinner android:id="@+id/spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/colorPrimary"/>
+                </android.support.v7.widget.Toolbar>
 
             <RelativeLayout
                 android:id="@+id/fragment_container"
@@ -32,8 +37,7 @@
                 <com.astuetz.PagerSlidingTabStrip
                     android:id="@+id/tabs"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:background="?android:attr/colorPrimaryDark" />
+                    android:layout_height="30dp" />
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewpager"
@@ -51,6 +55,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/nav_menu"
-        app:itemIconTint="?android:attr/textColorPrimary"/>
+        app:itemIconTint="?android:attr/textColorPrimary"
+        app:menu="@menu/nav_menu" />
 </android.support.v4.widget.DrawerLayout>

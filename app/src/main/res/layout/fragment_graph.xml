@@ -9,7 +9,7 @@
     <com.hookedonplay.decoviewlib.DecoView
         android:id="@+id/quick_chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/textPercentage"

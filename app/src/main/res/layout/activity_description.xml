@@ -1,93 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MyAppBarLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    style="@style/MyAppBarLayout"
     tools:context="edu.purdue.vieck.budgetapp.Activities.DescriptionActivity">
 
-    <TextView android:id="@+id/textview_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        style="@style/textview_label"/>
-
-    <TextView android:id="@+id/label_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textview_amount"
-        android:layout_alignParentStart="true"
+    <TextView
+        android:id="@+id/textview_amount"
         style="@style/textview_label"
-        android:text="@string/category"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
 
-    <TextView android:id="@+id/textview_category"
+    <TextView
+        android:id="@+id/label_category"
+        style="@style/textview_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/textview_amount"
+        android:text="@string/category" />
+
+    <TextView
+        android:id="@+id/textview_category"
+        style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@id/label_category"
-        android:layout_below="@id/label_category"
-        style="@style/textview_label"/>
+        android:layout_below="@id/label_category" />
 
-    <TextView android:id="@+id/label_subcategory"
+    <TextView
+        android:id="@+id/label_subcategory"
+        style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textview_amount"
         android:layout_alignParentEnd="true"
-        style="@style/textview_label"
-        android:text="@string/subcategory"/>
+        android:layout_below="@id/textview_amount"
+        android:text="@string/subcategory" />
 
-    <TextView android:id="@+id/textview_subcategory"
+    <TextView
+        android:id="@+id/textview_subcategory"
+        style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@id/label_subcategory"
-        android:layout_below="@id/label_category"
-        style="@style/textview_label"/>
+        android:layout_below="@id/label_category" />
 
-    <TextView android:id="@+id/label_type"
+    <TextView
+        android:id="@+id/label_type"
+        style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textview_category"
         android:layout_centerHorizontal="true"
-        style="@style/textview_label"
-        android:text="@string/type"/>
+        android:text="@string/type" />
 
-    <TextView android:id="@+id/textview_type"
+    <TextView
+        android:id="@+id/textview_type"
+        style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/label_type"
-        android:layout_centerHorizontal="true"
-        style="@style/textview_label"/>
+        android:layout_centerHorizontal="true" />
 
-    <TextView android:id="@+id/label_note"
+    <TextView
+        android:id="@+id/label_note"
+        style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textview_type"
-        style="@style/textview_label"
-        android:text="@string/note"/>
+        android:text="@string/note" />
 
-    <TextView android:id="@+id/textview_note"
+    <TextView
+        android:id="@+id/textview_note"
+        style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/label_note"
-        style="@style/textview_label"/>
+        android:layout_below="@id/label_note" />
 
-    <TextView android:id="@+id/label_date"
+    <TextView
+        android:id="@+id/label_date"
+        style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textview_note"
         android:layout_centerHorizontal="true"
-        style="@style/textview_label"
-        android:text="@string/date"/>
+        android:text="@string/date" />
 
-    <TextView android:id="@+id/textview_date"
+    <TextView
+        android:id="@+id/textview_date"
+        style="@style/textview_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/label_date"
-        android:layout_centerHorizontal="true"
-        style="@style/textview_label"/>
+        android:layout_centerHorizontal="true" />
 
-    <ImageView android:id="@+id/image"
+    <ImageView
+        android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

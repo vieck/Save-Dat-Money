@@ -21,7 +21,6 @@ import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
 
-import edu.purdue.vieck.budgetapp.Fragments.GraphFragment;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentCategory;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentOverview;
 import edu.purdue.vieck.budgetapp.R;
@@ -34,7 +33,6 @@ public class GraphActivity extends AppCompatActivity {
     private NavigationView mNavigationView;
     private ViewPager mViewPager;
     private PagerSlidingTabStrip mTabLayout;
-    private GraphFragment graphFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

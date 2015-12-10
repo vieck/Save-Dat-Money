@@ -1,53 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MyAppBarLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true"
     android:orientation="vertical">
 
-        <LinearLayout android:id="@+id/relative_layout"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/relative_layout"
+        style="@style/date_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <ImageButton
+            android:id="@+id/left_arrow"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:tint="?android:attr/textColorPrimary"
+        android:src="@drawable/ic_action_back" />
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentTop="true"
-            android:weightSum="3"
-            style="@style/date_container">
-            <ImageButton android:id="@+id/left_arrow"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_action_back"
-                android:background="?android:colorPrimaryDark"
-                android:layout_weight="1"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/label_month"
+                style="@style/date_textview"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1">
-                <TextView android:id="@+id/label_month"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    style="@style/date_textview"
-                    android:text="@string/month"/>
+                android:text="@string/month" />
 
-                <TextView android:id="@+id/label_year"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    style="@style/date_textview"
-                    android:text="@string/year"/>
-            </LinearLayout>
-
-            <ImageButton android:id="@+id/right_arrow"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_action_forward"
-                android:background="?android:colorPrimaryDark"
-                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/label_year"
+                style="@style/date_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/year" />
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/right_arrow"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_action_forward"
+            android:tint="?android:attr/textColorPrimary"/>
+    </LinearLayout>
 
 
     <ListView

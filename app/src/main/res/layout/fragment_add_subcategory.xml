@@ -15,8 +15,8 @@
         android:id="@+id/fab_next"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_alignParentEnd="true"
         android:layout_alignBottom="@id/listview"
+        android:layout_alignParentEnd="true"
         android:layout_marginBottom="-28dp"
         android:layout_marginEnd="25dp"
         android:scaleType="center"
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/listview"
-        android:background="?android:attr/colorPrimary"/>
+        android:background="?android:attr/colorPrimary" />
 
 
 </RelativeLayout>
