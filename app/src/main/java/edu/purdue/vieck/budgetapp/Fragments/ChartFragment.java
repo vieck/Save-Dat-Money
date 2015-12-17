@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -73,7 +72,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.budget_recycler_view);
-        mChartAdapter = new ChartAdapter(mContext, month, year, 2);
+        mChartAdapter = new ChartAdapter(mContext, month, year, type);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(mChartAdapter);
 
@@ -90,7 +89,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
         mPieChart = (PieChart) view.findViewById(R.id.pie_chart);
         mPieChart = setupPieChart(mPieChart);
-        setData(2);
+        setData(type);
         return view;
     }
 
@@ -198,27 +197,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             PieDataSet dataSet = new PieDataSet(yVals, "Category Legend");
             dataSet.setSliceSpace(2f);
             dataSet.setSelectionShift(5f);
-
-            // add a lot of colors
-
-        /*for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
-        colors.add(ColorTemplate.getHoloBlue());
-        */
-
             dataSet.setColors(colors);
 
             PieData data = new PieData(xVals, dataSet);
@@ -254,6 +232,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
                 "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
                         + ", DataSet index: " + dataSetIndex);
     }
+
     @Override
     public void onNothingSelected() {
         Log.i("PieChart", "nothing selected");
