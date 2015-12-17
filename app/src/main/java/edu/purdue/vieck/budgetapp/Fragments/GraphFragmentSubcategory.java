@@ -51,7 +51,7 @@ public class GraphFragmentSubcategory extends Fragment {
             item.setAmount(databaseHandler.getSpecificDateAmountByType(subcategories[i], months.get(0).getMonth(), months.get(0).getYear(), 0));
             list.add(item);
         }
-        adapter = new GraphCategoryAdapter(getActivity(), list, months.get(0).getMonth(), months.get(0).getYear());
+        adapter = new GraphCategoryAdapter(getActivity(), list, months.get(0).getMonth(), months.get(0).getYear(), 0);
         return adapter;
     }
 }

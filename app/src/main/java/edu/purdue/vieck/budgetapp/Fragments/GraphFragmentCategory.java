@@ -33,7 +33,7 @@ public class GraphFragmentCategory extends Fragment {
     private LinkedList<BudgetItem> months;
     ImageButton left, right;
     TextView monthTxt, yearTxt;
-    int count;
+    private int count, type;
 
     @Nullable
     @Override
@@ -51,7 +51,9 @@ public class GraphFragmentCategory extends Fragment {
         left = (ImageButton) view.findViewById(R.id.left_arrow);
         right = (ImageButton) view.findViewById(R.id.right_arrow);
 
-        if (!databaseHandler.isEmpty()) {
+        type = 0;
+
+        if (!databaseHandler.isEmpty(type)) {
             months = databaseHandler.getAllUniqueMonthsAsLinkedList();
             count = months.size() - 1;
 
@@ -115,10 +117,31 @@ public class GraphFragmentCategory extends Fragment {
             item = new AddTreeItem();
             item.setDrawableId(categoryImages[i]);
             item.setName(categories[i]);
-            item.setAmount(databaseHandler.getSpecificDateAmountByType(categories[i], months.get(0).getMonth(), months.get(0).getYear(), 0));
+            item.setAmount(databaseHandler.getSpecificDateAmountByType(categories[i], months.get(0).getMonth(), months.get(0).getYear(), type));
             list.add(item);
         }
-        adapter = new GraphCategoryAdapter(getActivity(), list, months.get(count).getMonth(), months.get(count).getYear());
+        adapter = new GraphCategoryAdapter(getActivity(), list, months.get(count).getMonth(), months.get(count).getYear(), type);
         return adapter;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public void updateAdapter() {
+        if (!databaseHandler.isEmpty(type)) {
+            months = databaseHandler.getAllUniqueMonthsAsLinkedList();
+            count = months.size() - 1;
+            monthTxt.setText(months.get(count).getMonthName());
+            yearTxt.setText("" + months.get(count).getYear());
+            adapter = makeAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            BudgetItem item = months.get(count);
+            adapter.changeMonth(item.getMonth(), item.getDay()
+            );
+        } else {
+            monthTxt.setText("No Data");
+            yearTxt.setText("");
+        }
     }
 }

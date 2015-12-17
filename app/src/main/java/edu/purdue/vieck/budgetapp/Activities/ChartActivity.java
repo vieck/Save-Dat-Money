@@ -99,7 +99,7 @@ public class ChartActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
-           // mDatabaseHandler.deleteAll();
+           mDatabaseHandler.deleteAll();
             return true;
         } else if (id == R.id.action_add) {
             startActivity(new Intent(this, AddActivity.class));
@@ -168,7 +168,7 @@ public class ChartActivity extends AppCompatActivity {
         });
     }
 
-    public Spinner setUpSpinner(final Spinner spinner) {
+    private Spinner setUpSpinner(final Spinner spinner) {
         spinnerPosition = 0;
         ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(mToolbar.getContext(), R.array.chartarray, R.layout.simple_spinner_item);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
@@ -201,7 +201,7 @@ public class ChartActivity extends AppCompatActivity {
         bundle.putInt("year", -1);
         chartFragment.setArguments(bundle);
         adapter.addFragment(chartFragment, "Total");
-        HashMap<Integer, List<BudgetItem>> years = mDatabaseHandler.getAllYearsAsHashmap();
+        HashMap<Integer, List<BudgetItem>> years = mDatabaseHandler.getAllYearsAsHashmap(2);
 
         //Check if the arraylist is null first
         if (years != null) {
@@ -277,9 +277,15 @@ public class ChartActivity extends AppCompatActivity {
             }
         }
 
+        public void removeFragment(int position) {
+            mFragmentList.remove(position);
+            notifyDataSetChanged();
+        }
+
         public void changeTypeFilter(int position) {
-            for (Fragment fragment : mFragmentList) {
-                ((ChartFragment) fragment).updateAdapter(position);
+            for (int i = 0; i < mFragmentList.size(); i++) {
+                ChartFragment fragment = (ChartFragment) mFragmentList.get(i);
+                fragment.updateAdapter(position);
             }
             notifyDataSetChanged();
         }

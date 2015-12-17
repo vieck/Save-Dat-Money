@@ -155,7 +155,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         ArrayList<String> xVals = new ArrayList<String>();
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        if (!mDatabaseHandler.isEmpty()) {
+        if (!mDatabaseHandler.isEmpty(type)) {
             int index = 0;
             if (mDatabaseHandler.getSpecificDateAmountByType("Misc", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 yVals.add(new Entry(mDatabaseHandler.getSpecificDateAmountByType("Misc", month, year, type), index++));

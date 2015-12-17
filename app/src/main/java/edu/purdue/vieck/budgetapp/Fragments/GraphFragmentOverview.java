@@ -59,7 +59,7 @@ public class GraphFragmentOverview extends Fragment {
         databaseHandler = new DatabaseHandler(getActivity());
         monthTxt = (TextView) view.findViewById(R.id.label_month);
         yearTxt = (TextView) view.findViewById(R.id.label_year);
-        if (!databaseHandler.isEmpty()) {
+        if (!databaseHandler.isEmpty(2)) {
             months = databaseHandler.getAllUniqueMonthsAsList();
             count = months.size() - 1;
             monthTxt.setText(months.get(count).getMonthName());

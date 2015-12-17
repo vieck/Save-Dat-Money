@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.github.mikephil.charting.charts.PieChart;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -91,8 +93,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return budgetItem;
     }
 
-    public boolean isEmpty() {
-        Cursor mCursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_DATA, null);
+    public boolean isEmpty(int type) {
+        Cursor mCursor;
+        if (type == 2) {
+            mCursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_DATA, null);
+        } else {
+            mCursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_TYPE + " = " + type, null);
+        }
         Boolean rowExists;
 
         if (mCursor.moveToFirst())
@@ -146,10 +153,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
-    public HashMap<Integer, List<BudgetItem>> getAllYearsAsHashmap() {
+    public HashMap<Integer, List<BudgetItem>> getAllYearsAsHashmap(int type) {
         HashMap<Integer, List<BudgetItem>> mDataset = new HashMap<>();
-        String selectQuery = "SELECT * FROM " + TABLE_DATA
-                + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+        String selectQuery;
+        if (type == 2) {
+            selectQuery = "SELECT * FROM " + TABLE_DATA
+                    + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+        } else {
+            selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_TYPE + " = " + type
+                    + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+        }
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
