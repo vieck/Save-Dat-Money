@@ -169,10 +169,11 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     private Spinner setUpSpinner(final Spinner spinner) {
-        spinnerPosition = 0;
+        spinnerPosition = 2;
         ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(mToolbar.getContext(), R.array.chartarray, R.layout.simple_spinner_item);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerArrayAdapter);
+        spinner.setSelection(2);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -283,8 +284,12 @@ public class ChartActivity extends AppCompatActivity {
         }
 
         public void changeTypeFilter(int position) {
+            Log.d("Fragments", ""+mFragmentList.size());
             for (int i = 0; i < mFragmentList.size(); i++) {
                 ChartFragment fragment = (ChartFragment) mFragmentList.get(i);
+                if (fragment.getArguments() != null) {
+                    fragment.getArguments().putInt("type",position);
+                }
                 fragment.updateAdapter(position);
             }
             notifyDataSetChanged();

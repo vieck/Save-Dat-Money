@@ -38,7 +38,7 @@ import edu.purdue.vieck.budgetapp.R;
 
 public class ChartFragment extends Fragment implements OnChartValueSelectedListener {
 
-    int month, year;
+    int month, year, type;
     DatabaseHandler mDatabaseHandler;
     private int mInstance;
     private int yInstance;
@@ -67,21 +67,22 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         Bundle bundle = getArguments();
         month = bundle.getInt("month", -1);
         year = bundle.getInt("year", -1);
+        type = bundle.getInt("type", 2);
 
         mDatabaseHandler = new DatabaseHandler(mContext);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.budget_recycler_view);
-        mChartAdapter = new ChartAdapter(mContext, month, year);
+        mChartAdapter = new ChartAdapter(mContext, month, year, 2);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(mChartAdapter);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mChartAdapter = new ChartAdapter(mContext, month, year);
+                mChartAdapter = new ChartAdapter(mContext, month, year, type);
                 mRecyclerView.setAdapter(mChartAdapter);
-                setData(2);
+                setData(type);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -234,6 +235,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     }
 
     public void updateAdapter(int position) {
+        this.type = position;
         if (mChartAdapter != null) {
             mChartAdapter.updatePosition(position);
             mPieChart.clear();

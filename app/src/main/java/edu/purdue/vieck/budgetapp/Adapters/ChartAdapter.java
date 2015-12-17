@@ -25,23 +25,25 @@ import edu.purdue.vieck.budgetapp.R;
 public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder> {
 
     Context context;
-    int month, year;
+    int month, year, position;
     DatabaseHandler databaseHandler;
     Stack<BudgetItem> mDataset = new Stack<>();
 
-    public ChartAdapter(Context context, int month, int year) {
+    public ChartAdapter(Context context, int month, int year, int position) {
         this.context = context;
         this.month = month;
         this.year = year;
+        this.position = position;
         databaseHandler = new DatabaseHandler(context);
         if (month != -1 || year != -1) {
-            mDataset = databaseHandler.getSpecificMonthYearAsStack(month, year, 0);
+            mDataset = databaseHandler.getSpecificMonthYearAsStack(month, year, position);
         } else {
-            mDataset = databaseHandler.getAllDataAsStack(0);
+            mDataset = databaseHandler.getAllDataAsStack(position);
         }
     }
 
     public void updatePosition(int position) {
+        this.position = position;
         if (month != -1 || year != -1) {
             mDataset = databaseHandler.getSpecificMonthYearAsStack(month, year, position);
         } else {
