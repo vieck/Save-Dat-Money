@@ -8,5 +8,5 @@
     android:drawablePadding="5dp"
     android:drawableRight="@drawable/spinner_triangle"
     android:ellipsize="marquee"
-
+    android:textSize="18sp"
     android:singleLine="true" />

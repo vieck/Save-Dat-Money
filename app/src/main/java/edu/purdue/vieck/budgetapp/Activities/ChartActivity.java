@@ -113,7 +113,7 @@ public class ChartActivity extends AppCompatActivity {
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
     private void setUpNavigationDrawer() {
