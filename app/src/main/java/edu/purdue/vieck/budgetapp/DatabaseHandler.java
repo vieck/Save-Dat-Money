@@ -182,11 +182,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
-    public List<BudgetItem> getAllUniqueMonthsAsList() {
+    public List<BudgetItem> getAllUniqueMonthsAsList(int type) {
         List<BudgetItem> months = new ArrayList<>();
-        String selectQuery = "SELECT " + COLUMN_MONTH + "," + COLUMN_YEAR + ",COUNT(*)"
-                + " FROM " + TABLE_DATA
-                + " GROUP BY " + COLUMN_MONTH + "," + COLUMN_YEAR;
+        String selectQuery;
+        if (type == 2) {
+            selectQuery = "SELECT " + COLUMN_MONTH + "," + COLUMN_YEAR + ",COUNT(*)"
+                    + " FROM " + TABLE_DATA
+                    + " GROUP BY " + COLUMN_MONTH + "," + COLUMN_YEAR;
+        } else {
+            selectQuery = "SELECT " + COLUMN_MONTH + "," + COLUMN_YEAR + ",COUNT(*)"
+                    + " FROM " + TABLE_DATA + " WHERE " + COLUMN_TYPE + " = " + type
+                    + " GROUP BY " + COLUMN_MONTH + "," + COLUMN_YEAR;
+        }
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -200,11 +207,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return months;
     }
 
-    public LinkedList<BudgetItem> getAllUniqueMonthsAsLinkedList() {
+    public LinkedList<BudgetItem> getAllUniqueMonthsAsLinkedList(int type) {
         LinkedList<BudgetItem> months = new LinkedList<>();
-        String selectQuery = "SELECT " + COLUMN_MONTH + "," + COLUMN_YEAR + ",COUNT(*)"
-                + " FROM " + TABLE_DATA
-                + " GROUP BY " + COLUMN_MONTH + "," + COLUMN_YEAR;
+        String selectQuery;
+        if (type == 2) {
+            selectQuery = "SELECT " + COLUMN_MONTH + "," + COLUMN_YEAR + ",COUNT(*)"
+                    + " FROM " + TABLE_DATA
+                    + " GROUP BY " + COLUMN_MONTH + "," + COLUMN_YEAR;
+        } else {
+            selectQuery = "SELECT " + COLUMN_MONTH + "," + COLUMN_YEAR + ",COUNT(*)"
+                    + " FROM " + TABLE_DATA + " WHERE " + COLUMN_TYPE + " = " + type
+                    + " GROUP BY " + COLUMN_MONTH + "," + COLUMN_YEAR;
+        }
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -295,11 +309,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.close();
     }
 
-    public float getSpecificDateAmount(int month, int year) {
+    public float getSpecificDateAmount(int month, int year, int type) {
         float amount = 0;
-        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
-                + " and " + COLUMN_YEAR + " = " + year
-                + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+        String selectQuery;
+        if (type == 2) {
+            selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
+                    + " and " + COLUMN_YEAR + " = " + year
+                    + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+        } else {
+            selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
+                    + " and " + COLUMN_YEAR + " = " + year + " and " + COLUMN_TYPE + " = " + type
+                    + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
+        }
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {

@@ -26,6 +26,7 @@
                 <Spinner android:id="@+id/spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
                     android:background="?android:attr/colorPrimary"/>
                 </android.support.v7.widget.Toolbar>
 

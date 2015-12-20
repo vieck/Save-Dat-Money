@@ -16,6 +16,10 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -29,6 +33,7 @@ public class GraphActivity extends AppCompatActivity {
 
     ViewPagerAdapter adapter;
     private Toolbar mToolbar;
+    private Spinner mSpinner;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private ViewPager mViewPager;
@@ -45,6 +50,10 @@ public class GraphActivity extends AppCompatActivity {
         setUpNavigationView();
         mTabLayout = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         final Activity currentActivity = this;
+
+        mSpinner = (Spinner) findViewById(R.id.spinner);
+        mSpinner = setUpSpinner(mSpinner);
+
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -173,12 +182,36 @@ public class GraphActivity extends AppCompatActivity {
         });
     }
 
+    private Spinner setUpSpinner(final Spinner spinner) {
+        ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(mToolbar.getContext(), R.array.chartarray, R.layout.simple_spinner_item);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerArrayAdapter);
+        spinner.setSelection(2);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                adapter.changeType(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        return spinner;
+    }
+
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         String[] list = {"Overview", "Categories", "Subcategories"};
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("type",mSpinner.getSelectedItemPosition());
         GraphFragmentOverview fragmentOverview = new GraphFragmentOverview();
+        fragmentOverview.setArguments(bundle);
         adapter.addFragment(fragmentOverview, "Overview");
         GraphFragmentCategory fragmentCategory = new GraphFragmentCategory();
+        fragmentCategory.setArguments(bundle);
         adapter.addFragment(fragmentCategory, "Category");
         viewPager.setAdapter(adapter);
     }
@@ -214,6 +247,21 @@ public class GraphActivity extends AppCompatActivity {
                     return;
                 }
             }
+        }
+
+        public void changeType(int type) {
+            GraphFragmentOverview fragmentOverview = (GraphFragmentOverview) mFragmentList.get(0);
+            if (fragmentOverview.getArguments() != null) {
+                fragmentOverview.getArguments().putInt("type",type);
+            }
+            fragmentOverview.updateType(type);
+
+            GraphFragmentCategory fragmentCategory = (GraphFragmentCategory) mFragmentList.get(1);
+            if (fragmentCategory.getArguments() != null) {
+                fragmentOverview.getArguments().putInt("type", type);
+            }
+            fragmentCategory.updateType(type);
+            notifyDataSetChanged();
         }
 
         @Override

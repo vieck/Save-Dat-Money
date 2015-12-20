@@ -220,7 +220,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             setData(position);
             mPieChart.notifyDataSetChanged();
         }
-
     }
 
     @Override

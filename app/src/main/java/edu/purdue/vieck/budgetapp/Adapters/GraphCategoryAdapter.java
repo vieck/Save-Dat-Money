@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,14 +39,15 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
         this.list = list;
         this.type = type;
         databaseHandler = new DatabaseHandler(mContext);
-        max = databaseHandler.getSpecificDateAmount(month,year);
+        max = databaseHandler.getSpecificDateAmount(month,year, type);
     }
 
     public void changeMonth(int month, int year) {
-       Stack<BudgetItem> stack = databaseHandler.getSpecificMonthYearAsStack(month, year, type);
+        max = databaseHandler.getSpecificDateAmount(month,year, type);
         String[] categories = mContext.getResources().getStringArray(R.array.categoryarray);
         for (int i = 0; i < list.size(); i++) {
-            list.get(i).setAmount(databaseHandler.getSpecificDateAmountByType(categories[i], month, year, type));
+            float amount = databaseHandler.getSpecificDateAmountByType(categories[i], month, year, type);
+            list.get(i).setAmount(amount);
         }
         notifyDataSetChanged();
     }

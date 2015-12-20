@@ -47,20 +47,24 @@ public class GraphFragmentOverview extends Fragment {
     private List<BudgetItem> months;
     ImageButton left, right;
     TextView monthTxt, yearTxt;
-    int count;
+    int type, count;
     String[] categories;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph_overview, container, false);
+
+        Bundle bundle = getArguments();
+        type = bundle.getInt("type",2);
+
         lv = (ListView) view.findViewById(R.id.listview);
         categories = getResources().getStringArray(R.array.categoryarray);
         databaseHandler = new DatabaseHandler(getActivity());
         monthTxt = (TextView) view.findViewById(R.id.label_month);
         yearTxt = (TextView) view.findViewById(R.id.label_year);
-        if (!databaseHandler.isEmpty(2)) {
-            months = databaseHandler.getAllUniqueMonthsAsList();
+        if (!databaseHandler.isEmpty(type)) {
+            months = databaseHandler.getAllUniqueMonthsAsList(type);
             count = months.size() - 1;
             monthTxt.setText(months.get(count).getMonthName());
             yearTxt.setText("" + months.get(count).getYear());
@@ -132,7 +136,7 @@ public class GraphFragmentOverview extends Fragment {
         ArrayList<Entry> e1 = new ArrayList<Entry>();
         int num = 0;
         for (String category : categories) {
-            e1.add(new Entry(databaseHandler.getSpecificDateAmountByType(category,month,year, 0),num++));
+            e1.add(new Entry(databaseHandler.getSpecificDateAmountByType(category,month,year, type),num++));
         }
         LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
         d1.setLineWidth(2.5f);
@@ -173,7 +177,7 @@ public class GraphFragmentOverview extends Fragment {
 
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
         for (int i = 0; i < categories.length; i++) {
-            entries.add(new BarEntry(databaseHandler.getSpecificDateAmountByType(categories[i], month, year, 0), i));
+            entries.add(new BarEntry(databaseHandler.getSpecificDateAmountByType(categories[i], month, year, type), i));
         }
 
         BarDataSet d = new BarDataSet(entries, "Categories " + cnt);
@@ -195,7 +199,7 @@ public class GraphFragmentOverview extends Fragment {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
         for (int i = 0; i < categories.length; i++) {
-            entries.add(new Entry(databaseHandler.getSpecificDateAmountByType(categories[i],month,year, 0),i));
+            entries.add(new Entry(databaseHandler.getSpecificDateAmountByType(categories[i],month,year, type),i));
         }
 
         PieDataSet d = new PieDataSet(entries, "");
@@ -240,6 +244,20 @@ public class GraphFragmentOverview extends Fragment {
         @Override
         public int getViewTypeCount() {
             return 3; // we have 3 different item-types
+        }
+    }
+
+    public void updateType(int type) {
+        this.type = type;
+        if (!databaseHandler.isEmpty(type)) {
+            months = databaseHandler.getAllUniqueMonthsAsLinkedList(type);
+            count = months.size() - 1;
+            monthTxt.setText(months.get(count).getMonthName());
+            yearTxt.setText(months.get(count).getYear()+"");
+            changeAdapterMonth(months.get(count).getMonth(), months.get(count).getYear());
+        } else {
+            monthTxt.setText("No Data");
+            yearTxt.setText("");
         }
     }
 }

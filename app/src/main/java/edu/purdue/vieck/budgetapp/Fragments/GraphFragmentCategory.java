@@ -51,10 +51,11 @@ public class GraphFragmentCategory extends Fragment {
         left = (ImageButton) view.findViewById(R.id.left_arrow);
         right = (ImageButton) view.findViewById(R.id.right_arrow);
 
-        type = 0;
+        Bundle bundle = getArguments();
+        type = bundle.getInt("type",2);
 
         if (!databaseHandler.isEmpty(type)) {
-            months = databaseHandler.getAllUniqueMonthsAsLinkedList();
+            months = databaseHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;
 
             left.setOnClickListener(new View.OnClickListener() {
@@ -124,21 +125,16 @@ public class GraphFragmentCategory extends Fragment {
         return adapter;
     }
 
-    public void setType(int type) {
+    public void updateType(int type) {
         this.type = type;
-    }
-
-    public void updateAdapter() {
         if (!databaseHandler.isEmpty(type)) {
-            months = databaseHandler.getAllUniqueMonthsAsLinkedList();
+            months = databaseHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;
             monthTxt.setText(months.get(count).getMonthName());
-            yearTxt.setText("" + months.get(count).getYear());
+            yearTxt.setText("" + months.get(count).getYear() + "");
             adapter = makeAdapter(adapter);
             adapter.notifyDataSetChanged();
-            BudgetItem item = months.get(count);
-            adapter.changeMonth(item.getMonth(), item.getDay()
-            );
+            recyclerView.setAdapter(adapter);
         } else {
             monthTxt.setText("No Data");
             yearTxt.setText("");

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -179,7 +178,7 @@ public class ChartActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 spinnerPosition = position;
                 Toast.makeText(mContext, "Position = " + position, Toast.LENGTH_SHORT).show();
-                adapter.changeTypeFilter(position);
+                adapter.changeType(position);
             }
 
             @Override
@@ -283,14 +282,14 @@ public class ChartActivity extends AppCompatActivity {
             notifyDataSetChanged();
         }
 
-        public void changeTypeFilter(int position) {
+        public void changeType(int type) {
             Log.d("Fragments", ""+mFragmentList.size());
             for (int i = 0; i < mFragmentList.size(); i++) {
                 ChartFragment fragment = (ChartFragment) mFragmentList.get(i);
                 if (fragment.getArguments() != null) {
-                    fragment.getArguments().putInt("type",position);
+                    fragment.getArguments().putInt("type",type);
                 }
-                fragment.updateAdapter(position);
+                fragment.updateAdapter(type);
             }
             notifyDataSetChanged();
         }
