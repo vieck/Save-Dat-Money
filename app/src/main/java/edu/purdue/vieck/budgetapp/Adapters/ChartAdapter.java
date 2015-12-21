@@ -70,7 +70,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
         if (budgetItem.isType()) {
             viewHolder.amount.setTextColor(context.getResources().getColor(R.color.Lime));
         } else {
-            viewHolder.amount.setTextColor(context.getResources().getColor(R.color.Red));
+            viewHolder.amount.setTextColor(context.getResources().getColor(R.color.md_red_A400));
         }
         //viewHolder.income.setText("" + budgetItem.getCategory());
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -78,11 +78,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
             public void onClick(View v) {
                 Log.d("Deleted", "Deleted Item");
                 Bundle bundle = new Bundle();
-                if (budgetItem.isType()) {
-                    bundle.putString("Type", "Income");
-                } else {
-                    bundle.putString("Type", "Expense");
-                }
+                    bundle.putString("Type", budgetItem.getTypeAsString());
                 bundle.putString("Category", budgetItem.getCategory());
                 bundle.putString("Subcategory", budgetItem.getSubcategory());
                 bundle.putDouble("Amount",budgetItem.getAmount());

@@ -105,6 +105,12 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         category.setText(item.getCategory());
         subcategory.setText(item.getSubcategory());
         type.setText(item.getTypeAsString());
+
+        if (item.isType()) {
+            amount.setTextColor(context.getResources().getColor(R.color.Lime));
+        } else {
+            amount.setTextColor(context.getResources().getColor(R.color.md_red_A400));
+        }
         return view;
     }
 
