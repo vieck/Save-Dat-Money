@@ -264,51 +264,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
-    public ArrayList<BudgetItem> getFilteredDataAsArrayList(String filter) {
-        ArrayList<BudgetItem> mDataset = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + filter + "%'";
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                mDataset.add(convertCursorToItem(cursor));
-            } while (cursor.moveToNext());
-        }
-        sqLiteDatabase.close();
-        return mDataset;
-    }
-
-    public Stack<BudgetItem> searchDatabase(String searchParameters) {
-        Stack<BudgetItem> mDataset = new Stack<>();
-        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_CATEGORY + "LIKE '%" + searchParameters + "%' or "
-                + COLUMN_AMOUNT + " LIKE '" + searchParameters + "' or "
-                + COLUMN_DAY + " LIKE '%" + searchParameters + "%' or "
-                + COLUMN_MONTH + " LIKE '%" + searchParameters + "%' or "
-                + COLUMN_YEAR + " LIKE '%" + searchParameters + "%' or "
-                + COLUMN_NOTE + " LIKE '%" + searchParameters + "%'";
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                mDataset.add(convertCursorToItem(cursor));
-            } while (cursor.moveToNext());
-        }
-        sqLiteDatabase.close();
-        return mDataset;
-    }
-
-    public void delete(BudgetItem budgetItem) {
-        SQLiteDatabase database = this.getWritableDatabase();
-        database.delete(TABLE_DATA, COLUMN_ID + " = " + "'" + budgetItem.getCategory() + "'", null);
-        database.close();
-    }
-
-    public void deleteAll() {
-        SQLiteDatabase database = this.getWritableDatabase();
-        database.delete(TABLE_DATA, null, null);
-        database.close();
-    }
-
     public float getSpecificDateAmount(int month, int year, int type) {
         float amount = 0;
         String selectQuery;
@@ -382,4 +337,51 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
         return categoryPercent;
     }
+
+    public ArrayList<BudgetItem> getFilteredDataAsArrayList(String filter) {
+        ArrayList<BudgetItem> mDataset = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + filter + "%'";
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                mDataset.add(convertCursorToItem(cursor));
+            } while (cursor.moveToNext());
+        }
+        sqLiteDatabase.close();
+        return mDataset;
+    }
+
+    public Stack<BudgetItem> searchDatabase(String searchParameters) {
+        Stack<BudgetItem> mDataset = new Stack<>();
+        String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_CATEGORY + "LIKE '%" + searchParameters + "%' or "
+                + COLUMN_AMOUNT + " LIKE '" + searchParameters + "' or "
+                + COLUMN_DAY + " LIKE '%" + searchParameters + "%' or "
+                + COLUMN_MONTH + " LIKE '%" + searchParameters + "%' or "
+                + COLUMN_YEAR + " LIKE '%" + searchParameters + "%' or "
+                + COLUMN_NOTE + " LIKE '%" + searchParameters + "%'";
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                mDataset.add(convertCursorToItem(cursor));
+            } while (cursor.moveToNext());
+        }
+        sqLiteDatabase.close();
+        return mDataset;
+    }
+
+    public void delete(BudgetItem budgetItem) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.delete(TABLE_DATA, COLUMN_ID + " = " + "'" + budgetItem.getCategory() + "'", null);
+        database.close();
+    }
+
+    public void deleteAll() {
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.delete(TABLE_DATA, null, null);
+        database.close();
+    }
+
+
 }

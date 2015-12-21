@@ -64,6 +64,14 @@ public class BudgetItem {
         return type;
     }
 
+    public String getTypeAsString() {
+        if (type) {
+            return "Income";
+        } else {
+            return "Expense";
+        }
+    }
+
     public void setType(boolean type) {
         this.type = type;
     }

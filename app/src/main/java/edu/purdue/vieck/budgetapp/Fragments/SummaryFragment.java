@@ -10,9 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
-import edu.purdue.vieck.budgetapp.Adapters.DataAdapter;
+import edu.purdue.vieck.budgetapp.Adapters.ExpandableListViewAdapter;
 import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -20,18 +21,18 @@ import edu.purdue.vieck.budgetapp.R;
  * Created by mvieck on 9/22/2015.
  */
 public class SummaryFragment extends Fragment {
-    private RecyclerView mRecyclerView;
-    private DataAdapter mDataAdapter;
+    private ExpandableListView mExpandableListView;
+    private ExpandableListViewAdapter mDataAdapter;
     DatabaseHandler mDatabaseHandler;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_summary, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.data_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mDataAdapter = new DataAdapter(getActivity(), "");
-        mRecyclerView.setAdapter(mDataAdapter);
+        mExpandableListView = (ExpandableListView) view.findViewById(R.id.data_list);
+        //mExpandableListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mDataAdapter = new ExpandableListViewAdapter(getActivity(), "");
+        mExpandableListView.setAdapter(mDataAdapter);
         mDatabaseHandler = new DatabaseHandler(getActivity());
         return view;
     }
@@ -42,8 +43,8 @@ public class SummaryFragment extends Fragment {
     }
 
     public void filterQuery(String filter) {
-        mDataAdapter = new DataAdapter(getActivity(), filter);
-        mRecyclerView.setAdapter(mDataAdapter);
+        mDataAdapter = new ExpandableListViewAdapter(getActivity(), filter);
+        mExpandableListView.setAdapter(mDataAdapter);
         Log.d("SummaryFragment", "Filter " + filter);
     }
 }
