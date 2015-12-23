@@ -23,6 +23,7 @@ import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 public class ParseHandler {
 
     boolean empty;
+    double amount;
 
     public void addData(BudgetItem budgetItem) {
         ParseObject budgetObject = new ParseObject("BudgetItem");
@@ -201,30 +202,50 @@ public class ParseHandler {
         return mDataset;
     }
 
-    public float getSpecificDateAmount(int month, int year, int type) {
-        float amount = 0;
+    public double getSpecificDateAmount(int month, int year, int type) {
+        amount = 0;
         ParseQuery query;
         if (type == 2) {
             query = ParseQuery.getQuery("BudgetItem").whereEqualTo("year",year).whereEqualTo("month",month).addDescendingOrder("month").addDescendingOrder("year");
         } else {
             query = ParseQuery.getQuery("BudgetItem").whereEqualTo("type",type).whereEqualTo("year",year).whereEqualTo("month",month).addDescendingOrder("month").addDescendingOrder("year");
         }
+        query.findInBackground(new FindCallback<BudgetItem>(){
+            @Override
+            public void done(List<BudgetItem> objects, ParseException e) {
+                for (BudgetItem item : objects) {
+                    amount += item.getAmount();
+                }
+            }
+        });
         return amount;
     }
 
-    public float getSpecificDateAmountByType(String category, int month, int year, int type) {
-        float categoryPercent = 0;
-        return categoryPercent;
-    }
-
-    public ArrayList<BudgetItem> getFilteredDataAsArrayList(String filter) {
-        ArrayList<BudgetItem> mDataset = new ArrayList<>();
-        return mDataset;
-    }
-
-    public Stack<BudgetItem> searchDatabase(String searchParameters) {
-        Stack<BudgetItem> mDataset = new Stack<>();
-        return mDataset;
+    public double getSpecificDateAmountByType(String category, int month, int year, int type) {
+        amount = 0;
+        ParseQuery selectQuery;
+        if (month != -1 && year != -1) {
+            if (type == 2) {
+                selectQuery = ParseQuery.getQuery("BudgetItem").whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+            } else {
+                selectQuery = ParseQuery.getQuery("BudgetItem").whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+            }
+        } else {
+            if(type == 2) {
+                selectQuery = ParseQuery.getQuery("BudgetItem").whereEqualTo("category", category);
+            } else {
+                selectQuery = ParseQuery.getQuery("BudgetItem").whereEqualTo("category", category).whereEqualTo("type",type);
+            }
+        }
+        selectQuery.findInBackground(new FindCallback<BudgetItem>() {
+            @Override
+            public void done(List<BudgetItem> objects, ParseException e) {
+                for (BudgetItem item : objects) {
+                    amount += item.getAmount();
+                }
+            }
+        });
+        return amount;
     }
 
     public void delete(BudgetItem budgetItem) {
