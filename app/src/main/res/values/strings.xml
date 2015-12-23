@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Budget App</string>
 
+    <string name="parse_application_id">Gpyb8G3WsyI2ys158lag2JC4339FLzL6xdUbrQxc</string>
+    <string name="parse_client_key">RjYuaiJ9XulYRUThIOyqBvLrSeVdDPsrPHLIOjkD</string>
+
     <string name="action_settings">Settings</string>
     <string name="action_delete">Delete</string>
     <string name="action_add">Add</string>
