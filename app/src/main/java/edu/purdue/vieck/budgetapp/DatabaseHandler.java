@@ -89,7 +89,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         budgetItem.setDay(cursor.getInt(5));
         budgetItem.setMonth(cursor.getInt(6));
         budgetItem.setYear(cursor.getInt(7));
-                //"\nType " +
+        budgetItem.setNote(cursor.getString(8));
         return budgetItem;
     }
 
