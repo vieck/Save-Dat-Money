@@ -16,7 +16,7 @@ import java.util.Stack;
 
 import edu.purdue.vieck.budgetapp.Activities.DescriptionActivity;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.DatabaseHandler;
+import edu.purdue.vieck.budgetapp.ParseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -26,7 +26,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
 
     Context context;
     int month, year, position;
-    DatabaseHandler databaseHandler;
+    ParseHandler mParseHandler;
     Stack<BudgetItem> mDataset = new Stack<>();
 
     public ChartAdapter(Context context, int month, int year, int position) {
@@ -34,20 +34,20 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
         this.month = month;
         this.year = year;
         this.position = position;
-        databaseHandler = new DatabaseHandler(context);
+        mParseHandler = new ParseHandler();
         if (month != -1 || year != -1) {
-            mDataset = databaseHandler.getSpecificMonthYearAsStack(month, year, position);
+            mDataset = mParseHandler.getSpecificMonthYearAsStack(month, year, position);
         } else {
-            mDataset = databaseHandler.getAllDataAsStack(position);
+            mDataset = mParseHandler.getAllDataAsStack(position);
         }
     }
 
     public void updatePosition(int position) {
         this.position = position;
         if (month != -1 || year != -1) {
-            mDataset = databaseHandler.getSpecificMonthYearAsStack(month, year, position);
+            mDataset = mParseHandler.getSpecificMonthYearAsStack(month, year, position);
         } else {
-            mDataset = databaseHandler.getAllDataAsStack(position);
+            mDataset = mParseHandler.getAllDataAsStack(position);
         }
         notifyDataSetChanged();
     }

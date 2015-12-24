@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,7 +23,7 @@ import java.util.Calendar;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.DatabaseHandler;
+import edu.purdue.vieck.budgetapp.ParseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -32,7 +31,7 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class AddFragment extends Fragment {
 
-    DatabaseHandler databaseHandler;
+    ParseHandler mParseHandler;
     int iconResourceId;
     private Bundle mSavedState;
     private RelativeLayout relativeLayout;
@@ -84,7 +83,7 @@ public class AddFragment extends Fragment {
         datePicker = (DatePicker) view.findViewById(R.id.datepicker);
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab_next);
 
-        databaseHandler = new DatabaseHandler(getActivity());
+        mParseHandler = new ParseHandler();
 
         if (bundle != null) {
             Log.d("Bundle", bundle.toString());
@@ -144,7 +143,7 @@ public class AddFragment extends Fragment {
                     Toast.makeText(getActivity(), "Invalid Amount", Toast.LENGTH_LONG).show();
                     return;
                 }
-                Float amountV = Float.parseFloat(amount.getText().toString());
+                Double amountV = Double.parseDouble(amount.getText().toString());
                 Boolean incomeOrExpense;
                 if (incomeButton.isChecked()) {
                     incomeOrExpense = true;
@@ -157,10 +156,15 @@ public class AddFragment extends Fragment {
                 String categoryString = categories.getText().toString();
                 String subcategoryString = subcategory.getText().toString();
                 String noteString = note.getText().toString();
-                BudgetItem budgetItem = new BudgetItem(
-                        amountV, categoryString, subcategoryString, incomeOrExpense,
-                        dayNum, monthNum, yearNum, noteString, iconResourceId);
-                databaseHandler.addData(budgetItem);
+                BudgetItem budgetItem = new BudgetItem();
+                budgetItem.setAmount(amountV);
+                budgetItem.setCategory(categoryString);
+                budgetItem.setSubcategory(subcategoryString);
+                budgetItem.setDay(dayNum);
+                budgetItem.setMonth(monthNum);
+                budgetItem.setYear(yearNum);
+                budgetItem.setNote(noteString);
+                mParseHandler.addData(budgetItem);
                 Toast.makeText(getActivity(), "Added Data", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), ChartActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -1,6 +1,5 @@
 package edu.purdue.vieck.budgetapp.Fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import edu.purdue.vieck.budgetapp.R;
 

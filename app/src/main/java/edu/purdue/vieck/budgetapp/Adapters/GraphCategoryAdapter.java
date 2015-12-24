@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,10 @@ import android.widget.TextView;
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import java.util.List;
-import java.util.Stack;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTreeItem;
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentSubcategory;
+import edu.purdue.vieck.budgetapp.ParseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -29,8 +26,8 @@ import edu.purdue.vieck.budgetapp.R;
 public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdapter.mViewHolder> {
 
     private Context mContext;
-    private DatabaseHandler databaseHandler;
-    private float max;
+    private ParseHandler mParseHandler;
+    private double max;
     private List<AddTreeItem> list;
     private int type;
 
@@ -38,16 +35,16 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
         this.mContext = mContext;
         this.list = list;
         this.type = type;
-        databaseHandler = new DatabaseHandler(mContext);
-        max = databaseHandler.getSpecificDateAmount(month,year, type);
+        mParseHandler = new ParseHandler();
+        max = mParseHandler.getSpecificDateAmount(month,year, type);
     }
 
     public void changeMonth(int month, int year) {
-        max = databaseHandler.getSpecificDateAmount(month,year, type);
+        max = mParseHandler.getSpecificDateAmount(month,year, type);
         String[] categories = mContext.getResources().getStringArray(R.array.categoryarray);
         for (int i = 0; i < list.size(); i++) {
-            float amount = databaseHandler.getSpecificDateAmountByType(categories[i], month, year, type);
-            list.get(i).setAmount(amount);
+            double amount = mParseHandler.getSpecificDateAmountByType(categories[i], month, year, type);
+            //list.get(i).setAmount(amount);
         }
         notifyDataSetChanged();
     }
@@ -77,7 +74,7 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
         viewHolder.imageView.setImageDrawable(mContext.getDrawable(item.getDrawableId()));
         viewHolder.labelCategory.setText(item.getName());
         viewHolder.amount.setText("$ " + item.getAmount());
-        viewHolder.progressBar.setMax(max);
+        //viewHolder.progressBar.setMax(max);
         viewHolder.progressBar.setProgress(item.getAmount());
     }
 

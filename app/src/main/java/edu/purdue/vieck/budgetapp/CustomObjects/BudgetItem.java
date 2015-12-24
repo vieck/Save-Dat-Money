@@ -9,12 +9,10 @@ import com.parse.ParseObject;
 
 @ParseClassName("BudgetItem")
 public class BudgetItem extends ParseObject {
-   /* private String category, subcategory, note;
-    private boolean type;
-    private int day, month, year, image;
-    private float amount;*/
 
     String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
+    public BudgetItem() { }
 
     public double getAmount() {
         return getDouble("amount");

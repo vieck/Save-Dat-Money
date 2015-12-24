@@ -1,7 +1,6 @@
 package edu.purdue.vieck.budgetapp.Activities;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;

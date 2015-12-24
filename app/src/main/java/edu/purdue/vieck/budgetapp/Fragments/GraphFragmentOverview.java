@@ -5,17 +5,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -27,7 +24,6 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.BarChartItem;
@@ -35,14 +31,14 @@ import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.ChartItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.LineChartItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.PieChartItem;
-import edu.purdue.vieck.budgetapp.DatabaseHandler;
+import edu.purdue.vieck.budgetapp.ParseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
  * Created by mvieck on 10/7/2015.
  */
 public class GraphFragmentOverview extends Fragment {
-    DatabaseHandler databaseHandler;
+    ParseHandler mParseHandler;
     ListView lv;
     private List<BudgetItem> months;
     ImageButton left, right;
@@ -60,11 +56,11 @@ public class GraphFragmentOverview extends Fragment {
 
         lv = (ListView) view.findViewById(R.id.listview);
         categories = getResources().getStringArray(R.array.categoryarray);
-        databaseHandler = new DatabaseHandler(getActivity());
+        mParseHandler = new ParseHandler();
         monthTxt = (TextView) view.findViewById(R.id.label_month);
         yearTxt = (TextView) view.findViewById(R.id.label_year);
-        if (!databaseHandler.isEmpty(type)) {
-            months = databaseHandler.getAllUniqueMonthsAsList(type);
+        if (!mParseHandler.isEmpty(type)) {
+            months = mParseHandler.getAllUniqueMonthsAsList(type);
             count = months.size() - 1;
             monthTxt.setText(months.get(count).getMonthName());
             yearTxt.setText("" + months.get(count).getYear());
@@ -136,7 +132,7 @@ public class GraphFragmentOverview extends Fragment {
         ArrayList<Entry> e1 = new ArrayList<Entry>();
         int num = 0;
         for (String category : categories) {
-            e1.add(new Entry(databaseHandler.getSpecificDateAmountByType(category,month,year, type),num++));
+            e1.add(new Entry(mParseHandler.getSpecificDateAmountByType(category,month,year, type),num++));
         }
         LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
         d1.setLineWidth(2.5f);
@@ -177,7 +173,7 @@ public class GraphFragmentOverview extends Fragment {
 
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
         for (int i = 0; i < categories.length; i++) {
-            entries.add(new BarEntry(databaseHandler.getSpecificDateAmountByType(categories[i], month, year, type), i));
+            entries.add(new BarEntry(mParseHandler.getSpecificDateAmountByType(categories[i], month, year, type), i));
         }
 
         BarDataSet d = new BarDataSet(entries, "Categories " + cnt);
@@ -199,7 +195,7 @@ public class GraphFragmentOverview extends Fragment {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
         for (int i = 0; i < categories.length; i++) {
-            entries.add(new Entry(databaseHandler.getSpecificDateAmountByType(categories[i],month,year, type),i));
+            entries.add(new Entry(mParseHandler.getSpecificDateAmountByType(categories[i],month,year, type),i));
         }
 
         PieDataSet d = new PieDataSet(entries, "");
@@ -249,8 +245,8 @@ public class GraphFragmentOverview extends Fragment {
 
     public void updateType(int type) {
         this.type = type;
-        if (!databaseHandler.isEmpty(type)) {
-            months = databaseHandler.getAllUniqueMonthsAsLinkedList(type);
+        if (!mParseHandler.isEmpty(type)) {
+            months = mParseHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;
             monthTxt.setText(months.get(count).getMonthName());
             yearTxt.setText(months.get(count).getYear()+"");

@@ -30,8 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.DatabaseHandler;
 import edu.purdue.vieck.budgetapp.Fragments.ChartFragment;
+import edu.purdue.vieck.budgetapp.ParseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 
@@ -43,7 +43,7 @@ public class ChartActivity extends AppCompatActivity {
     private Spinner mSpinner;
     private ViewPager mViewPager;
     private PagerSlidingTabStrip mTabLayout;
-    private DatabaseHandler mDatabaseHandler;
+    private ParseHandler mParseHandler;
     private Context mContext;
 
     private int spinnerPosition;
@@ -58,7 +58,7 @@ public class ChartActivity extends AppCompatActivity {
         mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
         setUpNavigationView();
 
-        mDatabaseHandler = new DatabaseHandler(this);
+        mParseHandler = new ParseHandler();
 
         mContext = this;
 
@@ -98,7 +98,7 @@ public class ChartActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
-           mDatabaseHandler.deleteAll();
+           mParseHandler.deleteAll();
             return true;
         } else if (id == R.id.action_add) {
             startActivity(new Intent(this, AddActivity.class));
@@ -201,7 +201,7 @@ public class ChartActivity extends AppCompatActivity {
         bundle.putInt("year", -1);
         chartFragment.setArguments(bundle);
         adapter.addFragment(chartFragment, "Total");
-        HashMap<Integer, List<BudgetItem>> years = mDatabaseHandler.getAllYearsAsHashmap(2);
+        HashMap<Integer, List<BudgetItem>> years = mParseHandler.getAllYearsAsHashmap(2);
 
         //Check if the arraylist is null first
         if (years != null) {

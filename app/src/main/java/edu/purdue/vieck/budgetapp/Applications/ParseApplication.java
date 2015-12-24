@@ -2,7 +2,6 @@ package edu.purdue.vieck.budgetapp.Applications;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
-import com.parse.ParseClassName;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -23,8 +22,6 @@ public class ParseApplication extends android.app.Application {
                 getResources().getString(R.string.parse_application_id),
                 getResources().getString(R.string.parse_client_key));
         ParseUser.enableAutomaticUser();
-        ParseACL defaultACL = new ParseACL();
-        ParseACL.setDefaultACL(defaultACL, true);
         ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 }

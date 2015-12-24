@@ -10,15 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 
-import com.parse.Parse;
-import com.parse.ParseInstallation;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.Adapters.DashboardAdapter;
 import edu.purdue.vieck.budgetapp.CustomObjects.DashboardItem;
-import edu.purdue.vieck.budgetapp.DatabaseHandler;
+import edu.purdue.vieck.budgetapp.ParseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 public class DashboardActivity extends Activity {
@@ -30,7 +27,7 @@ public class DashboardActivity extends Activity {
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private RecyclerView mRecyclerView;
     private DashboardAdapter dashboardAdapter;
-    private DatabaseHandler databaseHandler;
+    private ParseHandler mParseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

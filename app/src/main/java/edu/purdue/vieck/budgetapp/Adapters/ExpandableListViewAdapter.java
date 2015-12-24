@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.DatabaseHandler;
+import edu.purdue.vieck.budgetapp.ParseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -19,17 +19,17 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     Context context;
-    DatabaseHandler databaseHandler;
+    ParseHandler mParseHandler;
     HashMap<Integer, List<BudgetItem>> years;
     List<BudgetItem> mMonths;
 
     public ExpandableListViewAdapter(Context context, String filter) {
         this.context = context;
-        databaseHandler = new DatabaseHandler(context);
+        mParseHandler = new ParseHandler();
         if (filter == "") {
-            mMonths = databaseHandler.getAllUniqueMonthsAsList(2);
+            mMonths = mParseHandler.getAllUniqueMonthsAsList(2);
         } else {
-            mMonths = databaseHandler.getAllUniqueMonthsAsLinkedList(2);
+            mMonths = mParseHandler.getAllUniqueMonthsAsLinkedList(2);
         }
     }
 
@@ -40,7 +40,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int group) {
-        return databaseHandler.getSpecificMonthYearAsStack(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).size();
+        return mParseHandler.getSpecificMonthYearAsStack(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).size();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int group, int child) {
-        return databaseHandler.getSpecificMonthYearAsStack(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).get(child);
+        return mParseHandler.getSpecificMonthYearAsStack(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).get(child);
     }
 
     @Override
