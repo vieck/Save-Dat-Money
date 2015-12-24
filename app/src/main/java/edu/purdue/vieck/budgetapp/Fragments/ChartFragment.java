@@ -158,8 +158,10 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
         if (!mRealmHandler.isEmpty(type)) {
             int index = 0;
+            int total = 0;
             if (mRealmHandler.getSpecificDateAmountByType("Misc", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 float amount = mRealmHandler.getSpecificDateAmountByType("Misc", month, year, type);
+                total += amount;
                 yVals.add(new Entry(amount, index++));
                 xVals.add("Misc");
                 colors.add(getResources().getColor(R.color.md_white_1000));
@@ -167,6 +169,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
             if (mRealmHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 float amount = mRealmHandler.getSpecificDateAmountByType("Utilities", month, year, type);
+                total += amount;
                 yVals.add(new Entry(amount, index++));
                 xVals.add("Utilities");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[0]);
@@ -174,6 +177,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
             if (mRealmHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 float amount = mRealmHandler.getSpecificDateAmountByType("Entertainment", month, year, type);
+                total += amount;
                 yVals.add(new Entry(amount, index++));
                 xVals.add("Entertainment");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[1]);
@@ -181,6 +185,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
             if (mRealmHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 float amount = mRealmHandler.getSpecificDateAmountByType("Medical", month, year, type);
+                total += amount;
                 yVals.add(new Entry(amount, index++));
                 xVals.add("Medical");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[2]);
@@ -188,6 +193,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
             if (mRealmHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 float amount = mRealmHandler.getSpecificDateAmountByType("Food", month, year, type);
+                total += amount;
                 yVals.add(new Entry(amount, index++));
                 xVals.add("Food");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[3]);
@@ -195,27 +201,29 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
             if (mRealmHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
                 float amount = mRealmHandler.getSpecificDateAmountByType("Insurance", month, year, type);
+                total += amount;
                 yVals.add(new Entry(amount, index++));
                 xVals.add("Insurance");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[4]);
             }
 
+            if (total > 0) {
+                PieDataSet dataSet = new PieDataSet(yVals, "Category Legend");
+                dataSet.setSliceSpace(2f);
+                dataSet.setSelectionShift(5f);
+                dataSet.setColors(colors);
 
-            PieDataSet dataSet = new PieDataSet(yVals, "Category Legend");
-            dataSet.setSliceSpace(2f);
-            dataSet.setSelectionShift(5f);
-            dataSet.setColors(colors);
+                PieData data = new PieData(xVals, dataSet);
+                data.setValueFormatter(new PercentFormatter());
+                data.setValueTextSize(11f);
+                data.setValueTextColor(Color.BLACK);
+                mPieChart.setData(data);
 
-            PieData data = new PieData(xVals, dataSet);
-            data.setValueFormatter(new PercentFormatter());
-            data.setValueTextSize(11f);
-            data.setValueTextColor(Color.BLACK);
-            mPieChart.setData(data);
+                // undo all highlights
+                mPieChart.highlightValues(null);
 
-            // undo all highlights
-            mPieChart.highlightValues(null);
-
-            mPieChart.invalidate();
+                mPieChart.invalidate();
+            }
         }
     }
 
