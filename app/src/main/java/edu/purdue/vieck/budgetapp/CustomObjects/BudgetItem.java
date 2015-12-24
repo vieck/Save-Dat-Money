@@ -83,7 +83,7 @@ public class BudgetItem extends RealmObject {
         this.note = note;
     }
 
-    public boolean isType() {
+    public boolean getType() {
         return type;
     }
 

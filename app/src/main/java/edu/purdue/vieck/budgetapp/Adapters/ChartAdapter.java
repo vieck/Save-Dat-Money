@@ -67,7 +67,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
         viewHolder.subcategory.setText("" + budgetItem.getSubcategory());
         Currency currency = Currency.getInstance(mContext.getResources().getConfiguration().locale);
         viewHolder.amount.setText(currency.getSymbol() + " " + budgetItem.getAmount());
-        if (budgetItem.isType()) {
+        if (budgetItem.getType()) {
             viewHolder.amount.setTextColor(mContext.getResources().getColor(R.color.Lime));
         } else {
             viewHolder.amount.setTextColor(mContext.getResources().getColor(R.color.md_red_A400));

@@ -62,7 +62,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(COLUMN_CATEGORY, budgetItem.getCategory());
         contentValues.put(COLUMN_SUB_CATEGORY, budgetItem.getSubcategory());
         contentValues.put(COLUMN_AMOUNT, budgetItem.getAmount());
-        contentValues.put(COLUMN_TYPE, budgetItem.isType());
+        contentValues.put(COLUMN_TYPE, budgetItem.getType());
         contentValues.put(COLUMN_DAY, budgetItem.getDay());
         contentValues.put(COLUMN_MONTH, budgetItem.getMonth());
         contentValues.put(COLUMN_YEAR, budgetItem.getYear());
