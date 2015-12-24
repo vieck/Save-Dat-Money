@@ -1,4 +1,4 @@
-package edu.purdue.vieck.budgetapp;
+package edu.purdue.vieck.budgetapp.DatabaseAdapters;
 
 import android.database.Cursor;
 import android.util.Log;
@@ -21,7 +21,7 @@ import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
  */
 public class ParseHandler {
 
-    boolean empty;
+    /*boolean empty;
     double amount;
 
     public void addData(BudgetItem budgetItem) {
@@ -34,9 +34,7 @@ public class ParseHandler {
         budgetObject.put("month", budgetItem.getMonth());
         budgetObject.put("year", budgetItem.getYear());
         budgetObject.put("note", budgetItem.getNote());*/
-        budgetItem.saveEventually();
-    }
-
+/*
     public boolean isEmpty(int type) {
         empty = true;
         ParseQuery<BudgetItem> query;
@@ -261,5 +259,5 @@ public class ParseHandler {
 
     public void deleteAll() {
     }
-
+**/
 }

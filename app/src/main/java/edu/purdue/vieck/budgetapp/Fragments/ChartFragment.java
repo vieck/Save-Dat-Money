@@ -31,14 +31,15 @@ import java.util.ArrayList;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
 import edu.purdue.vieck.budgetapp.Adapters.ChartAdapter;
-import edu.purdue.vieck.budgetapp.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 
 public class ChartFragment extends Fragment implements OnChartValueSelectedListener {
 
     int month, year, type;
-    ParseHandler mParseHandler;
+    RealmHandler mRealmHandler;
     private int mInstance;
     private int yInstance;
     private PieChart mPieChart;
@@ -68,7 +69,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         year = bundle.getInt("year", -1);
         type = bundle.getInt("type", 2);
 
-        mParseHandler = new ParseHandler();
+        mRealmHandler = new RealmHandler(getActivity());
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.budget_recycler_view);
@@ -155,40 +156,40 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         ArrayList<String> xVals = new ArrayList<String>();
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        if (!mParseHandler.isEmpty(type)) {
+        if (!mRealmHandler.isEmpty(type)) {
             int index = 0;
-            if (mParseHandler.getSpecificDateAmountByType("Misc", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mParseHandler.getSpecificDateAmountByType("Misc", month, year, type), index++));
+            if (mRealmHandler.getSpecificDateAmountByType("Misc", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Misc", month, year, type), index++));
                 xVals.add("Misc");
                 colors.add(getResources().getColor(R.color.md_white_1000));
             }
 
-            if (mParseHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mParseHandler.getSpecificDateAmountByType("Utilities", month, year, type), index++));
+            if (mRealmHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Utilities", month, year, type), index++));
                 xVals.add("Utilities");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[0]);
             }
 
-            if (mParseHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mParseHandler.getSpecificDateAmountByType("Entertainment", month, year, type), index++));
+            if (mRealmHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Entertainment", month, year, type), index++));
                 xVals.add("Entertainment");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[1]);
             }
 
-            if (mParseHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mParseHandler.getSpecificDateAmountByType("Medical", month, year, type), index++));
+            if (mRealmHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Medical", month, year, type), index++));
                 xVals.add("Medical");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[2]);
             }
 
-            if (mParseHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mParseHandler.getSpecificDateAmountByType("Food", month, year, type), index++));
+            if (mRealmHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Food", month, year, type), index++));
                 xVals.add("Food");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[3]);
             }
 
-            if (mParseHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mParseHandler.getSpecificDateAmountByType("Insurance", month, year, type), index++));
+            if (mRealmHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
+                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Insurance", month, year, type), index++));
                 xVals.add("Insurance");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[4]);
             }

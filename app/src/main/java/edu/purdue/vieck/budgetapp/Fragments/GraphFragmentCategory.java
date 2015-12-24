@@ -19,7 +19,8 @@ import java.util.List;
 import edu.purdue.vieck.budgetapp.Adapters.GraphCategoryAdapter;
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTreeItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -29,7 +30,7 @@ public class GraphFragmentCategory extends Fragment {
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
     private GraphCategoryAdapter adapter;
-    private ParseHandler mParseHandler;
+    private RealmHandler mRealmHandler;
     private LinkedList<BudgetItem> months;
     ImageButton left, right;
     TextView monthTxt, yearTxt;
@@ -44,7 +45,7 @@ public class GraphFragmentCategory extends Fragment {
         layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
 
-        mParseHandler = new ParseHandler();
+        mRealmHandler = new RealmHandler(getActivity());
 
         monthTxt = (TextView) view.findViewById(R.id.label_month);
         yearTxt = (TextView) view.findViewById(R.id.label_year);
@@ -54,8 +55,8 @@ public class GraphFragmentCategory extends Fragment {
         Bundle bundle = getArguments();
         type = bundle.getInt("type",2);
 
-        if (!mParseHandler.isEmpty(type)) {
-            months = mParseHandler.getAllUniqueMonthsAsLinkedList(type);
+        if (!mRealmHandler.isEmpty(type)) {
+            months = mRealmHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;
 
             left.setOnClickListener(new View.OnClickListener() {
@@ -66,13 +67,13 @@ public class GraphFragmentCategory extends Fragment {
                         count++;
                         BudgetItem item = months.get(count);
                         adapter.changeMonth(item.getMonth(), item.getYear());
-                        monthTxt.setText(item.getMonthName());
+                        monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                     } else {
                         count = 0;
                         BudgetItem item = months.get(count);
                         adapter.changeMonth(item.getMonth(), item.getYear());
-                        monthTxt.setText(item.getMonthName());
+                        monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                     }
                 }
@@ -86,13 +87,13 @@ public class GraphFragmentCategory extends Fragment {
                         count--;
                         BudgetItem item = months.get(count);
                         adapter.changeMonth(item.getMonth(), item.getYear());
-                        monthTxt.setText(item.getMonthName());
+                        monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                     } else {
                         count = months.size() - 1;
                         BudgetItem item = months.get(count);
                         adapter.changeMonth(item.getMonth(), item.getYear());
-                        monthTxt.setText(item.getMonthName());
+                        monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                     }
                 }
@@ -111,14 +112,14 @@ public class GraphFragmentCategory extends Fragment {
         List<AddTreeItem> list = new ArrayList<>();
         int[] categoryImages = {R.drawable.food_groceries_dark, R.drawable.utility_misc_dark, R.drawable.entertainment_dark, R.drawable.medical_misc_dark, R.drawable.insurance_dark, R.drawable.chart_dark};
         String[] categories = getResources().getStringArray(R.array.categoryarray);
-        monthTxt.setText(months.get(count).getMonthName());
+        monthTxt.setText(months.get(count).getMonthString());
         yearTxt.setText("" + months.get(count).getYear());
         AddTreeItem item;
         for (int i = 0; i < categories.length; i++) {
             item = new AddTreeItem();
             item.setDrawableId(categoryImages[i]);
             item.setName(categories[i]);
-            item.setAmount(mParseHandler.getSpecificDateAmountByType(categories[i], months.get(0).getMonth(), months.get(0).getYear(), type));
+            item.setAmount(mRealmHandler.getSpecificDateAmountByType(categories[i], months.get(0).getMonth(), months.get(0).getYear(), type));
             list.add(item);
         }
         adapter = new GraphCategoryAdapter(getActivity(), list, months.get(count).getMonth(), months.get(count).getYear(), type);
@@ -127,10 +128,10 @@ public class GraphFragmentCategory extends Fragment {
 
     public void updateType(int type) {
         this.type = type;
-        if (!mParseHandler.isEmpty(type)) {
-            months = mParseHandler.getAllUniqueMonthsAsLinkedList(type);
+        if (!mRealmHandler.isEmpty(type)) {
+            months = mRealmHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;
-            monthTxt.setText(months.get(count).getMonthName());
+            monthTxt.setText(months.get(count).getMonthString());
             yearTxt.setText("" + months.get(count).getYear() + "");
             adapter = makeAdapter(adapter);
             adapter.notifyDataSetChanged();

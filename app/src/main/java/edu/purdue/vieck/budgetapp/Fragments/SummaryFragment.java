@@ -11,7 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import edu.purdue.vieck.budgetapp.Adapters.ExpandableListViewAdapter;
-import edu.purdue.vieck.budgetapp.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -20,7 +21,7 @@ import edu.purdue.vieck.budgetapp.R;
 public class SummaryFragment extends Fragment {
     private ExpandableListView mExpandableListView;
     private ExpandableListViewAdapter mDataAdapter;
-    private ParseHandler mParseHandler;
+    private RealmHandler mRealmHandler;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class SummaryFragment extends Fragment {
         //mExpandableListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mDataAdapter = new ExpandableListViewAdapter(getActivity(), "");
         mExpandableListView.setAdapter(mDataAdapter);
-        mParseHandler = new ParseHandler();
+        mRealmHandler = new RealmHandler(getActivity());
         return view;
     }
 

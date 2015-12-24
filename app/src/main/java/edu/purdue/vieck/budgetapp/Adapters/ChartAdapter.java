@@ -16,7 +16,7 @@ import java.util.Stack;
 
 import edu.purdue.vieck.budgetapp.Activities.DescriptionActivity;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -24,30 +24,30 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder> {
 
-    Context context;
+    Context mContext;
     int month, year, position;
-    ParseHandler mParseHandler;
+    RealmHandler mRealmHandler;
     Stack<BudgetItem> mDataset = new Stack<>();
 
-    public ChartAdapter(Context context, int month, int year, int position) {
-        this.context = context;
+    public ChartAdapter(Context mContext, int month, int year, int position) {
+        this.mContext = mContext;
         this.month = month;
         this.year = year;
         this.position = position;
-        mParseHandler = new ParseHandler();
+        mRealmHandler = new RealmHandler(mContext);
         if (month != -1 || year != -1) {
-            mDataset = mParseHandler.getSpecificMonthYearAsStack(month, year, position);
+            mDataset = mRealmHandler.getSpecificMonthYearAsStack(month, year, position);
         } else {
-            mDataset = mParseHandler.getAllDataAsStack(position);
+            mDataset = mRealmHandler.getAllDataAsStack(position);
         }
     }
 
     public void updatePosition(int position) {
         this.position = position;
         if (month != -1 || year != -1) {
-            mDataset = mParseHandler.getSpecificMonthYearAsStack(month, year, position);
+            mDataset = mRealmHandler.getSpecificMonthYearAsStack(month, year, position);
         } else {
-            mDataset = mParseHandler.getAllDataAsStack(position);
+            mDataset = mRealmHandler.getAllDataAsStack(position);
         }
         notifyDataSetChanged();
     }
@@ -65,12 +65,12 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
         viewHolder.date.setText(budgetItem.getMonth() + "-" + budgetItem.getDay() + "-" + budgetItem.getYear());
         viewHolder.category.setText("" + budgetItem.getCategory());
         viewHolder.subcategory.setText("" + budgetItem.getSubcategory());
-        Currency currency = Currency.getInstance(context.getResources().getConfiguration().locale);
+        Currency currency = Currency.getInstance(mContext.getResources().getConfiguration().locale);
         viewHolder.amount.setText(currency.getSymbol() + " " + budgetItem.getAmount());
         if (budgetItem.isType()) {
-            viewHolder.amount.setTextColor(context.getResources().getColor(R.color.Lime));
+            viewHolder.amount.setTextColor(mContext.getResources().getColor(R.color.Lime));
         } else {
-            viewHolder.amount.setTextColor(context.getResources().getColor(R.color.md_red_A400));
+            viewHolder.amount.setTextColor(mContext.getResources().getColor(R.color.md_red_A400));
         }
         //viewHolder.income.setText("" + budgetItem.getCategory());
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +78,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
             public void onClick(View v) {
                 Log.d("Deleted", "Deleted Item");
                 Bundle bundle = new Bundle();
-                    bundle.putString("Type", budgetItem.getTypeAsString());
+                    bundle.putString("Type", budgetItem.getTypeString());
                 bundle.putString("Category", budgetItem.getCategory());
                 bundle.putString("Subcategory", budgetItem.getSubcategory());
                 bundle.putDouble("Amount",budgetItem.getAmount());
@@ -86,10 +86,10 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
                 bundle.putInt("Month", budgetItem.getMonth());
                 bundle.putInt("Day", budgetItem.getDay());
                 bundle.putInt("Year", budgetItem.getYear());
-                Intent intent = new Intent(context, DescriptionActivity.class);
+                Intent intent = new Intent(mContext, DescriptionActivity.class);
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                mContext.startActivity(intent);
                // databaseHandler.delete(budgetItem);
             }
         });

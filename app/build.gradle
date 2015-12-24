@@ -35,6 +35,7 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.0'
     compile 'com.github.bmarrdev:android-DecoView-charting:v0.9.4'
     compile 'com.jpardogo.materialtabstrip:library:1.1.0'
+    compile 'io.realm:realm-android:0.87.1'
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
 }

@@ -30,8 +30,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.Fragments.ChartFragment;
-import edu.purdue.vieck.budgetapp.ParseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 
@@ -43,7 +44,7 @@ public class ChartActivity extends AppCompatActivity {
     private Spinner mSpinner;
     private ViewPager mViewPager;
     private PagerSlidingTabStrip mTabLayout;
-    private ParseHandler mParseHandler;
+    private RealmHandler mRealmHandler;
     private Context mContext;
 
     private int spinnerPosition;
@@ -58,7 +59,7 @@ public class ChartActivity extends AppCompatActivity {
         mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
         setUpNavigationView();
 
-        mParseHandler = new ParseHandler();
+        mRealmHandler = new RealmHandler(this);
 
         mContext = this;
 
@@ -98,7 +99,7 @@ public class ChartActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
-           mParseHandler.deleteAll();
+            mRealmHandler.deleteAll();
             return true;
         } else if (id == R.id.action_add) {
             startActivity(new Intent(this, AddActivity.class));
@@ -201,7 +202,7 @@ public class ChartActivity extends AppCompatActivity {
         bundle.putInt("year", -1);
         chartFragment.setArguments(bundle);
         adapter.addFragment(chartFragment, "Total");
-        HashMap<Integer, List<BudgetItem>> years = mParseHandler.getAllYearsAsHashmap(2);
+        HashMap<Integer, List<BudgetItem>> years = mRealmHandler.getAllYearsAsHashmap(2);
 
         //Check if the arraylist is null first
         if (years != null) {
@@ -230,7 +231,7 @@ public class ChartActivity extends AppCompatActivity {
                     chartFragment.setArguments(bundle);
                     Log.d("Tabs", "YEAR " + i + " AND  MONTH " + element.getMonth() + " SIZE " + years.size());
                     if (!uniqueMonths.contains(element.getMonth())) {
-                        adapter.addFragment(chartFragment, element.getMonthName() + " " + i);
+                        adapter.addFragment(chartFragment, element.getMonthString() + " " + i);
                         uniqueMonths.add(element.getMonth());
                     }
                 }
@@ -282,11 +283,11 @@ public class ChartActivity extends AppCompatActivity {
         }
 
         public void changeType(int type) {
-            Log.d("Fragments", ""+mFragmentList.size());
+            Log.d("Fragments", "" + mFragmentList.size());
             for (int i = 0; i < mFragmentList.size(); i++) {
                 ChartFragment fragment = (ChartFragment) mFragmentList.get(i);
                 if (fragment.getArguments() != null) {
-                    fragment.getArguments().putInt("type",type);
+                    fragment.getArguments().putInt("type", type);
                 }
                 fragment.updateAdapter(type);
             }

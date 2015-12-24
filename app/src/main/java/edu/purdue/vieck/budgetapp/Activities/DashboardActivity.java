@@ -15,7 +15,7 @@ import java.util.List;
 
 import edu.purdue.vieck.budgetapp.Adapters.DashboardAdapter;
 import edu.purdue.vieck.budgetapp.CustomObjects.DashboardItem;
-import edu.purdue.vieck.budgetapp.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 public class DashboardActivity extends Activity {

@@ -1,4 +1,4 @@
-package edu.purdue.vieck.budgetapp;
+package edu.purdue.vieck.budgetapp.DatabaseAdapters;
 
 import android.content.ContentValues;
 import android.content.Context;

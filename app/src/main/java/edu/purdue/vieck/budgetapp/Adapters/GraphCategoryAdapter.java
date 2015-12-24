@@ -16,8 +16,9 @@ import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTreeItem;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentSubcategory;
-import edu.purdue.vieck.budgetapp.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -26,7 +27,7 @@ import edu.purdue.vieck.budgetapp.R;
 public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdapter.mViewHolder> {
 
     private Context mContext;
-    private ParseHandler mParseHandler;
+    private RealmHandler mRealmHandler;
     private double max;
     private List<AddTreeItem> list;
     private int type;
@@ -35,15 +36,15 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
         this.mContext = mContext;
         this.list = list;
         this.type = type;
-        mParseHandler = new ParseHandler();
-        max = mParseHandler.getSpecificDateAmount(month,year, type);
+        mRealmHandler = new RealmHandler(mContext);
+        max = mRealmHandler.getSpecificDateAmount(month,year, type);
     }
 
     public void changeMonth(int month, int year) {
-        max = mParseHandler.getSpecificDateAmount(month,year, type);
+        max = mRealmHandler.getSpecificDateAmount(month,year, type);
         String[] categories = mContext.getResources().getStringArray(R.array.categoryarray);
         for (int i = 0; i < list.size(); i++) {
-            double amount = mParseHandler.getSpecificDateAmountByType(categories[i], month, year, type);
+            double amount = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, type);
             //list.get(i).setAmount(amount);
         }
         notifyDataSetChanged();

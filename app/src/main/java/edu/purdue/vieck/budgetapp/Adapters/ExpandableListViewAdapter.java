@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -19,17 +20,17 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     Context context;
-    ParseHandler mParseHandler;
+    RealmHandler mRealmHandler;
     HashMap<Integer, List<BudgetItem>> years;
     List<BudgetItem> mMonths;
 
     public ExpandableListViewAdapter(Context context, String filter) {
         this.context = context;
-        mParseHandler = new ParseHandler();
+        mRealmHandler = new RealmHandler(context);
         if (filter == "") {
-            mMonths = mParseHandler.getAllUniqueMonthsAsList(2);
+            mMonths = mRealmHandler.getAllUniqueMonthsAsList(2);
         } else {
-            mMonths = mParseHandler.getAllUniqueMonthsAsLinkedList(2);
+            mMonths = mRealmHandler.getAllUniqueMonthsAsLinkedList(2);
         }
     }
 
@@ -40,7 +41,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int group) {
-        return mParseHandler.getSpecificMonthYearAsStack(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).size();
+        return mRealmHandler.getSpecificMonthYearAsStack(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).size();
     }
 
     @Override
@@ -50,7 +51,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int group, int child) {
-        return mParseHandler.getSpecificMonthYearAsStack(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).get(child);
+        return mRealmHandler.getSpecificMonthYearAsStack(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).get(child);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
         date = (TextView) view.findViewById(R.id.label_date);
 
-        date.setText(item.getMonthName() + " " + item.getYear());
+        date.setText(item.getMonthString() + " " + item.getYear());
         return view;
     }
 
@@ -104,7 +105,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         amount.setText(item.getAmount() + "$");
         category.setText(item.getCategory());
         subcategory.setText(item.getSubcategory());
-        type.setText(item.getTypeAsString());
+        type.setText(item.getTypeString());
 
         if (item.isType()) {
             amount.setTextColor(context.getResources().getColor(R.color.Lime));

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="edu.purdue.vieck.budgetapp.Activities.CategoryActivity">
+    tools:mContext="edu.purdue.vieck.budgetapp.Activities.CategoryActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"

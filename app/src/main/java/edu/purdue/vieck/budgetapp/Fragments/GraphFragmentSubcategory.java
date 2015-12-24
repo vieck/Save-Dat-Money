@@ -16,7 +16,8 @@ import java.util.List;
 import edu.purdue.vieck.budgetapp.Adapters.GraphCategoryAdapter;
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTreeItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -26,7 +27,7 @@ public class GraphFragmentSubcategory extends Fragment {
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
     private GraphCategoryAdapter adapter;
-    private ParseHandler mParseHandler;
+    private RealmHandler mRealmHandler;
     private LinkedList<BudgetItem> months;
     @Nullable
     @Override
@@ -35,7 +36,7 @@ public class GraphFragmentSubcategory extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
-        mParseHandler = new ParseHandler();
+        mRealmHandler = new RealmHandler(getActivity());
         return view;
     }
 
@@ -48,7 +49,7 @@ public class GraphFragmentSubcategory extends Fragment {
             item = new AddTreeItem();
             item.setDrawableId(categoryImages[i]);
             item.setName(subcategories[i]);
-            item.setAmount(mParseHandler.getSpecificDateAmountByType(subcategories[i], months.get(0).getMonth(), months.get(0).getYear(), 0));
+            item.setAmount(mRealmHandler.getSpecificDateAmountByType(subcategories[i], months.get(0).getMonth(), months.get(0).getYear(), 0));
             list.add(item);
         }
         adapter = new GraphCategoryAdapter(getActivity(), list, months.get(0).getMonth(), months.get(0).getYear(), 0);

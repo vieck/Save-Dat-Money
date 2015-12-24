@@ -2,105 +2,141 @@ package edu.purdue.vieck.budgetapp.CustomObjects;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by vieck on 7/14/15.
  */
 
-@ParseClassName("BudgetItem")
-public class BudgetItem extends ParseObject {
+public class BudgetItem extends RealmObject {
 
-    String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+    @PrimaryKey
+    private int id;
+    private String category, subcategory, note, monthString, typeString;
+    private boolean type;
+    private int day, month, year, image;
+    private float amount;
 
-    public BudgetItem() { }
+    public BudgetItem() {
 
-    public double getAmount() {
-        return getDouble("amount");
     }
 
-    public void setAmount(double amount) {
-        put("amount", amount);
-    }
+    public BudgetItem(float amount, String category, String subcategory, boolean type, int day, int month, int year, String note, int image) {
+        String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        this.amount = amount;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.type = type;
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.note = note;
+        this.image = image;
+        this.monthString = months[month-1];
 
-    public String getCategory() {
-        return getString("category");
-    }
-
-    public void setCategory(String category) {
-        put("category", category);
-    }
-
-    public String getSubcategory() {
-        return getString("subcategory");
-    }
-
-    public void setSubcategory(String subcategory) {
-        put("subcategory", subcategory);
-    }
-
-    public String getNote() {
-        return getString("note");
-    }
-
-    public void setNote(String note) {
-        put("note",note);
-    }
-
-    public boolean isType() {
-        return getBoolean("type");
-    }
-
-    public String getTypeAsString() {
-        boolean type = isType();
         if (type) {
-            return "Income";
+            typeString = "Income";
         } else {
-            return "Expense";
+            typeString = "Expense";
         }
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public float getAmount() {
+        return amount;
+    }
+
+    public void setAmount(float amount) {
+        this.amount = amount;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public boolean isType() {
+        return type;
+    }
+
     public void setType(boolean type) {
-        put("type", type);
+        this.type = type;
+    }
+
+    public String getTypeString() {
+        return typeString;
+    }
+
+    public void setTypeString(String typeString) {
+        this.typeString = typeString;
     }
 
     public int getDay() {
-        return getInt("day");
+        return day;
     }
 
     public void setDay(int day) {
-        put("day",day);
+        this.day = day;
     }
 
     public int getMonth() {
-        return getInt("month");
-    }
-
-    public String getMonthName() {
-        return months[getMonth()-1];
+        return month;
     }
 
     public void setMonth(int month) {
-        put("month",month);
+        this.month = month;
+    }
+
+    public String getMonthString() {
+        return monthString;
+    }
+
+    public void setMonthString(String monthString) {
+        this.monthString = monthString;
     }
 
     public int getYear() {
-        return getInt("year");
+        return year;
     }
 
     public void setYear(int year) {
-        put("year",year);
+        this.year = year;
     }
 
     public int getImage() {
-        return getInt("image");
+        return image;
     }
 
     public void setImage(int image) {
-        put("image",image);
+        this.image = image;
     }
 
-    public static ParseQuery<BudgetItem> getQuery() {
-        return ParseQuery.getQuery(BudgetItem.class);
-    }
 }
