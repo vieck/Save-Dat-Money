@@ -51,8 +51,8 @@ public class RealmHandler {
         realm = Realm.getInstance(mContext);
         RealmQuery<BudgetItem> query;
         if (type == 2) {
-            query = realm.where(BudgetItem.class);
-        } else if (type == 1){
+            return realm.isEmpty();
+        } else if (type == 1) {
             query = realm.where(BudgetItem.class).equalTo("type", true);
         } else {
             query = realm.where(BudgetItem.class).equalTo("type", false);
@@ -68,7 +68,7 @@ public class RealmHandler {
         RealmQuery query;
         if (type == 2) {
             query = realm.where(BudgetItem.class);
-        } else if (type == 1){
+        } else if (type == 1) {
             query = realm.where(BudgetItem.class).equalTo("type", true);
         } else {
             query = realm.where(BudgetItem.class).equalTo("type", false);
@@ -91,7 +91,7 @@ public class RealmHandler {
         RealmQuery query;
         if (type == 2) {
             query = realm.where(BudgetItem.class);
-        } else if (type == 1){
+        } else if (type == 1) {
             query = realm.where(BudgetItem.class).equalTo("type", true);
         } else {
             query = realm.where(BudgetItem.class).equalTo("type", false);
@@ -121,7 +121,7 @@ public class RealmHandler {
         RealmQuery query;
         if (type == 2) {
             query = realm.where(BudgetItem.class);
-        } else if (type == 1){
+        } else if (type == 1) {
             query = realm.where(BudgetItem.class).equalTo("type", true);
         } else {
             query = realm.where(BudgetItem.class).equalTo("type", false);
@@ -141,7 +141,7 @@ public class RealmHandler {
         RealmQuery query;
         if (type == 2) {
             query = realm.where(BudgetItem.class);
-        } else if (type == 1){
+        } else if (type == 1) {
             query = realm.where(BudgetItem.class).equalTo("type", true);
         } else {
             query = realm.where(BudgetItem.class).equalTo("type", false);
@@ -188,8 +188,6 @@ public class RealmHandler {
             query = realm.where(BudgetItem.class).equalTo("type", false).equalTo("month", month).equalTo("year", year);
         }
         RealmResults<BudgetItem> results = query.findAll();
-        results.sort("month", Sort.DESCENDING);
-        results.sort("year", Sort.DESCENDING);
         for (BudgetItem budgetItem : results) {
             amount += budgetItem.getAmount();
         }
@@ -202,20 +200,21 @@ public class RealmHandler {
         RealmQuery query;
         if (month != -1 && year != -1) {
             if (type == 2) {
+                query = realm.where(BudgetItem.class).equalTo("category",category).beginGroup().equalTo("month", month).equalTo("year", year).endGroup();
+            } else if (type == 1) {
+                query = realm.where(BudgetItem.class).equalTo("type", true).equalTo("category",category).beginGroup().equalTo("month", month).equalTo("year", year).endGroup();
+            } else {
+                query = realm.where(BudgetItem.class).equalTo("type", false).equalTo("category",category).beginGroup().equalTo("month", month).equalTo("year", year).endGroup();
+            }
+        } else {
+            if (type == 2) {
                 query = realm.where(BudgetItem.class).equalTo("category", category);
-            } else if (type == 1){
+            } else if (type == 1) {
                 query = realm.where(BudgetItem.class).equalTo("type", true).equalTo("category", category);
             } else {
                 query = realm.where(BudgetItem.class).equalTo("type", false).equalTo("category", category);
             }
-        } else {
-            if (type == 2) {
-                query = realm.where(BudgetItem.class).equalTo("month", month).equalTo("year", year);
-            } else if (type == 1){
-                query = realm.where(BudgetItem.class).equalTo("type", true).equalTo("month", month).equalTo("year", year);
-            } else {
-                query = realm.where(BudgetItem.class).equalTo("type", false).equalTo("month", month).equalTo("year", year);
-            }
+
         }
         RealmResults<BudgetItem> results = query.findAll();
         results.sort("month", Sort.DESCENDING);
@@ -235,7 +234,7 @@ public class RealmHandler {
                 realm.close();
             }
         });
-       thread.start();
+        thread.start();
     }
 
     public void deleteAll() {

@@ -159,37 +159,43 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         if (!mRealmHandler.isEmpty(type)) {
             int index = 0;
             if (mRealmHandler.getSpecificDateAmountByType("Misc", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Misc", month, year, type), index++));
+                float amount = mRealmHandler.getSpecificDateAmountByType("Misc", month, year, type);
+                yVals.add(new Entry(amount, index++));
                 xVals.add("Misc");
                 colors.add(getResources().getColor(R.color.md_white_1000));
             }
 
             if (mRealmHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Utilities", month, year, type), index++));
+                float amount = mRealmHandler.getSpecificDateAmountByType("Utilities", month, year, type);
+                yVals.add(new Entry(amount, index++));
                 xVals.add("Utilities");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[0]);
             }
 
             if (mRealmHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Entertainment", month, year, type), index++));
+                float amount = mRealmHandler.getSpecificDateAmountByType("Entertainment", month, year, type);
+                yVals.add(new Entry(amount, index++));
                 xVals.add("Entertainment");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[1]);
             }
 
             if (mRealmHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Medical", month, year, type), index++));
+                float amount = mRealmHandler.getSpecificDateAmountByType("Medical", month, year, type);
+                yVals.add(new Entry(amount, index++));
                 xVals.add("Medical");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[2]);
             }
 
             if (mRealmHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Food", month, year, type), index++));
+                float amount = mRealmHandler.getSpecificDateAmountByType("Food", month, year, type);
+                yVals.add(new Entry(amount, index++));
                 xVals.add("Food");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[3]);
             }
 
             if (mRealmHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                yVals.add(new Entry(mRealmHandler.getSpecificDateAmountByType("Insurance", month, year, type), index++));
+                float amount = mRealmHandler.getSpecificDateAmountByType("Insurance", month, year, type);
+                yVals.add(new Entry(amount, index++));
                 xVals.add("Insurance");
                 colors.add(ColorTemplate.VORDIPLOM_COLORS[4]);
             }
