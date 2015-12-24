@@ -22,6 +22,7 @@ public class ParseApplication extends android.app.Application {
                 getResources().getString(R.string.parse_application_id),
                 getResources().getString(R.string.parse_client_key));
         ParseUser.enableAutomaticUser();
-        ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParseACL defaultACL = new ParseACL();
+        ParseACL.setDefaultACL(defaultACL, true);
     }
 }

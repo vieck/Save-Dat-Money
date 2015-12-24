@@ -2,6 +2,7 @@ package edu.purdue.vieck.budgetapp.CustomObjects;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 /**
  * Created by vieck on 7/14/15.
@@ -97,5 +98,9 @@ public class BudgetItem extends ParseObject {
 
     public void setImage(int image) {
         put("image",image);
+    }
+
+    public static ParseQuery<BudgetItem> getQuery() {
+        return ParseQuery.getQuery(BudgetItem.class);
     }
 }

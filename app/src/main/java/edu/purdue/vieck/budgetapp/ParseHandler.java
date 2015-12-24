@@ -1,6 +1,7 @@
 package edu.purdue.vieck.budgetapp;
 
 import android.database.Cursor;
+import android.util.Log;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -33,62 +34,47 @@ public class ParseHandler {
         budgetObject.put("month", budgetItem.getMonth());
         budgetObject.put("year", budgetItem.getYear());
         budgetObject.put("note", budgetItem.getNote());*/
-        budgetItem.saveInBackground();
-    }
-
-
-    private BudgetItem convertCursorToItem(Cursor cursor) {
-        BudgetItem budgetItem = new BudgetItem();
-        cursor.getLong(0);
-        budgetItem.setCategory(cursor.getString(1));
-        budgetItem.setSubcategory(cursor.getString(2));
-        budgetItem.setAmount(cursor.getFloat(3));
-        if (cursor.getInt(4) == 0) {
-            budgetItem.setType(false);
-        } else {
-            budgetItem.setType(true);
-        }
-        budgetItem.setDay(cursor.getInt(5));
-        budgetItem.setMonth(cursor.getInt(6));
-        budgetItem.setYear(cursor.getInt(7));
-        budgetItem.setNote(cursor.getString(8));
-        return budgetItem;
+        budgetItem.saveEventually();
     }
 
     public boolean isEmpty(int type) {
         empty = true;
-        ParseQuery query;
+        ParseQuery<BudgetItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery("BudgetItem");
+            query = ParseQuery.getQuery(BudgetItem.class);
         } else {
-            query = ParseQuery.getQuery("BudgetItem").whereEqualTo("type", type);
+            query = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("type", type);
         }
-        query.findInBackground(new FindCallback<BudgetItem>() {
-            @Override
-            public void done(List<BudgetItem> objects, ParseException e) {
-                if (objects != null) {
-                    empty = false;
-                } else {
-                    empty = true;
-                }
+
+        try {
+            if(query.count() == 0) {
+                Log.d("IsEmpty","true");
+                return true;
+            } else {
+                Log.d("IsEmpty","false");
+                return false;
             }
-        });
-        return empty;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 
 
     public Stack<BudgetItem> getAllDataAsStack(int type) {
         final Stack<BudgetItem> mDataset = new Stack<>();
-        ParseQuery query;
+        ParseQuery<BudgetItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery("BudgetItem").addAscendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).addAscendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery("BudgetItem").whereEqualTo("type", type).addAscendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("type", type).addAscendingOrder("month").addDescendingOrder("year");
         }
-        query.findInBackground(new FindCallback<BudgetItem>() {
+        query.fromLocalDatastore().findInBackground(new FindCallback<BudgetItem>() {
             @Override
             public void done(List<BudgetItem> objects, ParseException e) {
                 if (e == null) {
+                    Log.d("Months",""+objects.size());
                     for (BudgetItem item : objects) {
                         mDataset.push(item);
                     }
@@ -100,16 +86,17 @@ public class ParseHandler {
 
     public HashMap<Integer, List<BudgetItem>> getAllYearsAsHashmap(int type) {
         final HashMap<Integer, List<BudgetItem>> mDataset = new HashMap<>();
-        ParseQuery query;
+        ParseQuery<BudgetItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery("BudgetItem").addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).addDescendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery("BudgetItem").whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
         }
         query.findInBackground(new FindCallback<BudgetItem>() {
             @Override
             public void done(List<BudgetItem> objects, ParseException e) {
                 if (e == null) {
+                    Log.d("Years",""+objects.size());
                     for (BudgetItem item : objects) {
                         if (mDataset.get(item.getYear()) == null) {
                             List<BudgetItem> list = new ArrayList<>();
@@ -130,11 +117,11 @@ public class ParseHandler {
     public List<BudgetItem> getAllUniqueMonthsAsList(int type) {
         final List<BudgetItem> months = new ArrayList<>();
         final HashMap<Integer, List<Integer>> monthHashmap = new HashMap<>();
-        ParseQuery query;
+        ParseQuery<BudgetItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery("BudgetItem").addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).addDescendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery("BudgetItem").whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
         }
         query.findInBackground(new FindCallback<BudgetItem>() {
             @Override
@@ -158,17 +145,18 @@ public class ParseHandler {
                 }
             }
         });
+        Log.d("UniqueMonths",""+months.size());
         return months;
     }
 
     public LinkedList<BudgetItem> getAllUniqueMonthsAsLinkedList(int type) {
         final LinkedList<BudgetItem> months = new LinkedList<>();
         final HashMap<Integer, List<Integer>> monthHashmap = new HashMap<>();
-        ParseQuery query;
+        ParseQuery<BudgetItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery("BudgetItem").addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).addDescendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery("BudgetItem").whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
         }
         query.findInBackground(new FindCallback<BudgetItem>() {
             @Override
@@ -192,16 +180,17 @@ public class ParseHandler {
                 }
             }
         });
+        Log.d("UniqueMonthsLL",""+months.size());
         return months;
     }
 
     public Stack<BudgetItem> getSpecificMonthYearAsStack(int month, int year, int type) {
         final Stack<BudgetItem> mDataset = new Stack<>();
-        ParseQuery query;
+        ParseQuery<BudgetItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery("BudgetItem").whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery("BudgetItem").whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
         }
         query.findInBackground(new FindCallback<BudgetItem>() {
             @Override
@@ -213,16 +202,17 @@ public class ParseHandler {
                 }
             }
         });
+        Log.d("MonthStack",""+mDataset.size());
         return mDataset;
     }
 
     public float getSpecificDateAmount(int month, int year, int type) {
         amount = 0;
-        ParseQuery query;
+        ParseQuery<BudgetItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery("BudgetItem").whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery("BudgetItem").whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
         }
         query.findInBackground(new FindCallback<BudgetItem>() {
             @Override
@@ -239,18 +229,18 @@ public class ParseHandler {
 
     public float getSpecificDateAmountByType(String category, int month, int year, int type) {
         amount = 0;
-        ParseQuery selectQuery;
+        ParseQuery<BudgetItem> selectQuery;
         if (month != -1 && year != -1) {
             if (type == 2) {
-                selectQuery = ParseQuery.getQuery("BudgetItem").whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+                selectQuery = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
             } else {
-                selectQuery = ParseQuery.getQuery("BudgetItem").whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+                selectQuery = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
             }
         } else {
             if (type == 2) {
-                selectQuery = ParseQuery.getQuery("BudgetItem").whereEqualTo("category", category);
+                selectQuery = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("category", category);
             } else {
-                selectQuery = ParseQuery.getQuery("BudgetItem").whereEqualTo("category", category).whereEqualTo("type", type);
+                selectQuery = ParseQuery.getQuery(BudgetItem.class).whereEqualTo("category", category).whereEqualTo("type", type);
             }
         }
         selectQuery.findInBackground(new FindCallback<BudgetItem>() {
