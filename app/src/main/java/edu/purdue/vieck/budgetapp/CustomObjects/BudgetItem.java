@@ -1,7 +1,5 @@
 package edu.purdue.vieck.budgetapp.CustomObjects;
 
-import com.parse.ParseClassName;
-import com.parse.ParseObject;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

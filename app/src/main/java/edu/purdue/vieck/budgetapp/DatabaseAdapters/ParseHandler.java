@@ -3,10 +3,6 @@ package edu.purdue.vieck.budgetapp.DatabaseAdapters;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.HashMap;

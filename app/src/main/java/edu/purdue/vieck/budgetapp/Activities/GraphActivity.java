@@ -253,7 +253,7 @@ public class GraphActivity extends AppCompatActivity {
             if (fragmentOverview.getArguments() != null) {
                 fragmentOverview.getArguments().putInt("type",type);
             }
-            fragmentOverview.updateType(type);
+            //fragmentOverview.updateType(type);
 
             GraphFragmentCategory fragmentCategory = (GraphFragmentCategory) mFragmentList.get(1);
             if (fragmentCategory.getArguments() != null) {

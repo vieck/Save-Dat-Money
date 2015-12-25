@@ -76,7 +76,7 @@ public class AddAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.item_add, parent, false);
-        RelativeLayout linearLayout = (RelativeLayout) view.findViewById(R.id.relative_layout);
+        RelativeLayout linearLayout = (RelativeLayout) view.findViewById(R.id.linear_layout);
         if (position == selection) {
             view.setBackgroundColor(Color.BLACK);
         }

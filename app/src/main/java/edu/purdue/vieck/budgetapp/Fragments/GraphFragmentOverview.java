@@ -10,9 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.db.chart.model.BarSet;
+import com.db.chart.view.BarChartView;
+import com.db.chart.view.HorizontalStackBarChartView;
+import com.db.chart.view.StackBarChartView;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -31,7 +34,6 @@ import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.ChartItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.LineChartItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.PieChartItem;
-import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -39,11 +41,15 @@ import edu.purdue.vieck.budgetapp.R;
  * Created by mvieck on 10/7/2015.
  */
 public class GraphFragmentOverview extends Fragment {
+
+    BarChartView mCategoryBarView;
+    BarChartView mBudgetBarView;
+    HorizontalStackBarChartView mStackBarChartView;
+
     RealmHandler mRealmHandler;
-    ListView lv;
     private List<BudgetItem> months;
-    ImageButton left, right;
-    TextView monthTxt, yearTxt;
+    ImageButton mLeft, mRight;
+    TextView mMonthTxt, mYearTxt;
     int type, count;
     String[] categories;
 
@@ -55,206 +61,102 @@ public class GraphFragmentOverview extends Fragment {
         Bundle bundle = getArguments();
         type = bundle.getInt("type",2);
 
-        lv = (ListView) view.findViewById(R.id.listview);
         categories = getResources().getStringArray(R.array.categoryarray);
         mRealmHandler = new RealmHandler(getActivity());
-        monthTxt = (TextView) view.findViewById(R.id.label_month);
-        yearTxt = (TextView) view.findViewById(R.id.label_year);
+        mMonthTxt = (TextView) view.findViewById(R.id.label_month);
+        mYearTxt = (TextView) view.findViewById(R.id.label_year);
+
+        mCategoryBarView = (BarChartView) view.findViewById(R.id.category_barchart);
+        mBudgetBarView = (BarChartView) view.findViewById(R.id.budget_barchart);
+        mStackBarChartView = (HorizontalStackBarChartView) view.findViewById(R.id.stackchart);
+
         if (!mRealmHandler.isEmpty(type)) {
             months = mRealmHandler.getAllUniqueMonthsAsList(type);
             count = months.size() - 1;
-            monthTxt.setText(months.get(count).getMonthString());
-            yearTxt.setText("" + months.get(count).getYear());
-            left = (ImageButton) view.findViewById(R.id.left_arrow);
-            left.setOnClickListener(new View.OnClickListener() {
+            mMonthTxt.setText(months.get(count).getMonthString());
+            mYearTxt.setText("" + months.get(count).getYear());
+            mLeft = (ImageButton) view.findViewById(R.id.left_arrow);
+            mLeft.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (count + 1 < months.size()) {
                         count++;
                         BudgetItem item = months.get(count);
-                        monthTxt.setText(item.getMonthString());
-                        yearTxt.setText("" + item.getYear());
+                        mMonthTxt.setText(item.getMonthString());
+                        mYearTxt.setText("" + item.getYear());
                         changeAdapterMonth(item.getMonth(), item.getYear());
                     } else {
                         count = 0;
                         BudgetItem item = months.get(count);
-                        monthTxt.setText(item.getMonthString());
-                        yearTxt.setText("" + item.getYear());
+                        mMonthTxt.setText(item.getMonthString());
+                        mYearTxt.setText("" + item.getYear());
                         changeAdapterMonth(item.getMonth(), item.getYear());
                     }
                 }
             });
-            right = (ImageButton) view.findViewById(R.id.right_arrow);
-            right.setOnClickListener(new View.OnClickListener() {
+            mRight = (ImageButton) view.findViewById(R.id.right_arrow);
+            mRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (count > 0) {
                         count--;
                         BudgetItem item = months.get(count);
-                        monthTxt.setText(item.getMonthString());
-                        yearTxt.setText("" + item.getYear());
+                        mMonthTxt.setText(item.getMonthString());
+                        mYearTxt.setText("" + item.getYear());
                          changeAdapterMonth(item.getMonth(), item.getYear());
                     } else {
                         count = months.size() - 1;
                         BudgetItem item = months.get(count);
-                        monthTxt.setText(item.getMonthString());
-                        yearTxt.setText("" + item.getYear());
+                        mMonthTxt.setText(item.getMonthString());
+                        mYearTxt.setText("" + item.getYear());
                         changeAdapterMonth(item.getMonth(), item.getYear());
                     }
                 }
             });
             BudgetItem item = months.get(count);
+            createCategoryChart(mCategoryBarView, item.getMonth(), item.getYear());
+            //createBudgetChart(mBudgetBarView, item.getMonth(), item.getYear());
+            createStackChart(mStackBarChartView, item.getMonth() ,item.getYear());
             changeAdapterMonth(item.getMonth(), item.getYear());
         } else {
-            monthTxt.setText("No Data");
-            yearTxt.setText("");
+            mMonthTxt.setText("No Data");
+            mYearTxt.setText("");
         }
         return view;
     }
 
     private void changeAdapterMonth(int month, int year) {
-        ArrayList<ChartItem> list = new ArrayList<ChartItem>();
 
-        list.add(new LineChartItem(generateDataLine(0, month, year), getActivity()));
-        list.add(new BarChartItem(generateDataBar(0, month, year), getActivity()));
-        list.add(new PieChartItem(generateDataPie(0, month, year), getActivity()));
-
-        ChartDataAdapter cda = new ChartDataAdapter(getActivity(), list);
-        lv.setAdapter(cda);
-        cda.notifyDataSetChanged();
     }
 
-    /**
-     * generates a random ChartData object with just one DataSet
-     *
-     * @return
-     */
-    private LineData generateDataLine(int cnt, int month, int year) {
-        ArrayList<Entry> e1 = new ArrayList<Entry>();
-        int num = 0;
-        for (String category : categories) {
-            e1.add(new Entry(mRealmHandler.getSpecificDateAmountByType(category,month,year, type),num++));
-        }
-        LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
-        d1.setLineWidth(2.5f);
-        d1.setCircleSize(4.5f);
-        d1.setHighLightColor(Color.rgb(244, 117, 117));
-        d1.setDrawValues(false);
-        d1.setValueTextColor(getResources().getColor(R.color.CottonBlue));
-
-        /*ArrayList<Entry> e2 = new ArrayList<Entry>();
-        for (String category : categories) {
-            e1.add(new Entry(databaseHandler.getSpecificDateAmountByType(category,month,year),num++));
-        }*/
-
-
-        /*LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
-        d2.setLineWidth(2.5f);
-        d2.setCircleSize(4.5f);
-        d2.setHighLightColor(Color.rgb(244, 117, 117));
-        d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        d2.setValueTextColor(getResources().getColor(R.color.CottonBlue));
-        d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        d2.setDrawValues(false);*/
-
-        ArrayList<LineDataSet> sets = new ArrayList<LineDataSet>();
-        sets.add(d1);
-        //sets.add(d2);
-
-        LineData cd = new LineData(getMonths(), sets);;
-        return cd;
-    }
-
-    /**
-     * generates a random ChartData object with just one DataSet
-     *
-     * @return
-     */
-    private BarData generateDataBar(int cnt, int month, int year) {
-
-        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+    private void createCategoryChart(final BarChartView barChart, int month, int year) {
+        BarSet data;
+        float[] xdata = new float[categories.length];
         for (int i = 0; i < categories.length; i++) {
-            entries.add(new BarEntry(mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, type), i));
+            xdata[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, type);
         }
-
-        BarDataSet d = new BarDataSet(entries, "Categories " + cnt);
-        d.setValueTextColor(R.color.CottonBlue);
-        d.setBarSpacePercent(10f);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        d.setHighLightAlpha(255);
-
-        BarData cd = new BarData(getMonths(), d);
-        return cd;
+        data = new BarSet(categories, xdata);
+        data.setColor(getResources().getColor(R.color.md_green_400));
+        barChart.setYAxis(false).setXAxis(false);
     }
 
-    /**
-     * generates a random ChartData object with just one DataSet
-     *
-     * @return
-     */
-    private PieData generateDataPie(int cnt, int month, int year) {
-
-        ArrayList<Entry> entries = new ArrayList<Entry>();
-        for (int i = 0; i < categories.length; i++) {
-            entries.add(new Entry(mRealmHandler.getSpecificDateAmountByType(categories[i],month,year, type),i));
-        }
-
-        PieDataSet d = new PieDataSet(entries, "");
-
-        // space between slices
-        d.setSliceSpace(2f);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        PieData cd = new PieData(getQuarters(), d);
-        return cd;
+    private void createBudgetChart(final BarChartView barChartView, int month, int year) {
+        BarSet data;
+        String[] xlabel = {"",""};
     }
 
-    private String[] getQuarters() {
+    private void createStackChart(final HorizontalStackBarChartView chartView, int month, int year) {
+        float[] income = {mRealmHandler.getSpecificDateAmount(month, year, 1)};
+        String[] incomeLabel = {"income"};
+        BarSet incomeData = new BarSet(incomeLabel,income);
 
-        return getResources().getStringArray(R.array.categoryarray);
+        float[] expense = {-mRealmHandler.getSpecificDateAmount(month, year, 0)};
+        String[] expenseLabel = {"expense"};
+        BarSet expenseData = new BarSet(expenseLabel, expense);
+
+        chartView.addData(incomeData);
+        chartView.addData(expenseData);
+        chartView.show();
     }
 
-    private String[] getMonths() {
-
-        return getResources().getStringArray(R.array.categoryarray);
-    }
-
-    /**
-     * adapter that supports 3 different item types
-     */
-    private class ChartDataAdapter extends ArrayAdapter<ChartItem> {
-
-        public ChartDataAdapter(Context context, List<ChartItem> objects) {
-            super(context, 0, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return getItem(position).getView(position, convertView, getContext());
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            // return the views type
-            return getItem(position).getItemType();
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return 3; // we have 3 different item-types
-        }
-    }
-
-    public void updateType(int type) {
-        this.type = type;
-        if (!mRealmHandler.isEmpty(type)) {
-            months = mRealmHandler.getAllUniqueMonthsAsLinkedList(type);
-            count = months.size() - 1;
-            monthTxt.setText(months.get(count).getMonthString());
-            yearTxt.setText(months.get(count).getYear()+"");
-            changeAdapterMonth(months.get(count).getMonth(), months.get(count).getYear());
-        } else {
-            monthTxt.setText("No Data");
-            yearTxt.setText("");
-        }
-    }
 }

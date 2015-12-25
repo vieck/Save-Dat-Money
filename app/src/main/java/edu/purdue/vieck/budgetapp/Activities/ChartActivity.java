@@ -178,7 +178,7 @@ public class ChartActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 spinnerPosition = position;
-                Toast.makeText(mContext, "Position = " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                 adapter.changeType(position);
             }
 
