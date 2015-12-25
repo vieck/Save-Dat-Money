@@ -204,13 +204,17 @@ public class GraphFragmentOverview extends Fragment {
         BarSet incomeData = new BarSet(incomeLabel,income);
         incomeData.setColor(getResources().getColor(R.color.md_purple_500));
 
-        float[] expense = {-mRealmHandler.getSpecificDateAmount(month, year, 0)};
+        float[] expense = {-mRealmHandler.getSpecificDateAmount(month, year, 1)};
         String[] expenseLabel = {"expense"};
+
         BarSet expenseData = new BarSet(expenseLabel, expense);
+        expenseData.setColor(getResources().getColor(R.color.Aqua));
 
         chartView.addData(incomeData);
         chartView.addData(expenseData);
 
+        chartView.setRoundCorners(25f);
+        chartView.setBackgroundColor(getResources().getColor(R.color.DarkGray));
         chartView.setRoundCorners(Tools.fromDpToPx(5));
         chartView.setBarSpacing(Tools.fromDpToPx(8));
         chartView.setBorderSpacing(Tools.fromDpToPx(5))
