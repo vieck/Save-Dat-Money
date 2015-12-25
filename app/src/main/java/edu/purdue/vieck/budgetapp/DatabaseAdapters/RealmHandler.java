@@ -191,7 +191,7 @@ public class RealmHandler {
         for (BudgetItem budgetItem : results) {
             amount += budgetItem.getAmount();
         }
-        return amount;
+        return (float)(Math.round(amount*100)/100.00);
     }
 
     public float getSpecificDateAmountByType(String category, int month, int year, int type) {
@@ -222,7 +222,7 @@ public class RealmHandler {
         for (BudgetItem budgetItem : results) {
             categoryPercent += budgetItem.getAmount();
         }
-        return categoryPercent;
+        return (float) (Math.round(categoryPercent*100)/100.00);
     }
 
     public void delete(final BudgetItem budgetItem) {
