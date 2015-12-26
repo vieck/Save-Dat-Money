@@ -25,7 +25,7 @@ public class SummaryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_summary, container, false);
+        View view = inflater.inflate(R.layout.fragment_data, container, false);
         mExpandableListView = (ExpandableListView) view.findViewById(R.id.data_list);
         //mExpandableListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mDataAdapter = new ExpandableListViewAdapter(getActivity(), "");
