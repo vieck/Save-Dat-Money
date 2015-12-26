@@ -47,6 +47,20 @@ public class RealmHandler {
         thread.start();
     }
 
+    public void updateData(final BudgetItem budgetItem) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                realm = Realm.getInstance(mContext);
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(budgetItem);
+                realm.commitTransaction();
+                realm.close();
+            }
+        });
+        thread.start();
+    }
+
     public boolean isEmpty(int type) {
         realm = Realm.getInstance(mContext);
         RealmQuery<BudgetItem> query;
@@ -191,7 +205,7 @@ public class RealmHandler {
         for (BudgetItem budgetItem : results) {
             amount += budgetItem.getAmount();
         }
-        return (float)(Math.round(amount*100)/100.00);
+        return (float) (Math.round(amount * 100) / 100.00);
     }
 
     public float getSpecificDateAmountByType(String category, int month, int year, int type) {
@@ -200,11 +214,11 @@ public class RealmHandler {
         RealmQuery query;
         if (month != -1 && year != -1) {
             if (type == 2) {
-                query = realm.where(BudgetItem.class).equalTo("category",category).beginGroup().equalTo("month", month).equalTo("year", year).endGroup();
+                query = realm.where(BudgetItem.class).equalTo("category", category).beginGroup().equalTo("month", month).equalTo("year", year).endGroup();
             } else if (type == 1) {
-                query = realm.where(BudgetItem.class).equalTo("type", true).equalTo("category",category).beginGroup().equalTo("month", month).equalTo("year", year).endGroup();
+                query = realm.where(BudgetItem.class).equalTo("type", true).equalTo("category", category).beginGroup().equalTo("month", month).equalTo("year", year).endGroup();
             } else {
-                query = realm.where(BudgetItem.class).equalTo("type", false).equalTo("category",category).beginGroup().equalTo("month", month).equalTo("year", year).endGroup();
+                query = realm.where(BudgetItem.class).equalTo("type", false).equalTo("category", category).beginGroup().equalTo("month", month).equalTo("year", year).endGroup();
             }
         } else {
             if (type == 2) {
@@ -222,7 +236,7 @@ public class RealmHandler {
         for (BudgetItem budgetItem : results) {
             categoryPercent += budgetItem.getAmount();
         }
-        return (float) (Math.round(categoryPercent*100)/100.00);
+        return (float) (Math.round(categoryPercent * 100) / 100.00);
     }
 
     public void delete(final BudgetItem budgetItem) {

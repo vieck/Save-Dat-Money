@@ -21,6 +21,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
         setUpToolbar();
         setUpNavigationDrawer();
         setUpNavigationView();
-        getFragmentManager().beginTransaction().add(R.id.fragment_container,new SettingsFragment()).commit();
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, new SettingsFragment()).commit();
     }
 
     private void setUpToolbar() {

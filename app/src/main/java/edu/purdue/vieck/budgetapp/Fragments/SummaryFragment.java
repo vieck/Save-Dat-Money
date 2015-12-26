@@ -22,6 +22,7 @@ public class SummaryFragment extends Fragment {
     private ExpandableListView mExpandableListView;
     private ExpandableListViewAdapter mDataAdapter;
     private RealmHandler mRealmHandler;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

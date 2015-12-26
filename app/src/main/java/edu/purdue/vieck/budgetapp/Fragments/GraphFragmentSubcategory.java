@@ -29,6 +29,7 @@ public class GraphFragmentSubcategory extends Fragment {
     private GraphCategoryAdapter adapter;
     private RealmHandler mRealmHandler;
     private LinkedList<BudgetItem> months;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

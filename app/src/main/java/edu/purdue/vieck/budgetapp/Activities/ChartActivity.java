@@ -231,7 +231,7 @@ public class ChartActivity extends AppCompatActivity {
                     chartFragment.setArguments(bundle);
                     Log.d("Tabs", "YEAR " + i + " AND  MONTH " + element.getMonth() + " SIZE " + years.size());
                     if (!uniqueMonths.contains(element.getMonth())) {
-                        Log.d("Month",element.getMonth() + " " + element.getMonthString());
+                        Log.d("Month", element.getMonth() + " " + element.getMonthString());
                         adapter.addFragment(chartFragment, element.getMonthString() + " " + i);
                         uniqueMonths.add(element.getMonth());
                     }

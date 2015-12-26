@@ -20,6 +20,7 @@ public class BarChartItem extends ChartItem {
 
     Typeface mTf;
     Context context;
+
     public BarChartItem(ChartData<?> cd, Context c) {
         super(cd);
         mTf = Typeface.SANS_SERIF;

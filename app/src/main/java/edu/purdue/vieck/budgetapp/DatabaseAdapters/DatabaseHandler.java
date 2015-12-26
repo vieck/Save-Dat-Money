@@ -99,14 +99,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         Boolean rowExists;
 
-        if (mCursor.moveToFirst())
-        {
+        if (mCursor.moveToFirst()) {
             // Contains elements
             this.getReadableDatabase().close();
             return false;
 
-        } else
-        {
+        } else {
             // Empty
             this.getReadableDatabase().close();
             return true;
@@ -311,7 +309,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         + " ORDER BY " + COLUMN_MONTH + " DESC," + COLUMN_YEAR + " DESC";
             }
         } else {
-            if(type == 2) {
+            if (type == 2) {
                 selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + category + "%'";
                 totalQuery = "SELECT * FROM " + TABLE_DATA;
             } else {

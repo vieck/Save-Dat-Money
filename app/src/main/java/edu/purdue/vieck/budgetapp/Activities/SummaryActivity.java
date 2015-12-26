@@ -48,8 +48,8 @@ public class SummaryActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         /*if (id == R.id.data_action_search) {
-            AddFragment addFragment = new AddFragment();
-            addFragment.show(getSupportFragmentManager(), "AddFragment");
+            AddDataFragment addDataFragment = new AddDataFragment();
+            addDataFragment.show(getSupportFragmentManager(), "AddDataFragment");
             return true;
         }*/
         return super.onOptionsItemSelected(item);

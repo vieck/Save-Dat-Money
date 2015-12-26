@@ -36,11 +36,11 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
         this.list = list;
         this.type = type;
         mRealmHandler = new RealmHandler(mContext);
-        max = mRealmHandler.getSpecificDateAmount(month,year, type);
+        max = mRealmHandler.getSpecificDateAmount(month, year, type);
     }
 
     public void changeMonth(int month, int year) {
-        max = mRealmHandler.getSpecificDateAmount(month,year, type);
+        max = mRealmHandler.getSpecificDateAmount(month, year, type);
         String[] categories = mContext.getResources().getStringArray(R.array.categoryarray);
         for (int i = 0; i < list.size(); i++) {
             double amount = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, type);

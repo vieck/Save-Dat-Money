@@ -205,7 +205,7 @@ public class GraphActivity extends AppCompatActivity {
         String[] list = {"Overview", "Categories", "Subcategories"};
 
         Bundle bundle = new Bundle();
-        bundle.putInt("type",mSpinner.getSelectedItemPosition());
+        bundle.putInt("type", mSpinner.getSelectedItemPosition());
         GraphFragmentOverview fragmentOverview = new GraphFragmentOverview();
         fragmentOverview.setArguments(bundle);
         adapter.addFragment(fragmentOverview, "Overview");
@@ -251,7 +251,7 @@ public class GraphActivity extends AppCompatActivity {
         public void changeType(int type) {
             GraphFragmentOverview fragmentOverview = (GraphFragmentOverview) mFragmentList.get(0);
             if (fragmentOverview.getArguments() != null) {
-                fragmentOverview.getArguments().putInt("type",type);
+                fragmentOverview.getArguments().putInt("type", type);
             }
             //fragmentOverview.updateType(type);
 

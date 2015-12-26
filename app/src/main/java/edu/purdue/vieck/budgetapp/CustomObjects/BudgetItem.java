@@ -32,7 +32,7 @@ public class BudgetItem extends RealmObject {
         this.year = year;
         this.note = note;
         this.image = image;
-        this.monthString = months[month-1];
+        this.monthString = months[month - 1];
 
         if (type) {
             typeString = "Income";

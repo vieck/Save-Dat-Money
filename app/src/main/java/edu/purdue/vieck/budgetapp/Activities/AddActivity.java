@@ -7,12 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import edu.purdue.vieck.budgetapp.Fragments.AddCategoryFragment;
-import edu.purdue.vieck.budgetapp.Fragments.AddFragment;
+import edu.purdue.vieck.budgetapp.Fragments.AddDataFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 public class AddActivity extends AppCompatActivity {
 
-    AddFragment addFragment;
+    AddDataFragment addDataFragment;
     AddCategoryFragment addCategoryFragment;
     private Toolbar toolbar;
 
@@ -29,7 +29,7 @@ public class AddActivity extends AppCompatActivity {
         } else {
             addCategoryFragment = (AddCategoryFragment) getFragmentManager().findFragmentByTag("addCategory");
 
-            if (addFragment == null) {
+            if (addDataFragment == null) {
                 addCategoryFragment = new AddCategoryFragment();
                 getFragmentManager().beginTransaction().add(R.id.fragment_container, addCategoryFragment, "addCategory");
             } else {

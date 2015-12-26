@@ -53,7 +53,7 @@ public class GraphFragmentCategory extends Fragment {
         right = (ImageButton) view.findViewById(R.id.right_arrow);
 
         Bundle bundle = getArguments();
-        type = bundle.getInt("type",2);
+        type = bundle.getInt("type", 2);
 
         if (!mRealmHandler.isEmpty(type)) {
             months = mRealmHandler.getAllUniqueMonthsAsLinkedList(type);
@@ -62,7 +62,7 @@ public class GraphFragmentCategory extends Fragment {
             left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("Category Position",""+count);
+                    Log.d("Category Position", "" + count);
                     if (count < months.size() - 1) {
                         count++;
                         BudgetItem item = months.get(count);

@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/add_fragment"
-    style="@style/StyleActivityAdd"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/edittext_amount"
         style="@style/edittext_amount_add_fragment"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:hint="@string/amount"
         android:inputType="numberDecimal" />
+
+    <TextView android:id="@+id/currency_label"
+        style="@style/edittext_amount_add_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/edittext_amount"
+        android:layout_alignBaseline="@id/edittext_amount"/>
 
     <EditText
         android:id="@+id/edittext_note"
@@ -23,8 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/edittext_amount"
-        android:hint="@string/edittext_note_hint"
-        android:maxLength="150" />
+        android:inputType="none"
+        android:hint="@string/edittext_note_hint"/>
 
     <TextView
         android:id="@+id/textview_note"
@@ -45,10 +50,11 @@
 
     <EditText
         android:id="@+id/edittext_subcategory"
-        style="@style/edittext_add_fragment"
+        style="@style/edittext_add_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edittext_category" />
+        android:layout_below="@id/edittext_category"
+        android:hint="@string/subcategory"/>
 
     <RadioGroup
         android:id="@+id/radio_group"
@@ -57,14 +63,17 @@
         android:layout_below="@id/edittext_subcategory"
         android:layout_marginBottom="12dp"
         android:layout_marginStart="50dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:clickable="false"
+        android:focusableInTouchMode="false">
 
         <RadioButton
             android:id="@+id/income__button"
             style="@style/button_add_fragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/income" />
+            android:text="@string/income"
+            android:clickable="false"/>
 
         <RadioButton
             android:id="@+id/expense_button"
@@ -72,7 +81,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/expense" />
+            android:text="@string/expense"
+            android:clickable="false"/>
     </RadioGroup>
 
     <DatePicker
@@ -85,8 +95,9 @@
         android:datePickerMode="spinner"
         android:yearListSelectorColor="?android:attr/colorAccent" />
 
+
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_next"
+        android:id="@+id/edit_button"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
@@ -94,9 +105,9 @@
         android:layout_marginBottom="12dp"
         android:layout_marginEnd="12dp"
         android:scaleType="center"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@android:drawable/ic_menu_edit"
         android:stateListAnimator="@anim/button_elevation"
-        android:tint="?android:colorPrimary"
+        android:tint="?android:attr/colorPrimary"
         app:backgroundTint="?android:attr/colorPrimaryDark"
         app:borderWidth="0dp" />
 

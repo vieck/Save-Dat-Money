@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.Currency;
 import java.util.Stack;
 
-import edu.purdue.vieck.budgetapp.Activities.DescriptionActivity;
+import edu.purdue.vieck.budgetapp.Activities.EditActivity;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
@@ -78,23 +78,23 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
             public void onClick(View v) {
                 Log.d("Deleted", "Deleted Item");
                 Bundle bundle = new Bundle();
-                bundle.putInt("Id",budgetItem.getId());
+                bundle.putInt("Id", budgetItem.getId());
                 bundle.putBoolean("Type", budgetItem.getType());
                 bundle.putString("TypeString", budgetItem.getTypeString());
                 bundle.putString("Category", budgetItem.getCategory());
                 bundle.putString("Subcategory", budgetItem.getSubcategory());
-                bundle.putDouble("Amount",budgetItem.getAmount());
+                bundle.putDouble("Amount", budgetItem.getAmount());
                 bundle.putString("Note", budgetItem.getNote());
                 bundle.putInt("Month", budgetItem.getMonth());
                 bundle.putInt("Day", budgetItem.getDay());
                 bundle.putInt("Year", budgetItem.getYear());
-                bundle.putString("MonthString",budgetItem.getMonthString());
-                bundle.putInt("Image",budgetItem.getImage());
-                Intent intent = new Intent(mContext, DescriptionActivity.class);
+                bundle.putString("MonthString", budgetItem.getMonthString());
+                bundle.putInt("Image", budgetItem.getImage());
+                Intent intent = new Intent(mContext, EditActivity.class);
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
-               // databaseHandler.delete(budgetItem);
+                // databaseHandler.delete(budgetItem);
             }
         });
     }

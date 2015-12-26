@@ -66,7 +66,7 @@ public class GraphFragmentOverview extends Fragment {
         View view = inflater.inflate(R.layout.fragment_graph_overview, container, false);
 
         Bundle bundle = getArguments();
-        type = bundle.getInt("type",2);
+        type = bundle.getInt("type", 2);
         decimalFormat = new DecimalFormat("0.00");
         categories = getResources().getStringArray(R.array.categoryarray);
         mRealmHandler = new RealmHandler(getActivity());
@@ -110,7 +110,7 @@ public class GraphFragmentOverview extends Fragment {
                         BudgetItem item = months.get(count);
                         mMonthTxt.setText(item.getMonthString());
                         mYearTxt.setText("" + item.getYear());
-                         changeAdapterMonth(item.getMonth(), item.getYear());
+                        changeAdapterMonth(item.getMonth(), item.getYear());
                     } else {
                         count = months.size() - 1;
                         BudgetItem item = months.get(count);
@@ -123,7 +123,7 @@ public class GraphFragmentOverview extends Fragment {
             BudgetItem item = months.get(count);
             createCategoryChart(mCategoryBarView, item.getMonth(), item.getYear());
             createBudgetChart(mBudgetBarView, item.getMonth(), item.getYear());
-            createStackChart(mStackBarChartView, item.getMonth() ,item.getYear());
+            createStackChart(mStackBarChartView, item.getMonth(), item.getYear());
             changeAdapterMonth(item.getMonth(), item.getYear());
         } else {
             mMonthTxt.setText("No Data");
@@ -137,8 +137,8 @@ public class GraphFragmentOverview extends Fragment {
     }
 
     private void createCategoryChart(final BarChartView barChart, int month, int year) {
-        final String[] mLabelsOne= {"10-15", "15-20", "20-25", "25-30", "30-35"};
-        final float [][] mValuesOne = {{9.5f, 7.5f, 5.5f, 4.5f, 10f}, {6.5f, 3.5f, 3.5f, 2.5f, 7.5f}};
+        final String[] mLabelsOne = {"10-15", "15-20", "20-25", "25-30", "30-35"};
+        final float[][] mValuesOne = {{9.5f, 7.5f, 5.5f, 4.5f, 10f}, {6.5f, 3.5f, 3.5f, 2.5f, 7.5f}};
         BarSet data1;
        /* float[] xdata = new float[categories.length];
         for (int i = 0; i < categories.length; i++) {
@@ -176,14 +176,14 @@ public class GraphFragmentOverview extends Fragment {
     }
 
     private void createBudgetChart(final BarChartView barChartView, int month, int year) {
-        final String[] mLabelsThree= {"", "", "", "", "", "", "", "", "", "",
+        final String[] mLabelsThree = {"", "", "", "", "", "", "", "", "", "",
                 "", "", "", "", "", "", "", "", "", "",
                 "", "", "", "", "", "", "", "", "", "",
                 "", "", "", "", "", "", "", "", "", ""};
         final float[] mValuesThree = {2.5f, 3.7f, 4f, 8f, 4.5f, 4f, 5f, 7f, 10f, 14f,
                 12f, 6f, 7f, 8f, 9f, 8f, 9f, 8f, 7f, 6f,
                 5f, 4f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 11f,
-                12f, 14, 13f, 10f ,9f, 8f, 7f, 5f, 4f, 6f};
+                12f, 14, 13f, 10f, 9f, 8f, 7f, 5f, 4f, 6f};
         BarSet data = new BarSet(mLabelsThree, mValuesThree);
         data.setColor(getResources().getColor(R.color.md_light_blue_300));
         barChartView.addData(data);
@@ -201,7 +201,7 @@ public class GraphFragmentOverview extends Fragment {
     private void createStackChart(final HorizontalStackBarChartView chartView, int month, int year) {
         float[] income = {mRealmHandler.getSpecificDateAmount(month, year, 1)};
         String[] incomeLabel = {"income"};
-        BarSet incomeData = new BarSet(incomeLabel,income);
+        BarSet incomeData = new BarSet(incomeLabel, income);
         incomeData.setColor(getResources().getColor(R.color.md_purple_500));
 
         float[] expense = {-mRealmHandler.getSpecificDateAmount(month, year, 1)};

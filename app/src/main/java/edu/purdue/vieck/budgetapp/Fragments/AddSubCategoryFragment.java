@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import edu.purdue.vieck.budgetapp.Activities.AddActivity;
 import edu.purdue.vieck.budgetapp.Adapters.AddAdapter;
 import edu.purdue.vieck.budgetapp.CustomObjects.AddItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTree;
@@ -21,7 +22,7 @@ import edu.purdue.vieck.budgetapp.R;
 /**
  * Created by mvieck on 9/27/2015.
  */
-public class AddSubCategoryFragment extends Fragment {
+public class AddSubcategoryFragment extends Fragment {
     private ListView listView;
     private LinearLayoutManager layoutManager;
     private AddAdapter addAdapter;
@@ -77,13 +78,19 @@ public class AddSubCategoryFragment extends Fragment {
                 int position = listView.getCheckedItemPosition();
                 if (position != ListView.INVALID_POSITION) {
                     AddItem item = tree.getChildNodes().get(position).getItem();
-                    bundle.putString("Category",item.getType());
+                    bundle.putString("Category", item.getType());
                     bundle.putString("Subcategory", item.getSubType());
-                    AddFragment addFragment = new AddFragment();
-                    addFragment.setArguments(bundle);
-                    getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container, addFragment).commit();
+                    if (getActivity() instanceof AddActivity) {
+                        AddDataFragment addDataFragment = new AddDataFragment();
+                        addDataFragment.setArguments(bundle);
+                        getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container, addDataFragment).commit();
+                    } else {
+                        EditFragment editFragment = new EditFragment();
+                        editFragment.setArguments(bundle);
+                        getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container, editFragment).commit();
+                    }
                 } else {
-                    Snackbar.make(getView(),"No Item Selected", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getView(), "No Item Selected", Snackbar.LENGTH_LONG).show();
                 }
             }
         });

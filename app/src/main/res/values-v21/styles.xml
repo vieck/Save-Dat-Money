@@ -85,36 +85,39 @@
     <style name="date_container">
         <item name="android:background">?android:colorBackground</item>
     </style>
-    
+
     <style name="date_textview">
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <!-- Add Fragment Styles -->
-    
-    <style name="edittext_add_fragment"  >
+
+    <style name="edittext_add_fragment">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textColorHint">?android:attr/textColorHint</item>
         <item name="android:textSize">20sp</item>
         <item name="android:layout_marginStart">50dp</item>
         <item name="android:layout_marginBottom">24dp</item>
     </style>
-    
+
     <style name="edittext_add_category" parent="edittext_add_fragment">
         <item name="android:editable">false</item>
+        <item name="android:inputType">none</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
     <style name="edittext_amount_add_fragment" parent="edittext_add_fragment">
-        <item name="android:editable">false</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:inputType">none</item>
         <item name="android:textSize">36sp</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textColorHint">?android:attr/textColorHint</item>
     </style>
-    
+
     <style name="edittext_note_add_fragment" parent="edittext_add_fragment">
         <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:maxLines">100</item>
     </style>
 
     <style name="button_add_fragment">
@@ -146,7 +149,7 @@
         <item name="android:textSize">10pt</item>
         <item name="android:textStyle">normal</item>
     </style>
-    
+
     <!-- Settings Styles -->
     <style name="settings_textview_label">
         <item name="android:textSize">10pt</item>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.purdue.vieck.budgetapp" >
+    package="edu.purdue.vieck.budgetapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,7 +13,8 @@
       IMPORTANT: Change "com.parse.starter.permission.C2D_MESSAGE" in the lines below
       to match your app's package name + ".permission.C2D_MESSAGE".
     -->
-    <permission android:protectionLevel="signature"
+    <permission
+        android:protectionLevel="signature"
         android:name="edu.purdue.vieck.permission.C2D_MESSAGE" />
     <uses-permission android:name="edu.purdue.vieck.permission.C2D_MESSAGE" />
 
@@ -23,7 +24,7 @@
         android:icon="@mipmap/ic_dvd"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
 
         <meta-data
             android:name="com.parse.APPLICATION_ID"
@@ -36,7 +37,7 @@
         <activity
             android:name=".Activities.DashboardActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,16 +75,18 @@
             android:parentActivityName=".Activities.DashboardActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.DescriptionActivity"
+            android:name=".Activities.EditActivity"
             android:label="@string/title_activity_description"
-            android:parentActivityName=".Activities.ChartActivity" >
+            android:parentActivityName=".Activities.ChartActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.purdue.vieck.budgetapp.Activities.ChartActivity" />
         </activity>
 
         <service android:name="com.parse.PushService" />
-        <receiver android:name="com.parse.ParsePushBroadcastReceiver"
+
+        <receiver
+            android:name="com.parse.ParsePushBroadcastReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
@@ -91,7 +94,8 @@
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
