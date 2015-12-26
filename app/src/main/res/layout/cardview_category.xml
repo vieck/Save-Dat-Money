@@ -40,7 +40,7 @@
             android:text="@string/amount"/>
 
         <TextView
-            android:id="@+id/textview_amount"
+            android:id="@+id/edittext_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/label_amount"

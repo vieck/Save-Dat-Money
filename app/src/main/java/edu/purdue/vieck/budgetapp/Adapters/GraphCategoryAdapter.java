@@ -18,7 +18,6 @@ import java.util.List;
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTreeItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentSubcategory;
-import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -96,7 +95,7 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
             imageView = (ImageView) v.findViewById(R.id.imageview);
             labelCategory = (TextView) v.findViewById(R.id.label_category);
             labelAmount = (TextView) v.findViewById(R.id.label_amount);
-            amount = (TextView) v.findViewById(R.id.textview_amount);
+            amount = (TextView) v.findViewById(R.id.edittext_amount);
             progressBar = (RoundCornerProgressBar) v.findViewById(R.id.percentage_bar);
         }
     }

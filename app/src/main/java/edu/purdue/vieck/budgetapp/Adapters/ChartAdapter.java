@@ -78,7 +78,9 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
             public void onClick(View v) {
                 Log.d("Deleted", "Deleted Item");
                 Bundle bundle = new Bundle();
-                    bundle.putString("Type", budgetItem.getTypeString());
+                bundle.putInt("Id",budgetItem.getId());
+                bundle.putBoolean("Type", budgetItem.getType());
+                bundle.putString("TypeString", budgetItem.getTypeString());
                 bundle.putString("Category", budgetItem.getCategory());
                 bundle.putString("Subcategory", budgetItem.getSubcategory());
                 bundle.putDouble("Amount",budgetItem.getAmount());
@@ -86,6 +88,8 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
                 bundle.putInt("Month", budgetItem.getMonth());
                 bundle.putInt("Day", budgetItem.getDay());
                 bundle.putInt("Year", budgetItem.getYear());
+                bundle.putString("MonthString",budgetItem.getMonthString());
+                bundle.putInt("Image",budgetItem.getImage());
                 Intent intent = new Intent(mContext, DescriptionActivity.class);
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
