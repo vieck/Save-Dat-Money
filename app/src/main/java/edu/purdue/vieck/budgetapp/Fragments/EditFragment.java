@@ -1,8 +1,12 @@
 package edu.purdue.vieck.budgetapp.Fragments;
 
+import android.animation.StateListAnimator;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,10 +38,10 @@ public class EditFragment extends android.app.Fragment {
     RadioButton incomeButton, expenseButton;
     EditText amount, category, subcategory, note;
     DatePicker datePicker;
-    FloatingActionButton editButton;
+    FloatingActionButton deleteButton, editButton;
     RealmHandler mRealmHandler;
     BudgetItem budgetItem;
-    private boolean editing;
+    private boolean editing, confirm;
 
     @Nullable
     @Override
@@ -55,6 +59,7 @@ public class EditFragment extends android.app.Fragment {
         note = (EditText) view.findViewById(R.id.edittext_note);
         datePicker = (DatePicker) view.findViewById(R.id.datepicker);
         editButton = (FloatingActionButton) view.findViewById(R.id.edit_button);
+        deleteButton = (FloatingActionButton) view.findViewById(R.id.delete_button);
         parseBundle(extras);
         setUpFloatingActionButton();
         return view;
@@ -70,7 +75,7 @@ public class EditFragment extends android.app.Fragment {
         budgetItem.setTypeString(bundle.getString("TypeString"));
         budgetItem.setNote(bundle.getString("Note"));
         budgetItem.setDay(bundle.getInt("Day"));
-        budgetItem.setMonth(bundle.getInt("Month")-1);
+        budgetItem.setMonth(bundle.getInt("Month") - 1);
         budgetItem.setYear(bundle.getInt("Year"));
         budgetItem.setMonthString(bundle.getString("MonthString"));
         budgetItem.setImage(bundle.getInt("Image"));
@@ -92,174 +97,153 @@ public class EditFragment extends android.app.Fragment {
     }
 
     private void setUpFloatingActionButton() {
-        final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-        editing = false;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                editButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            if (editing) {
-                                amount.setInputType(InputType.TYPE_NULL);
-                                amount.setFocusable(false);
-                                category.setClickable(false);
-                                category.setInputType(InputType.TYPE_NULL);
-                                subcategory.setClickable(false);
-                                note.setInputType(InputType.TYPE_NULL);
-                                datePicker.setEnabled(false);
-                                budgetItem.setAmount(Float.parseFloat(amount.getText().toString()));
-                                budgetItem.setCategory(category.getText().toString());
-                                budgetItem.setSubcategory(subcategory.getText().toString());
-                                budgetItem.setNote(note.getText().toString());
-                                budgetItem.setDay(datePicker.getDayOfMonth());
-                                budgetItem.setMonth(datePicker.getMonth() + 1);
-                                budgetItem.setYear(datePicker.getYear());
-                                budgetItem.setMonthString(months[datePicker.getMonth()]);
-                                mRealmHandler.updateData(budgetItem);
-                                Intent intent = new Intent(getActivity(), ChartActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                getActivity().startActivity(intent);
-                            } else {
-                                amount.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                category.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
-                                        Bundle bundle = getArguments();
-                                        if (incomeButton.isChecked()) {
-                                            bundle.putBoolean("Type", true);
-                                        } else {
-                                            bundle.putBoolean("Type", false);
-                                        }
-                                        bundle.putString("Category", category.getText().toString());
-                                        bundle.putString("Subcategory", subcategory.getText().toString());
-                                        if (!amount.getText().toString().equals("")) {
-                                            bundle.putDouble("Amount", Double.parseDouble(amount.getText().toString()));
-                                        }
-                                        bundle.putString("Note", note.getText().toString());
-                                        bundle.putInt("Month", datePicker.getMonth());
-                                        bundle.putInt("Day", datePicker.getDayOfMonth());
-                                        bundle.putInt("Year", datePicker.getYear());
-                                        addCategoryFragment.setArguments(bundle);
-                                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                        fragmentTransaction.replace(R.id.fragment_container, addCategoryFragment);
-                                        fragmentTransaction.commit();
-                                    }
-                                });
-                                subcategory.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        AddSubcategoryFragment addSubcategoryFragment = new AddSubcategoryFragment();
-                                        Bundle bundle = getArguments();
-                                        if (incomeButton.isChecked()) {
-                                            bundle.putBoolean("Type", true);
-                                        } else {
-                                            bundle.putBoolean("Type", false);
-                                        }
-                                        bundle.putString("Category", category.getText().toString());
-                                        bundle.putString("Subcategory", subcategory.getText().toString());
-                                        if (!amount.getText().toString().equals("")) {
-                                            bundle.putDouble("Amount", Double.parseDouble(amount.getText().toString()));
-                                        }
-                                        bundle.putString("Note", note.getText().toString());
-                                        bundle.putInt("Month", datePicker.getMonth());
-                                        bundle.putInt("Day", datePicker.getDayOfMonth());
-                                        bundle.putInt("Year", datePicker.getYear());
-                                        addSubcategoryFragment.setArguments(bundle);
-                                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                        fragmentTransaction.replace(R.id.fragment_container, addSubcategoryFragment);
-                                        fragmentTransaction.commit();
-                                    }
-                                });
-                                datePicker.setEnabled(true);
-                                editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_save, getActivity().getTheme()));
-                                editing = true;
-                            }
-                        } else {
-                            if (editing) {
-                                amount.setInputType(InputType.TYPE_NULL);
-                                amount.setFocusable(false);
-                                category.setClickable(false);
-                                category.setInputType(InputType.TYPE_NULL);
-                                subcategory.setClickable(false);
-                                datePicker.setEnabled(false);
-                                note.setInputType(InputType.TYPE_NULL);
-                                budgetItem.setAmount(Float.parseFloat(amount.getText().toString()));
-                                budgetItem.setCategory(category.getText().toString());
-                                budgetItem.setSubcategory(subcategory.getText().toString());
-                                budgetItem.setNote(note.getText().toString());
-                                budgetItem.setDay(datePicker.getDayOfMonth());
-                                budgetItem.setMonth(datePicker.getMonth() + 1);
-                                budgetItem.setYear(datePicker.getYear());
-                                budgetItem.setMonthString(months[datePicker.getMonth()]);
-                                mRealmHandler.updateData(budgetItem);
-                                Intent intent = new Intent(getActivity(), ChartActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                getActivity().startActivity(intent);
-                            } else {
-                                amount.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                category.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
-                                        Bundle bundle = getArguments();
-                                        if (incomeButton.isChecked()) {
-                                            bundle.putBoolean("Type", true);
-                                        } else {
-                                            bundle.putBoolean("Type", false);
-                                        }
-                                        bundle.putString("Category", category.getText().toString());
-                                        bundle.putString("Subcategory", subcategory.getText().toString());
-                                        if (!amount.getText().toString().equals("")) {
-                                            bundle.putDouble("Amount", Double.parseDouble(amount.getText().toString()));
-                                        }
-                                        bundle.putString("Note", note.getText().toString());
-                                        bundle.putInt("Month", datePicker.getMonth());
-                                        bundle.putInt("Day", datePicker.getDayOfMonth());
-                                        bundle.putInt("Year", datePicker.getYear());
-                                        addCategoryFragment.setArguments(bundle);
-                                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                        fragmentTransaction.replace(R.id.fragment_container, addCategoryFragment);
-                                        fragmentTransaction.commit();
-                                    }
-                                });
-                                subcategory.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        AddSubcategoryFragment addSubcategoryFragment = new AddSubcategoryFragment();
-                                        Bundle bundle = getArguments();
-                                        if (incomeButton.isChecked()) {
-                                            bundle.putBoolean("Type", true);
-                                        } else {
-                                            bundle.putBoolean("Type", false);
-                                        }
-                                        bundle.putString("Category", category.getText().toString());
-                                        bundle.putString("Subcategory", subcategory.getText().toString());
-                                        if (!amount.getText().toString().equals("")) {
-                                            bundle.putDouble("Amount", Double.parseDouble(amount.getText().toString()));
-                                        }
-                                        bundle.putString("Note", note.getText().toString());
-                                        bundle.putInt("Month", datePicker.getMonth());
-                                        bundle.putInt("Day", datePicker.getDayOfMonth());
-                                        bundle.putInt("Year", datePicker.getYear());
-                                        addSubcategoryFragment.setArguments(bundle);
-                                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                        fragmentTransaction.replace(R.id.fragment_container, addSubcategoryFragment);
-                                        fragmentTransaction.commit();
-                                    }
-                                });
-
-                                datePicker.setEnabled(true);
-                                editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_save));
-                                editing = true;
-                            }
-                        }
-                    }
-                });
+                setupEditButton();
+                setupDeleteButton();
             }
         });
         thread.start();
+    }
+
+    private void setupDeleteButton() {
+        confirm = false;
+        final StateListAnimator stateListAnimator = editButton.getStateListAnimator();
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (confirm) {
+                    int[][] states = new int[][] {
+                            new int[] { android.R.attr.state_checked }
+                    };
+
+                    int [] colors = new int[] {
+                            getResources().getColor(R.color.md_purple_500)
+                    };
+                    editButton.setStateListAnimator(stateListAnimator);
+                    confirm = false;
+                } else {
+                    int[][] states = new int[][] {
+                            new int[] { android.R.attr.state_checked }
+                    };
+
+                    int [] colors = new int[] {
+                            Color.GREEN
+                    };
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel, getActivity().getTheme()));
+                        deleteButton.setStateListAnimator(stateListAnimator);
+                        editButton.setImageResource(android.R.drawable.checkbox_on_background);
+                        editButton.setBackgroundTintList(new ColorStateList(states,colors));
+                        editButton.setStateListAnimator(stateListAnimator);
+                    } else {
+                        deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
+                        deleteButton.setStateListAnimator(stateListAnimator);
+                        editButton.setImageResource(android.R.drawable.checkbox_on_background);
+                        editButton.setBackgroundTintList(new ColorStateList(states,colors));
+                        editButton.setStateListAnimator(stateListAnimator);
+                    }
+
+                    confirm = true;
+                }
+            }
+        });
+    }
+
+    private void setupEditButton() {
+        final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        editing = false;
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (confirm) {
+                    mRealmHandler.delete(budgetItem);
+                    Intent intent = new Intent(getActivity(), ChartActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    getActivity().startActivity(intent);
+                } else if (editing) {
+                    amount.setInputType(InputType.TYPE_NULL);
+                    amount.setFocusable(false);
+                    category.setClickable(false);
+                    category.setInputType(InputType.TYPE_NULL);
+                    subcategory.setClickable(false);
+                    note.setInputType(InputType.TYPE_NULL);
+                    datePicker.setEnabled(false);
+                    budgetItem.setAmount(Float.parseFloat(amount.getText().toString()));
+                    budgetItem.setCategory(category.getText().toString());
+                    budgetItem.setSubcategory(subcategory.getText().toString());
+                    budgetItem.setNote(note.getText().toString());
+                    budgetItem.setDay(datePicker.getDayOfMonth());
+                    budgetItem.setMonth(datePicker.getMonth() + 1);
+                    budgetItem.setYear(datePicker.getYear());
+                    budgetItem.setMonthString(months[datePicker.getMonth()]);
+                    mRealmHandler.updateData(budgetItem);
+                    Intent intent = new Intent(getActivity(), ChartActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    getActivity().startActivity(intent);
+                } else {
+                    amount.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    category.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
+                            Bundle bundle = getArguments();
+                            if (incomeButton.isChecked()) {
+                                bundle.putBoolean("Type", true);
+                            } else {
+                                bundle.putBoolean("Type", false);
+                            }
+                            bundle.putString("Category", category.getText().toString());
+                            bundle.putString("Subcategory", subcategory.getText().toString());
+                            if (!amount.getText().toString().equals("")) {
+                                bundle.putDouble("Amount", Double.parseDouble(amount.getText().toString()));
+                            }
+                            bundle.putString("Note", note.getText().toString());
+                            bundle.putInt("Month", datePicker.getMonth());
+                            bundle.putInt("Day", datePicker.getDayOfMonth());
+                            bundle.putInt("Year", datePicker.getYear());
+                            addCategoryFragment.setArguments(bundle);
+                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.fragment_container, addCategoryFragment);
+                            fragmentTransaction.commit();
+                        }
+                    });
+                    subcategory.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            AddSubcategoryFragment addSubcategoryFragment = new AddSubcategoryFragment();
+                            Bundle bundle = getArguments();
+                            if (incomeButton.isChecked()) {
+                                bundle.putBoolean("Type", true);
+                            } else {
+                                bundle.putBoolean("Type", false);
+                            }
+                            bundle.putString("Category", category.getText().toString());
+                            bundle.putString("Subcategory", subcategory.getText().toString());
+                            if (!amount.getText().toString().equals("")) {
+                                bundle.putDouble("Amount", Double.parseDouble(amount.getText().toString()));
+                            }
+                            bundle.putString("Note", note.getText().toString());
+                            bundle.putInt("Month", datePicker.getMonth());
+                            bundle.putInt("Day", datePicker.getDayOfMonth());
+                            bundle.putInt("Year", datePicker.getYear());
+                            addSubcategoryFragment.setArguments(bundle);
+                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.fragment_container, addSubcategoryFragment);
+                            fragmentTransaction.commit();
+                        }
+                    });
+                    datePicker.setEnabled(true);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_save, getActivity().getTheme()));
+                    } else {
+                        editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_save));
+                    }
+                    editing = true;
+                }
+            }
+        });
     }
 }

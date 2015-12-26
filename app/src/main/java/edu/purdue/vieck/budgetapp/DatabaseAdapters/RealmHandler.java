@@ -244,7 +244,9 @@ public class RealmHandler {
             @Override
             public void run() {
                 realm = Realm.getInstance(mContext);
-                budgetItem.removeFromRealm();
+                realm.beginTransaction();
+                realm.where(BudgetItem.class).equalTo("id",budgetItem.getId()).findFirst().removeFromRealm();
+                realm.commitTransaction();
                 realm.close();
             }
         });
@@ -257,8 +259,6 @@ public class RealmHandler {
             public void run() {
                 realm = Realm.getInstance(mContext);
                 realm.beginTransaction();
-                RealmQuery query = realm.where(BudgetItem.class);
-                RealmResults<BudgetItem> results = query.findAll();
                 realm.clear(BudgetItem.class);
                 realm.commitTransaction();
                 realm.close();

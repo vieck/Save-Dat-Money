@@ -95,6 +95,20 @@
         android:datePickerMode="spinner"
         android:yearListSelectorColor="?android:attr/colorAccent" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/delete_button"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="12dp"
+        android:layout_marginStart="12dp"
+        android:scaleType="center"
+        android:src="@android:drawable/ic_menu_delete"
+        android:stateListAnimator="@anim/button_elevation"
+        android:tint="?android:attr/colorPrimary"
+        app:backgroundTint="@color/md_red_600"
+        app:borderWidth="0dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/edit_button"

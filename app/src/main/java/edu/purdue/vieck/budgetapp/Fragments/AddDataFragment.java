@@ -198,13 +198,16 @@ public class AddDataFragment extends Fragment {
                         String categoryString = categories.getText().toString();
                         String subcategoryString = subcategory.getText().toString();
                         String noteString = note.getText().toString();
-                        BudgetItem budgetItem = new BudgetItem(
-                                amountV,
-                                categoryString, subcategoryString,
-                                incomeOrExpense,
-                                dayNum, monthNum, yearNum,
-                                noteString,
-                                iconResourceId);
+                        BudgetItem budgetItem = new BudgetItem();
+                        budgetItem.setAmount(amountV);
+                        budgetItem.setCategory(categoryString);
+                        budgetItem.setSubcategory(subcategoryString);
+                        budgetItem.setType(incomeOrExpense);
+                        budgetItem.setDay(dayNum);
+                        budgetItem.setMonth(monthNum);
+                        budgetItem.setYear(yearNum);
+                        budgetItem.setNote(noteString);
+                        budgetItem.setImage(iconResourceId);
                         mRealmHandler.addData(budgetItem);
                         Toast.makeText(getActivity(), "Added Data", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getActivity(), ChartActivity.class);
