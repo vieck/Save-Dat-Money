@@ -33,18 +33,12 @@ public class RealmHandler {
     }
 
     public void addData(final BudgetItem budgetItem) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 budgetItem.setId(id.incrementAndGet());
                 realm = Realm.getInstance(mContext);
                 realm.beginTransaction();
                 realm.copyToRealmOrUpdate(budgetItem);
                 realm.commitTransaction();
                 realm.close();
-            }
-        });
-        thread.start();
     }
 
     public void updateData(final BudgetItem budgetItem) {
@@ -240,17 +234,11 @@ public class RealmHandler {
     }
 
     public void delete(final BudgetItem budgetItem) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 realm = Realm.getInstance(mContext);
                 realm.beginTransaction();
                 realm.where(BudgetItem.class).equalTo("id",budgetItem.getId()).findFirst().removeFromRealm();
                 realm.commitTransaction();
                 realm.close();
-            }
-        });
-        thread.start();
     }
 
     public void deleteAll() {

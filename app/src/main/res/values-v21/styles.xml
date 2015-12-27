@@ -98,6 +98,7 @@
         <item name="android:textColorHint">?android:attr/textColorHint</item>
         <item name="android:textSize">20sp</item>
         <item name="android:layout_marginStart">50dp</item>
+        <item name="android:layout_marginEnd">50dp</item>
         <item name="android:layout_marginBottom">24dp</item>
     </style>
 
@@ -140,7 +141,6 @@
 
     <style name="textview_add_note" parent="edittext_add_fragment">
         <item name="android:textSize">12sp</item>
-        <item name="android:layout_marginStart">0dp</item>
     </style>
 
     <!-- DASHBOARD STYLES -->

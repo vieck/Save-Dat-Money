@@ -35,6 +35,9 @@ public class AddDataFragment extends Fragment {
     private TextView categories;
     private EditText amount, category, subcategory, note;
 
+
+    String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
     private FloatingActionButton floatingActionButton;
 
     @Override
@@ -175,9 +178,6 @@ public class AddDataFragment extends Fragment {
     }
 
     private void setSubmitButtonListener() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 floatingActionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -208,17 +208,18 @@ public class AddDataFragment extends Fragment {
                         budgetItem.setYear(yearNum);
                         budgetItem.setNote(noteString);
                         budgetItem.setImage(iconResourceId);
-                        mRealmHandler.addData(budgetItem);
+                        budgetItem.setMonthString(months[monthNum - 1]);
                         Toast.makeText(getActivity(), "Added Data", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getActivity(), ChartActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        getActivity().startActivity(intent);
-                        getActivity().finish();
+                        try {
+                            mRealmHandler.addData(budgetItem);
+                        }  finally {
+                            Intent intent = new Intent(getActivity(), ChartActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            getActivity().startActivity(intent);
+                            getActivity().finish();
+                        }
+
                     }
                 });
-            }
-        });
-        thread.start();
-
     }
 }

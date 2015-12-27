@@ -179,10 +179,15 @@ public class EditFragment extends android.app.Fragment {
                     budgetItem.setMonth(datePicker.getMonth() + 1);
                     budgetItem.setYear(datePicker.getYear());
                     budgetItem.setMonthString(months[datePicker.getMonth()]);
-                    mRealmHandler.updateData(budgetItem);
-                    Intent intent = new Intent(getActivity(), ChartActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    getActivity().startActivity(intent);
+                    
+                    try {
+                        mRealmHandler.updateData(budgetItem);
+                    }  finally {
+                        Intent intent = new Intent(getActivity(), ChartActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        getActivity().startActivity(intent);
+                        getActivity().finish();
+                    }
                 } else {
                     amount.setInputType(InputType.TYPE_CLASS_NUMBER);
                     category.setOnClickListener(new View.OnClickListener() {
