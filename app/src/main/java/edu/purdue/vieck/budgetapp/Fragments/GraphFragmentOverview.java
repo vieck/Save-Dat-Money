@@ -138,22 +138,29 @@ public class GraphFragmentOverview extends Fragment {
 
     private void createCategoryChart(final BarChartView barChart, int month, int year) {
         final String[] mLabelsOne = {"10-15", "15-20", "20-25", "25-30", "30-35"};
-        final float[][] mValuesOne = {{9.5f, 7.5f, 5.5f, 4.5f, 10f}, {6.5f, 3.5f, 3.5f, 2.5f, 7.5f}};
-        BarSet data1;
-       /* float[] xdata = new float[categories.length];
+        final float[][] mValuesOne = {{9.5f, 7.5f, 5.5f, 4.5f, 50f}, {6.5f, 3.5f, 3.5f, 2.5f, 7.5f}};
+
+        float[] income = new float[categories.length];
         for (int i = 0; i < categories.length; i++) {
-            xdata[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, type);
-        }*/
-        data1 = new BarSet(mLabelsOne, mValuesOne[0]);
-        data1.setColor(getResources().getColor(R.color.md_green_400));
-        barChart.addData(data1);
+            income[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 1);
+        }
 
-        BarSet data2 = new BarSet(mLabelsOne, mValuesOne[1]);
-        data2.setColor(getResources().getColor(R.color.md_red_400));
-        barChart.addData(data1);
+        float[] expense = new float[categories.length];
+        for (int i = 0; i < categories.length; i++) {
+            expense[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
+        }
 
+        BarSet positiveData = new BarSet(mLabelsOne, income);
+        positiveData.setColor(getResources().getColor(R.color.md_green_400));
+        barChart.addData(positiveData);
+
+        BarSet negativeData = new BarSet(mLabelsOne, expense);
+        negativeData.setColor(getResources().getColor(R.color.md_red_400));
+        barChart.addData(negativeData);
+
+        barChart.setBackgroundColor(getResources().getColor(R.color.md_black_1000));
         barChart.setSetSpacing(Tools.fromDpToPx(-15));
-        barChart.setBarSpacing(Tools.fromDpToPx(35));
+        barChart.setBarSpacing(Tools.fromDpToPx(15));
         barChart.setRoundCorners(Tools.fromDpToPx(2));
 
         Paint gridPaint = new Paint();
@@ -199,30 +206,31 @@ public class GraphFragmentOverview extends Fragment {
     }
 
     private void createStackChart(final HorizontalStackBarChartView chartView, int month, int year) {
-        float[] income = {mRealmHandler.getSpecificDateAmount(month, year, 1)};
-        String[] incomeLabel = {"income"};
-        BarSet incomeData = new BarSet(incomeLabel, income);
-        incomeData.setColor(getResources().getColor(R.color.md_purple_500));
+        float total = mRealmHandler.getSpecificDateAmount(month,year,2);
 
-        float[] expense = {-mRealmHandler.getSpecificDateAmount(month, year, 1)};
-        String[] expenseLabel = {"expense"};
+        float[] income = {mRealmHandler.getSpecificDateAmount(month, year, 1)};
+        String[] incomeLabel = {"Income"};
+        BarSet incomeData = new BarSet(incomeLabel, income);
+        incomeData.setColor(getResources().getColor(R.color.md_green_A400));
+
+        float[] expense = {-mRealmHandler.getSpecificDateAmount(month, year, 0)};
+        String[] expenseLabel = { "Expense" };
+
 
         BarSet expenseData = new BarSet(expenseLabel, expense);
-        expenseData.setColor(getResources().getColor(R.color.Aqua));
+        expenseData.setColor(getResources().getColor(R.color.md_red_A400));
 
         chartView.addData(incomeData);
         chartView.addData(expenseData);
 
-        chartView.setRoundCorners(25f);
-        chartView.setBackgroundColor(getResources().getColor(R.color.DarkGray));
-        chartView.setRoundCorners(Tools.fromDpToPx(5));
-        chartView.setBarSpacing(Tools.fromDpToPx(8));
+        chartView.setBackgroundColor(getResources().getColor(R.color.md_black_1000));
+        chartView.setLabelsColor(getResources().getColor(R.color.md_white_1000));
+        chartView.setRoundCorners(Tools.fromDpToPx(8));
+        chartView.setBarSpacing(Tools.fromDpToPx(30));
         chartView.setBorderSpacing(Tools.fromDpToPx(5))
-                .setYLabels(AxisController.LabelPosition.NONE)
-                .setXLabels(AxisController.LabelPosition.NONE)
-                .setXAxis(false)
+                .setXLabels(AxisController.LabelPosition.OUTSIDE)
                 .setYAxis(false)
-                .setAxisBorderValues(-80, 80, 10);
+                .setAxisBorderValues(-Math.round(total), Math.round(total));
         chartView.show();
     }
 

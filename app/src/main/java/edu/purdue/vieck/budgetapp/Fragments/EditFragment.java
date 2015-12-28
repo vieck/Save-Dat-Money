@@ -179,7 +179,7 @@ public class EditFragment extends android.app.Fragment {
                     budgetItem.setMonth(datePicker.getMonth() + 1);
                     budgetItem.setYear(datePicker.getYear());
                     budgetItem.setMonthString(months[datePicker.getMonth()]);
-                    
+
                     try {
                         mRealmHandler.updateData(budgetItem);
                     }  finally {

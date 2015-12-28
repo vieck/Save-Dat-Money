@@ -62,6 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/edittext_subcategory"
         android:layout_marginBottom="12dp"
+        android:layout_marginStart="50dp"
         android:orientation="horizontal"
         android:clickable="false"
         android:focusableInTouchMode="false">

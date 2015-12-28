@@ -52,6 +52,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     public void onAttach(final Activity activity) {
         mContext = activity.getApplicationContext();
         super.onAttach(activity);
+        setRetainInstance(true);
     }
 
     @Override
@@ -64,6 +65,8 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_chart, container, false);
+
+
         Bundle bundle = getArguments();
         month = bundle.getInt("month", -1);
         year = bundle.getInt("year", -1);
