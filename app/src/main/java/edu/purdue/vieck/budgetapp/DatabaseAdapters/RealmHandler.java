@@ -202,6 +202,31 @@ public class RealmHandler {
         return (float) (Math.round(amount * 100) / 100.00);
     }
 
+    public float[] getListOfDays(String category, int month, int year, int type) {
+        float[] days;
+        if (month == 2) {
+            days = new float[28];
+        } else if (month % 2 == 1) {
+            days = new float[30];
+        } else {
+            days = new float[31];
+        }
+        realm = Realm.getInstance(mContext);
+        RealmQuery query;
+        if (type == 2) {
+            query = realm.where(BudgetItem.class).equalTo("month", month).equalTo("year", year);
+        } else if (type == 1) {
+            query = realm.where(BudgetItem.class).equalTo("type", true).equalTo("month", month).equalTo("year", year);
+        } else {
+            query = realm.where(BudgetItem.class).equalTo("type", false).equalTo("month", month).equalTo("year", year);
+        }
+        RealmResults<BudgetItem> results = query.findAll();
+        for (BudgetItem item : results) {
+            days[item.getDay()-1] += item.getAmount();
+        }
+        return days;
+    }
+
     public float getSpecificDateAmountByType(String category, int month, int year, int type) {
         float categoryPercent = 0;
         realm = Realm.getInstance(mContext);

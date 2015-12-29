@@ -137,7 +137,6 @@ public class GraphFragmentOverview extends Fragment {
     }
 
     private void createCategoryChart(final BarChartView barChart, int month, int year) {
-        final String[] mLabelsOne = {"10-15", "15-20", "20-25", "25-30", "30-35"};
         final float[][] mValuesOne = {{9.5f, 7.5f, 5.5f, 4.5f, 50f}, {6.5f, 3.5f, 3.5f, 2.5f, 7.5f}};
 
         float[] income = new float[categories.length];
@@ -150,11 +149,11 @@ public class GraphFragmentOverview extends Fragment {
             expense[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
         }
 
-        BarSet positiveData = new BarSet(mLabelsOne, income);
+        BarSet positiveData = new BarSet(categories, income);
         positiveData.setColor(getResources().getColor(R.color.md_green_400));
         barChart.addData(positiveData);
 
-        BarSet negativeData = new BarSet(mLabelsOne, expense);
+        BarSet negativeData = new BarSet(categories, expense);
         negativeData.setColor(getResources().getColor(R.color.md_red_400));
         barChart.addData(negativeData);
 
@@ -183,14 +182,18 @@ public class GraphFragmentOverview extends Fragment {
     }
 
     private void createBudgetChart(final BarChartView barChartView, int month, int year) {
-        final String[] mLabelsThree = {"", "", "", "", "", "", "", "", "", "",
+        /*final String[] mLabelsThree = {"", "", "", "", "", "", "", "", "", "",
                 "", "", "", "", "", "", "", "", "", "",
                 "", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", ""};
+                "", "", "", "", "", "", "", "", "", ""};*/
         final float[] mValuesThree = {2.5f, 3.7f, 4f, 8f, 4.5f, 4f, 5f, 7f, 10f, 14f,
                 12f, 6f, 7f, 8f, 9f, 8f, 9f, 8f, 7f, 6f,
                 5f, 4f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 11f,
                 12f, 14, 13f, 10f, 9f, 8f, 7f, 5f, 4f, 6f};
+
+        float[] days = mRealmHandler.getListOfDays(categories[0],month,year,type);
+        String[] mLabelsThree = new String[days.length];
+
         BarSet data = new BarSet(mLabelsThree, mValuesThree);
         data.setColor(getResources().getColor(R.color.md_light_blue_300));
         barChartView.addData(data);
