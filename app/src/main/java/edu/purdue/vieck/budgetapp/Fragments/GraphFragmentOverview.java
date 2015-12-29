@@ -173,6 +173,7 @@ public class GraphFragmentOverview extends Fragment {
                 .setAxisBorderValues(0, 10, 2)
                 .setGrid(BarChartView.GridType.FULL, 10, 10, gridPaint)
                 .setYAxis(false)
+                .setXAxis(false)
                 .setXLabels(XController.LabelPosition.OUTSIDE)
                 .setYLabels(YController.LabelPosition.NONE)
                 .setLabelsColor(Color.parseColor("#86705c"))
@@ -231,7 +232,7 @@ public class GraphFragmentOverview extends Fragment {
         chartView.setRoundCorners(Tools.fromDpToPx(8));
         chartView.setBarSpacing(Tools.fromDpToPx(30));
         chartView.setBorderSpacing(Tools.fromDpToPx(5))
-                .setXLabels(AxisController.LabelPosition.OUTSIDE)
+                .setXAxis(false)
                 .setYAxis(false)
                 .setAxisBorderValues(-Math.round(total), Math.round(total));
         chartView.show();
