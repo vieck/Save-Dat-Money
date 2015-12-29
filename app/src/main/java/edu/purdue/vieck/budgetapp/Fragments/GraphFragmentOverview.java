@@ -137,7 +137,6 @@ public class GraphFragmentOverview extends Fragment {
     }
 
     private void createCategoryChart(final BarChartView barChart, int month, int year) {
-        final String[] mLabelsOne = {"10-15", "15-20", "20-25", "25-30", "30-35"};
         final float[][] mValuesOne = {{9.5f, 7.5f, 5.5f, 4.5f, 50f}, {6.5f, 3.5f, 3.5f, 2.5f, 7.5f}};
 
         float[] income = new float[categories.length];
@@ -150,11 +149,11 @@ public class GraphFragmentOverview extends Fragment {
             expense[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
         }
 
-        BarSet positiveData = new BarSet(mLabelsOne, income);
+        BarSet positiveData = new BarSet(categories, income);
         positiveData.setColor(getResources().getColor(R.color.md_green_400));
         barChart.addData(positiveData);
 
-        BarSet negativeData = new BarSet(mLabelsOne, expense);
+        BarSet negativeData = new BarSet(categories, expense);
         negativeData.setColor(getResources().getColor(R.color.md_red_400));
         barChart.addData(negativeData);
 
@@ -174,6 +173,7 @@ public class GraphFragmentOverview extends Fragment {
                 .setAxisBorderValues(0, 10, 2)
                 .setGrid(BarChartView.GridType.FULL, 10, 10, gridPaint)
                 .setYAxis(false)
+                .setXAxis(false)
                 .setXLabels(XController.LabelPosition.OUTSIDE)
                 .setYLabels(YController.LabelPosition.NONE)
                 .setLabelsColor(Color.parseColor("#86705c"))
@@ -228,7 +228,7 @@ public class GraphFragmentOverview extends Fragment {
         chartView.setRoundCorners(Tools.fromDpToPx(8));
         chartView.setBarSpacing(Tools.fromDpToPx(30));
         chartView.setBorderSpacing(Tools.fromDpToPx(5))
-                .setXLabels(AxisController.LabelPosition.OUTSIDE)
+                .setXAxis(false)
                 .setYAxis(false)
                 .setAxisBorderValues(-Math.round(total), Math.round(total));
         chartView.show();
