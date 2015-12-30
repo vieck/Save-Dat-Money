@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,17 +24,18 @@ import io.realm.Sort;
  */
 public class RealmHandler {
 
-    private static AtomicInteger id = new AtomicInteger();
+    private static AtomicInteger id;
     Realm realm;
 
     Context mContext;
 
     public RealmHandler(Context context) {
         mContext = context;
+        id = new AtomicInteger();
     }
 
     public void addData(final BudgetItem budgetItem) {
-                budgetItem.setId(id.incrementAndGet());
+                budgetItem.setId(getCount()+1);
                 realm = Realm.getInstance(mContext);
                 realm.beginTransaction();
                 realm.copyToRealmOrUpdate(budgetItem);
@@ -67,6 +69,11 @@ public class RealmHandler {
         }
 
         return query.findAll().isEmpty();
+    }
+
+    public int getCount() {
+        realm = Realm.getInstance(mContext);
+        return realm.where(BudgetItem.class).findAll().size();
     }
 
 

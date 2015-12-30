@@ -133,11 +133,14 @@ public class GraphFragmentOverview extends Fragment {
     }
 
     private void changeAdapterMonth(int month, int year) {
-
+        updateCategoryChart(month, year);
     }
 
     private void createCategoryChart(final BarChartView barChart, int month, int year) {
         final float[][] mValuesOne = {{9.5f, 7.5f, 5.5f, 4.5f, 50f}, {6.5f, 3.5f, 3.5f, 2.5f, 7.5f}};
+
+        float expenseTotal = mRealmHandler.getSpecificDateAmount(month, year, 0);
+        float incomeTotal = mRealmHandler.getSpecificDateAmount(month, year, 1);
 
         float[] income = new float[categories.length];
         for (int i = 0; i < categories.length; i++) {
@@ -157,21 +160,25 @@ public class GraphFragmentOverview extends Fragment {
         negativeData.setColor(getResources().getColor(R.color.md_red_400));
         barChart.addData(negativeData);
 
-        barChart.setBackgroundColor(getResources().getColor(R.color.md_black_1000));
-        barChart.setSetSpacing(Tools.fromDpToPx(-15));
-        barChart.setBarSpacing(Tools.fromDpToPx(15));
+        barChart.setBackgroundColor(getResources().getColor(R.color.md_white_1000));
+        barChart.setSetSpacing(Tools.fromDpToPx(-12));
+        barChart.setBarSpacing(Tools.fromDpToPx(12));
         barChart.setRoundCorners(Tools.fromDpToPx(2));
 
         Paint gridPaint = new Paint();
         gridPaint.setColor(Color.parseColor("#8986705C"));
         gridPaint.setStyle(Paint.Style.STROKE);
         gridPaint.setAntiAlias(true);
-        gridPaint.setStrokeWidth(Tools.fromDpToPx(.75f));
+        gridPaint.setStrokeWidth(Tools.fromDpToPx(barChart.getWidth()/categories.length));
 
+        if (expenseTotal > incomeTotal) {
+            barChart.setAxisBorderValues(0,Math.round(expenseTotal));
+        } else {
+            barChart.setAxisBorderValues(0, Math.round(incomeTotal));
+        }
 
         barChart.setBorderSpacing(5)
-                .setAxisBorderValues(0, 10, 2)
-                .setGrid(BarChartView.GridType.FULL, 10, 10, gridPaint)
+                .setGrid(BarChartView.GridType.FULL, categories.length, categories.length, gridPaint)
                 .setYAxis(false)
                 .setXAxis(false)
                 .setXLabels(XController.LabelPosition.OUTSIDE)
@@ -183,17 +190,17 @@ public class GraphFragmentOverview extends Fragment {
     }
 
     private void createBudgetChart(final BarChartView barChartView, int month, int year) {
-        /*final String[] mLabelsThree = {"", "", "", "", "", "", "", "", "", "",
+        final String[] mLabelsThree = {"", "", "", "", "", "", "", "", "", "",
                 "", "", "", "", "", "", "", "", "", "",
                 "", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", ""};*/
+                "", "", "", "", "", "", "", "", "", ""};
         final float[] mValuesThree = {2.5f, 3.7f, 4f, 8f, 4.5f, 4f, 5f, 7f, 10f, 14f,
                 12f, 6f, 7f, 8f, 9f, 8f, 9f, 8f, 7f, 6f,
                 5f, 4f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 11f,
                 12f, 14, 13f, 10f, 9f, 8f, 7f, 5f, 4f, 6f};
 
-        float[] days = mRealmHandler.getListOfDays(categories[0],month,year,type);
-        String[] mLabelsThree = new String[days.length];
+        //float[] days = mRealmHandler.getListOfDays(categories[0],month,year,type);
+        //String[] mLabelsThree = new String[days.length];
 
         BarSet data = new BarSet(mLabelsThree, mValuesThree);
         data.setColor(getResources().getColor(R.color.md_light_blue_300));
@@ -232,10 +239,33 @@ public class GraphFragmentOverview extends Fragment {
         chartView.setRoundCorners(Tools.fromDpToPx(8));
         chartView.setBarSpacing(Tools.fromDpToPx(30));
         chartView.setBorderSpacing(Tools.fromDpToPx(5))
-                .setXAxis(false)
-                .setYAxis(false)
+                .setXLabels(AxisController.LabelPosition.NONE)
+                .setYLabels(AxisController.LabelPosition.NONE)
+                .setXAxis(true)
+                .setYAxis(true)
                 .setAxisBorderValues(-Math.round(total), Math.round(total));
         chartView.show();
+    }
+
+    private void updateCategoryChart(int month, int year) {
+        float expenseTotal = mRealmHandler.getSpecificDateAmount(month, year, 0);
+        float incomeTotal = mRealmHandler.getSpecificDateAmount(month, year, 1);
+        float[] income = new float[categories.length];
+        for (int i = 0; i < categories.length; i++) {
+            income[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, type);
+        }
+        float[] expense = new float[categories.length];
+        for (int i = 0; i < categories.length; i++){
+            expense[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, type);
+        }
+
+        if (expenseTotal > incomeTotal) {
+            mCategoryBarView.setAxisBorderValues(0, Math.round(expenseTotal));
+        } else {
+            mCategoryBarView.setAxisBorderValues(0, Math.round(incomeTotal));
+        }
+        mCategoryBarView.updateValues(0, income);
+        mCategoryBarView.updateValues(0, expense);
     }
 
 }
