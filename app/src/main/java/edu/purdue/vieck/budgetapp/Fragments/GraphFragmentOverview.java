@@ -121,9 +121,9 @@ public class GraphFragmentOverview extends Fragment {
                 }
             });
             BudgetItem item = months.get(count);
-            createCategoryChart(mCategoryBarView, item.getMonth(), item.getYear());
-            createBudgetChart(mBudgetBarView, item.getMonth(), item.getYear());
-            createStackChart(mStackBarChartView, item.getMonth(), item.getYear());
+            mCategoryBarView = createCategoryChart(mCategoryBarView, item.getMonth(), item.getYear());
+            mBudgetBarView = createBudgetChart(mBudgetBarView, item.getMonth(), item.getYear());
+            mStackBarChartView = createStackChart(mStackBarChartView, item.getMonth(), item.getYear());
             changeAdapterMonth(item.getMonth(), item.getYear());
         } else {
             mMonthTxt.setText("No Data");
@@ -133,10 +133,11 @@ public class GraphFragmentOverview extends Fragment {
     }
 
     private void changeAdapterMonth(int month, int year) {
-        updateCategoryChart(month, year);
+        //updateCategoryChart(month, year);
+        //updateStackChart(month, year);
     }
 
-    private void createCategoryChart(final BarChartView barChart, int month, int year) {
+    private BarChartView createCategoryChart(final BarChartView barChart, int month, int year) {
         final float[][] mValuesOne = {{9.5f, 7.5f, 5.5f, 4.5f, 50f}, {6.5f, 3.5f, 3.5f, 2.5f, 7.5f}};
 
         float expenseTotal = mRealmHandler.getSpecificDateAmount(month, year, 0);
@@ -187,9 +188,10 @@ public class GraphFragmentOverview extends Fragment {
                 .setAxisColor(Color.parseColor("#86705c"));
 
         barChart.show();
+        return barChart;
     }
 
-    private void createBudgetChart(final BarChartView barChartView, int month, int year) {
+    private BarChartView createBudgetChart(final BarChartView barChartView, int month, int year) {
         final String[] mLabelsThree = {"", "", "", "", "", "", "", "", "", "",
                 "", "", "", "", "", "", "", "", "", "",
                 "", "", "", "", "", "", "", "", "", "",
@@ -214,9 +216,10 @@ public class GraphFragmentOverview extends Fragment {
                 .setYAxis(false);
 
         barChartView.show();
+        return barChartView;
     }
 
-    private void createStackChart(final HorizontalStackBarChartView chartView, int month, int year) {
+    private HorizontalStackBarChartView createStackChart(final HorizontalStackBarChartView chartView, int month, int year) {
         float total = mRealmHandler.getSpecificDateAmount(month,year,2);
 
         float[] income = {mRealmHandler.getSpecificDateAmount(month, year, 1)};
@@ -245,6 +248,7 @@ public class GraphFragmentOverview extends Fragment {
                 .setYAxis(true)
                 .setAxisBorderValues(-Math.round(total), Math.round(total));
         chartView.show();
+        return chartView;
     }
 
     private void updateCategoryChart(int month, int year) {
@@ -260,12 +264,29 @@ public class GraphFragmentOverview extends Fragment {
         }
 
         if (expenseTotal > incomeTotal) {
-            mCategoryBarView.setAxisBorderValues(0, Math.round(expenseTotal));
+            //mCategoryBarView.setAxisBorderValues(0, Math.round(expenseTotal));
         } else {
-            mCategoryBarView.setAxisBorderValues(0, Math.round(incomeTotal));
+          // mCategoryBarView.setAxisBorderValues(0, Math.round(incomeTotal));
         }
-        mCategoryBarView.updateValues(0, income);
+        mCategoryBarView.updateValues(1, income);
         mCategoryBarView.updateValues(0, expense);
+        //mCategoryBarView.notifyDataUpdate();
+    }
+
+    private void updateBudgetChart(int month, int year) {
+
+    }
+
+    private void updateStackChart(int month, int year) {
+        float total = mRealmHandler.getSpecificDateAmount(month,year,2);
+
+        float[] income = {mRealmHandler.getSpecificDateAmount(month, year, 1)};
+        float[] expense = {-mRealmHandler.getSpecificDateAmount(month, year, 0)};
+
+        mStackBarChartView.setAxisBorderValues(-Math.round(total), -Math.round(total));
+        mStackBarChartView.updateValues(0, expense);
+        mStackBarChartView.updateValues(1, income);
+        //mStackBarChartView.notifyDataUpdate();
     }
 
 }
