@@ -206,11 +206,22 @@ public class GraphActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putInt("type", mSpinner.getSelectedItemPosition());
-        GraphFragmentOverview fragmentOverview = new GraphFragmentOverview();
-        fragmentOverview.setArguments(bundle);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+
+
+        GraphFragmentOverview fragmentOverview = (GraphFragmentOverview) fragmentManager.findFragmentByTag("Overview");
+        if (fragmentOverview == null) {
+            fragmentOverview = new GraphFragmentOverview();
+            fragmentOverview.setArguments(bundle);
+        }
         adapter.addFragment(fragmentOverview, "Overview");
-        GraphFragmentCategory fragmentCategory = new GraphFragmentCategory();
-        fragmentCategory.setArguments(bundle);
+        GraphFragmentCategory fragmentCategory = (GraphFragmentCategory) fragmentManager.findFragmentByTag("Category");
+        if (fragmentCategory == null) {
+            fragmentCategory = new GraphFragmentCategory();
+            fragmentCategory.setArguments(bundle);
+        }
         adapter.addFragment(fragmentCategory, "Category");
         viewPager.setAdapter(adapter);
     }

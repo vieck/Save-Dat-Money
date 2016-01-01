@@ -209,6 +209,25 @@ public class RealmHandler {
         return (float) (Math.round(amount * 100) / 100.00);
     }
 
+    public float[] getAllDataAsArray(int type) {
+        realm = Realm.getInstance(mContext);
+        RealmQuery query;
+        if (type == 2) {
+            query = realm.where(BudgetItem.class);
+        } else if (type == 1) {
+            query = realm.where(BudgetItem.class).equalTo("type", true);
+        } else {
+            query = realm.where(BudgetItem.class).equalTo("type", false);
+        }
+        RealmResults<BudgetItem> results = query.findAll();
+        float[] data = new float[results.size()];
+        int i = 0;
+        for (BudgetItem budgetItem : results) {
+            data[i++] = budgetItem.getAmount();
+        }
+        return data;
+    }
+
     public float[] getListOfDays(String category, int month, int year, int type) {
         float[] days;
         if (month == 2) {

@@ -24,9 +24,7 @@ import edu.purdue.vieck.budgetapp.R;
  * Created by mvieck on 10/7/2015.
  */
 public class GraphFragmentSubcategory extends Fragment {
-    private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
-    private GraphCategoryAdapter adapter;
     private RealmHandler mRealmHandler;
     private LinkedList<BudgetItem> months;
 
@@ -34,9 +32,7 @@ public class GraphFragmentSubcategory extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph_subcategory, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         layoutManager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(layoutManager);
         mRealmHandler = new RealmHandler(getActivity());
         return view;
     }

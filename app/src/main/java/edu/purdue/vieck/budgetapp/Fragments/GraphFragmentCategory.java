@@ -38,14 +38,13 @@ import edu.purdue.vieck.budgetapp.R;
  * Created by mvieck on 10/7/2015.
  */
 public class GraphFragmentCategory extends Fragment {
-    private RecyclerView recyclerView;
-    private GridLayoutManager layoutManager;
-    private GraphCategoryAdapter adapter;
     private RealmHandler mRealmHandler;
     private LinkedList<BudgetItem> months;
     ImageButton left, right;
     TextView monthTxt, yearTxt;
     private int count, type;
+
+    String[] categories;
 
     /* First Chart */
     BarChartView mChartOne;
@@ -59,10 +58,7 @@ public class GraphFragmentCategory extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph_monthly, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        layoutManager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(layoutManager);
-
+        categories = getResources().getStringArray(R.array.categoryarray);
         mRealmHandler = new RealmHandler(getActivity());
 
         mChartOne = (BarChartView) view.findViewById(R.id.chart_one);
@@ -87,13 +83,11 @@ public class GraphFragmentCategory extends Fragment {
                     if (count < months.size() - 1) {
                         count++;
                         BudgetItem item = months.get(count);
-                        adapter.changeMonth(item.getMonth(), item.getYear());
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                     } else {
                         count = 0;
                         BudgetItem item = months.get(count);
-                        adapter.changeMonth(item.getMonth(), item.getYear());
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                     }
@@ -107,20 +101,18 @@ public class GraphFragmentCategory extends Fragment {
                     if (count > 0) {
                         count--;
                         BudgetItem item = months.get(count);
-                        adapter.changeMonth(item.getMonth(), item.getYear());
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                     } else {
                         count = months.size() - 1;
                         BudgetItem item = months.get(count);
-                        adapter.changeMonth(item.getMonth(), item.getYear());
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                     }
                 }
             });
-            adapter = makeAdapter(adapter);
-            recyclerView.setAdapter(adapter);
+            produceOne(mChartOne, months.get(count).getMonth(), months.get(count).getYear());
+            produceThree(mChartThree, months.get(count).getMonth(), months.get(count).getYear());
         } else {
             monthTxt.setText("No Data");
             yearTxt.setText("");
@@ -129,42 +121,74 @@ public class GraphFragmentCategory extends Fragment {
         return view;
     }
 
-    private GraphCategoryAdapter makeAdapter(GraphCategoryAdapter adapter) {
-        List<AddTreeItem> list = new ArrayList<>();
-        int[] categoryImages = {R.drawable.food_groceries_dark, R.drawable.utility_misc_dark, R.drawable.entertainment_dark, R.drawable.medical_misc_dark, R.drawable.insurance_dark, R.drawable.chart_dark};
-        String[] categories = getResources().getStringArray(R.array.categoryarray);
-        monthTxt.setText(months.get(count).getMonthString());
-        yearTxt.setText("" + months.get(count).getYear());
-        AddTreeItem item;
-        for (int i = 0; i < categories.length; i++) {
-            item = new AddTreeItem();
-            item.setDrawableId(categoryImages[i]);
-            item.setName(categories[i]);
-            item.setAmount(mRealmHandler.getSpecificDateAmountByType(categories[i], months.get(0).getMonth(), months.get(0).getYear(), type));
-            list.add(item);
-        }
-        adapter = new GraphCategoryAdapter(getActivity(), list, months.get(count).getMonth(), months.get(count).getYear(), type);
-        return adapter;
-    }
-
     public void updateType(int type) {
         this.type = type;
-        if (!mRealmHandler.isEmpty(type)) {
+        if (mRealmHandler != null && !mRealmHandler.isEmpty(type)) {
             months = mRealmHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;
             monthTxt.setText(months.get(count).getMonthString());
             yearTxt.setText("" + months.get(count).getYear() + "");
-            adapter = makeAdapter(adapter);
-            adapter.notifyDataSetChanged();
-            recyclerView.setAdapter(adapter);
+            updateOne(mChartOne, months.get(count).getMonth(), months.get(count).getYear());
+            updateThree(mChartThree, months.get(count).getMonth(), months.get(count).getYear());
         } else {
             monthTxt.setText("No Data");
             yearTxt.setText("");
         }
     }
 
-    private void produceOne(ChartView chart) {
+    private void produceOne(ChartView chart, int month, int year) {
         BarChartView barChartView = (BarChartView) chart;
+        float highestCategory = 0;
+        float expenseTotal = mRealmHandler.getSpecificDateAmount(month, year, 0);
+        float incomeTotal = mRealmHandler.getSpecificDateAmount(month, year, 1);
+
+        float[] income = new float[categories.length];
+        for (int i = 0; i < categories.length; i++) {
+            income[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 1);
+            if (income[i] > highestCategory) {
+                highestCategory = income[i];
+            }
+        }
+
+        float[] expense = new float[categories.length];
+        for (int i = 0; i < categories.length; i++) {
+            expense[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
+            if (expense[i] > highestCategory) {
+                highestCategory = expense[i];
+            }
+        }
+
+        BarSet data = new BarSet(categories, income);
+        data.setColor(getResources().getColor(R.color.md_green_400));
+        barChartView.addData(data);
+
+        data = new BarSet(categories, expense);
+        data.setColor(getResources().getColor(R.color.md_red_400));
+        barChartView.addData(data);
+
+        barChartView.setBackgroundColor(getResources().getColor(R.color.md_white_1000));
+        barChartView.setSetSpacing(Tools.fromDpToPx(-12));
+        barChartView.setBarSpacing(Tools.fromDpToPx(12));
+        barChartView.setRoundCorners(Tools.fromDpToPx(2));
+
+        Paint gridPaint = new Paint();
+        gridPaint.setColor(Color.parseColor("#8986705C"));
+        gridPaint.setStyle(Paint.Style.STROKE);
+        gridPaint.setAntiAlias(true);
+        gridPaint.setStrokeWidth(Tools.fromDpToPx(barChartView.getWidth()/categories.length));
+
+        barChartView.setAxisBorderValues(0, Math.round(highestCategory));
+
+        barChartView.setBorderSpacing(5)
+                .setGrid(BarChartView.GridType.FULL, categories.length, categories.length, gridPaint)
+                .setYAxis(false)
+                .setXAxis(false)
+                .setXLabels(XController.LabelPosition.OUTSIDE)
+                .setYLabels(YController.LabelPosition.NONE)
+                .setLabelsColor(Color.parseColor("#86705c"))
+                .setAxisColor(Color.parseColor("#86705c"));
+
+        barChartView.show();
     }
 
     private void produceTwo(ChartView chart) {
@@ -180,7 +204,6 @@ public class GraphFragmentCategory extends Fragment {
         data.setColor(getResources().getColor(R.color.md_green_A400));
         stackedChart.addData(data);
 
-
         float[] expense = {-mRealmHandler.getSpecificDateAmount(month, year, 0)};
         String[] expenseLabel = { "Expense" };
         data = new BarSet(expenseLabel, expense);
@@ -189,7 +212,7 @@ public class GraphFragmentCategory extends Fragment {
 
         float total = mRealmHandler.getSpecificDateAmount(month,year,2);
         stackedChart.setBackgroundColor(getResources().getColor(R.color.md_black_1000));
-        stackedChart.setLabelsColor(getResources().getColor(R.color.md_white_1000));
+        stackedChart.setLabelsColor(getResources().getColor(R.color.md_black_1000));
         stackedChart.setRoundCorners(Tools.fromDpToPx(8));
         stackedChart.setBarSpacing(Tools.fromDpToPx(30));
         stackedChart.setBorderSpacing(Tools.fromDpToPx(5))
@@ -201,13 +224,7 @@ public class GraphFragmentCategory extends Fragment {
         stackedChart.show();
     }
 
-
-    private BarChartView createCategoryChart(final BarChartView barChart, int month, int year) {
-        final float[][] mValuesOne = {{9.5f, 7.5f, 5.5f, 4.5f, 50f}, {6.5f, 3.5f, 3.5f, 2.5f, 7.5f}};
-
-        float expenseTotal = mRealmHandler.getSpecificDateAmount(month, year, 0);
-        float incomeTotal = mRealmHandler.getSpecificDateAmount(month, year, 1);
-
+    private void updateOne(ChartView chartView, int month, int year) {
         float[] income = new float[categories.length];
         for (int i = 0; i < categories.length; i++) {
             income[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 1);
@@ -218,73 +235,21 @@ public class GraphFragmentCategory extends Fragment {
             expense[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
         }
 
-        BarSet positiveData = new BarSet(categories, income);
-        positiveData.setColor(getResources().getColor(R.color.md_green_400));
-        barChart.addData(positiveData);
-
-        BarSet negativeData = new BarSet(categories, expense);
-        negativeData.setColor(getResources().getColor(R.color.md_red_400));
-        barChart.addData(negativeData);
-
-        barChart.setBackgroundColor(getResources().getColor(R.color.md_white_1000));
-        barChart.setSetSpacing(Tools.fromDpToPx(-12));
-        barChart.setBarSpacing(Tools.fromDpToPx(12));
-        barChart.setRoundCorners(Tools.fromDpToPx(2));
-
-        Paint gridPaint = new Paint();
-        gridPaint.setColor(Color.parseColor("#8986705C"));
-        gridPaint.setStyle(Paint.Style.STROKE);
-        gridPaint.setAntiAlias(true);
-        gridPaint.setStrokeWidth(Tools.fromDpToPx(barChart.getWidth()/categories.length));
-
-        if (expenseTotal > incomeTotal) {
-            barChart.setAxisBorderValues(0,Math.round(expenseTotal));
-        } else {
-            barChart.setAxisBorderValues(0, Math.round(incomeTotal));
-        }
-
-        barChart.setBorderSpacing(5)
-                .setGrid(BarChartView.GridType.FULL, categories.length, categories.length, gridPaint)
-                .setYAxis(false)
-                .setXAxis(false)
-                .setXLabels(XController.LabelPosition.OUTSIDE)
-                .setYLabels(YController.LabelPosition.NONE)
-                .setLabelsColor(Color.parseColor("#86705c"))
-                .setAxisColor(Color.parseColor("#86705c"));
-
-        barChart.show();
-        return barChart;
+        chartView.updateValues(0, income);
+        chartView.updateValues(1, expense);
+        chartView.notifyDataUpdate();
     }
 
-    private BarChartView createBudgetChart(final BarChartView barChartView, int month, int year) {
-        final String[] mLabelsThree = {"", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", ""};
-        final float[] mValuesThree = {2.5f, 3.7f, 4f, 8f, 4.5f, 4f, 5f, 7f, 10f, 14f,
-                12f, 6f, 7f, 8f, 9f, 8f, 9f, 8f, 7f, 6f,
-                5f, 4f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 11f,
-                12f, 14, 13f, 10f, 9f, 8f, 7f, 5f, 4f, 6f};
-
-        //float[] days = mRealmHandler.getListOfDays(categories[0],month,year,type);
-        //String[] mLabelsThree = new String[days.length];
-
-        BarSet data = new BarSet(mLabelsThree, mValuesThree);
-        data.setColor(getResources().getColor(R.color.md_light_blue_300));
-        barChartView.addData(data);
-
-        barChartView.setBarSpacing(Tools.fromDpToPx(3));
-
-        barChartView.setXLabels(AxisController.LabelPosition.NONE)
-                .setYLabels(AxisController.LabelPosition.NONE)
-                .setXAxis(false)
-                .setYAxis(false);
-
-        barChartView.show();
-        return barChartView;
-    }
-
-    private HorizontalStackBarChartView createStackChart(final HorizontalStackBarChartView chartView, int month, int year) {
+    private void updateTwo(ChartView chartView, int month, int year) {
 
     }
+
+    private void updateThree(ChartView chartView, int month, int year) {
+        float[] income = {mRealmHandler.getSpecificDateAmount(month, year, 1)};
+        float[] expense = {-mRealmHandler.getSpecificDateAmount(month, year, 0)};
+        chartView.updateValues(0, income);
+        chartView.updateValues(1,expense);
+        chartView.notifyDataUpdate();
+    }
+
 }
