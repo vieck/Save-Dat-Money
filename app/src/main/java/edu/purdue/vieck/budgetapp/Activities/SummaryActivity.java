@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import edu.purdue.vieck.budgetapp.Fragments.SummaryFragment;
+import edu.purdue.vieck.budgetapp.Fragments.DataFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 public class SummaryActivity extends AppCompatActivity {
@@ -20,7 +20,7 @@ public class SummaryActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
-    SummaryFragment summaryFragment;
+    DataFragment dataFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class SummaryActivity extends AppCompatActivity {
         setUpToolbar();
         setUpNavigationDrawer();
         setUpNavigationView();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, summaryFragment = new SummaryFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, dataFragment = new DataFragment()).commit();
     }
 
     @Override

@@ -18,7 +18,7 @@ import edu.purdue.vieck.budgetapp.R;
 /**
  * Created by mvieck on 9/22/2015.
  */
-public class SummaryFragment extends Fragment {
+public class DataFragment extends Fragment {
     private ExpandableListView mExpandableListView;
     private ExpandableListViewAdapter mDataAdapter;
     private RealmHandler mRealmHandler;
@@ -29,9 +29,10 @@ public class SummaryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_data, container, false);
         mExpandableListView = (ExpandableListView) view.findViewById(R.id.data_list);
         //mExpandableListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mDataAdapter = new ExpandableListViewAdapter(getActivity(), "");
-        mExpandableListView.setAdapter(mDataAdapter);
         mRealmHandler = new RealmHandler(getActivity());
+        mDataAdapter = new ExpandableListViewAdapter(getActivity(), mRealmHandler , "");
+        mExpandableListView.setAdapter(mDataAdapter);
+
         return view;
     }
 
@@ -41,8 +42,8 @@ public class SummaryFragment extends Fragment {
     }
 
     public void filterQuery(String filter) {
-        mDataAdapter = new ExpandableListViewAdapter(getActivity(), filter);
+        mDataAdapter = new ExpandableListViewAdapter(getActivity(), mRealmHandler, filter);
         mExpandableListView.setAdapter(mDataAdapter);
-        Log.d("SummaryFragment", "Filter " + filter);
+        Log.d("DataFragment", "Filter " + filter);
     }
 }

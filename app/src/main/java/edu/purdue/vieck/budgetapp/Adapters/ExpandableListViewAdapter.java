@@ -24,9 +24,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     HashMap<Integer, List<BudgetItem>> years;
     List<BudgetItem> mMonths;
 
-    public ExpandableListViewAdapter(Context context, String filter) {
+    public ExpandableListViewAdapter(Context context, RealmHandler realmHandler, String filter) {
         this.context = context;
-        mRealmHandler = new RealmHandler(context);
+        mRealmHandler = realmHandler;
         if (filter == "") {
             mMonths = mRealmHandler.getAllUniqueMonthsAsList(2);
         } else {
