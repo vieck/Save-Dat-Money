@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import edu.purdue.vieck.budgetapp.Adapters.ExpandableListViewAdapter;
-import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 

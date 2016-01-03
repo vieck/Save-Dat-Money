@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import java.util.List;
 import edu.purdue.vieck.budgetapp.Adapters.GraphCategoryAdapter;
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTreeItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 

@@ -16,9 +16,7 @@ import com.db.chart.view.AxisController;
 import com.db.chart.view.BarChartView;
 import com.db.chart.view.ChartView;
 import com.db.chart.view.LineChartView;
-import com.github.mikephil.charting.data.LineDataSet;
 
-import java.sql.Array;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Stack;
@@ -86,9 +84,19 @@ public class GraphFragmentOverview extends Fragment {
     }
 
     private void produceOne(LineChartView lineChartView) {
+        final String[] mLabelsTwo= {"", "", "", "", "START", "", "", "", "", "", "", "", "", "", "",
+                "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                "", "", "", "", "", "", "", "", "", "", "FINISH", "", "", "", ""};
+        final float[][] mValuesTwo = {{35f, 37f, 47f, 49f, 43f,46f, 80f, 83f, 65f, 68f, 100f,68f, 70f, 73f, 83f, 85f, 70f, 73f, 73f, 77f,
+                33f, 15f, 18f, 25f, 28f, 25f, 28f, 40f, 43f, 25f, 28f, 55f, 58f, 50f, 53f, 53f, 57f, 48f, 50f, 53f, 54f,
+                25f, 27f, 35f, 37f, 35f, 80f, 82f, 55f, 59f, 85f, 82f, 60f, 55f, 63f, 65f, 58f, 60f, 63f, 60f},
+                {85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f,
+                        85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f,
+                        85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f}};
+
         float[] expenseArray = mRealmHandler.getAllDataAsArray(0);
         float[] incomeArray = mRealmHandler.getAllDataAsArray(1);
-        float[] dottedLine;
         int total;
         if (expenseArray.length > incomeArray.length) {
             lineChartView.setAxisBorderValues(0, expenseArray.length);
@@ -98,34 +106,36 @@ public class GraphFragmentOverview extends Fragment {
             total = incomeArray.length;
         }
 
-        dottedLine = new float[total];
 
-        for (int i = 0; i < total; i++) {
-            dottedLine[i] = total / 4;
-        }
-
-        String[] labels = new String[expenseArray.length];
+        /*String[] labels = new String[expenseArray.length];
         Arrays.fill(labels,"");
-        LineSet lineSet = new LineSet(labels, expenseArray);
+        LineSet lineSet = new LineSet(mLabelsTwo, mValuesTwo[0]);
         lineSet.setColor(getResources().getColor(R.color.md_red_A400))
                 .setThickness(Tools.fromDpToPx(3))
-                .beginAt(0).endAt(expenseArray.length);
-        lineChartView.addData(lineSet);
+                .beginAt(0).endAt(55);
+        lineChartView.addData(lineSet);*/
 
-        labels = new String[incomeArray.length];
+        String[] labels = new String[incomeArray.length];
         Arrays.fill(labels,"");
-        lineSet = new LineSet(labels, incomeArray);
+        LineSet lineSet = new LineSet(labels, incomeArray);
         lineSet.setColor(getResources().getColor(R.color.md_green_A400))
                 .setThickness(Tools.fromDpToPx(3))
-                .beginAt(0).endAt(expenseArray.length);
+                .beginAt(0).endAt(incomeArray.length);
         lineChartView.addData(lineSet);
 
-        labels = new String[total];
-        Arrays.fill(labels,"");
-        lineSet = new LineSet(labels, dottedLine);
+        float average = 0;
+        for (int i = 0; i < incomeArray.length; i++) {
+            if (average < incomeArray[i]) {
+                average = incomeArray[i];
+            }
+        }
+
+        float[] line = new float[incomeArray.length];
+        Arrays.fill(line, average/2);
+
+        lineSet = new LineSet(labels, line);
         lineSet.setColor(Color.WHITE)
-                .setThickness(Tools.fromDpToPx(3))
-                .setDashed(new float[]{10, 10});
+                .setThickness(Tools.fromDpToPx(3));
         lineChartView.addData(lineSet);
 
         Paint gridPaint = new Paint();
@@ -134,15 +144,13 @@ public class GraphFragmentOverview extends Fragment {
         gridPaint.setAntiAlias(true);
         gridPaint.setStrokeWidth(Tools.fromDpToPx(.75f));
 
-
-
         lineChartView.setBorderSpacing(Tools.fromDpToPx(0))
                 .setXLabels(AxisController.LabelPosition.OUTSIDE)
-                .setLabelsColor(View.SCROLL_AXIS_NONE)
+                .setLabelsColor(getResources().getColor(R.color.md_white_1000))
                 .setYLabels(AxisController.LabelPosition.NONE)
                 .setXAxis(false)
                 .setYAxis(false)
-                .setAxisBorderValues(0,total)
+                .setAxisBorderValues(0,incomeArray.length)
                 .setGrid(ChartView.GridType.HORIZONTAL, gridPaint)
         .setBackgroundColor(Color.BLACK);
 

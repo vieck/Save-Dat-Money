@@ -34,8 +34,5 @@ dependencies {
     compile 'com.jpardogo.materialtabstrip:library:1.1.0'
     compile 'com.akexorcist:RoundCornerProgressBar:2.0.3'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.0'
-    compile 'com.github.bmarrdev:android-DecoView-charting:v0.9.4'
-    compile 'com.diogobernardino:williamchart:2.1'
-
     compile 'io.realm:realm-android:0.87.1'
 }

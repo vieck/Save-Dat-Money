@@ -1,10 +1,6 @@
 package edu.purdue.vieck.budgetapp.DatabaseAdapters;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,7 +127,9 @@ public class RealmHandler {
     }
 
     public List<BudgetItem> getAllUniqueMonthsAsList(int type) {
-        List<BudgetItem> months = new ArrayList<>();
+        List<BudgetItem> items = new ArrayList<>();
+        List<Integer> months = new ArrayList<>();
+        final HashMap<Integer, List<Integer>> monthHashmap = new HashMap<>();
         realm = Realm.getInstance(mContext);
         RealmQuery query;
         if (type == 2) {
@@ -145,13 +143,27 @@ public class RealmHandler {
         results.sort("month", Sort.DESCENDING);
         results.sort("year", Sort.DESCENDING);
         for (BudgetItem budgetItem : results) {
-            months.add(budgetItem);
+            if (monthHashmap.get(budgetItem.getYear()) == null) {
+                List<Integer> list = new ArrayList<Integer>();
+                list.add(budgetItem.getMonth());
+                items.add(budgetItem);
+                monthHashmap.put(budgetItem.getYear(), list);
+            } else {
+                List<Integer> list = monthHashmap.get(budgetItem.getYear());
+                if (!list.contains(budgetItem.getMonth())) {
+                    list.add(budgetItem.getMonth());
+                    monthHashmap.put(budgetItem.getYear(), list);
+                    months.add(budgetItem.getMonth());
+                    items.add(budgetItem);
+                }
+            }
         }
-        return months;
+        return items;
     }
 
     public LinkedList<BudgetItem> getAllUniqueMonthsAsLinkedList(int type) {
-        LinkedList<BudgetItem> months = new LinkedList<>();
+        final LinkedList<BudgetItem> items = new LinkedList<>();
+        final HashMap<Integer, List<Integer>> monthHashmap = new HashMap<>();
         realm = Realm.getInstance(mContext);
         RealmQuery query;
         if (type == 2) {
@@ -165,9 +177,21 @@ public class RealmHandler {
         results.sort("month", Sort.DESCENDING);
         results.sort("year", Sort.DESCENDING);
         for (BudgetItem budgetItem : results) {
-            months.add(budgetItem);
+            if (monthHashmap.get(budgetItem.getYear()) == null) {
+                List<Integer> list = new ArrayList<Integer>();
+                list.add(budgetItem.getMonth());
+                items.add(budgetItem);
+                monthHashmap.put(budgetItem.getYear(), list);
+            } else {
+                List<Integer> list = monthHashmap.get(budgetItem.getYear());
+                if (!list.contains(budgetItem.getMonth())) {
+                    list.add(budgetItem.getMonth());
+                    monthHashmap.put(budgetItem.getYear(), list);
+                    items.add(budgetItem);
+                }
+            }
         }
-        return months;
+        return items;
     }
 
     public Stack<BudgetItem> getSpecificMonthYearAsStack(int month, int year, int type) {
@@ -191,6 +215,20 @@ public class RealmHandler {
         return mDataset;
     }
 
+    public int getGraphBounds() {
+        realm = Realm.getInstance(mContext);
+        float amount = 0;
+        RealmQuery query = realm.where(BudgetItem.class).equalTo("type",true);
+        int income = query.sum("amount").intValue();
+        query = realm.where(BudgetItem.class).equalTo("type",false);
+        int expense = query.sum("amount").intValue();
+        if (income < expense) {
+            return income;
+        } else {
+            return expense;
+        }
+    }
+
     public float getSpecificDateAmount(int month, int year, int type) {
         float amount = 0;
         realm = Realm.getInstance(mContext);
@@ -212,6 +250,7 @@ public class RealmHandler {
     public float[] getAllDataAsArray(int type) {
         realm = Realm.getInstance(mContext);
         RealmQuery query;
+        getAllUniqueMonthsAsList(type);
         if (type == 2) {
             query = realm.where(BudgetItem.class);
         } else if (type == 1) {

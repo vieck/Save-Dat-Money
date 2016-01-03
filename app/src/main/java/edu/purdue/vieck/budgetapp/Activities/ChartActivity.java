@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.Fragments.ChartFragment;
 import edu.purdue.vieck.budgetapp.R;

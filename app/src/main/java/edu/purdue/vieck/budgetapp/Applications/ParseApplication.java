@@ -1,9 +1,6 @@
 package edu.purdue.vieck.budgetapp.Applications;
 
 
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.R;
-
 /**
  * Created by vieck on 12/23/15.
  */

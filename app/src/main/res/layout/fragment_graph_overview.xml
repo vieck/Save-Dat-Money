@@ -19,11 +19,11 @@
             app:cardCornerRadius="@dimen/cardview_default_radius"
             android:layout_margin="@dimen/cardview_padding">
 
-            <com.db.chart.view.LineChartView
+            <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart_one"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="8dp"
+                android:paddingBottom="16dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:paddingTop="12dp" />
@@ -37,7 +37,7 @@
             app:cardCornerRadius="@dimen/cardview_default_radius"
             android:layout_margin="@dimen/cardview_padding">
 
-            <com.db.chart.view.BarChartView
+            <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/chart_two"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -54,7 +54,7 @@
             app:cardCornerRadius="@dimen/cardview_default_radius"
             android:layout_margin="@dimen/cardview_padding">
 
-            <com.db.chart.view.LineChartView 
+            <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart_three"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

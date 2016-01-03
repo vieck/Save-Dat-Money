@@ -1,12 +1,10 @@
 package edu.purdue.vieck.budgetapp.Fragments;
 
 import android.animation.StateListAnimator;
-import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;

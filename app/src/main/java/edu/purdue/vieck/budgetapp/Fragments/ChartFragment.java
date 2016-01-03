@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
 import edu.purdue.vieck.budgetapp.Adapters.ChartAdapter;
-import edu.purdue.vieck.budgetapp.DatabaseAdapters.ParseHandler;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
