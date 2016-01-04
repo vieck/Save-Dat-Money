@@ -15,6 +15,7 @@ import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -40,13 +41,10 @@ public class GraphFragmentCategory extends Fragment {
     String[] categories;
 
     /* First Chart */
-    LineChart mChartOne;
+    BarChart mChartOne;
 
     /* Second Chart */
-    BarChart mChartTwo;
-
-    /* Third Chart */
-    HorizontalBarChart mChartThree;
+    HorizontalBarChart mChartTwo;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,9 +53,8 @@ public class GraphFragmentCategory extends Fragment {
         categories = getResources().getStringArray(R.array.categoryarray);
         mRealmHandler = new RealmHandler(getActivity());
 
-        mChartOne = (LineChart) view.findViewById(R.id.chart_one);
-        mChartTwo = (BarChart) view.findViewById(R.id.chart_two);
-        mChartThree = (HorizontalBarChart) view.findViewById(R.id.chart_three);
+        mChartOne = (BarChart) view.findViewById(R.id.chart_one);
+        mChartTwo = (HorizontalBarChart) view.findViewById(R.id.chart_three);
 
         monthTxt = (TextView) view.findViewById(R.id.label_month);
         yearTxt = (TextView) view.findViewById(R.id.label_year);
@@ -112,7 +109,7 @@ public class GraphFragmentCategory extends Fragment {
                 }
             });
             produceOne(mChartOne, months.get(count).getMonth(), months.get(count).getYear());
-            produceThree(mChartThree, months.get(count).getMonth(), months.get(count).getYear());
+            produceTwo(mChartTwo, months.get(count).getMonth(), months.get(count).getYear());
         } else {
             monthTxt.setText("No Data");
             yearTxt.setText("");
@@ -129,7 +126,7 @@ public class GraphFragmentCategory extends Fragment {
             monthTxt.setText(months.get(count).getMonthString());
             yearTxt.setText("" + months.get(count).getYear() + "");
             updateOne(mChartOne, months.get(count).getMonth(), months.get(count).getYear());
-            updateThree(mChartThree, months.get(count).getMonth(), months.get(count).getYear());
+            updateTwo(mChartTwo, months.get(count).getMonth(), months.get(count).getYear());
         } else {
             monthTxt.setText("No Data");
             yearTxt.setText("");
@@ -138,77 +135,163 @@ public class GraphFragmentCategory extends Fragment {
 
     private void updateGraphs(int month, int year) {
         updateOne(mChartOne, month, year);
-        updateThree(mChartThree, month, year);
+        updateTwo(mChartTwo, month, year);
     }
 
-    private void produceOne(LineChart chart, int month, int year) {
-        float highestCategory = 0;
+    /* Creates a line chart for expense vs income */
+    private void produceOne(BarChart chart, int month, int year) {
+        ArrayList<BarEntry> incomeValues = new ArrayList<>();
+        ArrayList<BarEntry> expenseValues = new ArrayList<>();
 
-        float[] income = new float[categories.length];
         for (int i = 0; i < categories.length; i++) {
-            income[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 1);
-            if (income[i] > highestCategory) {
-                highestCategory = income[i];
-            }
+            float value = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 1);
+            incomeValues.add(new BarEntry(value, i));
         }
 
-        float[] expense = new float[categories.length];
         for (int i = 0; i < categories.length; i++) {
-            expense[i] = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
-            if (expense[i] > highestCategory) {
-                highestCategory = expense[i];
-            }
+            float value = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
+            expenseValues.add(new BarEntry(value, i));
         }
+
+        List<BarDataSet> barDataSets = new ArrayList<>();
+        BarDataSet dataSetIncome = new BarDataSet(incomeValues, "Income");
+        dataSetIncome.setDrawValues(false);
+        dataSetIncome.setColor(getResources().getColor(R.color.md_green_A400));
+        BarDataSet dataSetExpense = new BarDataSet(expenseValues, "Expense");
+        dataSetExpense.setDrawValues(false);
+        dataSetExpense.setColor(getResources().getColor(R.color.md_red_A400));
+        barDataSets.add(dataSetIncome);
+        barDataSets.add(dataSetExpense);
+
+        BarData barData = new BarData(categories, barDataSets);
+        barData.setGroupSpace(30f);
+        chart.setData(barData);
+        chart.setDescription("");
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(false);
-        xAxis.setSpaceBetweenLabels(2);
+        xAxis.setSpaceBetweenLabels(1);
 
         Legend l = chart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-        l.setForm(LegendForm.SQUARE);
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        l.setForm(Legend.LegendForm.SQUARE);
         l.setFormSize(9f);
         l.setTextSize(11f);
         l.setXEntrySpace(4f);
 
     }
 
-    private void produceTwo(BarChart chart) {
+    /* Creates a graph for expenses vs income */
+    private void produceTwo(HorizontalBarChart chart, int month, int year) {
 
-    }
-
-    private void produceThree(HorizontalBarChart chart, int month, int year) {
-
+        float total = mRealmHandler.getSpecificDateAmount(month, year, 2);
         List<BarEntry> barEntries = new ArrayList<>();
 
-        float[] income = {mRealmHandler.getSpecificDateAmount(month, year, 1)};
+        float income = mRealmHandler.getSpecificDateAmount(month, year, 1);
         String[] incomeLabel = {"Income"};
-        BarEntry barEntry = new BarEntry(income, 0, incomeLabel[0]);
-        barEntries.add(barEntry);
 
-        float[] expense = {-mRealmHandler.getSpecificDateAmount(month, year, 0)};
+        float expense = -mRealmHandler.getSpecificDateAmount(month, year, 0);
         String[] expenseLabel = { "Expense" };
-        barEntry = new BarEntry(income, 0, expenseLabel[0]);
-        barEntries.add(barEntry);
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Budget");
         String[] labels = {"Income","Expense"};
-        BarData barData = new BarData(labels,barDataSet);
-        barData.setValueTextSize(10f);
 
-        chart.setData(barData);
+        chart.getAxisLeft().setEnabled(false);
+        chart.getAxisRight().setStartAtZero(false);
+        chart.getAxisRight().setAxisMaxValue(total);
+        chart.getAxisRight().setAxisMinValue(-total);
+        chart.getAxisRight().setTextSize(9f);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setTextSize(9f);
+
+        Legend l = chart.getLegend();
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
+        l.setFormSize(8f);
+        l.setFormToTextSpace(4f);
+        l.setXEntrySpace(6f);
+
+        ArrayList<BarEntry> yValues = new ArrayList<>();
+        yValues.add(new BarEntry(new float[]{-expense, income}, 0));
+
+        BarDataSet barDataSet = new BarDataSet(yValues, "Data Comparison");
+        barDataSet.setValueTextSize(7f);
+        barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        barDataSet.setBarSpacePercent(40f);
+        barDataSet.setColors(new int[] {getResources().getColor(R.color.md_red_A400), getResources().getColor(R.color.md_green_A400)});
+        barDataSet.setStackLabels(new String[]{
+                "Expenses", "Income"
+        });
+        BarData data = new BarData(new String[]{""},barDataSet);
+        chart.setData(data);
     }
 
-    private void updateOne(LineChart chartView, int month, int year) {
+    private void updateOne(BarChart chartView, int month, int year) {
+        ArrayList<BarEntry> incomeValues = new ArrayList<>();
+        ArrayList<BarEntry> expenseValues = new ArrayList<>();
 
+        for (int i = 0; i < categories.length; i++) {
+            float value = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 1);
+            incomeValues.add(new BarEntry(value, i));
+        }
+
+        for (int i = 0; i < categories.length; i++) {
+            float value = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
+            expenseValues.add(new BarEntry(value, i));
+        }
+
+        List<BarDataSet> barDataSets = new ArrayList<>();
+        BarDataSet dataSetIncome = new BarDataSet(incomeValues, "Income");
+        dataSetIncome.setDrawValues(false);
+        dataSetIncome.setColor(getResources().getColor(R.color.md_green_A400));
+        BarDataSet dataSetExpense = new BarDataSet(expenseValues, "Expense");
+        dataSetExpense.setDrawValues(false);
+        dataSetExpense.setColor(getResources().getColor(R.color.md_red_A400));
+        barDataSets.add(dataSetIncome);
+        barDataSets.add(dataSetExpense);
+
+        BarData barData = new BarData(categories, barDataSets);
+
+        chartView.getBarData().clearValues();
+        chartView.setData(barData);
+        chartView.notifyDataSetChanged();
+        chartView.invalidate();
     }
 
-    private void updateTwo(BarChart chartView, int month, int year) {
+    private void updateTwo(HorizontalBarChart chart, int month, int year) {
+        float total = mRealmHandler.getSpecificDateAmount(month, year, 2);
+        chart.getAxisRight().setAxisMaxValue(total);
+        chart.getAxisRight().setAxisMinValue(-total);
+        List<BarEntry> barEntries = new ArrayList<>();
 
-    }
+        float income = mRealmHandler.getSpecificDateAmount(month, year, 1);
+        String[] incomeLabel = {"Income"};
 
-    private void updateThree(HorizontalBarChart chartView, int month, int year) {
+        float expense = -mRealmHandler.getSpecificDateAmount(month, year, 0);
+        String[] expenseLabel = { "Expense" };
+
+        String[] labels = {"Income","Expense"};
+
+        chart.getBarData().clearValues();
+
+        ArrayList<BarEntry> yValues = new ArrayList<>();
+        yValues.add(new BarEntry(new float[]{expense, income}, 0));
+
+        BarDataSet barDataSet = new BarDataSet(yValues, "Data Comparison");
+        barDataSet.setValueTextSize(7f);
+        barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        barDataSet.setBarSpacePercent(40f);
+        barDataSet.setColors(new int[] {getResources().getColor(R.color.md_red_A400), getResources().getColor(R.color.md_green_A400)});
+        barDataSet.setStackLabels(new String[]{
+                "Expenses", "Income"
+        });
+        BarData data = new BarData(new String[]{""},barDataSet);
+        chart.setData(data);
+        chart.notifyDataSetChanged();
+        chart.invalidate();
     }
 
 }
