@@ -69,7 +69,6 @@ public class GraphFragmentMonthly extends Fragment {
             RealmDataItem item = months.get(count);
             monthTxt.setText(item.getMonthString());
             yearTxt.setText(Integer.toString(item.getYear()));
-
             left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -172,7 +171,10 @@ public class GraphFragmentMonthly extends Fragment {
     }
 
     /* Creates a graph for expenses vs income */
-    private void produceTwo(int month, int year) {
+    private void produceTwo(HorizontalBarChart chart, int month, int year) {
+
+        float total;
+        List<BarEntry> barEntries = new ArrayList<>();
 
         float income = mRealmHandler.getSpecificDateAmount(month, year, 1);
         String[] incomeLabel = {"Income"};
@@ -181,6 +183,32 @@ public class GraphFragmentMonthly extends Fragment {
         String[] expenseLabel = {"Expense"};
 
         String[] labels = {"Income", "Expense"};
+
+        if (income > -expense) {
+            total = income + 10;
+        } else {
+            total = -expense + 10;
+        }
+
+        chart.setDescription("");
+
+        chart.getAxisLeft().setEnabled(false);
+        chart.getAxisRight().setStartAtZero(false);
+        chart.getAxisRight().setAxisMaxValue(total);
+        chart.getAxisRight().setAxisMinValue(-total);
+        chart.getAxisRight().setTextSize(9f);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setTextSize(9f);
+
+        Legend l = chart.getLegend();
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
+        l.setFormSize(8f);
+        l.setFormToTextSpace(4f);
+        l.setXEntrySpace(6f);
 
         ArrayList<BarEntry> yValues = new ArrayList<>();
         yValues.add(new BarEntry(new float[]{-expense, income}, 0));
@@ -229,7 +257,10 @@ public class GraphFragmentMonthly extends Fragment {
 
     private ChartData updateTwo(int month, int year) {
 
-        float income = mRealmHandler.getSpecificDateAmount(month, year, 1);
+        float total = mRealmHandler.getSpecificDateAmount(month, year, 2);
+        chart.getAxisRight().setAxisMaxValue(total+10);
+        chart.getAxisRight().setAxisMinValue(-total-10);
+        List<BarEntry> barEntries = new ArrayList<>();float income = mRealmHandler.getSpecificDateAmount(month, year, 1);
         String[] incomeLabel = {"Income"};
 
         float expense = -mRealmHandler.getSpecificDateAmount(month, year, 0);
