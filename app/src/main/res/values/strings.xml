@@ -161,6 +161,8 @@
     <string name="title_checkbox_preference">Checkbox Preference</string>
     <string name="summary_checkbox_preference">This is a checkbox</string>
 
+    <string name="title_currency">Currency</string>
+    <string name="summary_currency_list">Choose your currency</string>
 
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="title_activity_chart">Charts</string>

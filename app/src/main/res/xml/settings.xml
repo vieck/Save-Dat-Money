@@ -9,6 +9,8 @@
 
     </PreferenceCategory>
 
+    <ListPreference android:title="@string/currency" android:key="currency" android:negativeButtonText="@null" android:positiveButtonText="@null" android:summary="@string/select_the_currency"/>
+
     <!--PreferenceCategory android:title="@string/dialog_based_preferences">
 
         <EditTextPreference
