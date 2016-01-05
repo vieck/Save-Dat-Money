@@ -41,13 +41,13 @@ public class DashboardActivity extends Activity {
         // <div>Icon made by <a href="http://www.simpleicon.com" title="SimpleIcon">SimpleIcon</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
         cards.add(new DashboardItem(getDrawable(R.drawable.chart_dark), "Charts", getResources().getColor(R.color.md_light_blue_A100), new Intent(this, ChartActivity.class)));
         cards.add(new DashboardItem(getDrawable(R.drawable.chart_panel_dark), "Graphs", getResources().getColor(R.color.md_purple_500), new Intent(this, GraphActivity.class)));
-        cards.add(new DashboardItem(getDrawable(R.drawable.insurance_dark), "Data", getResources().getColor(R.color.md_green_A400), new Intent(this, SummaryActivity.class)));
+        cards.add(new DashboardItem(getDrawable(R.drawable.insurance_dark), "Data", getResources().getColor(R.color.md_green_A400), new Intent(this, DataActivity.class)));
         cards.add(new DashboardItem(getDrawable(R.drawable.ic_action_settings), "Settings", getResources().getColor(R.color.md_amber_500), new Intent(this, SettingsActivity.class)));
         //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.currency_symbol), "Currency", getResources().getColor(R.color.Lime), new Intent(getActivity(), ChartActivity.class)));
         //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.hand_coin), "Cash Flow", getResources().getColor(R.color.Gold), new Intent(getActivity(), ChartActivity.class)));
         //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.calculator), "Calculator", getResources().getColor(R.color.BlueViolet), new Intent(getActivity(), ChartActivity.class)));
         //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.graph), "Charts", getResources().getColor(R.color.Black), new Intent(getActivity(), ChartActivity.class)));
-        //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.exit), "Existential", getResources().getColor(R.color.PaleGreen), new Intent(getActivity(), SummaryActivity.class)));
+        //cards.add(new DashboardItem(getActivity().getDrawable(R.drawable.exit), "Existential", getResources().getColor(R.color.PaleGreen), new Intent(getActivity(), DataActivity.class)));
 
         dashboardAdapter = new DashboardAdapter(this, this, cards);
         mRecyclerView.setAdapter(dashboardAdapter);

@@ -27,9 +27,8 @@ public class DataFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_data, container, false);
         mExpandableListView = (ExpandableListView) view.findViewById(R.id.data_list);
-        //mExpandableListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRealmHandler = new RealmHandler(getActivity());
-        mDataAdapter = new ExpandableListViewAdapter(getActivity(), mRealmHandler , "");
+        mDataAdapter = new ExpandableListViewAdapter(getActivity(), mRealmHandler, "");
         mExpandableListView.setAdapter(mDataAdapter);
 
         return view;

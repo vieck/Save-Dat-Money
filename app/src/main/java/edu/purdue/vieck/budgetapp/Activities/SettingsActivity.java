@@ -78,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
                         currentActivity.startActivity(intent);
                         break;
                     case R.id.nav_item_list:
-                        intent = new Intent(currentActivity, SummaryActivity.class);
+                        intent = new Intent(currentActivity, DataActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;

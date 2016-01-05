@@ -16,11 +16,9 @@ import edu.purdue.vieck.budgetapp.R;
 public class SettingsFragment extends PreferenceFragment {
     ListView generalListView, themeListView;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        generalListView = (ListView) view.findViewById(R.id.general_listview);
-        return view;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.settings);
     }
 }

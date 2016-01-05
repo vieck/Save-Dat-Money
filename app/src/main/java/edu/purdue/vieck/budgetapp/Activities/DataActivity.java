@@ -15,7 +15,7 @@ import android.view.View;
 import edu.purdue.vieck.budgetapp.Fragments.DataFragment;
 import edu.purdue.vieck.budgetapp.R;
 
-public class SummaryActivity extends AppCompatActivity {
+public class DataActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     DrawerLayout mDrawerLayout;
@@ -97,7 +97,7 @@ public class SummaryActivity extends AppCompatActivity {
                         currentActivity.startActivity(intent);
                         break;
                     case R.id.nav_item_list:
-                        intent = new Intent(currentActivity, SummaryActivity.class);
+                        intent = new Intent(currentActivity, DataActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
