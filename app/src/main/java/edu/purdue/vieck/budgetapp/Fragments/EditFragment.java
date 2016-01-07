@@ -3,10 +3,12 @@ package edu.purdue.vieck.budgetapp.Fragments;
 import android.animation.StateListAnimator;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.text.InputType;
@@ -40,6 +42,7 @@ public class EditFragment extends android.app.Fragment {
     RealmHandler mRealmHandler;
     BudgetItem budgetItem;
     private boolean editing, confirm;
+    SharedPreferences mSharedPreferences;
 
     @Nullable
     @Override
@@ -58,6 +61,7 @@ public class EditFragment extends android.app.Fragment {
         datePicker = (DatePicker) view.findViewById(R.id.datepicker);
         editButton = (FloatingActionButton) view.findViewById(R.id.edit_button);
         deleteButton = (FloatingActionButton) view.findViewById(R.id.delete_button);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         parseBundle(extras);
         setUpFloatingActionButton();
         return view;
@@ -79,9 +83,9 @@ public class EditFragment extends android.app.Fragment {
         budgetItem.setImage(bundle.getInt("Image"));
 
         DecimalFormat df = new DecimalFormat(".##");
-        Currency currencyString = Currency.getInstance(getResources().getConfiguration().locale);
+        String currencyString = mSharedPreferences.getString("currencySymbol",Currency.getInstance(getResources().getConfiguration().locale).getSymbol());
         amount.setText(df.format(budgetItem.getAmount()));
-        currency.setText(currencyString.getSymbol());
+        currency.setText(currencyString);
         category.setText(budgetItem.getCategory());
         subcategory.setText(budgetItem.getSubcategory());
         note.setText(budgetItem.getNote());

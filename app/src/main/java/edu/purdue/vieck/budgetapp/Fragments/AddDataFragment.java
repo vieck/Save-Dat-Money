@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -16,6 +18,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Currency;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
@@ -32,8 +36,9 @@ public class AddDataFragment extends Fragment {
     private Bundle mSavedState;
     private DatePicker datePicker;
     private RadioButton incomeButton, expenseButton;
-    private TextView categories;
+    private TextView currency, categories;
     private EditText amount, category, subcategory, note;
+    private SharedPreferences mSharedPreferences;
 
 
     String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
@@ -65,6 +70,7 @@ public class AddDataFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_add, container, false);
         Bundle bundle = getArguments();
+        currency = (TextView) view.findViewById(R.id.currency_label);
         categories = (EditText) view.findViewById(R.id.edittext_category);
         subcategory = (EditText) view.findViewById(R.id.edittext_subcategory);
         incomeButton = (RadioButton) view.findViewById(R.id.income__button);
@@ -75,6 +81,8 @@ public class AddDataFragment extends Fragment {
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab_next);
 
         mRealmHandler = new RealmHandler(getActivity());
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         checkBundle(bundle);
         setCategoryListener();
@@ -97,6 +105,8 @@ public class AddDataFragment extends Fragment {
                 iconResourceId = bundle.getInt("Icon", R.drawable.cell_phone_bill_dark);
                 datePicker.updateDate(bundle.getInt("Year"), bundle.getInt("Month"), bundle.getInt("Day"));
             }
+            String currencyString = mSharedPreferences.getString("currencySymbol", Currency.getInstance(getResources().getConfiguration().locale).getSymbol());
+            currency.setText(currencyString);
             categories.setText(bundle.getString("Subcategory") + "");
             subcategory.setText(bundle.getString("Category") + "");
             if (bundle.getBoolean("Type")) {

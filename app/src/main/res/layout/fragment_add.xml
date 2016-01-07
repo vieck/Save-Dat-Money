@@ -7,15 +7,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView android:id="@+id/currency_label"
+        style="@style/edittext_amount_add_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_alignBaseline="@+id/edittext_amount"/>
+
     <EditText
         android:id="@+id/edittext_amount"
         style="@style/edittext_amount_add_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/currency_label"
         android:layout_alignParentTop="true"
+        android:layout_marginEnd="0dp"
+        android:textAlignment="viewEnd"
         android:hint="@string/amount"
         android:inputType="numberDecimal" />
+
+
 
     <EditText
         android:id="@+id/edittext_note"

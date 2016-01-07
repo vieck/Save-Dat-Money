@@ -140,7 +140,7 @@
 
     <style name="textview_add_amount">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="textview_add_note" parent="edittext_add_fragment">
