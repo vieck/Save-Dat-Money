@@ -67,9 +67,7 @@
         android:layout_below="@id/edittext_subcategory"
         android:layout_marginBottom="12dp"
         android:layout_marginStart="50dp"
-        android:orientation="horizontal"
-        android:clickable="false"
-        android:focusableInTouchMode="false">
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/income__button"

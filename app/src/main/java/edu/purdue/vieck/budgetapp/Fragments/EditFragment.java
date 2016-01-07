@@ -132,6 +132,8 @@ public class EditFragment extends android.app.Fragment {
                         editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
                         deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete));
                     }
+                    incomeButton.setClickable(false);
+                    expenseButton.setClickable(false);
                     editing = false;
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -166,11 +168,17 @@ public class EditFragment extends android.app.Fragment {
                     category.setInputType(InputType.TYPE_NULL);
                     subcategory.setClickable(false);
                     note.setInputType(InputType.TYPE_NULL);
+                    radioGroup.setClickable(false);
                     datePicker.setEnabled(false);
                     budgetItem.setAmount(Float.parseFloat(amount.getText().toString()));
                     budgetItem.setCategory(category.getText().toString());
                     budgetItem.setSubcategory(subcategory.getText().toString());
                     budgetItem.setNote(note.getText().toString());
+                    if (expenseButton.isChecked()) {
+                        budgetItem.setType(false);
+                    } else {
+                        budgetItem.setType(true);
+                    }
                     budgetItem.setDay(datePicker.getDayOfMonth());
                     budgetItem.setMonth(datePicker.getMonth() + 1);
                     budgetItem.setYear(datePicker.getYear());
@@ -244,6 +252,8 @@ public class EditFragment extends android.app.Fragment {
                         editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_save));
                         deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
                     }
+                    incomeButton.setClickable(true);
+                    expenseButton.setClickable(true);
                     editing = true;
                 }
             }

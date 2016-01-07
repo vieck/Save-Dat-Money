@@ -34,20 +34,4 @@ public class GraphFragmentSubcategory extends Fragment {
         mRealmHandler = new RealmHandler(getActivity());
         return view;
     }
-
-    private GraphCategoryAdapter makeAdapter(GraphCategoryAdapter adapter, String subCategory) {
-        List<AddTreeItem> list = new ArrayList<>();
-        int[] categoryImages = {R.drawable.food_groceries_dark, R.drawable.utility_misc_dark, R.drawable.entertainment_dark, R.drawable.medical_misc_dark, R.drawable.insurance_dark, R.drawable.chart_dark};
-        String[] subcategories = getResources().getStringArray(R.array.categoryarray);
-        AddTreeItem item;
-        for (int i = 0; i < subcategories.length; i++) {
-            item = new AddTreeItem();
-            item.setDrawableId(categoryImages[i]);
-            item.setName(subcategories[i]);
-            item.setAmount(mRealmHandler.getSpecificDateAmountByType(subcategories[i], months.get(0).getMonth(), months.get(0).getYear(), 0));
-            list.add(item);
-        }
-        adapter = new GraphCategoryAdapter(getActivity(), list, months.get(0).getMonth(), months.get(0).getYear(), 0);
-        return adapter;
-    }
 }
