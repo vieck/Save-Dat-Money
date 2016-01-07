@@ -133,7 +133,7 @@
     </style>
 
     <style name="textview_add_item" parent="edittext_add_fragment">
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
         <item name="android:textSize">24sp</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
@@ -149,7 +149,7 @@
 
     <!-- DASHBOARD STYLES -->
     <style name="dashboard_item_label">
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
         <item name="android:textSize">10pt</item>
         <item name="android:textStyle">normal</item>
     </style>
