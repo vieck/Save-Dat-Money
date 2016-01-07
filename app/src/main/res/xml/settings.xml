@@ -15,7 +15,7 @@
             android:key="currency"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
-            android:summary="@string/summary_currency_list"/>
+            android:summary="@string/summary_currency_list" />
 
     </PreferenceCategory>
 

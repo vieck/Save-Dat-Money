@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="8dip"
+    android:paddingTop="8dip"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip">
     <TableLayout
         android:id="@+id/custom_list_view_row_table_layout"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="0">
 
@@ -14,17 +19,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <RadioButton android:checked="false"
+                android:id="@+id/custom_list_view_row_radio_button"/>
+
             <TextView
                 android:id="@+id/currency_textview"
                 android:textSize="14sp"
                 android:textColor="#000000"
-                android:gravity="start|left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <RadioButton
-            android:checked="false"
-            android:id="@+id/custom_list_view_row_radio_button"/>
+
 
 
         </TableRow>

@@ -121,7 +121,7 @@ public class CurrencyPreference extends ListPreference {
                     mDialog.dismiss();
                 }
             });
-            holder.text.setText(mEntries[position].getCurrencyCode() + " " + mEntries[position].getDisplayName());
+            holder.text.setText(mEntries[position].getCurrencyCode() + " " + mEntries[position].getDisplayName() + " " + mEntries[position].getSymbol());
             if (mSelection == -1 && mEntries[position].getCurrencyCode().compareTo("USD") == 0) {
                 holder.rButton.setChecked(true);
             } else if (position == mSelection) {
