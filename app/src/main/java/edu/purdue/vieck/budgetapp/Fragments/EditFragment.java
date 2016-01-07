@@ -116,37 +116,31 @@ public class EditFragment extends android.app.Fragment {
             @Override
             public void onClick(View v) {
                 if (confirm) {
-                    int[][] states = new int[][] {
-                            new int[] { android.R.attr.state_checked }
-                    };
-
-                    int [] colors = new int[] {
-                            getResources().getColor(R.color.md_purple_500)
-                    };
-                    editButton.setStateListAnimator(stateListAnimator);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete, getActivity().getTheme()));
+                        editButton.setImageResource(android.R.drawable.ic_menu_edit);
+                    } else {
+                        deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete));
+                        editButton.setImageResource(android.R.drawable.ic_menu_edit);
+                    }
                     confirm = false;
+                } else if (editing) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit, getActivity().getTheme()));
+                        deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete, getActivity().getTheme()));
+                    } else {
+                        editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
+                        deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete));
+                    }
+                    editing = false;
                 } else {
-                    int[][] states = new int[][] {
-                            new int[] { android.R.attr.state_checked }
-                    };
-
-                    int [] colors = new int[] {
-                            Color.GREEN
-                    };
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel, getActivity().getTheme()));
-                        deleteButton.setStateListAnimator(stateListAnimator);
                         editButton.setImageResource(android.R.drawable.checkbox_on_background);
-                        editButton.setBackgroundTintList(new ColorStateList(states,colors));
-                        editButton.setStateListAnimator(stateListAnimator);
                     } else {
                         deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
-                        deleteButton.setStateListAnimator(stateListAnimator);
                         editButton.setImageResource(android.R.drawable.checkbox_on_background);
-                        editButton.setBackgroundTintList(new ColorStateList(states,colors));
-                        editButton.setStateListAnimator(stateListAnimator);
                     }
-
                     confirm = true;
                 }
             }
@@ -245,8 +239,10 @@ public class EditFragment extends android.app.Fragment {
                     datePicker.setEnabled(true);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_save, getActivity().getTheme()));
+                        deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel, getActivity().getTheme()));
                     } else {
                         editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_save));
+                        deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
                     }
                     editing = true;
                 }
