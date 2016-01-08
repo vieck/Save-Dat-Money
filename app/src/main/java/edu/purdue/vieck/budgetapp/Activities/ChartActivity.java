@@ -3,7 +3,9 @@ package edu.purdue.vieck.budgetapp.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +30,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
@@ -46,13 +49,17 @@ public class ChartActivity extends AppCompatActivity {
     private RealmHandler mRealmHandler;
     private Context mContext;
 
+    private SharedPreferences mSharedPreferences;
+
     private int spinnerPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-        setUpToolbar();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int actionBarColor = mSharedPreferences.getInt("actionBarColor", 0);
+        setUpToolbar(actionBarColor);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         setUpNavigationDrawer();
         mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
@@ -61,6 +68,8 @@ public class ChartActivity extends AppCompatActivity {
         mRealmHandler = new RealmHandler(this);
 
         mContext = this;
+
+
 
         mSpinner = (Spinner) findViewById(R.id.spinner);
         mSpinner = setUpSpinner(mSpinner);
@@ -109,8 +118,16 @@ public class ChartActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setUpToolbar() {
+    private void setUpToolbar(int actionBarColor) {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (actionBarColor == 0) {
+
+        } else if (actionBarColor == getResources().getColor(R.color.md_black_1000)) {
+            mToolbar.setTitleTextColor(getResources().getColor(R.color.md_white_1000));
+            mToolbar.setBackgroundColor(actionBarColor);
+        } else {
+            mToolbar.setBackgroundColor(actionBarColor);
+        }
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
     }

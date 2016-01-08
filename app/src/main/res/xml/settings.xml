@@ -1,23 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/inline_style_preferences">
+    <PreferenceScreen android:title="@string/title_general_settings">
+        <PreferenceCategory android:title="@string/inline_units">
+            <edu.purdue.vieck.budgetapp.Preferences.CurrencyPreference
+                android:title="@string/title_currency"
+                android:key="currency"
+                android:negativeButtonText="@null"
+                android:positiveButtonText="@null"
+                android:summary="@string/summary_currency_list" />
 
-        <CheckBoxPreference
-            android:key="checkbox_preference"
-            android:summary="@string/summary_checkbox_preference"
-            android:title="@string/title_checkbox_preference" />
+        </PreferenceCategory>
+    </PreferenceScreen>
 
-    </PreferenceCategory>
+    <PreferenceScreen android:title="@string/title_styles">
+        <PreferenceCategory android:title="@string/title_styles">
 
-    <PreferenceCategory android:title="@string/inline_units">
-        <edu.purdue.vieck.budgetapp.CustomObjects.CurrencyPreference
-            android:title="@string/title_currency"
-            android:key="currency"
-            android:negativeButtonText="@null"
-            android:positiveButtonText="@null"
-            android:summary="@string/summary_currency_list" />
+            <edu.purdue.vieck.budgetapp.Preferences.ActionBarColorPreference
+                android:title="@string/inline_colors"
+                android:key="colors"
+                android:negativeButtonText="@null"
+                android:positiveButtonText="@null"
+                android:summary="@string/summary_action_bar_color"/>
 
-    </PreferenceCategory>
+            <CheckBoxPreference
+                android:key="checkbox_preference"
+                android:summary="@string/summary_checkbox_preference"
+                android:title="@string/title_checkbox_preference" />
+
+        </PreferenceCategory>
+    </PreferenceScreen>
+
+    <PreferenceScreen android:title="@string/title_links">
+
+    </PreferenceScreen>
+
+
+
 
 
     <!--PreferenceCategory android:title="@string/dialog_based_preferences">

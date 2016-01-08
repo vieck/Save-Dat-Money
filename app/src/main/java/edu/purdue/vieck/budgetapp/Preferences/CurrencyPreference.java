@@ -1,4 +1,4 @@
-package edu.purdue.vieck.budgetapp.CustomObjects;
+package edu.purdue.vieck.budgetapp.Preferences;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -157,14 +157,21 @@
     </integer-array>
 
     <!-- Settings Strings -->
-    <string name="inline_style_preferences">Style Preferences</string>
-    <string name="title_checkbox_preference">Checkbox Preference</string>
-    <string name="summary_checkbox_preference">This is a checkbox</string>
-
+    <string name="title_general_settings">General Settings</string>
     <string name="inline_units">Units</string>
     <string name="title_currency">Currency</string>
     <string name="summary_currency_list">Choose your currency</string>
+    
+    <string name="title_styles">Styles and Color Schemes</string>
+    <string name="inline_colors">Colors</string>
+    <string name="title_action_bar_color">Action Bar Color</string>
+    <string name="summary_action_bar_color">Change the action bar color</string>
+    <string name="title_checkbox_preference">Checkbox Preference</string>
+    <string name="summary_checkbox_preference">This is a checkbox</string>
 
+    <string name="title_links">Links</string>
+
+    <!-- Action Bar Titles -->
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="title_activity_chart">Charts</string>
     <string name="title_activity_graph">Graphs</string>
