@@ -138,10 +138,10 @@ public class EditFragment extends android.app.Fragment {
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel, getActivity().getTheme()));
-                        editButton.setImageResource(android.R.drawable.checkbox_on_background);
+                        editButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_confirm, getActivity().getTheme()));
                     } else {
                         deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
-                        editButton.setImageResource(android.R.drawable.checkbox_on_background);
+                        editButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_confirm));
                     }
                     confirm = true;
                 }
