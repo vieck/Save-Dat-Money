@@ -37,20 +37,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <!--android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_next"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_gravity="end|bottom"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="24dp"
-                    android:src="@android:drawable/ic_input_add"
-                    android:scaleType="center"
-                    android:stateListAnimator="@anim/button_elevation"
-                    android:tint="?android:colorPrimary"
-                    app:backgroundTint="?android:attr/colorPrimaryDark"
-                    app:borderWidth="0dp"/-->
-
                 <RelativeLayout
                     android:id="@+id/fragment_container"
                     android:layout_width="match_parent"

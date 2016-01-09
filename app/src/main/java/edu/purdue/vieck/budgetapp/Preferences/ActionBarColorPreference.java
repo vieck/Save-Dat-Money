@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.ListPreference;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Set;
 
+import edu.purdue.vieck.budgetapp.Activities.SettingsActivity;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -111,6 +113,10 @@ public class ActionBarColorPreference extends ListPreference {
                     mEditor.putInt("actionBarColor", actionBarColor);
                     mEditor.putInt("actionBarPosition", position);
                     mEditor.commit();
+
+                    Intent intent = new Intent(mContext, SettingsActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    //mContext.startActivity(intent);
 
                     Dialog mDialog = getDialog();
                     mDialog.dismiss();

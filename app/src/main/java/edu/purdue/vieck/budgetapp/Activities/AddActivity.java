@@ -1,6 +1,9 @@
 package edu.purdue.vieck.budgetapp.Activities;
 
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,15 +17,17 @@ public class AddActivity extends AppCompatActivity {
 
     AddDataFragment addDataFragment;
     AddCategoryFragment addCategoryFragment;
-    private Toolbar toolbar;
+    private Toolbar mToolbar;
+    private SharedPreferences mSharedPreferences;
+    private int actionBarColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        actionBarColor = mSharedPreferences.getInt("actionBarColor", Color.BLACK);
+        setupToolbar();
         if (savedInstanceState == null) {
             addCategoryFragment = new AddCategoryFragment();
             getFragmentManager().beginTransaction().add(R.id.fragment_container, addCategoryFragment, "addCategory").commit();
@@ -59,5 +64,17 @@ public class AddActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
+            mToolbar.setTitleTextColor(Color.BLACK);
+        } else {
+            mToolbar.setTitleTextColor(Color.WHITE);
+        }
+        mToolbar.setBackgroundColor(actionBarColor);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 }

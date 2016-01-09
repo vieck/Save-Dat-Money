@@ -2,7 +2,11 @@ package edu.purdue.vieck.budgetapp.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,11 +25,15 @@ public class SettingsActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+    private SharedPreferences mSharedPreferences;
+    private int actionBarColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        actionBarColor = mSharedPreferences.getInt("actionBarColor", Color.BLACK);
         setUpToolbar();
         setUpNavigationDrawer();
         setUpNavigationView();
@@ -35,6 +43,12 @@ public class SettingsActivity extends AppCompatActivity {
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar != null) {
+            if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
+                mToolbar.setTitleTextColor(Color.BLACK);
+            } else {
+                mToolbar.setTitleTextColor(Color.WHITE);
+            }
+            mToolbar.setBackgroundColor(actionBarColor);
             setSupportActionBar(mToolbar);
         }
     }
@@ -56,6 +70,11 @@ public class SettingsActivity extends AppCompatActivity {
     private void setUpNavigationView() {
         final Activity currentActivity = this;
         mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
+        if (actionBarColor != getResources().getColor(R.color.md_white_1000)) {
+            mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
+            mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
+        }
+        mNavigationView.setBackgroundColor(actionBarColor);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {

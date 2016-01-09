@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -51,6 +54,8 @@ public class ChartActivity extends AppCompatActivity {
 
     private SharedPreferences mSharedPreferences;
 
+    private int actionBarColor;
+
     private int spinnerPosition;
 
     @Override
@@ -58,11 +63,10 @@ public class ChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int actionBarColor = mSharedPreferences.getInt("actionBarColor", 0);
-        setUpToolbar(actionBarColor);
+        actionBarColor = mSharedPreferences.getInt("actionBarColor", 0);
+        setUpToolbar();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         setUpNavigationDrawer();
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
         setUpNavigationView();
 
         mRealmHandler = new RealmHandler(this);
@@ -118,16 +122,14 @@ public class ChartActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setUpToolbar(int actionBarColor) {
+    private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (actionBarColor == 0) {
-
-        } else if (actionBarColor == getResources().getColor(R.color.md_black_1000)) {
-            mToolbar.setTitleTextColor(getResources().getColor(R.color.md_white_1000));
-            mToolbar.setBackgroundColor(actionBarColor);
+        if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
+            mToolbar.setTitleTextColor(Color.BLACK);
         } else {
-            mToolbar.setBackgroundColor(actionBarColor);
+            mToolbar.setTitleTextColor(Color.WHITE);
         }
+        mToolbar.setBackgroundColor(actionBarColor);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
@@ -147,6 +149,12 @@ public class ChartActivity extends AppCompatActivity {
 
     private void setUpNavigationView() {
         final Activity currentActivity = this;
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
+        if (actionBarColor != getResources().getColor(R.color.md_white_1000)) {
+            mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
+            mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
+        }
+        mNavigationView.setBackgroundColor(actionBarColor);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -188,11 +196,14 @@ public class ChartActivity extends AppCompatActivity {
         spinnerPosition = 2;
         ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(mToolbar.getContext(), R.array.chartarray, R.layout.simple_spinner_item);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        spinner.setBackgroundColor(actionBarColor);
         spinner.setAdapter(spinnerArrayAdapter);
         spinner.setSelection(2);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                adapterView.setBackgroundColor(actionBarColor);
+                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 spinnerPosition = position;
                 Toast.makeText(mContext, mSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                 adapter.changeType(position);

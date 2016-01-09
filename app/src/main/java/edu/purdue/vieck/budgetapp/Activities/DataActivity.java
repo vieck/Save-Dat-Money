@@ -2,7 +2,11 @@ package edu.purdue.vieck.budgetapp.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,12 +26,16 @@ public class DataActivity extends AppCompatActivity {
     NavigationView mNavigationView;
     DataFragment dataFragment;
 
+    SharedPreferences mSharedPreferences;
+    private int actionBarColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        actionBarColor = mSharedPreferences.getInt("actionBarColor",0);
         setUpToolbar();
         setUpNavigationDrawer();
         setUpNavigationView();
@@ -57,12 +65,20 @@ public class DataActivity extends AppCompatActivity {
 
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
+            mToolbar.setTitleTextColor(Color.BLACK);
+        } else {
+            mToolbar.setTitleTextColor(Color.WHITE);
+        }
+        mToolbar.setBackgroundColor(actionBarColor);
         setSupportActionBar(mToolbar);
     }
 
     private void setUpNavigationDrawer() {
         if (mToolbar != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
             mToolbar.setNavigationIcon(R.drawable.ic_drawer);
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,6 +91,12 @@ public class DataActivity extends AppCompatActivity {
 
     private void setUpNavigationView() {
         final Activity currentActivity = this;
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
+        if (actionBarColor != getResources().getColor(R.color.md_white_1000)) {
+            mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
+            mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
+        }
+        mNavigationView.setBackgroundColor(actionBarColor);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
