@@ -58,16 +58,12 @@
             android:name=".Activities.GraphActivity"
             android:label="@string/title_activity_graph"
             android:parentActivityName=".Activities.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activities.AddActivity"
             android:label="@string/title_activity_submit"
             android:parentActivityName=".Activities.ChartActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activities.CategoryActivity"
-            android:label="@string/title_activity_category"
-            android:parentActivityName=".Activities.DashboardActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.SettingsActivity"
