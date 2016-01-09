@@ -61,9 +61,6 @@ public class GraphFragmentCategory extends Fragment {
         left = (ImageButton) view.findViewById(R.id.left_arrow);
         right = (ImageButton) view.findViewById(R.id.right_arrow);
 
-        Bundle bundle = getArguments();
-        type = bundle.getInt("type", 2);
-
         if (!mRealmHandler.isEmpty(type)) {
             months = mRealmHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;

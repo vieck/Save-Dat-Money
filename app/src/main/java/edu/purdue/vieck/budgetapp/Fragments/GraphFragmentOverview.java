@@ -46,8 +46,6 @@ public class GraphFragmentOverview extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph_overview, container, false);
         setRetainInstance(true);
-        Bundle bundle = getArguments();
-        type = bundle.getInt("type", 2);
         decimalFormat = new DecimalFormat("0.00");
         categories = getResources().getStringArray(R.array.categoryarray);
         mRealmHandler = new RealmHandler(getActivity());

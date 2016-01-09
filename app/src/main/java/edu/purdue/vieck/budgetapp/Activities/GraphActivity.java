@@ -36,7 +36,6 @@ public class GraphActivity extends AppCompatActivity {
 
     ViewPagerAdapter adapter;
     private Toolbar mToolbar;
-    private Spinner mSpinner;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private ViewPager mViewPager;
@@ -58,9 +57,6 @@ public class GraphActivity extends AppCompatActivity {
         setUpNavigationView();
         mTabLayout = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         final Activity currentActivity = this;
-
-        mSpinner = (Spinner) findViewById(R.id.spinner);
-        mSpinner = setUpSpinner(mSpinner);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(mViewPager);
@@ -194,9 +190,6 @@ public class GraphActivity extends AppCompatActivity {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         String[] list = {"Overview", "Categories", "Subcategories"};
 
-        Bundle bundle = new Bundle();
-        bundle.putInt("type", mSpinner.getSelectedItemPosition());
-
         FragmentManager fragmentManager = getSupportFragmentManager();
 
 
@@ -204,13 +197,11 @@ public class GraphActivity extends AppCompatActivity {
         GraphFragmentOverview fragmentOverview = (GraphFragmentOverview) fragmentManager.findFragmentByTag("Overview");
         if (fragmentOverview == null) {
             fragmentOverview = new GraphFragmentOverview();
-            fragmentOverview.setArguments(bundle);
         }
         adapter.addFragment(fragmentOverview, "Overview");
         GraphFragmentCategory fragmentCategory = (GraphFragmentCategory) fragmentManager.findFragmentByTag("Category");
         if (fragmentCategory == null) {
             fragmentCategory = new GraphFragmentCategory();
-            fragmentCategory.setArguments(bundle);
         }
         adapter.addFragment(fragmentCategory, "Category");
         viewPager.setAdapter(adapter);
