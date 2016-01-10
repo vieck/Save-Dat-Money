@@ -22,6 +22,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -194,7 +195,8 @@ public class ChartActivity extends AppCompatActivity {
 
     private Spinner setUpSpinner(final Spinner spinner) {
         spinnerPosition = 2;
-        ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(mToolbar.getContext(), R.array.chartarray, R.layout.simple_spinner_item);
+        CharSequence[] simpleSpinner = getResources().getStringArray(R.array.chartarray);
+        CustomArrayAdapter<CharSequence> spinnerArrayAdapter = new CustomArrayAdapter<>(this, simpleSpinner);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         spinner.setBackgroundColor(actionBarColor);
         spinner.setAdapter(spinnerArrayAdapter);
@@ -202,8 +204,9 @@ public class ChartActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                adapterView.setBackgroundColor(actionBarColor);
-                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                if ((adapterView.getChildAt(0)) != null){
+                    ((TextView)adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                }
                 spinnerPosition = position;
                 Toast.makeText(mContext, mSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                 adapter.changeType(position);
@@ -215,6 +218,26 @@ public class ChartActivity extends AppCompatActivity {
             }
         });
         return spinner;
+    }
+
+    class CustomArrayAdapter<T> extends ArrayAdapter<T> {
+        public CustomArrayAdapter(Context context, T[] objects) {
+            super(context, R.layout.simple_spinner_item, objects);
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            View view = super.getDropDownView(position, convertView, parent);
+            TextView textView = (TextView) view.findViewById(R.id.simple_spinner_text_view);
+            if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
+                textView.setTextColor(Color.BLACK);
+            } else  {
+                textView.setTextColor(Color.WHITE);
+            }
+            textView.setBackgroundColor(actionBarColor);
+            return view;
+
+        }
     }
 
     /*
