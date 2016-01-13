@@ -1,6 +1,8 @@
 package edu.purdue.vieck.budgetapp.Adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +24,13 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     RealmHandler mRealmHandler;
     HashMap<Integer, List<BudgetItem>> years;
     List<BudgetItem> mMonths;
+    String currencySymbol;
+    SharedPreferences mSharedPreferences;
 
     public ExpandableListViewAdapter(Context context, RealmHandler realmHandler, String filter) {
         this.context = context;
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        currencySymbol = mSharedPreferences.getString("currencySymbol","$");
         mRealmHandler = realmHandler;
         if (filter == "") {
             mMonths = mRealmHandler.getAllUniqueMonthsAsList(2);
@@ -101,7 +107,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         type = (TextView) view.findViewById(R.id.label_type);
 
         date.setText(item.getMonth() + "/" + item.getDay() + "/" + item.getYear());
-        amount.setText(item.getAmount() + "$");
+        amount.setText(item.getAmount() + currencySymbol);
         category.setText(item.getCategory());
         subcategory.setText(item.getSubcategory());
         type.setText(item.getTypeString());
