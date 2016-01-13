@@ -55,7 +55,7 @@
     <EditText
         android:id="@+id/edittext_subcategory"
         style="@style/edittext_add_category"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/edittext_category"
         android:hint="@string/subcategory"/>
