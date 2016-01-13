@@ -2,7 +2,9 @@ package edu.purdue.vieck.budgetapp.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,11 +28,15 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
 
     Context mContext;
     int month, year, position;
+    String currencySymbol;
     RealmHandler mRealmHandler;
     Stack<BudgetItem> mDataset = new Stack<>();
+    SharedPreferences mSharedPreferences;
 
     public ChartAdapter(Context mContext, int month, int year, int position) {
         this.mContext = mContext;
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        currencySymbol = mSharedPreferences.getString("currencySymbol",Currency.getInstance(mContext.getResources().getConfiguration().locale).getSymbol());
         this.month = month;
         this.year = year;
         this.position = position;
@@ -65,8 +71,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
         viewHolder.date.setText(budgetItem.getMonth() + "-" + budgetItem.getDay() + "-" + budgetItem.getYear());
         viewHolder.category.setText("" + budgetItem.getCategory());
         viewHolder.subcategory.setText("" + budgetItem.getSubcategory());
-        Currency currency = Currency.getInstance(mContext.getResources().getConfiguration().locale);
-        viewHolder.amount.setText(currency.getSymbol() + " " + budgetItem.getAmount());
+        viewHolder.amount.setText(budgetItem.getAmount() + " " + currencySymbol);
         if (budgetItem.getType()) {
             viewHolder.amount.setTextColor(mContext.getResources().getColor(R.color.Lime));
         } else {
