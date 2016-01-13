@@ -69,7 +69,7 @@
             android:name=".Activities.SettingsActivity"
             android:label="@string/action_settings"
             android:parentActivityName=".Activities.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/SettingsLayout" />
         <activity
             android:name=".Activities.EditActivity"
             android:label="@string/title_activity_description"

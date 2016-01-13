@@ -1,5 +1,6 @@
 package edu.purdue.vieck.budgetapp.Preferences;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -116,7 +117,8 @@ public class ActionBarColorPreference extends ListPreference {
 
                     Intent intent = new Intent(mContext, SettingsActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    //mContext.startActivity(intent);
+                    mContext.startActivity(intent);
+                    ((Activity)mContext).finish();
 
                     Dialog mDialog = getDialog();
                     mDialog.dismiss();
