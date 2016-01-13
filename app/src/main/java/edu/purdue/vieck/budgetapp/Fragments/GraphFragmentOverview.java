@@ -88,6 +88,7 @@ public class GraphFragmentOverview extends Fragment {
 
         List<Entry> incomeEntries = new ArrayList<>();
         List<Entry> expenseEntries = new ArrayList<>();
+        List<String> xAxisLabels = new ArrayList<>();
 
         final String[] mLabelsTwo = {"", "", "", "", "START", "", "", "", "", "", "", "", "", "", "",
                 "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
@@ -105,6 +106,7 @@ public class GraphFragmentOverview extends Fragment {
 
         for (int i = 0; i < expenseArray.length; i++) {
             expenseEntries.add(new Entry(expenseArray[i], i));
+            xAxisLabels.add(i + "");
         }
 
         for (int i = 0; i < incomeArray.length; i++) {
@@ -124,18 +126,13 @@ public class GraphFragmentOverview extends Fragment {
         lineChartView.getAxisRight().setEnabled(false);
 
 
-        String[] labels = new String[expenseArray.length];
-        Arrays.fill(labels,"");
-
-        LineData data = new LineData();
-
         LineDataSet lineSet = new LineDataSet(incomeEntries, "income");
         lineSet.setColor(getResources().getColor(R.color.md_green_A400));
-        data.addDataSet(lineSet);
 
         lineSet = new LineDataSet(expenseEntries, "expense");
         lineSet.setColor(getResources().getColor(R.color.md_red_A400));
-        data.addDataSet(lineSet);
+
+        LineData data = new LineData(xAxisLabels, lineSet);
 
         lineChartView.setData(data);
 
