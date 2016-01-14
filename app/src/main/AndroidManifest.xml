@@ -58,8 +58,7 @@
             android:name=".Activities.GraphActivity"
             android:label="@string/title_activity_graph"
             android:parentActivityName=".Activities.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activities.AddActivity"
             android:label="@string/title_activity_submit"

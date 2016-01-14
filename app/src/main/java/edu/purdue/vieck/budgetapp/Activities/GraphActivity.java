@@ -29,6 +29,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import java.util.ArrayList;
 
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentCategory;
+import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentComparison;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentOverview;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -188,11 +189,9 @@ public class GraphActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        String[] list = {"Overview", "Categories", "Subcategories"};
+        String[] list = {"Overview", "Categories", "Comparison"};
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-
-
 
         GraphFragmentOverview fragmentOverview = (GraphFragmentOverview) fragmentManager.findFragmentByTag("Overview");
         if (fragmentOverview == null) {
@@ -204,6 +203,11 @@ public class GraphActivity extends AppCompatActivity {
             fragmentCategory = new GraphFragmentCategory();
         }
         adapter.addFragment(fragmentCategory, "Category");
+        GraphFragmentComparison fragmentComparison = (GraphFragmentComparison) fragmentManager.findFragmentByTag("Comparison");
+        if (fragmentComparison == null) {
+            fragmentComparison = new GraphFragmentComparison();
+        }
+        adapter.addFragment(fragmentComparison,"Comparison");
         viewPager.setAdapter(adapter);
     }
 

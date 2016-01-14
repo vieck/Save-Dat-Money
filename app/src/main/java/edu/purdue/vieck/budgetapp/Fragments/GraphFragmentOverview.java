@@ -1,5 +1,6 @@
 package edu.purdue.vieck.budgetapp.Fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,24 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
-import java.sql.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -33,12 +26,10 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class GraphFragmentOverview extends Fragment {
 
-    LineChart mChartOne;
-    BarChart mChartTwo;
+    LineChart mChart;
 
     DecimalFormat decimalFormat;
     RealmHandler mRealmHandler;
-    int type, count;
     String[] categories;
 
     @Nullable
@@ -50,12 +41,9 @@ public class GraphFragmentOverview extends Fragment {
         categories = getResources().getStringArray(R.array.categoryarray);
         mRealmHandler = new RealmHandler(getActivity());
 
-        mChartOne = (LineChart) view.findViewById(R.id.chart_one);
-        mChartTwo = (BarChart) view.findViewById(R.id.chart_two);
-
-        if (mRealmHandler != null && !mRealmHandler.isEmpty(type)) {
-            produceOne(mChartOne);
-            produceTwo(mChartTwo);
+        mChart = (LineChart) view.findViewById(R.id.chart_one);
+        if (mRealmHandler != null && !mRealmHandler.isEmpty(2)) {
+            generateChart(mChart);
         } else {
         }
         return view;
@@ -84,22 +72,12 @@ public class GraphFragmentOverview extends Fragment {
     }
 
     /* Creates a line chart for total expense vs income */
-    private void produceOne(LineChart lineChartView) {
+    private void generateChart(LineChart lineChartView) {
 
         List<Entry> incomeEntries = new ArrayList<>();
         List<Entry> expenseEntries = new ArrayList<>();
         List<String> xAxisLabels = new ArrayList<>();
 
-        final String[] mLabelsTwo = {"", "", "", "", "START", "", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", "", "FINISH", "", "", "", ""};
-        final float[][] mValuesTwo = {{35f, 37f, 47f, 49f, 43f, 46f, 80f, 83f, 65f, 68f, 100f, 68f, 70f, 73f, 83f, 85f, 70f, 73f, 73f, 77f,
-                33f, 15f, 18f, 25f, 28f, 25f, 28f, 40f, 43f, 25f, 28f, 55f, 58f, 50f, 53f, 53f, 57f, 48f, 50f, 53f, 54f,
-                25f, 27f, 35f, 37f, 35f, 80f, 82f, 55f, 59f, 85f, 82f, 60f, 55f, 63f, 65f, 58f, 60f, 63f, 60f},
-                {85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f,
-                        85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f,
-                        85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f, 85f}};
 
         float[] expenseArray = mRealmHandler.getAllDataAsArray(0);
         float[] incomeArray = mRealmHandler.getAllDataAsArray(1);
@@ -119,55 +97,34 @@ public class GraphFragmentOverview extends Fragment {
         //leftAxis.setAxisMinValue(-50f);
         leftAxis.setStartAtZero(false);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setGridColor(Color.WHITE);
+        leftAxis.setTextColor(Color.WHITE);
 
         // limit lines are drawn behind data (and not on top)
         leftAxis.setDrawLimitLinesBehindData(true);
+
+        lineChartView.getXAxis().setTextColor(Color.WHITE);
 
         lineChartView.getAxisRight().setEnabled(false);
 
 
         LineDataSet lineSet = new LineDataSet(incomeEntries, "income");
         lineSet.setColor(getResources().getColor(R.color.md_green_A400));
+        lineSet.setValueTextColor(Color.WHITE);
 
         lineSet = new LineDataSet(expenseEntries, "expense");
         lineSet.setColor(getResources().getColor(R.color.md_red_A400));
+        lineSet.setValueTextColor(Color.WHITE);
 
         LineData data = new LineData(xAxisLabels, lineSet);
 
+
+        lineChartView.setGridBackgroundColor(getResources().getColor(R.color.md_black_1000));
+        lineChartView.setBackgroundColor(getResources().getColor(R.color.md_black_1000));
+        lineChartView.setDescriptionColor(Color.WHITE);
+        lineChartView.getLegend().setTextColor(Color.WHITE);
         lineChartView.setData(data);
 
-    }
-
-    /* Creates a chart to compare */
-    private void produceTwo(BarChart chartView) {
-
-        Stack<BudgetItem> stack = mRealmHandler.getAllDataAsStack(type);
-        List<BarEntry> entryList = new ArrayList<>();
-
-        final String[] mLabelsThree = new String[stack.size()];
-        Arrays.fill(mLabelsThree, "");
-        final float[] mValuesThree = {2.5f, 3.7f, 4f, 8f, 4.5f, 4f, 5f, 7f, 10f, 14f,
-                12f, 6f, 7f, 8f, 9f, 8f, 9f, 8f, 7f, 6f,
-                5f, 4f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 11f,
-                12f, 14, 13f, 10f, 9f, 8f, 7f, 5f, 4f, 6f};
-
-        int i = 0;
-        BarEntry entry;
-        for (BudgetItem item : stack) {
-            entry = new BarEntry(item.getAmount(), i++);
-            entryList.add(entry);
-        }
-
-        BarDataSet dataSet = new BarDataSet(entryList, "Values");
-        dataSet.setColor(getResources().getColor(R.color.md_light_blue_300));
-        BarData data = new BarData(mLabelsThree, dataSet);
-        chartView.setData(data);
-
-        chartView.setPinchZoom(true);
-
-    }
-
-    private void updateBudgetChart() {
     }
 
 }
