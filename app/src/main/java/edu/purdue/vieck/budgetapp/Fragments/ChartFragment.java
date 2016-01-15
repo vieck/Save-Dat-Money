@@ -2,18 +2,26 @@ package edu.purdue.vieck.budgetapp.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -28,6 +36,7 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PercentFormatter;
 
 import java.util.ArrayList;
+import java.util.Currency;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
 import edu.purdue.vieck.budgetapp.Adapters.ChartAdapter;
@@ -42,10 +51,14 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     private int mInstance;
     private int yInstance;
     private PieChart mPieChart;
+    private EditText mBudgetView;
+    private TextView mCurrencyLabel;
+    private FloatingActionButton mConfirmButton;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private ChartAdapter mChartAdapter;
     private Context mContext;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     public void onAttach(final Activity activity) {
@@ -71,6 +84,8 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         year = bundle.getInt("year", -1);
         type = bundle.getInt("type", 2);
 
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         mRealmHandler = new RealmHandler(getActivity());
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
@@ -92,6 +107,10 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
         mPieChart = (PieChart) view.findViewById(R.id.pie_chart);
         mPieChart = setupPieChart(mPieChart);
+        mBudgetView = (EditText) view.findViewById(R.id.edittext_budget);
+        mCurrencyLabel = (TextView) view.findViewById(R.id.currency_textview);
+        mConfirmButton = (FloatingActionButton) view.findViewById(R.id.budget_button);
+        setupBudget();
         setData(type);
         return view;
     }
@@ -145,6 +164,39 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         l.setYOffset(0f);
         l.setXOffset(5f);
         return chart;
+    }
+
+    private void setupBudget() {
+        if (month != -1 && year != -1) {
+            float budget = mRealmHandler.getBudget(month, year);
+            mBudgetView.setText(budget + "");
+            mCurrencyLabel.setText(mSharedPreferences.getString("currencySymbol", Currency.getInstance(mContext.getResources().getConfiguration().locale).getSymbol()));
+            mBudgetView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    mConfirmButton.setVisibility(View.VISIBLE);
+                }
+            });
+
+            mConfirmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    double budget = Double.parseDouble(mBudgetView.getText().toString());
+                    mRealmHandler.updateBudgetForTheMonth((float)budget, month, year);
+                    mConfirmButton.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
     }
 
     private void setData(int type) {

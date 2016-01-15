@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import io.realm.Realm;
+import io.realm.RealmObject;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -51,6 +52,30 @@ public class RealmHandler {
             }
         });
         thread.start();
+    }
+
+    public void updateBudgetForTheMonth(final float budget, final int month, final int year) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                realm = Realm.getInstance(mContext);
+                realm.beginTransaction();
+                RealmQuery query = realm.where(BudgetItem.class).equalTo("month",month).equalTo("year",year);
+                RealmResults<BudgetItem> items = query.findAll();
+                for (int i = 0; i < items.size(); i++) {
+                    items.get(i).setBudget(budget);
+                }
+                realm.copyToRealmOrUpdate(items);
+                realm.commitTransaction();
+            }
+        });
+    }
+
+    public float getBudget(int month, int year) {
+                realm = Realm.getInstance(mContext);
+                RealmQuery query = realm.where(BudgetItem.class).equalTo("month",month).equalTo("year",year);
+                BudgetItem item = (BudgetItem) query.findFirst();
+                return item.getBudget();
     }
 
     public boolean isEmpty(int type) {
@@ -265,6 +290,14 @@ public class RealmHandler {
             data[i++] = budgetItem.getAmount();
         }
         return data;
+    }
+
+    public List<BudgetItem> getUniqueMonthGraphData(int type) {
+        List<BudgetItem> items = getAllUniqueMonthsAsList(type);
+        for (int i = 0; i < items.size(); i++) {
+
+        }
+        return items;
     }
 
     public float[] getListOfDays(String category, int month, int year, int type) {

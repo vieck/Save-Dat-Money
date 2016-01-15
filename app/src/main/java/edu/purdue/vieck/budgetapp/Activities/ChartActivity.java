@@ -205,7 +205,11 @@ public class ChartActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if ((adapterView.getChildAt(0)) != null){
-                    ((TextView)adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                    if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
+                    } else {
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                    }
                 }
                 spinnerPosition = position;
                 Toast.makeText(mContext, mSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();

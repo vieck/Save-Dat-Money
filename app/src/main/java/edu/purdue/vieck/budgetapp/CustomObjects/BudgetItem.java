@@ -15,7 +15,7 @@ public class BudgetItem extends RealmObject {
     private String category, subcategory, note, monthString, typeString;
     private boolean type;
     private int day, month, year, image;
-    private float amount;
+    private float amount, budget;
 
     public BudgetItem() {
 
@@ -55,6 +55,14 @@ public class BudgetItem extends RealmObject {
 
     public void setAmount(float amount) {
         this.amount = amount;
+    }
+
+    public void setBudget(float budget) {
+        this.budget = budget;
+    }
+
+    public float getBudget() {
+        return budget;
     }
 
     public String getCategory() {

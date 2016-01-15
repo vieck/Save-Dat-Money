@@ -307,7 +307,6 @@
 
 
     <array name="material_color_array">
-        <item>@color/md_white_1000</item>
         <item>@color/md_red_200</item>
         <item>@color/md_red_300</item>
         <item>@color/md_red_400</item>

@@ -42,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@id/edittext_note"
         android:layout_below="@id/edittext_note"
+        android:layout_marginStart="0dp"
         android:text="@string/textview_note_description" />
 
     <EditText
