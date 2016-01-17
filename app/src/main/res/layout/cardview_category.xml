@@ -37,7 +37,7 @@
             android:layout_below="@id/label_category"
             android:layout_marginBottom="12dp"
             android:layout_marginRight="12dp"
-            android:text="@string/amount" />
+            android:text="@string/budget" />
 
         <TextView
             android:id="@+id/edittext_amount"

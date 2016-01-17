@@ -22,7 +22,7 @@ import android.widget.Toast;
 import java.util.Currency;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -208,20 +208,20 @@ public class AddDataFragment extends Fragment {
                         String categoryString = categories.getText().toString();
                         String subcategoryString = subcategory.getText().toString();
                         String noteString = note.getText().toString();
-                        BudgetItem budgetItem = new BudgetItem();
-                        budgetItem.setAmount(amountV);
-                        budgetItem.setCategory(categoryString);
-                        budgetItem.setSubcategory(subcategoryString);
-                        budgetItem.setType(incomeOrExpense);
-                        budgetItem.setDay(dayNum);
-                        budgetItem.setMonth(monthNum);
-                        budgetItem.setYear(yearNum);
-                        budgetItem.setNote(noteString);
-                        budgetItem.setImage(iconResourceId);
-                        budgetItem.setMonthString(months[monthNum - 1]);
+                        DataItem dataItem = new DataItem();
+                        dataItem.setAmount(amountV);
+                        dataItem.setCategory(categoryString);
+                        dataItem.setSubcategory(subcategoryString);
+                        dataItem.setType(incomeOrExpense);
+                        dataItem.setDay(dayNum);
+                        dataItem.setMonth(monthNum);
+                        dataItem.setYear(yearNum);
+                        dataItem.setNote(noteString);
+                        dataItem.setImage(iconResourceId);
+                        dataItem.setMonthString(months[monthNum - 1]);
                         Toast.makeText(getActivity(), "Added Data", Toast.LENGTH_LONG).show();
                         try {
-                            mRealmHandler.addData(budgetItem);
+                            mRealmHandler.addData(dataItem);
                         }  finally {
                             Intent intent = new Intent(getActivity(), ChartActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -33,7 +32,7 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class GraphFragmentCategory extends Fragment {
     private RealmHandler mRealmHandler;
-    private LinkedList<BudgetItem> months;
+    private LinkedList<DataItem> months;
     ImageButton left, right;
     TextView monthTxt, yearTxt;
     private int count, type;
@@ -71,13 +70,13 @@ public class GraphFragmentCategory extends Fragment {
                     Log.d("Category Position", "" + count);
                     if (count < months.size() - 1) {
                         count++;
-                        BudgetItem item = months.get(count);
+                        DataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                         updateGraphs(item.getMonth(), item.getYear());
                     } else {
                         count = 0;
-                        BudgetItem item = months.get(count);
+                        DataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                         updateGraphs(item.getMonth(), item.getYear());
@@ -92,13 +91,13 @@ public class GraphFragmentCategory extends Fragment {
                     Log.d("Category Count", "" + count);
                     if (count > 0) {
                         count--;
-                        BudgetItem item = months.get(count);
+                        DataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                         updateGraphs(item.getMonth(), item.getYear());
                     } else {
                         count = months.size() - 1;
-                        BudgetItem item = months.get(count);
+                        DataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText("" + item.getYear());
                         updateGraphs(item.getMonth(), item.getYear());

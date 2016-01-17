@@ -14,11 +14,10 @@ import com.github.mikephil.charting.data.BarEntry;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -54,14 +53,14 @@ public class GraphFragmentComparison extends Fragment {
     /* Creates a chart to compare */
     private void generateChart(BarChart chartView) {
 
-        Stack<BudgetItem> stack = mRealmHandler.getAllDataAsStack(0);
+        Stack<DataItem> stack = mRealmHandler.getAllDataAsStack(0);
         List<BarEntry> entryList = new ArrayList<>();
 
         final String[] mLabelsThree = new String[stack.size()];
 
         int i = 0;
         BarEntry entry;
-        for (BudgetItem item : stack) {
+        for (DataItem item : stack) {
             entry = new BarEntry(item.getAmount(), i);
             entryList.add(entry);
             mLabelsThree[i] = item.getMonth() + "/" + item.getYear();

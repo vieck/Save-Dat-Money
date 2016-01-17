@@ -14,8 +14,8 @@
       to match your app's package name + ".permission.C2D_MESSAGE".
     -->
     <permission
-        android:protectionLevel="signature"
-        android:name="edu.purdue.vieck.permission.C2D_MESSAGE" />
+        android:name="edu.purdue.vieck.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
     <uses-permission android:name="edu.purdue.vieck.permission.C2D_MESSAGE" />
 
 
@@ -37,6 +37,11 @@
         <activity
             android:name=".Activities.DashboardActivity"
             android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Activities.ChartActivity"
+            android:label="@string/title_activity_chart"
+            android:parentActivityName=".Activities.DashboardActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,11 +49,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.ChartActivity"
-            android:label="@string/title_activity_chart"
-            android:parentActivityName=".Activities.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".Activities.DataActivity"
             android:label="@string/title_activity_data"
@@ -58,7 +59,7 @@
             android:name=".Activities.GraphActivity"
             android:label="@string/title_activity_graph"
             android:parentActivityName=".Activities.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.AddActivity"
             android:label="@string/title_activity_submit"

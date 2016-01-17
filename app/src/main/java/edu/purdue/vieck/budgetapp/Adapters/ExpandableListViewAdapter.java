@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -22,8 +22,8 @@ import edu.purdue.vieck.budgetapp.R;
 public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     Context context;
     RealmHandler mRealmHandler;
-    HashMap<Integer, List<BudgetItem>> years;
-    List<BudgetItem> mMonths;
+    HashMap<Integer, List<DataItem>> years;
+    List<DataItem> mMonths;
     String currencySymbol;
     SharedPreferences mSharedPreferences;
 
@@ -77,7 +77,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int group, boolean b, View view, ViewGroup viewGroup) {
         TextView date;
-        final BudgetItem item = (BudgetItem) getGroup(group);
+        final DataItem item = (DataItem) getGroup(group);
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -93,7 +93,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int group, int child, boolean b, View view, ViewGroup viewGroup) {
         TextView date, amount, category, subcategory, type;
-        final BudgetItem item = (BudgetItem) getChild(group, child);
+        final DataItem item = (DataItem) getChild(group, child);
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

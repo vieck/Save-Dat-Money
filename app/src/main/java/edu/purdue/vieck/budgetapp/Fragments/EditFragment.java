@@ -4,8 +4,6 @@ import android.animation.StateListAnimator;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,7 +23,7 @@ import java.text.DecimalFormat;
 import java.util.Currency;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -40,7 +38,7 @@ public class EditFragment extends android.app.Fragment {
     DatePicker datePicker;
     FloatingActionButton deleteButton, editButton;
     RealmHandler mRealmHandler;
-    BudgetItem budgetItem;
+    DataItem dataItem;
     private boolean editing, confirm;
     SharedPreferences mSharedPreferences;
 
@@ -68,33 +66,33 @@ public class EditFragment extends android.app.Fragment {
     }
 
     private void parseBundle(Bundle bundle) {
-        budgetItem = new BudgetItem();
-        budgetItem.setId(bundle.getInt("Id"));
-        budgetItem.setAmount((float) bundle.getDouble("Amount"));
-        budgetItem.setCategory(bundle.getString("Category"));
-        budgetItem.setSubcategory(bundle.getString("Subcategory"));
-        budgetItem.setType(bundle.getBoolean("Type"));
-        budgetItem.setTypeString(bundle.getString("TypeString"));
-        budgetItem.setNote(bundle.getString("Note"));
-        budgetItem.setDay(bundle.getInt("Day"));
-        budgetItem.setMonth(bundle.getInt("Month") - 1);
-        budgetItem.setYear(bundle.getInt("Year"));
-        budgetItem.setMonthString(bundle.getString("MonthString"));
-        budgetItem.setImage(bundle.getInt("Image"));
+        dataItem = new DataItem();
+        dataItem.setId(bundle.getInt("Id"));
+        dataItem.setAmount((float) bundle.getDouble("Amount"));
+        dataItem.setCategory(bundle.getString("Category"));
+        dataItem.setSubcategory(bundle.getString("Subcategory"));
+        dataItem.setType(bundle.getBoolean("Type"));
+        dataItem.setTypeString(bundle.getString("TypeString"));
+        dataItem.setNote(bundle.getString("Note"));
+        dataItem.setDay(bundle.getInt("Day"));
+        dataItem.setMonth(bundle.getInt("Month") - 1);
+        dataItem.setYear(bundle.getInt("Year"));
+        dataItem.setMonthString(bundle.getString("MonthString"));
+        dataItem.setImage(bundle.getInt("Image"));
 
         DecimalFormat df = new DecimalFormat(".##");
         String currencyString = mSharedPreferences.getString("currencySymbol",Currency.getInstance(getResources().getConfiguration().locale).getSymbol());
-        amount.setText(df.format(budgetItem.getAmount()));
+        amount.setText(df.format(dataItem.getAmount()));
         currency.setText(currencyString);
-        category.setText(budgetItem.getCategory());
-        subcategory.setText(budgetItem.getSubcategory());
-        note.setText(budgetItem.getNote());
-        if (budgetItem.getType()) {
+        category.setText(dataItem.getCategory());
+        subcategory.setText(dataItem.getSubcategory());
+        note.setText(dataItem.getNote());
+        if (dataItem.getType()) {
             incomeButton.toggle();
         } else {
             expenseButton.toggle();
         }
-        datePicker.updateDate(budgetItem.getYear(), budgetItem.getMonth(), budgetItem.getDay());
+        datePicker.updateDate(dataItem.getYear(), dataItem.getMonth(), dataItem.getDay());
 
     }
 
@@ -156,7 +154,7 @@ public class EditFragment extends android.app.Fragment {
             @Override
             public void onClick(View view) {
                 if (confirm) {
-                    mRealmHandler.delete(budgetItem);
+                    mRealmHandler.delete(dataItem);
                     Intent intent = new Intent(getActivity(), ChartActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -170,22 +168,22 @@ public class EditFragment extends android.app.Fragment {
                     note.setInputType(InputType.TYPE_NULL);
                     radioGroup.setClickable(false);
                     datePicker.setEnabled(false);
-                    budgetItem.setAmount(Float.parseFloat(amount.getText().toString()));
-                    budgetItem.setCategory(category.getText().toString());
-                    budgetItem.setSubcategory(subcategory.getText().toString());
-                    budgetItem.setNote(note.getText().toString());
+                    dataItem.setAmount(Float.parseFloat(amount.getText().toString()));
+                    dataItem.setCategory(category.getText().toString());
+                    dataItem.setSubcategory(subcategory.getText().toString());
+                    dataItem.setNote(note.getText().toString());
                     if (expenseButton.isChecked()) {
-                        budgetItem.setType(false);
+                        dataItem.setType(false);
                     } else {
-                        budgetItem.setType(true);
+                        dataItem.setType(true);
                     }
-                    budgetItem.setDay(datePicker.getDayOfMonth());
-                    budgetItem.setMonth(datePicker.getMonth() + 1);
-                    budgetItem.setYear(datePicker.getYear());
-                    budgetItem.setMonthString(months[datePicker.getMonth()]);
+                    dataItem.setDay(datePicker.getDayOfMonth());
+                    dataItem.setMonth(datePicker.getMonth() + 1);
+                    dataItem.setYear(datePicker.getYear());
+                    dataItem.setMonthString(months[datePicker.getMonth()]);
 
                     try {
-                        mRealmHandler.updateData(budgetItem);
+                        mRealmHandler.updateData(dataItem);
                     }  finally {
                         Intent intent = new Intent(getActivity(), ChartActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

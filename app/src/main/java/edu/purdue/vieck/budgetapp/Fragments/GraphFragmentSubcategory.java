@@ -8,13 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
-import edu.purdue.vieck.budgetapp.Adapters.GraphCategoryAdapter;
-import edu.purdue.vieck.budgetapp.CustomObjects.AddTreeItem;
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -24,7 +20,7 @@ import edu.purdue.vieck.budgetapp.R;
 public class GraphFragmentSubcategory extends Fragment {
     private GridLayoutManager layoutManager;
     private RealmHandler mRealmHandler;
-    private LinkedList<BudgetItem> months;
+    private LinkedList<DataItem> months;
 
     @Nullable
     @Override

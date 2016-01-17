@@ -44,7 +44,7 @@ public class GraphCategoryAdapter extends RecyclerView.Adapter<GraphCategoryAdap
         String[] categories = mContext.getResources().getStringArray(R.array.categoryarray);
         for (int i = 0; i < list.size(); i++) {
             double amount = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, type);
-            //list.get(i).setAmount(amount);
+            //list.get(i).setBudget(amount);
         }
         notifyDataSetChanged();
     }

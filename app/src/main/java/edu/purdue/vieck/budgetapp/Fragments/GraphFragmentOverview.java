@@ -49,28 +49,6 @@ public class GraphFragmentOverview extends Fragment {
         return view;
     }
 
-    private void changeAdapterMonth(int month, int year) {
-        //updateOne(month, year);
-        //updateStackChart(month, year);
-    }
-
-
-    /*  */
-    private void updateOne(LineChart lineChartView) {
-        /*float[] expenseArray = mRealmHandler.getAllDataAsArray(0);
-        float[] incomeArray = mRealmHandler.getAllDataAsArray(1);
-        float[] income = new float[categories.length];
-
-        if (expenseArray.length > incomeArray.length) {
-            lineChartView.setAxisBorderValues(0, expenseArray.length);
-        } else {
-            lineChartView.setAxisBorderValues(0, incomeArray.length);
-        }
-        lineChartView.updateValues(0, expenseArray);
-        lineChartView.updateValues(1, incomeArray);
-        lineChartView.notifyDataUpdate();*/
-    }
-
     /* Creates a line chart for total expense vs income */
     private void generateChart(LineChart lineChartView) {
 
@@ -93,8 +71,6 @@ public class GraphFragmentOverview extends Fragment {
 
         YAxis leftAxis = lineChartView.getAxisLeft();
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-        //leftAxis.setAxisMaxValue(220f);
-        //leftAxis.setAxisMinValue(-50f);
         leftAxis.setStartAtZero(false);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setGridColor(Color.WHITE);
@@ -114,10 +90,10 @@ public class GraphFragmentOverview extends Fragment {
 
         lineSet = new LineDataSet(expenseEntries, "expense");
         lineSet.setColor(getResources().getColor(R.color.md_red_A400));
+        lineSet.setValueTextSize(10f);
         lineSet.setValueTextColor(Color.WHITE);
 
         LineData data = new LineData(xAxisLabels, lineSet);
-
 
         lineChartView.setGridBackgroundColor(getResources().getColor(R.color.md_black_1000));
         lineChartView.setBackgroundColor(getResources().getColor(R.color.md_black_1000));

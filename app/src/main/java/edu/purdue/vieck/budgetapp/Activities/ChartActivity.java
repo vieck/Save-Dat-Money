@@ -34,9 +34,8 @@ import com.astuetz.PagerSlidingTabStrip;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.prefs.Preferences;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.Fragments.ChartFragment;
 import edu.purdue.vieck.budgetapp.R;
@@ -256,7 +255,7 @@ public class ChartActivity extends AppCompatActivity {
         bundle.putInt("year", -1);
         chartFragment.setArguments(bundle);
         adapter.addFragment(chartFragment, "Total");
-        HashMap<Integer, List<BudgetItem>> years = mRealmHandler.getAllYearsAsHashmap(2);
+        HashMap<Integer, List<DataItem>> years = mRealmHandler.getAllYearsAsHashmap(2);
 
         //Check if the arraylist is null first
         if (years != null) {
@@ -276,8 +275,8 @@ public class ChartActivity extends AppCompatActivity {
 
             //Sort years in hashmap keys
             for (int i : keys) {
-                List<BudgetItem> budgetItems = years.get(i);
-                for (BudgetItem element : budgetItems) {
+                List<DataItem> dataItems = years.get(i);
+                for (DataItem element : dataItems) {
                     bundle = new Bundle();
                     bundle.putInt("year", i);
                     bundle.putInt("month", element.getMonth());

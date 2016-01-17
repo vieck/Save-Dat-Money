@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="56dp"
         android:layout_marginEnd="0dp"
-        android:hint="@string/amount"
+        android:hint="@string/budget"
         android:inputType="numberDecimal"
         android:textAlignment="viewEnd" />
 

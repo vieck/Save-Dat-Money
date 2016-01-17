@@ -170,7 +170,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         if (month != -1 && year != -1) {
             float budget = mRealmHandler.getBudget(month, year);
             mBudgetView.setText(budget + "");
-            mCurrencyLabel.setText(mSharedPreferences.getString("currencySymbol", Currency.getInstance(mContext.getResources().getConfiguration().locale).getSymbol()));
             mBudgetView.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -191,12 +190,20 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             mConfirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    double budget = Double.parseDouble(mBudgetView.getText().toString());
-                    mRealmHandler.updateBudgetForTheMonth((float)budget, month, year);
-                    mConfirmButton.setVisibility(View.INVISIBLE);
+                    try {
+                        double budget = Double.parseDouble(mBudgetView.getText().toString());
+                        mRealmHandler.updateBudget((float)budget, month, year);
+                        mConfirmButton.setVisibility(View.INVISIBLE);
+                    } catch (NumberFormatException ex) {
+                        Toast.makeText(getActivity(),"Invalid number",Toast.LENGTH_SHORT);
+                    }
                 }
             });
+        } else {
+            float budget = mRealmHandler.getBudget();
+            mBudgetView.setText(budget+"");
         }
+        mCurrencyLabel.setText(mSharedPreferences.getString("currencySymbol", Currency.getInstance(mContext.getResources().getConfiguration().locale).getSymbol()));
     }
 
     private void setData(int type) {
