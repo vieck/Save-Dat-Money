@@ -73,8 +73,6 @@ public class ChartActivity extends AppCompatActivity {
 
         mContext = this;
 
-
-
         mSpinner = (Spinner) findViewById(R.id.spinner);
         mSpinner = setUpSpinner(mSpinner);
 

@@ -10,7 +10,9 @@
         <item name="android:textColorPrimaryInverse">@color/md_white_1000</item>
         <item name="android:textColorHint">@color/md_deep_purple_100</item>
         <item name="android:textColorSecondary">@color/md_black_1000</item>
-        <item name="colorControlNormal">@color/md_white_1000</item>
+        <item name="colorControlNormal">@color/md_black_1000</item>
+        <item name="android:colorControlHighlight">@color/md_red_600</item>
+        <item name="android:colorControlActivated">@color/md_red_600</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -25,6 +27,9 @@
         <item name="android:textColorPrimary">@color/md_black_1000</item>
         <item name="android:textColorSecondary">@color/md_black_1000</item>
         <item name="android:colorAccent">@color/md_black_1000</item>
+        <item name="android:colorControlActivated">@color/md_red_600</item>
+        <item name="android:colorControlHighlight">@color/md_red_600</item>
+        <item name="android:colorControlNormal">@color/md_black_1000</item>
     </style>
 
     <style name="MyAppBarLayout" parent="AppTheme">

@@ -220,7 +220,7 @@ public class EditFragment extends android.app.Fragment {
                     subcategory.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            AddSubcategoryFragment addSubcategoryFragment = new AddSubcategoryFragment();
+                            AddSubCategoryFragment addSubCategoryFragment = new AddSubCategoryFragment();
                             Bundle bundle = getArguments();
                             if (incomeButton.isChecked()) {
                                 bundle.putBoolean("Type", true);
@@ -236,9 +236,9 @@ public class EditFragment extends android.app.Fragment {
                             bundle.putInt("Month", datePicker.getMonth());
                             bundle.putInt("Day", datePicker.getDayOfMonth());
                             bundle.putInt("Year", datePicker.getYear());
-                            addSubcategoryFragment.setArguments(bundle);
+                            addSubCategoryFragment.setArguments(bundle);
                             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.fragment_container, addSubcategoryFragment);
+                            fragmentTransaction.replace(R.id.fragment_container, addSubCategoryFragment);
                             fragmentTransaction.commit();
                         }
                     });

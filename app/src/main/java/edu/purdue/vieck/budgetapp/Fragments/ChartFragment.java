@@ -13,6 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -191,8 +192,8 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
                 @Override
                 public void onClick(View view) {
                     try {
-                        double budget = Double.parseDouble(mBudgetView.getText().toString());
-                        mRealmHandler.updateBudget((float)budget, month, year);
+                        float budget = Float.parseFloat(mBudgetView.getText().toString());
+                        mRealmHandler.updateBudget(budget, month, year);
                         mConfirmButton.setVisibility(View.INVISIBLE);
                     } catch (NumberFormatException ex) {
                         Toast.makeText(getActivity(),"Invalid number",Toast.LENGTH_SHORT);
@@ -202,6 +203,8 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         } else {
             float budget = mRealmHandler.getBudget();
             mBudgetView.setText(budget+"");
+            mBudgetView.setFocusable(false);
+            mBudgetView.setEnabled(false);
         }
         mCurrencyLabel.setText(mSharedPreferences.getString("currencySymbol", Currency.getInstance(mContext.getResources().getConfiguration().locale).getSymbol()));
     }

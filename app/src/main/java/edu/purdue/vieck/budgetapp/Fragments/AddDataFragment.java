@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.util.Currency;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
+import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
@@ -33,11 +34,10 @@ public class AddDataFragment extends Fragment {
 
     RealmHandler mRealmHandler;
     int iconResourceId;
-    private Bundle mSavedState;
     private DatePicker datePicker;
     private RadioButton incomeButton, expenseButton;
     private TextView currency, categories;
-    private EditText amount, category, subcategory, note;
+    private EditText amount, subcategory, note;
     private SharedPreferences mSharedPreferences;
 
 
@@ -160,7 +160,7 @@ public class AddDataFragment extends Fragment {
                 subcategory.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AddSubcategoryFragment addSubcategoryFragment = new AddSubcategoryFragment();
+                        AddSubCategoryFragment addSubCategoryFragment = new AddSubCategoryFragment();
                         Bundle bundle = new Bundle();
                         if (incomeButton.isChecked()) {
                             bundle.putBoolean("Type", true);
@@ -176,9 +176,9 @@ public class AddDataFragment extends Fragment {
                         bundle.putInt("Month", datePicker.getMonth());
                         bundle.putInt("Day", datePicker.getDayOfMonth());
                         bundle.putInt("Year", datePicker.getYear());
-                        addSubcategoryFragment.setArguments(bundle);
+                        addSubCategoryFragment.setArguments(bundle);
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, addSubcategoryFragment);
+                        fragmentTransaction.replace(R.id.fragment_container, addSubCategoryFragment);
                         fragmentTransaction.commit();
                     }
                 });
@@ -219,9 +219,13 @@ public class AddDataFragment extends Fragment {
                         dataItem.setNote(noteString);
                         dataItem.setImage(iconResourceId);
                         dataItem.setMonthString(months[monthNum - 1]);
+
+                        float defaultBudget = Float.parseFloat(mSharedPreferences.getString(getResources().getString(R.string.key_budget),"500.00"));
+                        BudgetItem budgetItem = new BudgetItem(monthNum, yearNum, defaultBudget);
                         Toast.makeText(getActivity(), "Added Data", Toast.LENGTH_LONG).show();
                         try {
                             mRealmHandler.addData(dataItem);
+                            mRealmHandler.addBudget(budgetItem);
                         }  finally {
                             Intent intent = new Intent(getActivity(), ChartActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

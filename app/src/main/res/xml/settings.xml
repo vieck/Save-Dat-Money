@@ -8,6 +8,13 @@
                 android:positiveButtonText="@null"
                 android:summary="@string/summary_currency_list" />
 
+            <EditTextPreference
+                android:title="@string/budget"
+                android:key="@string/key_budget"
+                android:defaultValue="500.00"
+                android:inputType="numberDecimal"
+                android:summary="@string/summary_budget_edit" />
+
         </PreferenceCategory>
      <PreferenceCategory android:title="@string/title_styles">
 

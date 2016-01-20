@@ -22,7 +22,7 @@ import edu.purdue.vieck.budgetapp.R;
 /**
  * Created by mvieck on 9/27/2015.
  */
-public class AddSubcategoryFragment extends Fragment {
+public class AddSubCategoryFragment extends Fragment {
     private ListView listView;
     private LinearLayoutManager layoutManager;
     private AddAdapter addAdapter;

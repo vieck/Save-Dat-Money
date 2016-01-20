@@ -73,7 +73,7 @@ public class AddCategoryFragment extends Fragment {
                     AddItem item = tree.getChildNodes().get(position).getItem();
                     bundle.putInt("Position", position);
                     bundle.putString("Category", item.getType());
-                    AddSubcategoryFragment subCategoryFragment = new AddSubcategoryFragment();
+                    AddSubCategoryFragment subCategoryFragment = new AddSubCategoryFragment();
                     subCategoryFragment.setArguments(bundle);
                     FragmentManager fragmentManager = getActivity().getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.fragment_container, subCategoryFragment).setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).commit();

@@ -1,6 +1,9 @@
 package edu.purdue.vieck.budgetapp.DatabaseAdapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +57,14 @@ public class RealmHandler {
         thread.start();
     }
 
+    public void addBudget(BudgetItem budgetItem) {
+        realm = Realm.getInstance(mContext);
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(budgetItem);
+        realm.commitTransaction();
+        realm.close();
+    }
+
     public void updateBudget(final float budget, final int month, final int year) {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -69,6 +80,7 @@ public class RealmHandler {
                 realm.commitTransaction();
             }
         });
+        thread.start();
     }
 
     public float getBudget() {
@@ -370,8 +382,19 @@ public class RealmHandler {
                 realm = Realm.getInstance(mContext);
                 realm.beginTransaction();
                 realm.where(DataItem.class).equalTo("id", dataItem.getId()).findFirst().removeFromRealm();
+                if (realm.where(DataItem.class).equalTo("month",dataItem.getMonth()).equalTo("year",dataItem.getYear()).findAll().isEmpty()) {
+                    realm.clear(BudgetItem.class);
+                }
                 realm.commitTransaction();
                 realm.close();
+    }
+
+    public void delete(final BudgetItem budgetItem) {
+        realm = Realm.getInstance(mContext);
+        realm.beginTransaction();
+        realm.where(BudgetItem.class).equalTo("key",budgetItem.getKey()).findAll().clear();
+        realm.commitTransaction();
+        realm.close();
     }
 
     public void deleteAll() {
@@ -380,12 +403,20 @@ public class RealmHandler {
             public void run() {
                 realm = Realm.getInstance(mContext);
                 realm.beginTransaction();
+                realm.clear(BudgetItem.class);
                 realm.clear(DataItem.class);
                 realm.commitTransaction();
                 realm.close();
             }
         });
         thread.start();
-
+        try {
+            thread.join();
+        } catch (InterruptedException ex) {
+            Log.e("Thread", "Delete thread interrupted");
+        }
+        Intent intent = ((Activity) mContext).getIntent();
+        ((Activity)mContext).finish();
+        mContext.startActivity(intent);
     }
 }
