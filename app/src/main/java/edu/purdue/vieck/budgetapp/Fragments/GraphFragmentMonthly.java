@@ -1,5 +1,6 @@
 package edu.purdue.vieck.budgetapp.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,22 +8,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.ChartData;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.purdue.vieck.budgetapp.ChartListViewItems.BarChartItem;
+import edu.purdue.vieck.budgetapp.ChartListViewItems.ChartItem;
+import edu.purdue.vieck.budgetapp.ChartListViewItems.HorizontalBarChartItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
@@ -30,7 +35,7 @@ import edu.purdue.vieck.budgetapp.R;
 /**
  * Created by mvieck on 10/7/2015.
  */
-public class GraphFragmentCategory extends Fragment {
+public class GraphFragmentMonthly extends Fragment {
     private RealmHandler mRealmHandler;
     private LinkedList<DataItem> months;
     ImageButton left, right;
@@ -39,11 +44,11 @@ public class GraphFragmentCategory extends Fragment {
 
     String[] categories;
 
-    /* First Chart */
-    BarChart mChartOne;
+    ListView mListView;
+    ChartDataAdapter mAdapter;
 
-    /* Second Chart */
-    HorizontalBarChart mChartTwo;
+    List<ChartItem> mCharts;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,8 +57,9 @@ public class GraphFragmentCategory extends Fragment {
         categories = getResources().getStringArray(R.array.categoryarray);
         mRealmHandler = new RealmHandler(getActivity());
 
-        mChartOne = (BarChart) view.findViewById(R.id.chart_one);
-        mChartTwo = (HorizontalBarChart) view.findViewById(R.id.chart_three);
+        mListView = (ListView) view.findViewById(R.id.listview);
+
+        mCharts = new ArrayList<>();
 
         monthTxt = (TextView) view.findViewById(R.id.label_month);
         yearTxt = (TextView) view.findViewById(R.id.label_year);
@@ -104,14 +110,67 @@ public class GraphFragmentCategory extends Fragment {
                     }
                 }
             });
-            produceOne(mChartOne, months.get(count).getMonth(), months.get(count).getYear());
-            produceTwo(mChartTwo, months.get(count).getMonth(), months.get(count).getYear());
+            produceOne(months.get(count).getMonth(), months.get(count).getYear());
+            produceTwo(months.get(count).getMonth(), months.get(count).getYear());
+            mAdapter = new ChartDataAdapter(getActivity(), mCharts);
+            mListView.setAdapter(mAdapter);
         } else {
             monthTxt.setText("No Data");
             yearTxt.setText("");
         }
-
         return view;
+    }
+
+    private class ChartDataAdapter extends ArrayAdapter<ChartItem> {
+        List<ChartItem> data;
+        public ChartDataAdapter(Context context, List<ChartItem> data) {
+            super(context, 0, data);
+            this.data = data;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return getItem(position).getView(position, convertView, getContext());
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return getItem(position).getItemType();
+        }
+
+        @Override
+        public ChartItem getItem(int position) {
+            return super.getItem(position);
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 4;
+        }
+
+        public void updateData(int position, ChartData data) {
+            switch (position) {
+                case 0:
+                    BarChart barChart = ((BarChart)getView(position, null, mListView));
+                    barChart.getBarData();
+                    barChart.getBarData().clearValues();
+                    barChart.setData((BarData)data);
+                    barChart.notifyDataSetChanged();
+                    barChart.invalidate();
+                    break;
+                case 1:
+                    HorizontalBarChart chart = (HorizontalBarChart) getView(position, null, mListView);
+                    chart
+                    chart.setData((BarData)data);
+                    chart.notifyDataSetChanged();
+                    chart.invalidate();
+                    break;
+
+            }
+            notifyDataSetChanged();
+        }
+
+
     }
 
     public void updateType(int type) {
@@ -121,8 +180,8 @@ public class GraphFragmentCategory extends Fragment {
             count = months.size() - 1;
             monthTxt.setText(months.get(count).getMonthString());
             yearTxt.setText("" + months.get(count).getYear() + "");
-            updateOne(mChartOne, months.get(count).getMonth(), months.get(count).getYear());
-            updateTwo(mChartTwo, months.get(count).getMonth(), months.get(count).getYear());
+            updateOne(months.get(count).getMonth(), months.get(count).getYear());
+            updateTwo(months.get(count).getMonth(), months.get(count).getYear());
         } else {
             monthTxt.setText("No Data");
             yearTxt.setText("");
@@ -130,12 +189,13 @@ public class GraphFragmentCategory extends Fragment {
     }
 
     private void updateGraphs(int month, int year) {
-        updateOne(mChartOne, month, year);
-        updateTwo(mChartTwo, month, year);
+        updateOne(month, year);
+        updateTwo(month, year);
     }
 
     /* Creates a line chart for expense vs income */
-    private void produceOne(BarChart chart, int month, int year) {
+    private void produceOne(int month, int year) {
+
         ArrayList<BarEntry> incomeValues = new ArrayList<>();
         ArrayList<BarEntry> expenseValues = new ArrayList<>();
 
@@ -161,54 +221,23 @@ public class GraphFragmentCategory extends Fragment {
 
         BarData barData = new BarData(categories, barDataSets);
         barData.setGroupSpace(30f);
-        chart.setData(barData);
-        chart.setDescription("");
 
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawAxisLine(false);
-        xAxis.setSpaceBetweenLabels(1);
-
-        Legend l = chart.getLegend();
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
-        l.setForm(Legend.LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-        l.setXEntrySpace(4f);
+        mCharts.add(new BarChartItem(barData, getActivity()));
 
     }
 
     /* Creates a graph for expenses vs income */
-    private void produceTwo(HorizontalBarChart chart, int month, int year) {
+    private void produceTwo(int month, int year) {
 
         float total = mRealmHandler.getSpecificDateAmount(month, year, 2);
-        List<BarEntry> barEntries = new ArrayList<>();
 
         float income = mRealmHandler.getSpecificDateAmount(month, year, 1);
         String[] incomeLabel = {"Income"};
 
         float expense = -mRealmHandler.getSpecificDateAmount(month, year, 0);
-        String[] expenseLabel = { "Expense" };
+        String[] expenseLabel = {"Expense"};
 
-        String[] labels = {"Income","Expense"};
-
-        chart.getAxisLeft().setEnabled(false);
-        chart.getAxisRight().setStartAtZero(false);
-        chart.getAxisRight().setAxisMaxValue(total);
-        chart.getAxisRight().setAxisMinValue(-total);
-        chart.getAxisRight().setTextSize(9f);
-
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(false);
-        xAxis.setTextSize(9f);
-
-        Legend l = chart.getLegend();
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
-        l.setFormSize(8f);
-        l.setFormToTextSpace(4f);
-        l.setXEntrySpace(6f);
+        String[] labels = {"Income", "Expense"};
 
         ArrayList<BarEntry> yValues = new ArrayList<>();
         yValues.add(new BarEntry(new float[]{-expense, income}, 0));
@@ -217,15 +246,15 @@ public class GraphFragmentCategory extends Fragment {
         barDataSet.setValueTextSize(7f);
         barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
         barDataSet.setBarSpacePercent(40f);
-        barDataSet.setColors(new int[] {getResources().getColor(R.color.md_red_A400), getResources().getColor(R.color.md_green_A400)});
+        barDataSet.setColors(new int[]{getResources().getColor(R.color.md_red_A400), getResources().getColor(R.color.md_green_A400)});
         barDataSet.setStackLabels(new String[]{
                 "Expenses", "Income"
         });
-        BarData data = new BarData(new String[]{""},barDataSet);
-        chart.setData(data);
+        BarData data = new BarData(new String[]{""}, barDataSet);
+        mCharts.add(new HorizontalBarChartItem(data, total, getActivity()));
     }
 
-    private void updateOne(BarChart chartView, int month, int year) {
+    private void updateOne(int month, int year) {
         ArrayList<BarEntry> incomeValues = new ArrayList<>();
         ArrayList<BarEntry> expenseValues = new ArrayList<>();
 
@@ -251,13 +280,11 @@ public class GraphFragmentCategory extends Fragment {
 
         BarData barData = new BarData(categories, barDataSets);
 
-        chartView.getBarData().clearValues();
-        chartView.setData(barData);
-        chartView.notifyDataSetChanged();
-        chartView.invalidate();
+        mAdapter.updateData(0, barData);
+
     }
 
-    private void updateTwo(HorizontalBarChart chart, int month, int year) {
+    private void updateTwo(int month, int year) {
         float total = mRealmHandler.getSpecificDateAmount(month, year, 2);
         chart.getAxisRight().setAxisMaxValue(total);
         chart.getAxisRight().setAxisMinValue(-total);
@@ -267,9 +294,9 @@ public class GraphFragmentCategory extends Fragment {
         String[] incomeLabel = {"Income"};
 
         float expense = -mRealmHandler.getSpecificDateAmount(month, year, 0);
-        String[] expenseLabel = { "Expense" };
+        String[] expenseLabel = {"Expense"};
 
-        String[] labels = {"Income","Expense"};
+        String[] labels = {"Income", "Expense"};
 
         chart.getBarData().clearValues();
 
@@ -280,14 +307,10 @@ public class GraphFragmentCategory extends Fragment {
         barDataSet.setValueTextSize(7f);
         barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
         barDataSet.setBarSpacePercent(40f);
-        barDataSet.setColors(new int[] {getResources().getColor(R.color.md_red_A400), getResources().getColor(R.color.md_green_A400)});
-        barDataSet.setStackLabels(new String[]{
-                "Expenses", "Income"
-        });
-        BarData data = new BarData(new String[]{""},barDataSet);
-        chart.setData(data);
-        chart.notifyDataSetChanged();
-        chart.invalidate();
+        barDataSet.setColors(new int[]{getResources().getColor(R.color.md_red_A400), getResources().getColor(R.color.md_green_A400)});
+        BarData data = new BarData(new String[]{""}, barDataSet);
+
+        mAdapter.updateData(1, data);
     }
 
 }

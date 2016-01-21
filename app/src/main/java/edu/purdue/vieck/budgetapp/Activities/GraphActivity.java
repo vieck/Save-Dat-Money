@@ -28,7 +28,7 @@ import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
 
-import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentCategory;
+import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentMonthly;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentComparison;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentOverview;
 import edu.purdue.vieck.budgetapp.R;
@@ -198,9 +198,9 @@ public class GraphActivity extends AppCompatActivity {
             fragmentOverview = new GraphFragmentOverview();
         }
         adapter.addFragment(fragmentOverview, "Overview");
-        GraphFragmentCategory fragmentCategory = (GraphFragmentCategory) fragmentManager.findFragmentByTag("Category");
+        GraphFragmentMonthly fragmentCategory = (GraphFragmentMonthly) fragmentManager.findFragmentByTag("Category");
         if (fragmentCategory == null) {
-            fragmentCategory = new GraphFragmentCategory();
+            fragmentCategory = new GraphFragmentMonthly();
         }
         adapter.addFragment(fragmentCategory, "Category");
         GraphFragmentComparison fragmentComparison = (GraphFragmentComparison) fragmentManager.findFragmentByTag("Comparison");
@@ -251,7 +251,7 @@ public class GraphActivity extends AppCompatActivity {
             }
             //fragmentOverview.updateType(type);
 
-            GraphFragmentCategory fragmentCategory = (GraphFragmentCategory) mFragmentList.get(1);
+            GraphFragmentMonthly fragmentCategory = (GraphFragmentMonthly) mFragmentList.get(1);
             if (fragmentCategory.getArguments() != null) {
                 fragmentOverview.getArguments().putInt("type", type);
             }
