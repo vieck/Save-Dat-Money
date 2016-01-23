@@ -1,12 +1,10 @@
 package edu.purdue.vieck.budgetapp.ChartListViewItems;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -18,10 +16,8 @@ import edu.purdue.vieck.budgetapp.R;
  * Created by vieck on 1/20/16.
  */
 public class BarChartItem extends ChartItem {
-    private Typeface mTf;
-    public BarChartItem(ChartData<?> chartData, Context context) {
-        super(chartData, context);
-        mTf = Typeface.createFromAsset(context.getAssets(), "OpenSans-Regular.ttf");
+    public BarChartItem(ChartData<?> chartData) {
+        super(chartData);
     }
     @Override
     public int getItemType() {
@@ -31,7 +27,7 @@ public class BarChartItem extends ChartItem {
     @Override
     public View getView(int position, View convertView, Context c) {
 
-        ViewHolder holder = null;
+        ViewHolder holder;
 
         if (convertView == null) {
 
@@ -39,7 +35,7 @@ public class BarChartItem extends ChartItem {
 
             convertView = LayoutInflater.from(c).inflate(
                     R.layout.listview_item_barchart, null);
-            holder.chart = (HorizontalBarChart) convertView.findViewById(R.id.bar_chart);
+            holder.chart = (BarChart) convertView.findViewById(R.id.bar_chart);
 
             convertView.setTag(holder);
 
@@ -47,6 +43,7 @@ public class BarChartItem extends ChartItem {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        BarData barData = (BarData) mChartData;
         XAxis xAxis = holder.chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(false);
@@ -59,25 +56,24 @@ public class BarChartItem extends ChartItem {
         l.setTextSize(11f);
         l.setXEntrySpace(4f);
 
-        mChartData.setValueTypeface(mTf);
+        //mChartData.setValueTypeface(mTf);
 
         // set data
-        holder.chart.setData((BarData) mChartData);
+        holder.chart.setData(barData);
 
-        // do not forget to refresh the chart
-//        holder.chart.invalidate();
         holder.chart.animateY(700);
+        holder.chart.notifyDataSetChanged();
+        holder.chart.invalidate();
 
         return convertView;
-    }
-
-    @Override
-    public void updateData(ChartData<?> mChartData) {
-
     }
 
     private static class ViewHolder {
         BarChart chart;
     }
 
+    @Override
+    public void updateData(ChartData mChartData, float total) {
+        this.mChartData = mChartData;
+    }
 }

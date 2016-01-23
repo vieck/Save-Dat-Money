@@ -1,20 +1,23 @@
 package edu.purdue.vieck.budgetapp.Fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.purdue.vieck.budgetapp.Adapters.GraphMonthlyAdapter;
 import edu.purdue.vieck.budgetapp.ChartListViewItems.BarChartItem;
 import edu.purdue.vieck.budgetapp.ChartListViewItems.ChartItem;
 import edu.purdue.vieck.budgetapp.ChartListViewItems.HorizontalBarChartItem;
@@ -45,7 +49,7 @@ public class GraphFragmentMonthly extends Fragment {
     String[] categories;
 
     ListView mListView;
-    ChartDataAdapter mAdapter;
+    GraphMonthlyAdapter mAdapter;
 
     List<ChartItem> mCharts;
 
@@ -58,7 +62,6 @@ public class GraphFragmentMonthly extends Fragment {
         mRealmHandler = new RealmHandler(getActivity());
 
         mListView = (ListView) view.findViewById(R.id.listview);
-
         mCharts = new ArrayList<>();
 
         monthTxt = (TextView) view.findViewById(R.id.label_month);
@@ -69,6 +72,9 @@ public class GraphFragmentMonthly extends Fragment {
         if (!mRealmHandler.isEmpty(type)) {
             months = mRealmHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;
+            DataItem item = months.get(count);
+            monthTxt.setText(item.getMonthString());
+            yearTxt.setText(Integer.toString(item.getYear()));
 
             left.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -78,13 +84,13 @@ public class GraphFragmentMonthly extends Fragment {
                         count++;
                         DataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
-                        yearTxt.setText("" + item.getYear());
+                        yearTxt.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());
                     } else {
                         count = 0;
                         DataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
-                        yearTxt.setText("" + item.getYear());
+                        yearTxt.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());
 
                     }
@@ -99,20 +105,20 @@ public class GraphFragmentMonthly extends Fragment {
                         count--;
                         DataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
-                        yearTxt.setText("" + item.getYear());
+                        yearTxt.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());
                     } else {
                         count = months.size() - 1;
                         DataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
-                        yearTxt.setText("" + item.getYear());
+                        yearTxt.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());
                     }
                 }
             });
             produceOne(months.get(count).getMonth(), months.get(count).getYear());
             produceTwo(months.get(count).getMonth(), months.get(count).getYear());
-            mAdapter = new ChartDataAdapter(getActivity(), mCharts);
+            mAdapter = new GraphMonthlyAdapter(getActivity(), mCharts, mRealmHandler);
             mListView.setAdapter(mAdapter);
         } else {
             monthTxt.setText("No Data");
@@ -121,67 +127,14 @@ public class GraphFragmentMonthly extends Fragment {
         return view;
     }
 
-    private class ChartDataAdapter extends ArrayAdapter<ChartItem> {
-        List<ChartItem> data;
-        public ChartDataAdapter(Context context, List<ChartItem> data) {
-            super(context, 0, data);
-            this.data = data;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return getItem(position).getView(position, convertView, getContext());
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return getItem(position).getItemType();
-        }
-
-        @Override
-        public ChartItem getItem(int position) {
-            return super.getItem(position);
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return 4;
-        }
-
-        public void updateData(int position, ChartData data) {
-            switch (position) {
-                case 0:
-                    BarChart barChart = ((BarChart)getView(position, null, mListView));
-                    barChart.getBarData();
-                    barChart.getBarData().clearValues();
-                    barChart.setData((BarData)data);
-                    barChart.notifyDataSetChanged();
-                    barChart.invalidate();
-                    break;
-                case 1:
-                    HorizontalBarChart chart = (HorizontalBarChart) getView(position, null, mListView);
-                    chart
-                    chart.setData((BarData)data);
-                    chart.notifyDataSetChanged();
-                    chart.invalidate();
-                    break;
-
-            }
-            notifyDataSetChanged();
-        }
-
-
-    }
-
     public void updateType(int type) {
         this.type = type;
         if (mRealmHandler != null && !mRealmHandler.isEmpty(type)) {
             months = mRealmHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;
             monthTxt.setText(months.get(count).getMonthString());
-            yearTxt.setText("" + months.get(count).getYear() + "");
-            updateOne(months.get(count).getMonth(), months.get(count).getYear());
-            updateTwo(months.get(count).getMonth(), months.get(count).getYear());
+            yearTxt.setText(Integer.toString(months.get(count).getYear()));
+            updateGraphs(months.get(count).getMonth(), months.get(count).getYear());
         } else {
             monthTxt.setText("No Data");
             yearTxt.setText("");
@@ -189,8 +142,9 @@ public class GraphFragmentMonthly extends Fragment {
     }
 
     private void updateGraphs(int month, int year) {
-        updateOne(month, year);
-        updateTwo(month, year);
+        mCharts.get(0).updateData(updateOne(month, year), 0);
+        mCharts.get(1).updateData(updateTwo(month, year), mRealmHandler.getSpecificDateAmount(month, year, 2));
+        mAdapter.notifyDataSetChanged();
     }
 
     /* Creates a line chart for expense vs income */
@@ -222,14 +176,12 @@ public class GraphFragmentMonthly extends Fragment {
         BarData barData = new BarData(categories, barDataSets);
         barData.setGroupSpace(30f);
 
-        mCharts.add(new BarChartItem(barData, getActivity()));
+        mCharts.add(new BarChartItem(barData));
 
     }
 
     /* Creates a graph for expenses vs income */
     private void produceTwo(int month, int year) {
-
-        float total = mRealmHandler.getSpecificDateAmount(month, year, 2);
 
         float income = mRealmHandler.getSpecificDateAmount(month, year, 1);
         String[] incomeLabel = {"Income"};
@@ -250,11 +202,14 @@ public class GraphFragmentMonthly extends Fragment {
         barDataSet.setStackLabels(new String[]{
                 "Expenses", "Income"
         });
-        BarData data = new BarData(new String[]{""}, barDataSet);
-        mCharts.add(new HorizontalBarChartItem(data, total, getActivity()));
+        BarData barData = new BarData(new String[]{""}, barDataSet);
+
+        float total = mRealmHandler.getSpecificDateAmount(month, year, 2);
+
+        mCharts.add(new HorizontalBarChartItem(barData, total));
     }
 
-    private void updateOne(int month, int year) {
+    private ChartData updateOne(int month, int year) {
         ArrayList<BarEntry> incomeValues = new ArrayList<>();
         ArrayList<BarEntry> expenseValues = new ArrayList<>();
 
@@ -278,17 +233,10 @@ public class GraphFragmentMonthly extends Fragment {
         barDataSets.add(dataSetIncome);
         barDataSets.add(dataSetExpense);
 
-        BarData barData = new BarData(categories, barDataSets);
-
-        mAdapter.updateData(0, barData);
-
+        return new BarData(categories, barDataSets);
     }
 
-    private void updateTwo(int month, int year) {
-        float total = mRealmHandler.getSpecificDateAmount(month, year, 2);
-        chart.getAxisRight().setAxisMaxValue(total);
-        chart.getAxisRight().setAxisMinValue(-total);
-        List<BarEntry> barEntries = new ArrayList<>();
+    private ChartData updateTwo(int month, int year) {
 
         float income = mRealmHandler.getSpecificDateAmount(month, year, 1);
         String[] incomeLabel = {"Income"};
@@ -298,8 +246,6 @@ public class GraphFragmentMonthly extends Fragment {
 
         String[] labels = {"Income", "Expense"};
 
-        chart.getBarData().clearValues();
-
         ArrayList<BarEntry> yValues = new ArrayList<>();
         yValues.add(new BarEntry(new float[]{expense, income}, 0));
 
@@ -308,9 +254,7 @@ public class GraphFragmentMonthly extends Fragment {
         barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
         barDataSet.setBarSpacePercent(40f);
         barDataSet.setColors(new int[]{getResources().getColor(R.color.md_red_A400), getResources().getColor(R.color.md_green_A400)});
-        BarData data = new BarData(new String[]{""}, barDataSet);
-
-        mAdapter.updateData(1, data);
+        return new BarData(new String[]{""}, barDataSet);
     }
 
 }

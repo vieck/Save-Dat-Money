@@ -17,7 +17,7 @@ public abstract class ChartItem {
 
     protected ChartData<?> mChartData;
 
-    public ChartItem(ChartData<?> cd, Context context) {
+    public ChartItem(ChartData<?> cd) {
         this.mChartData = cd;
     }
 
@@ -25,6 +25,7 @@ public abstract class ChartItem {
 
     public abstract View getView(int position, View convertView, Context c);
 
-    public abstract void updateData(ChartData<?> mChartData);
+    public abstract void updateData(ChartData mChartData, float total);
+
 
 }

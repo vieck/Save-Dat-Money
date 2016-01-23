@@ -1,7 +1,6 @@
 package edu.purdue.vieck.budgetapp.ChartListViewItems;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -17,13 +16,11 @@ import edu.purdue.vieck.budgetapp.R;
  * Created by vieck on 1/20/16.
  */
 public class HorizontalBarChartItem extends ChartItem {
-    private Typeface mTf;
     private float total;
 
-    public HorizontalBarChartItem(ChartData<?> chartData, float total, Context context) {
-        super(chartData, context);
+    public HorizontalBarChartItem(ChartData<?> chartData, float total) {
+        super(chartData);
         this.total = total;
-        mTf = Typeface.createFromAsset(context.getAssets(), "OpenSans-Regular.ttf");
     }
 
     @Override
@@ -50,6 +47,8 @@ public class HorizontalBarChartItem extends ChartItem {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        BarData barData = (BarData) mChartData;
+         //mRealmHandler.getSpecificDateAmount(month, year, 2);
         // apply styling
         holder.chart.setDescription("");
         holder.chart.setDrawGridBackground(false);
@@ -73,14 +72,14 @@ public class HorizontalBarChartItem extends ChartItem {
         l.setFormToTextSpace(4f);
         l.setXEntrySpace(6f);
 
-        mChartData.setValueTypeface(mTf);
+        //mChartData.setValueTypeface(mTf);
 
         // set data
-        holder.chart.setData((BarData) mChartData);
+        holder.chart.setData(barData);
 
-        // do not forget to refresh the chart
-//        holder.chart.invalidate();
         holder.chart.animateY(700);
+        holder.chart.notifyDataSetChanged();
+        holder.chart.invalidate();
 
         return convertView;
     }
@@ -89,4 +88,9 @@ public class HorizontalBarChartItem extends ChartItem {
         HorizontalBarChart chart;
     }
 
+    @Override
+    public void updateData(ChartData mChartData, float total) {
+        this.mChartData = mChartData;
+        this.total = total;
+    }
 }
