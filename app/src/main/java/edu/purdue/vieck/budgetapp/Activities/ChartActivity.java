@@ -65,7 +65,6 @@ public class ChartActivity extends AppCompatActivity {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         actionBarColor = mSharedPreferences.getInt("actionBarColor", 0);
         setUpToolbar();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         setUpNavigationDrawer();
         setUpNavigationView();
 
@@ -133,6 +132,7 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     private void setUpNavigationDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (mToolbar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             mToolbar.setNavigationIcon(R.drawable.ic_drawer);
@@ -171,6 +171,11 @@ public class ChartActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_item_graph:
                         intent = new Intent(currentActivity, GraphActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
+                    case R.id.nav_item_projections:
+                        intent = new Intent(currentActivity, ProjectionsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;

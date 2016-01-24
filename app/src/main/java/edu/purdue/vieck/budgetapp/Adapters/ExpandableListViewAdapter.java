@@ -2,11 +2,13 @@ package edu.purdue.vieck.budgetapp.Adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -25,12 +27,14 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     HashMap<Integer, List<DataItem>> years;
     List<DataItem> mMonths;
     String currencySymbol;
+    int actionBarColor;
     SharedPreferences mSharedPreferences;
 
     public ExpandableListViewAdapter(Context context, RealmHandler realmHandler, String filter) {
         this.context = context;
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         currencySymbol = mSharedPreferences.getString("currencySymbol","$");
+        actionBarColor = mSharedPreferences.getInt("actionBarColor", Color.BLACK);
         mRealmHandler = realmHandler;
         if (filter == "") {
             mMonths = mRealmHandler.getAllUniqueMonthsAsList(2);
@@ -76,6 +80,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int group, boolean b, View view, ViewGroup viewGroup) {
+        LinearLayout linearLayout;
         TextView date;
         final DataItem item = (DataItem) getGroup(group);
         if (view == null) {
@@ -84,9 +89,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
             view = infalInflater.inflate(R.layout.item_data_group, null);
         }
 
+        linearLayout = (LinearLayout) view;
         date = (TextView) view.findViewById(R.id.label_date);
 
         date.setText(item.getMonthString() + " " + item.getYear());
+        linearLayout.setBackgroundColor(actionBarColor);
         return view;
     }
 

@@ -13,9 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,10 +29,9 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.PercentFormatter;
 
 import java.util.ArrayList;
 import java.util.Currency;
@@ -45,7 +42,7 @@ import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 
-public class ChartFragment extends Fragment implements OnChartValueSelectedListener {
+public class ChartFragment extends Fragment {
 
     int month, year, type;
     RealmHandler mRealmHandler;
@@ -148,9 +145,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
         // mChart.setUnit(" €");
         // mChart.setDrawUnitsInChart(true);
-
-        // add a selection listener
-        chart.setOnChartValueSelectedListener(this);
 
         //mPieChart.setCenterText("MPAndroidChart\nby Philipp Jahoda");
         chart.setCenterTextSize(9.5f);
@@ -299,21 +293,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             setData(position);
             mPieChart.notifyDataSetChanged();
         }
-    }
-
-    @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-
-        if (e == null)
-            return;
-        Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
-                        + ", DataSet index: " + dataSetIndex);
-    }
-
-    @Override
-    public void onNothingSelected() {
-        Log.i("PieChart", "nothing selected");
     }
 
 }

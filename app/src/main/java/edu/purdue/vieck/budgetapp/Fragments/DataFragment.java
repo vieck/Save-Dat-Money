@@ -39,9 +39,4 @@ public class DataFragment extends Fragment {
         super.onAttach(activity);
     }
 
-    public void filterQuery(String filter) {
-        mDataAdapter = new ExpandableListViewAdapter(getActivity(), mRealmHandler, filter);
-        mExpandableListView.setAdapter(mDataAdapter);
-        Log.d("DataFragment", "Filter " + filter);
-    }
 }

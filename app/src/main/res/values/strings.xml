@@ -179,5 +179,5 @@
     <string name="title_activity_data">Data</string>
     <string name="title_activity_category">Categories</string>
     <string name="title_activity_description">Description</string>
-    <string name="title_activity_projections">ProjectionsActivity</string>
+    <string name="title_activity_projections">Projections</string>
 </resources>

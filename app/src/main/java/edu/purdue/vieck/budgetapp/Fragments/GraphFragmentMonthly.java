@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -154,16 +155,13 @@ public class GraphFragmentMonthly extends Fragment {
         ArrayList<BarEntry> expenseValues = new ArrayList<>();
 
         for (int i = 0; i < categories.length; i++) {
-            float value = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 1);
-            incomeValues.add(new BarEntry(value, i));
+            float incomeValue = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 1);
+            float expenseValue = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
+            incomeValues.add(new BarEntry(incomeValue, i));
+            expenseValues.add(new BarEntry(expenseValue, i));
         }
 
-        for (int i = 0; i < categories.length; i++) {
-            float value = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
-            expenseValues.add(new BarEntry(value, i));
-        }
-
-        List<BarDataSet> barDataSets = new ArrayList<>();
+        List<IBarDataSet> barDataSets = new ArrayList<>();
         BarDataSet dataSetIncome = new BarDataSet(incomeValues, "Income");
         dataSetIncome.setDrawValues(false);
         dataSetIncome.setColor(getResources().getColor(R.color.md_green_A400));
@@ -223,7 +221,7 @@ public class GraphFragmentMonthly extends Fragment {
             expenseValues.add(new BarEntry(value, i));
         }
 
-        List<BarDataSet> barDataSets = new ArrayList<>();
+        List<IBarDataSet> barDataSets = new ArrayList<>();
         BarDataSet dataSetIncome = new BarDataSet(incomeValues, "Income");
         dataSetIncome.setDrawValues(false);
         dataSetIncome.setColor(getResources().getColor(R.color.md_green_A400));

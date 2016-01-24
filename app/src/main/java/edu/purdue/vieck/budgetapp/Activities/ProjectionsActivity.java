@@ -59,6 +59,10 @@ public class ProjectionsActivity extends AppCompatActivity {
         actionBarColor = mSharedPreferences.getInt("actionBarColor", Color.BLACK);
 
         setUpToolbar();
+        setUpNavigationDrawer();
+        setUpNavigationView();
+
+
 
         mRealmHandler = new RealmHandler(this);
 
@@ -78,6 +82,7 @@ public class ProjectionsActivity extends AppCompatActivity {
     }
 
     private void setUpNavigationDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (mToolbar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             mToolbar.setNavigationIcon(R.drawable.ic_drawer);
