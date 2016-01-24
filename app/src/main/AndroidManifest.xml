@@ -16,8 +16,8 @@
     <permission
         android:name="edu.purdue.vieck.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="edu.purdue.vieck.permission.C2D_MESSAGE" />
 
+    <uses-permission android:name="edu.purdue.vieck.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -25,11 +25,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.parse.APPLICATION_ID"
             android:value="Gpyb8G3WsyI2ys158lag2JC4339FLzL6xdUbrQxc" />
-
         <meta-data
             android:name="com.parse.CLIENT_KEY"
             android:value="RjYuaiJ9XulYRUThIOyqBvLrSeVdDPsrPHLIOjkD" />
@@ -37,7 +35,7 @@
         <activity
             android:name=".Activities.DashboardActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.ChartActivity"
             android:label="@string/title_activity_chart"
@@ -49,7 +47,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activities.DataActivity"
             android:label="@string/title_activity_data"
@@ -97,13 +94,14 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <!--
-                  IMPORTANT: Change "com.parse.starter" to match your app's package name.
-                -->
+                <!--                   IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
                 <category android:name="edu.purdue.vieck.budgetapp" />
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".Activities.ProjectionsActivity"
+            android:label="@string/title_activity_projections"></activity>
     </application>
 
 </manifest>

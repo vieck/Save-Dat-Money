@@ -163,7 +163,7 @@
     <string name="summary_currency_list">Choose your currency</string>
     <string name="key_budget">budget</string>
     <string name="summary_budget_edit">Change the default budget</string>
-    
+
     <string name="title_styles">Styles and Color Schemes</string>
     <string name="inline_colors">Colors</string>
     <string name="title_action_bar_color">Action Bar Color</string>
@@ -179,4 +179,5 @@
     <string name="title_activity_data">Data</string>
     <string name="title_activity_category">Categories</string>
     <string name="title_activity_description">Description</string>
+    <string name="title_activity_projections">ProjectionsActivity</string>
 </resources>
