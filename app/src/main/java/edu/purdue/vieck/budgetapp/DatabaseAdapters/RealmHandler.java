@@ -253,8 +253,8 @@ public class RealmHandler {
             query = realm.where(DataItem.class).equalTo("type", false);
         }
         RealmResults<DataItem> results = query.findAll();
-        results.sort("month", Sort.DESCENDING);
-        results.sort("year", Sort.DESCENDING);
+        results.sort("month", Sort.ASCENDING);
+        results.sort("year", Sort.ASCENDING);
         for (DataItem dataItem : results) {
             if (hashMap.get(dataItem.getMonth() + "/" + dataItem.getYear()) == null) {
                 hashMap.put(dataItem.getMonth() + "/" + dataItem.getYear(), dataItem.getAmount());

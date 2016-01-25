@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -149,33 +150,54 @@ public class ProjectionsActivity extends AppCompatActivity {
         mProjectionChart = (LineChart) findViewById(R.id.line_chart);
         mProjectionChart.getAxisRight().setEnabled(false);
 
-        List<Entry> lineEntries = new ArrayList<>();
+        List<Entry> expenseEntries = new ArrayList<>();
+        List<Entry> expenseProjectionEntries = new ArrayList<>();
         HashMap<String, Float> uniqueMonths = mRealmHandler.getAllMonthsAsOneElement(0);
         Set<String> keys = uniqueMonths.keySet();
         String[] labels = keys.toArray(new String[keys.size()]);
+
+        float past, present, future;
         int i = 0;
         for (String label : labels) {
-            lineEntries.add(new Entry(uniqueMonths.get(label), i++));
+            if (i >= 1) {
+                present = uniqueMonths.get(labels[i]);
+                past = uniqueMonths.get(labels[i-1]);
+                future = ((present - past) / past) * uniqueMonths.get(labels[i-1]);
+                Log.i("Projection", "" + past + " " + present + " " + future + " i " + i);
+                expenseProjectionEntries.add(new Entry(future, i));
+            } else {
+                expenseProjectionEntries.add(new Entry(uniqueMonths.get(label), i));
+            }
+            expenseEntries.add(new Entry(uniqueMonths.get(label), i++));
         }
 
-        LineDataSet set = new LineDataSet(lineEntries, "Data");
-        set.setDrawCubic(false);
-        set.setLabel("Realm LineDataSet");
-        set.setDrawCircleHole(false);
-        set.setColor(ColorTemplate.rgb("#FF5722"));
-        set.setCircleColor(ColorTemplate.rgb("#FF5722"));
-        set.setLineWidth(1.8f);
-        set.setCircleSize(3.6f);
+        LineDataSet expenseLineSet = new LineDataSet(expenseEntries, "Expense");
+        expenseLineSet.setDrawCubic(false);
+        expenseLineSet.setLabel("Expenses");
+        expenseLineSet.setDrawCircleHole(false);
+        expenseLineSet.setColor(ColorTemplate.rgb("#FF5722"));
+        expenseLineSet.setCircleColor(ColorTemplate.rgb("#FF5722"));
+        expenseLineSet.setLineWidth(1.8f);
+
+        LineDataSet expenseProjectionLineSet = new LineDataSet(expenseProjectionEntries, "Expense Projection");
+        expenseProjectionLineSet.setDrawCubic(false);
+        expenseProjectionLineSet.enableDashedLine(10f, 10f, 10f);
+        expenseProjectionLineSet.setLabel("Expenses");
+        expenseProjectionLineSet.setDrawCircleHole(false);
+        expenseProjectionLineSet.setColor(ColorTemplate.rgb("#FF5722"));
+        expenseProjectionLineSet.setCircleColor(ColorTemplate.rgb("#FF5722"));
+        expenseProjectionLineSet.setLineWidth(1.8f);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set); // add the dataset
+        dataSets.add(expenseLineSet); // add the dataset
+        dataSets.add(expenseProjectionLineSet);
 
         // create a data object with the dataset list
         LineData data = new LineData(labels, dataSets);
         data.setValueTextSize(8f);
         data.setValueTextColor(Color.DKGRAY);
 
-        // set data
+        // expenseLineSet data
         mProjectionChart.setData(data);
         mProjectionChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
 
