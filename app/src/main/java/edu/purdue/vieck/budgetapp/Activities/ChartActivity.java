@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -63,7 +65,7 @@ public class ChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        actionBarColor = mSharedPreferences.getInt("actionBarColor", 0);
+        actionBarColor = mSharedPreferences.getInt("actionBarColor", getResources().getColor(R.color.md_black_1000));
         setUpToolbar();
         setUpNavigationDrawer();
         setUpNavigationView();
@@ -121,11 +123,7 @@ public class ChartActivity extends AppCompatActivity {
 
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
-            mToolbar.setTitleTextColor(Color.BLACK);
-        } else {
-            mToolbar.setTitleTextColor(Color.WHITE);
-        }
+        mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setBackgroundColor(actionBarColor);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -135,7 +133,7 @@ public class ChartActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (mToolbar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mToolbar.setNavigationIcon(R.drawable.ic_drawer);
+            mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -148,11 +146,9 @@ public class ChartActivity extends AppCompatActivity {
     private void setUpNavigationView() {
         final Activity currentActivity = this;
         mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
-        if (actionBarColor != getResources().getColor(R.color.md_white_1000)) {
-            mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
-            mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
-        }
         mNavigationView.setBackgroundColor(actionBarColor);
+        mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
+        mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {

@@ -57,13 +57,11 @@ public class ProjectionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_projections);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        actionBarColor = mSharedPreferences.getInt("actionBarColor", Color.BLACK);
+        actionBarColor = mSharedPreferences.getInt("actionBarColor", getResources().getColor(R.color.md_black_1000));
 
         setUpToolbar();
         setUpNavigationDrawer();
         setUpNavigationView();
-
-
 
         mRealmHandler = new RealmHandler(this);
 
@@ -72,12 +70,8 @@ public class ProjectionsActivity extends AppCompatActivity {
 
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
-            mToolbar.setTitleTextColor(Color.BLACK);
-        } else {
-            mToolbar.setTitleTextColor(Color.WHITE);
-        }
         mToolbar.setBackgroundColor(actionBarColor);
+        mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
@@ -86,7 +80,7 @@ public class ProjectionsActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (mToolbar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mToolbar.setNavigationIcon(R.drawable.ic_drawer);
+            mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -99,10 +93,8 @@ public class ProjectionsActivity extends AppCompatActivity {
     private void setUpNavigationView() {
         final Activity currentActivity = this;
         mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
-        if (actionBarColor != getResources().getColor(R.color.md_white_1000)) {
             mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
             mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
-        }
         mNavigationView.setBackgroundColor(actionBarColor);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

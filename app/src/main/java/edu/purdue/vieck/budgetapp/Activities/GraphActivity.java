@@ -51,16 +51,11 @@ public class GraphActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        actionBarColor = mSharedPreferences.getInt("actionBarColor", 0);
+        actionBarColor = mSharedPreferences.getInt("actionBarColor", getResources().getColor(R.color.md_black_1000));
         setUpToolbar();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         setUpNavigationDrawer();
         setUpNavigationView();
-        mTabLayout = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        final Activity currentActivity = this;
-
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(mViewPager);
+        setupViewPager();
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
         mViewPager.setPageMargin(pageMargin);
@@ -97,21 +92,18 @@ public class GraphActivity extends AppCompatActivity {
 
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
-            mToolbar.setTitleTextColor(Color.BLACK);
-        } else {
             mToolbar.setTitleTextColor(Color.WHITE);
-        }
         mToolbar.setBackgroundColor(actionBarColor);
         setSupportActionBar(mToolbar);
     }
 
     private void setUpNavigationDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (mToolbar != null) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
-            mToolbar.setNavigationIcon(R.drawable.ic_drawer);
+            mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -124,12 +116,9 @@ public class GraphActivity extends AppCompatActivity {
     private void setUpNavigationView() {
         final Activity currentActivity = this;
         mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
-
-        if (actionBarColor != getResources().getColor(R.color.md_white_1000)) {
-            mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
-            mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
-        }
         mNavigationView.setBackgroundColor(actionBarColor);
+        mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
+        mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -192,7 +181,10 @@ public class GraphActivity extends AppCompatActivity {
         return spinner;
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager() {
+        mTabLayout = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         String[] list = {"Overview", "Categories", "Comparison"};
 
@@ -213,7 +205,7 @@ public class GraphActivity extends AppCompatActivity {
             fragmentComparison = new GraphFragmentComparison();
         }
         adapter.addFragment(fragmentComparison,"Comparison");
-        viewPager.setAdapter(adapter);
+        mViewPager.setAdapter(adapter);
     }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
