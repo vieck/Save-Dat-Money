@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -39,7 +40,7 @@ public class AddDataFragment extends Fragment {
     private TextView currency, categories;
     private EditText amount, subcategory, note;
     private SharedPreferences mSharedPreferences;
-
+    private int actionBarColor;
 
     String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
@@ -83,7 +84,8 @@ public class AddDataFragment extends Fragment {
         mRealmHandler = new RealmHandler(getActivity());
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
+        actionBarColor = mSharedPreferences.getInt("actionBarColor", getResources().getColor(R.color.md_black_1000));
+        floatingActionButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{actionBarColor}));
         checkBundle(bundle);
         setCategoryListener();
         setSubcategoryListener();

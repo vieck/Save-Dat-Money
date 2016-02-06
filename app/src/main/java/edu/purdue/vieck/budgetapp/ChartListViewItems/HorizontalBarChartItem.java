@@ -1,6 +1,7 @@
 package edu.purdue.vieck.budgetapp.ChartListViewItems;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -53,24 +54,28 @@ public class HorizontalBarChartItem extends ChartItem {
         holder.chart.setDescription("");
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
+        holder.chart.setBackgroundColor(Color.BLACK);
 
         holder.chart.getAxisLeft().setEnabled(false);
         holder.chart.getAxisRight().setStartAtZero(false);
         holder.chart.getAxisRight().setAxisMaxValue(total);
         holder.chart.getAxisRight().setAxisMinValue(-total);
         holder.chart.getAxisRight().setTextSize(9f);
+        holder.chart.getAxisRight().setTextColor(Color.WHITE);
 
         XAxis xAxis = holder.chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
         xAxis.setTextSize(9f);
+        xAxis.setTextColor(Color.WHITE);
 
         Legend l = holder.chart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
         l.setFormSize(8f);
         l.setFormToTextSpace(4f);
         l.setXEntrySpace(6f);
+        l.setTextColor(Color.WHITE);
 
         //mChartData.setValueTypeface(mTf);
 

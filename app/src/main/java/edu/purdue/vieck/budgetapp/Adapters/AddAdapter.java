@@ -27,9 +27,9 @@ public class AddAdapter extends BaseAdapter {
     List<AddTree.Node> categoryNodes;
     Bundle bundle;
     int selection;
-    int primaryColor, primaryColorDark, accentColor;
+    int actionBarColor, primaryColor, primaryColorDark, accentColor;
 
-    public AddAdapter(Context context, List<AddTree.Node> objects, Bundle bundle, int primaryColor, int primaryColorDark, int accentColor) {
+    public AddAdapter(Context context, List<AddTree.Node> objects, Bundle bundle, int actionBarColor, int primaryColor, int primaryColorDark, int accentColor) {
         this.context = context;
         this.categoryNodes = objects;
         this.bundle = bundle;
@@ -37,6 +37,7 @@ public class AddAdapter extends BaseAdapter {
         this.primaryColor = primaryColor;
         this.primaryColorDark = primaryColorDark;
         this.accentColor = accentColor;
+        this.actionBarColor = actionBarColor;
     }
 
     public void setSelection(int selection) {
@@ -77,8 +78,9 @@ public class AddAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.item_add, parent, false);
         RelativeLayout linearLayout = (RelativeLayout) view.findViewById(R.id.linear_layout);
+        linearLayout.setBackgroundColor(primaryColorDark);
         if (position == selection) {
-            view.setBackgroundColor(Color.BLACK);
+            linearLayout.setBackgroundColor(actionBarColor);
         }
         ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
         TextView textView = (TextView) view.findViewById(R.id.textview);

@@ -1,5 +1,6 @@
 package edu.purdue.vieck.budgetapp.Fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -68,11 +69,14 @@ public class GraphFragmentComparison extends Fragment {
         }
 
         BarDataSet dataSet = new BarDataSet(entryList, "Values");
+        dataSet.setValueTextColor(getResources().getColor(R.color.md_white_1000));
+        dataSet.setValueTextSize(8f);
         dataSet.setColor(getResources().getColor(R.color.md_white_1000));
         BarData data = new BarData(mLabelsThree, dataSet);
         chartView.setData(data);
+        chartView.setDescription("");
 
-        chartView.setGridBackgroundColor(getResources().getColor(R.color.md_green_A400));
+        chartView.setGridBackgroundColor(getResources().getColor(R.color.md_black_1000));
         chartView.setPinchZoom(true);
 
     }

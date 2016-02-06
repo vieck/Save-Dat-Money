@@ -45,13 +45,15 @@
                     <com.astuetz.PagerSlidingTabStrip
                         android:id="@+id/tabs"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp" />
+                        android:layout_height="45dp"
+                        android:background="@color/md_white_1000"/>
 
                     <android.support.v4.view.ViewPager
                         android:id="@+id/viewpager"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@id/tabs" />
+                        android:layout_below="@id/tabs"
+                        android:backgroundTint="@color/md_black_1000"/>
                 </RelativeLayout>
             </FrameLayout>
         </android.support.design.widget.AppBarLayout>

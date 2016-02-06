@@ -21,7 +21,7 @@
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pie_chart"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -47,7 +47,17 @@
         </RelativeLayout>
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/budget_button"
+            android:id="@+id/budget_button_cancel"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="@color/md_white_1000"
+            android:layout_gravity="bottom|start|left"
+            app:backgroundTint="@color/md_red_400"
+            android:visibility="invisible"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/budget_button_ok"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:src="@drawable/ic_confirm"

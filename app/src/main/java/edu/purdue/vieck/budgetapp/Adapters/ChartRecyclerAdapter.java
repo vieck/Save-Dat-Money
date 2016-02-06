@@ -24,7 +24,7 @@ import edu.purdue.vieck.budgetapp.R;
 /**
  * Created by vieck on 7/16/15.
  */
-public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder> {
+public class ChartRecyclerAdapter extends RecyclerView.Adapter<ChartRecyclerAdapter.mViewHolder> {
 
     Context mContext;
     int month, year, position;
@@ -33,7 +33,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.mViewHolder>
     Stack<DataItem> mDataset = new Stack<>();
     SharedPreferences mSharedPreferences;
 
-    public ChartAdapter(Context mContext, int month, int year, int position) {
+    public ChartRecyclerAdapter(Context mContext, int month, int year, int position) {
         this.mContext = mContext;
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         currencySymbol = mSharedPreferences.getString("currencySymbol",Currency.getInstance(mContext.getResources().getConfiguration().locale).getSymbol());

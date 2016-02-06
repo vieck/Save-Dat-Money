@@ -1,6 +1,7 @@
 package edu.purdue.vieck.budgetapp.ChartListViewItems;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -60,6 +61,8 @@ public class BarChartItem extends ChartItem {
 
         // set data
         holder.chart.setData(barData);
+        holder.chart.setGridBackgroundColor(Color.BLACK);
+
 
         holder.chart.animateY(700);
         holder.chart.notifyDataSetChanged();

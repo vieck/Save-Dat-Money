@@ -4,6 +4,7 @@ import android.animation.StateListAnimator;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -41,6 +42,7 @@ public class EditFragment extends android.app.Fragment {
     DataItem dataItem;
     private boolean editing, confirm;
     SharedPreferences mSharedPreferences;
+    private int actionBarColor;
 
     @Nullable
     @Override
@@ -60,6 +62,7 @@ public class EditFragment extends android.app.Fragment {
         editButton = (FloatingActionButton) view.findViewById(R.id.edit_button);
         deleteButton = (FloatingActionButton) view.findViewById(R.id.delete_button);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        actionBarColor = mSharedPreferences.getInt("actionBarColor",getResources().getColor(R.color.md_black_1000));
         parseBundle(extras);
         setUpFloatingActionButton();
         return view;
@@ -109,7 +112,7 @@ public class EditFragment extends android.app.Fragment {
 
     private void setupDeleteButton() {
         confirm = false;
-        final StateListAnimator stateListAnimator = editButton.getStateListAnimator();
+        deleteButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{actionBarColor}));
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +124,7 @@ public class EditFragment extends android.app.Fragment {
                         deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete));
                         editButton.setImageResource(android.R.drawable.ic_menu_edit);
                     }
+                    editButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{actionBarColor}));
                     confirm = false;
                 } else if (editing) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -132,6 +136,8 @@ public class EditFragment extends android.app.Fragment {
                     }
                     incomeButton.setClickable(false);
                     expenseButton.setClickable(false);
+                    deleteButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{actionBarColor}));
+                    editButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{actionBarColor}));
                     editing = false;
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -141,6 +147,8 @@ public class EditFragment extends android.app.Fragment {
                         deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
                         editButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_confirm));
                     }
+                    deleteButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{getResources().getColor(R.color.md_red_400)}));
+                    editButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{getResources().getColor(R.color.md_green_400)}));
                     confirm = true;
                 }
             }
@@ -150,6 +158,7 @@ public class EditFragment extends android.app.Fragment {
     private void setupEditButton() {
         final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         editing = false;
+        editButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{actionBarColor}));
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,6 +199,8 @@ public class EditFragment extends android.app.Fragment {
                         getActivity().startActivity(intent);
                         getActivity().finish();
                     }
+                    deleteButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{actionBarColor}));
+                    editButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{actionBarColor}));
                 } else {
                     amount.setInputType(InputType.TYPE_CLASS_NUMBER);
                     category.setOnClickListener(new View.OnClickListener() {
@@ -250,6 +261,8 @@ public class EditFragment extends android.app.Fragment {
                         editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_save));
                         deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
                     }
+                    deleteButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{getResources().getColor(R.color.md_red_400)}));
+                    editButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{getResources().getColor(R.color.md_green_400)}));
                     incomeButton.setClickable(true);
                     expenseButton.setClickable(true);
                     editing = true;

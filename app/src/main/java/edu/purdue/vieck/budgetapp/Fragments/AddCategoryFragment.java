@@ -2,7 +2,10 @@ package edu.purdue.vieck.budgetapp.Fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +33,8 @@ public class AddCategoryFragment extends Fragment {
     private TypedValue primaryColorDark;
     private TypedValue primaryColor;
     private TypedValue accentColor;
+    private SharedPreferences mSharedPreferences;
+    private int mActionBarColor;
     private Bundle bundle;
 
     @Nullable
@@ -44,6 +49,8 @@ public class AddCategoryFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.listview);
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab_next);
         layoutManager = new LinearLayoutManager(getActivity());
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mActionBarColor = mSharedPreferences.getInt("actionBarColor",getResources().getColor(R.color.md_black_1000));
         primaryColor = new TypedValue();
         primaryColorDark = new TypedValue();
         accentColor = new TypedValue();
@@ -53,7 +60,7 @@ public class AddCategoryFragment extends Fragment {
 
         final AddTree tree = createTree();
 
-        addAdapter = new AddAdapter(getActivity(), tree.getChildNodes(), bundle, primaryColor.data, primaryColorDark.data, accentColor.data);
+        addAdapter = new AddAdapter(getActivity(), tree.getChildNodes(), bundle, mActionBarColor, primaryColor.data, primaryColorDark.data, accentColor.data);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter(addAdapter);
@@ -64,6 +71,8 @@ public class AddCategoryFragment extends Fragment {
                 addAdapter.updateSelection(position);
             }
         });
+
+        floatingActionButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{mActionBarColor}));
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

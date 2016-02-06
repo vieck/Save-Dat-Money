@@ -192,7 +192,7 @@ public class GraphFragmentMonthly extends Fragment {
         ArrayList<BarEntry> yValues = new ArrayList<>();
         yValues.add(new BarEntry(new float[]{-expense, income}, 0));
 
-        BarDataSet barDataSet = new BarDataSet(yValues, "Data Comparison");
+        BarDataSet barDataSet = new BarDataSet(yValues, "");
         barDataSet.setValueTextSize(7f);
         barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
         barDataSet.setBarSpacePercent(40f);

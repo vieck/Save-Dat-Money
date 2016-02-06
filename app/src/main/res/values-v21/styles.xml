@@ -62,7 +62,7 @@
     </style>
 
     <style name="StyleGraphFragment">
-        <item name="android:background">?android:attr/textColorHint</item>
+        <item name="android:background">@color/md_white_1000</item>
     </style>
 
     <style name="textview_label">

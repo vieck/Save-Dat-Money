@@ -1,7 +1,10 @@
 package edu.purdue.vieck.budgetapp.Fragments;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -27,9 +30,11 @@ public class AddSubCategoryFragment extends Fragment {
     private LinearLayoutManager layoutManager;
     private AddAdapter addAdapter;
     private FloatingActionButton floatingActionButtonFoward, floatingActionButtonBackwards;
-    TypedValue primaryDarkColor;
-    TypedValue primaryColor;
+    private TypedValue primaryDarkColor;
+    private TypedValue primaryColor;
     private TypedValue accentColor;
+    private int mActionBarColor;
+    private SharedPreferences mSharedPreferences;
     private Bundle bundle;
 
     @Nullable
@@ -43,6 +48,8 @@ public class AddSubCategoryFragment extends Fragment {
         floatingActionButtonBackwards = (FloatingActionButton) view.findViewById(R.id.fab_back);
         floatingActionButtonFoward = (FloatingActionButton) view.findViewById(R.id.fab_next);
         layoutManager = new LinearLayoutManager(getActivity());
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mActionBarColor = mSharedPreferences.getInt("actionBarColor",getResources().getColor(R.color.md_black_1000));
         primaryColor = new TypedValue();
         primaryDarkColor = new TypedValue();
         accentColor = new TypedValue();
@@ -51,7 +58,7 @@ public class AddSubCategoryFragment extends Fragment {
         getActivity().getTheme().resolveAttribute(R.attr.colorAccent, accentColor, true);
 
         final AddTree tree = createTree(position);
-        addAdapter = new AddAdapter(getActivity(), tree.getChildNodes(), bundle, primaryColor.data, primaryDarkColor.data, accentColor.data);
+        addAdapter = new AddAdapter(getActivity(), tree.getChildNodes(), bundle, mActionBarColor, primaryColor.data, primaryDarkColor.data, accentColor.data);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter(addAdapter);
@@ -62,6 +69,9 @@ public class AddSubCategoryFragment extends Fragment {
                 addAdapter.updateSelection(position);
             }
         });
+
+        floatingActionButtonFoward.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{mActionBarColor}));
+        floatingActionButtonBackwards.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{mActionBarColor}));
 
         floatingActionButtonBackwards.setOnClickListener(new View.OnClickListener() {
             @Override

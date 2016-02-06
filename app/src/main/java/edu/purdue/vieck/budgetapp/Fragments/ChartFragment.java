@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,14 +31,13 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Currency;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
-import edu.purdue.vieck.budgetapp.Adapters.ChartAdapter;
+import edu.purdue.vieck.budgetapp.Adapters.ChartRecyclerAdapter;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -51,10 +51,10 @@ public class ChartFragment extends Fragment {
     private PieChart mPieChart;
     private EditText mBudgetView;
     private TextView mCurrencyLabel;
-    private FloatingActionButton mConfirmButton;
+    private FloatingActionButton mConfirmButton, mCancelButton;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private ChartAdapter mChartAdapter;
+    private ChartRecyclerAdapter mChartRecyclerAdapter;
     private Context mContext;
     private SharedPreferences mSharedPreferences;
 
@@ -88,15 +88,15 @@ public class ChartFragment extends Fragment {
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.budget_recycler_view);
-        mChartAdapter = new ChartAdapter(mContext, month, year, type);
+        mChartRecyclerAdapter = new ChartRecyclerAdapter(mContext, month, year, type);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.setAdapter(mChartAdapter);
+        mRecyclerView.setAdapter(mChartRecyclerAdapter);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mChartAdapter = new ChartAdapter(mContext, month, year, type);
-                mRecyclerView.setAdapter(mChartAdapter);
+                mChartRecyclerAdapter = new ChartRecyclerAdapter(mContext, month, year, type);
+                mRecyclerView.setAdapter(mChartRecyclerAdapter);
                 setData(type);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -107,7 +107,8 @@ public class ChartFragment extends Fragment {
         mPieChart = setupPieChart(mPieChart);
         mBudgetView = (EditText) view.findViewById(R.id.edittext_budget);
         mCurrencyLabel = (TextView) view.findViewById(R.id.currency_textview);
-        mConfirmButton = (FloatingActionButton) view.findViewById(R.id.budget_button);
+        mCancelButton = (FloatingActionButton) view.findViewById(R.id.budget_button_cancel);
+        mConfirmButton = (FloatingActionButton) view.findViewById(R.id.budget_button_ok);
         setupBudget();
         setData(type);
         return view;
@@ -163,22 +164,38 @@ public class ChartFragment extends Fragment {
 
     private void setupBudget() {
         if (month != -1 && year != -1) {
-            float budget = mRealmHandler.getBudget(month, year);
+            final float budget = mRealmHandler.getBudget(month, year);
             mBudgetView.setText(budget + "");
             mBudgetView.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                 }
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if (charSequence.length() != i1) {
+                        mCancelButton.setVisibility(View.VISIBLE);
+                        mConfirmButton.setVisibility(View.VISIBLE);
+                    }
 
                 }
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    mConfirmButton.setVisibility(View.VISIBLE);
+                }
+            });
+
+            mCancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mBudgetView.setText(budget+"");
+                    mCancelButton.setVisibility(View.INVISIBLE);
+                    mConfirmButton.setVisibility(View.INVISIBLE);
+                    InputMethodManager inputManager = (InputMethodManager)
+                            mContext.getSystemService(getActivity().INPUT_METHOD_SERVICE);
+
+                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
                 }
             });
 
@@ -188,9 +205,16 @@ public class ChartFragment extends Fragment {
                     try {
                         float budget = Float.parseFloat(mBudgetView.getText().toString());
                         mRealmHandler.updateBudget(budget, month, year);
+                        mCancelButton.setVisibility(View.INVISIBLE);
                         mConfirmButton.setVisibility(View.INVISIBLE);
                     } catch (NumberFormatException ex) {
                         Toast.makeText(getActivity(),"Invalid number",Toast.LENGTH_SHORT);
+                    } finally {
+                        InputMethodManager inputManager = (InputMethodManager)
+                                mContext.getSystemService(getActivity().INPUT_METHOD_SERVICE);
+
+                        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
                     }
                 }
             });
@@ -287,8 +311,8 @@ public class ChartFragment extends Fragment {
 
     public void updateAdapter(int position) {
         this.type = position;
-        if (mChartAdapter != null) {
-            mChartAdapter.updatePosition(position);
+        if (mChartRecyclerAdapter != null) {
+            mChartRecyclerAdapter.updatePosition(position);
             mPieChart.clear();
             setData(position);
             mPieChart.notifyDataSetChanged();

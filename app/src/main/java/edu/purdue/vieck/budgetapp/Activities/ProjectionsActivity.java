@@ -154,7 +154,7 @@ public class ProjectionsActivity extends AppCompatActivity {
             if (i >= 1) {
                 present = uniqueMonths.get(labels[i]);
                 past = uniqueMonths.get(labels[i-1]);
-                future = ((present - past) / past) * uniqueMonths.get(labels[i-1]);
+                future = ((present - past) / past) * uniqueMonths.get(labels[i-1]) + present;
                 Log.i("Projection", "" + past + " " + present + " " + future + " i " + i);
                 expenseProjectionEntries.add(new Entry(future, i));
             } else {
