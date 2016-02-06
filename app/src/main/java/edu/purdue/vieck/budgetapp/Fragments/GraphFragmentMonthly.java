@@ -3,8 +3,6 @@ package edu.purdue.vieck.budgetapp.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +11,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.Chart;
-import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -33,7 +26,7 @@ import edu.purdue.vieck.budgetapp.Adapters.GraphMonthlyAdapter;
 import edu.purdue.vieck.budgetapp.ChartListViewItems.BarChartItem;
 import edu.purdue.vieck.budgetapp.ChartListViewItems.ChartItem;
 import edu.purdue.vieck.budgetapp.ChartListViewItems.HorizontalBarChartItem;
-import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -42,7 +35,7 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class GraphFragmentMonthly extends Fragment {
     private RealmHandler mRealmHandler;
-    private LinkedList<DataItem> months;
+    private LinkedList<RealmDataItem> months;
     ImageButton left, right;
     TextView monthTxt, yearTxt;
     private int count, type;
@@ -73,7 +66,7 @@ public class GraphFragmentMonthly extends Fragment {
         if (!mRealmHandler.isEmpty(type)) {
             months = mRealmHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;
-            DataItem item = months.get(count);
+            RealmDataItem item = months.get(count);
             monthTxt.setText(item.getMonthString());
             yearTxt.setText(Integer.toString(item.getYear()));
 
@@ -83,13 +76,13 @@ public class GraphFragmentMonthly extends Fragment {
                     Log.d("Category Position", "" + count);
                     if (count < months.size() - 1) {
                         count++;
-                        DataItem item = months.get(count);
+                        RealmDataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());
                     } else {
                         count = 0;
-                        DataItem item = months.get(count);
+                        RealmDataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());
@@ -104,13 +97,13 @@ public class GraphFragmentMonthly extends Fragment {
                     Log.d("Category Count", "" + count);
                     if (count > 0) {
                         count--;
-                        DataItem item = months.get(count);
+                        RealmDataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());
                     } else {
                         count = months.size() - 1;
-                        DataItem item = months.get(count);
+                        RealmDataItem item = months.get(count);
                         monthTxt.setText(item.getMonthString());
                         yearTxt.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());

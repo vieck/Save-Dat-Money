@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import java.util.LinkedList;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -20,7 +20,7 @@ import edu.purdue.vieck.budgetapp.R;
 public class GraphFragmentSubcategory extends Fragment {
     private GridLayoutManager layoutManager;
     private RealmHandler mRealmHandler;
-    private LinkedList<DataItem> months;
+    private LinkedList<RealmDataItem> months;
 
     @Nullable
     @Override

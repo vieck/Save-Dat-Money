@@ -23,8 +23,8 @@ import android.widget.Toast;
 import java.util.Currency;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
-import edu.purdue.vieck.budgetapp.CustomObjects.BudgetItem;
-import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmBudgetItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -210,24 +210,24 @@ public class AddDataFragment extends Fragment {
                         String categoryString = categories.getText().toString();
                         String subcategoryString = subcategory.getText().toString();
                         String noteString = note.getText().toString();
-                        DataItem dataItem = new DataItem();
-                        dataItem.setAmount(amountV);
-                        dataItem.setCategory(categoryString);
-                        dataItem.setSubcategory(subcategoryString);
-                        dataItem.setType(incomeOrExpense);
-                        dataItem.setDay(dayNum);
-                        dataItem.setMonth(monthNum);
-                        dataItem.setYear(yearNum);
-                        dataItem.setNote(noteString);
-                        dataItem.setImage(iconResourceId);
-                        dataItem.setMonthString(months[monthNum - 1]);
+                        RealmDataItem realmDataItem = new RealmDataItem();
+                        realmDataItem.setAmount(amountV);
+                        realmDataItem.setCategory(categoryString);
+                        realmDataItem.setSubcategory(subcategoryString);
+                        realmDataItem.setType(incomeOrExpense);
+                        realmDataItem.setDay(dayNum);
+                        realmDataItem.setMonth(monthNum);
+                        realmDataItem.setYear(yearNum);
+                        realmDataItem.setNote(noteString);
+                        realmDataItem.setImage(iconResourceId);
+                        realmDataItem.setMonthString(months[monthNum - 1]);
 
                         float defaultBudget = Float.parseFloat(mSharedPreferences.getString(getResources().getString(R.string.key_budget),"500.00"));
-                        BudgetItem budgetItem = new BudgetItem(monthNum, yearNum, defaultBudget);
+                        RealmBudgetItem realmBudgetItem = new RealmBudgetItem(monthNum, yearNum, defaultBudget);
                         Toast.makeText(getActivity(), "Added Data", Toast.LENGTH_LONG).show();
                         try {
-                            mRealmHandler.addData(dataItem);
-                            mRealmHandler.addBudget(budgetItem);
+                            mRealmHandler.addData(realmDataItem);
+                            mRealmHandler.addBudget(realmBudgetItem);
                         }  finally {
                             Intent intent = new Intent(getActivity(), ChartActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

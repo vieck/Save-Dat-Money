@@ -8,8 +8,8 @@ public class ParseHandler {
     /*boolean empty;
     double amount;
 
-    public void addData(DataItem budgetItem) {
-        /*DataItem budgetObject = new ParseObject("DataItem");
+    public void addData(RealmDataItem budgetItem) {
+        /*RealmDataItem budgetObject = new ParseObject("RealmDataItem");
         budgetObject.put("amount", budgetItem.getBudget());
         budgetObject.put("category", budgetItem.getCategory());
         budgetObject.put("subcategory", budgetItem.getSubcategory());
@@ -21,11 +21,11 @@ public class ParseHandler {
 /*
     public boolean isEmpty(int type) {
         empty = true;
-        ParseQuery<DataItem> query;
+        ParseQuery<RealmDataItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery(DataItem.class);
+            query = ParseQuery.getQuery(RealmDataItem.class);
         } else {
-            query = ParseQuery.getQuery(DataItem.class).whereEqualTo("type", type);
+            query = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("type", type);
         }
 
         try {
@@ -44,20 +44,20 @@ public class ParseHandler {
     }
 
 
-    public Stack<DataItem> getAllDataAsStack(int type) {
-        final Stack<DataItem> mDataset = new Stack<>();
-        ParseQuery<DataItem> query;
+    public Stack<RealmDataItem> getAllDataAsStack(int type) {
+        final Stack<RealmDataItem> mDataset = new Stack<>();
+        ParseQuery<RealmDataItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery(DataItem.class).addAscendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).addAscendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery(DataItem.class).whereEqualTo("type", type).addAscendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("type", type).addAscendingOrder("month").addDescendingOrder("year");
         }
-        query.fromLocalDatastore().findInBackground(new FindCallback<DataItem>() {
+        query.fromLocalDatastore().findInBackground(new FindCallback<RealmDataItem>() {
             @Override
-            public void done(List<DataItem> objects, ParseException e) {
+            public void done(List<RealmDataItem> objects, ParseException e) {
                 if (e == null) {
                     Log.d("Months",""+objects.size());
-                    for (DataItem item : objects) {
+                    for (RealmDataItem item : objects) {
                         mDataset.push(item);
                     }
                 }
@@ -66,26 +66,26 @@ public class ParseHandler {
         return mDataset;
     }
 
-    public HashMap<Integer, List<DataItem>> getAllYearsAsHashmap(int type) {
-        final HashMap<Integer, List<DataItem>> mDataset = new HashMap<>();
-        ParseQuery<DataItem> query;
+    public HashMap<Integer, List<RealmDataItem>> getAllYearsAsHashmap(int type) {
+        final HashMap<Integer, List<RealmDataItem>> mDataset = new HashMap<>();
+        ParseQuery<RealmDataItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery(DataItem.class).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).addDescendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery(DataItem.class).whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
         }
-        query.findInBackground(new FindCallback<DataItem>() {
+        query.findInBackground(new FindCallback<RealmDataItem>() {
             @Override
-            public void done(List<DataItem> objects, ParseException e) {
+            public void done(List<RealmDataItem> objects, ParseException e) {
                 if (e == null) {
                     Log.d("Years",""+objects.size());
-                    for (DataItem item : objects) {
+                    for (RealmDataItem item : objects) {
                         if (mDataset.get(item.getYear()) == null) {
-                            List<DataItem> list = new ArrayList<>();
+                            List<RealmDataItem> list = new ArrayList<>();
                             list.add(item);
                             mDataset.put(item.getYear(), list);
                         } else {
-                            List<DataItem> list = mDataset.get(item.getYear());
+                            List<RealmDataItem> list = mDataset.get(item.getYear());
                             list.add(item);
                             mDataset.put(item.getYear(), list);
                         }
@@ -96,20 +96,20 @@ public class ParseHandler {
         return mDataset;
     }
 
-    public List<DataItem> getAllUniqueMonthsAsList(int type) {
-        final List<DataItem> months = new ArrayList<>();
+    public List<RealmDataItem> getAllUniqueMonthsAsList(int type) {
+        final List<RealmDataItem> months = new ArrayList<>();
         final HashMap<Integer, List<Integer>> monthHashmap = new HashMap<>();
-        ParseQuery<DataItem> query;
+        ParseQuery<RealmDataItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery(DataItem.class).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).addDescendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery(DataItem.class).whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
         }
-        query.findInBackground(new FindCallback<DataItem>() {
+        query.findInBackground(new FindCallback<RealmDataItem>() {
             @Override
-            public void done(List<DataItem> objects, ParseException e) {
+            public void done(List<RealmDataItem> objects, ParseException e) {
                 if (e == null) {
-                    for (DataItem item : objects) {
+                    for (RealmDataItem item : objects) {
                         if (monthHashmap.get(item.getYear()) == null) {
                             List<Integer> list = new ArrayList<Integer>();
                             list.add(item.getMonth());
@@ -131,20 +131,20 @@ public class ParseHandler {
         return months;
     }
 
-    public LinkedList<DataItem> getAllUniqueMonthsAsLinkedList(int type) {
-        final LinkedList<DataItem> months = new LinkedList<>();
+    public LinkedList<RealmDataItem> getAllUniqueMonthsAsLinkedList(int type) {
+        final LinkedList<RealmDataItem> months = new LinkedList<>();
         final HashMap<Integer, List<Integer>> monthHashmap = new HashMap<>();
-        ParseQuery<DataItem> query;
+        ParseQuery<RealmDataItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery(DataItem.class).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).addDescendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery(DataItem.class).whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("type", type).addDescendingOrder("month").addDescendingOrder("year");
         }
-        query.findInBackground(new FindCallback<DataItem>() {
+        query.findInBackground(new FindCallback<RealmDataItem>() {
             @Override
-            public void done(List<DataItem> objects, ParseException e) {
+            public void done(List<RealmDataItem> objects, ParseException e) {
                 if (e == null) {
-                    for (DataItem item : objects) {
+                    for (RealmDataItem item : objects) {
                         if (monthHashmap.get(item.getYear()) == null) {
                             List<Integer> list = new ArrayList<Integer>();
                             list.add(item.getMonth());
@@ -166,19 +166,19 @@ public class ParseHandler {
         return months;
     }
 
-    public Stack<DataItem> getSpecificMonthYearAsStack(int month, int year, int type) {
-        final Stack<DataItem> mDataset = new Stack<>();
-        ParseQuery<DataItem> query;
+    public Stack<RealmDataItem> getSpecificMonthYearAsStack(int month, int year, int type) {
+        final Stack<RealmDataItem> mDataset = new Stack<>();
+        ParseQuery<RealmDataItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery(DataItem.class).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery(DataItem.class).whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
         }
-        query.findInBackground(new FindCallback<DataItem>() {
+        query.findInBackground(new FindCallback<RealmDataItem>() {
             @Override
-            public void done(List<DataItem> objects, ParseException e) {
+            public void done(List<RealmDataItem> objects, ParseException e) {
                 if (e == null) {
-                    for (DataItem item : objects) {
+                    for (RealmDataItem item : objects) {
                         mDataset.push(item);
                     }
                 }
@@ -190,17 +190,17 @@ public class ParseHandler {
 
     public float getSpecificDateAmount(int month, int year, int type) {
         amount = 0;
-        ParseQuery<DataItem> query;
+        ParseQuery<RealmDataItem> query;
         if (type == 2) {
-            query = ParseQuery.getQuery(DataItem.class).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
         } else {
-            query = ParseQuery.getQuery(DataItem.class).whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+            query = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
         }
-        query.findInBackground(new FindCallback<DataItem>() {
+        query.findInBackground(new FindCallback<RealmDataItem>() {
             @Override
-            public void done(List<DataItem> objects, ParseException e) {
+            public void done(List<RealmDataItem> objects, ParseException e) {
                 if (e == null) {
-                    for (DataItem item : objects) {
+                    for (RealmDataItem item : objects) {
                         amount += item.getBudget();
                     }
                 }
@@ -211,25 +211,25 @@ public class ParseHandler {
 
     public float getSpecificDateAmountByType(String category, int month, int year, int type) {
         amount = 0;
-        ParseQuery<DataItem> selectQuery;
+        ParseQuery<RealmDataItem> selectQuery;
         if (month != -1 && year != -1) {
             if (type == 2) {
-                selectQuery = ParseQuery.getQuery(DataItem.class).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+                selectQuery = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
             } else {
-                selectQuery = ParseQuery.getQuery(DataItem.class).whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
+                selectQuery = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("type", type).whereEqualTo("year", year).whereEqualTo("month", month).addDescendingOrder("month").addDescendingOrder("year");
             }
         } else {
             if (type == 2) {
-                selectQuery = ParseQuery.getQuery(DataItem.class).whereEqualTo("category", category);
+                selectQuery = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("category", category);
             } else {
-                selectQuery = ParseQuery.getQuery(DataItem.class).whereEqualTo("category", category).whereEqualTo("type", type);
+                selectQuery = ParseQuery.getQuery(RealmDataItem.class).whereEqualTo("category", category).whereEqualTo("type", type);
             }
         }
-        selectQuery.findInBackground(new FindCallback<DataItem>() {
+        selectQuery.findInBackground(new FindCallback<RealmDataItem>() {
             @Override
-            public void done(List<DataItem> objects, ParseException e) {
+            public void done(List<RealmDataItem> objects, ParseException e) {
                 if (e == null) {
-                    for (DataItem item : objects) {
+                    for (RealmDataItem item : objects) {
                         amount += item.getBudget();
                     }
                 }
@@ -238,7 +238,7 @@ public class ParseHandler {
         return (float) amount;
     }
 
-    public void delete(DataItem budgetItem) {
+    public void delete(RealmDataItem budgetItem) {
     }
 
     public void deleteAll() {

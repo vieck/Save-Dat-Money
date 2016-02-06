@@ -17,7 +17,7 @@ import java.util.Currency;
 import java.util.Stack;
 
 import edu.purdue.vieck.budgetapp.Activities.EditActivity;
-import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -30,7 +30,7 @@ public class ChartRecyclerAdapter extends RecyclerView.Adapter<ChartRecyclerAdap
     int month, year, position;
     String currencySymbol;
     RealmHandler mRealmHandler;
-    Stack<DataItem> mDataset = new Stack<>();
+    Stack<RealmDataItem> mDataset = new Stack<>();
     SharedPreferences mSharedPreferences;
 
     public ChartRecyclerAdapter(Context mContext, int month, int year, int position) {
@@ -67,39 +67,39 @@ public class ChartRecyclerAdapter extends RecyclerView.Adapter<ChartRecyclerAdap
 
     @Override
     public void onBindViewHolder(mViewHolder viewHolder, final int i) {
-        final DataItem dataItem = mDataset.get(i);
-        viewHolder.date.setText(dataItem.getMonth() + "-" + dataItem.getDay() + "-" + dataItem.getYear());
-        viewHolder.category.setText("" + dataItem.getCategory());
-        viewHolder.subcategory.setText("" + dataItem.getSubcategory());
-        viewHolder.amount.setText(dataItem.getAmount() + " " + currencySymbol);
-        if (dataItem.getType()) {
+        final RealmDataItem realmDataItem = mDataset.get(i);
+        viewHolder.date.setText(realmDataItem.getMonth() + "-" + realmDataItem.getDay() + "-" + realmDataItem.getYear());
+        viewHolder.category.setText("" + realmDataItem.getCategory());
+        viewHolder.subcategory.setText("" + realmDataItem.getSubcategory());
+        viewHolder.amount.setText(realmDataItem.getAmount() + " " + currencySymbol);
+        if (realmDataItem.getType()) {
             viewHolder.amount.setTextColor(mContext.getResources().getColor(R.color.Lime));
         } else {
             viewHolder.amount.setTextColor(mContext.getResources().getColor(R.color.md_red_A400));
         }
-        //viewHolder.income.setText("" + dataItem.getCategory());
+        //viewHolder.income.setText("" + realmDataItem.getCategory());
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("Deleted", "Deleted Item");
                 Bundle bundle = new Bundle();
-                bundle.putInt("Id", dataItem.getId());
-                bundle.putBoolean("Type", dataItem.getType());
-                bundle.putString("TypeString", dataItem.getTypeString());
-                bundle.putString("Category", dataItem.getCategory());
-                bundle.putString("Subcategory", dataItem.getSubcategory());
-                bundle.putDouble("Amount", dataItem.getAmount());
-                bundle.putString("Note", dataItem.getNote());
-                bundle.putInt("Month", dataItem.getMonth());
-                bundle.putInt("Day", dataItem.getDay());
-                bundle.putInt("Year", dataItem.getYear());
-                bundle.putString("MonthString", dataItem.getMonthString());
-                bundle.putInt("Image", dataItem.getImage());
+                bundle.putInt("Id", realmDataItem.getId());
+                bundle.putBoolean("Type", realmDataItem.getType());
+                bundle.putString("TypeString", realmDataItem.getTypeString());
+                bundle.putString("Category", realmDataItem.getCategory());
+                bundle.putString("Subcategory", realmDataItem.getSubcategory());
+                bundle.putDouble("Amount", realmDataItem.getAmount());
+                bundle.putString("Note", realmDataItem.getNote());
+                bundle.putInt("Month", realmDataItem.getMonth());
+                bundle.putInt("Day", realmDataItem.getDay());
+                bundle.putInt("Year", realmDataItem.getYear());
+                bundle.putString("MonthString", realmDataItem.getMonthString());
+                bundle.putInt("Image", realmDataItem.getImage());
                 Intent intent = new Intent(mContext, EditActivity.class);
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
-                // databaseHandler.delete(dataItem);
+                // databaseHandler.delete(realmDataItem);
             }
         });
     }

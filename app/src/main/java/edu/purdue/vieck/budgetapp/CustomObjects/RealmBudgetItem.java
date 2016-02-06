@@ -6,15 +6,15 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by vieck on 1/15/16.
  */
-public class BudgetItem extends RealmObject {
+public class RealmBudgetItem extends RealmObject {
     @PrimaryKey
     private String key;
     private int month, year;
     private float budget;
 
-    public BudgetItem() {}
+    public RealmBudgetItem() {}
 
-    public BudgetItem(int month, int year, float budget) {
+    public RealmBudgetItem(int month, int year, float budget) {
         this.key = month + "/" + year;
         this.month = month;
         this.year = year;

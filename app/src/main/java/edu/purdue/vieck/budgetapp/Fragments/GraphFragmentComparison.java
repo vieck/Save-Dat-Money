@@ -1,6 +1,5 @@
 package edu.purdue.vieck.budgetapp.Fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -54,14 +53,14 @@ public class GraphFragmentComparison extends Fragment {
     /* Creates a chart to compare */
     private void generateChart(BarChart chartView) {
 
-        Stack<DataItem> stack = mRealmHandler.getAllDataAsStack(0);
+        Stack<RealmDataItem> stack = mRealmHandler.getAllDataAsStack(0);
         List<BarEntry> entryList = new ArrayList<>();
 
         final String[] mLabelsThree = new String[stack.size()];
 
         int i = 0;
         BarEntry entry;
-        for (DataItem item : stack) {
+        for (RealmDataItem item : stack) {
             entry = new BarEntry(item.getAmount(), i);
             entryList.add(entry);
             mLabelsThree[i] = item.getMonth() + "/" + item.getYear();

@@ -8,7 +8,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by vieck on 7/14/15.
  */
 
-public class DataItem extends RealmObject {
+public class RealmDataItem extends RealmObject {
 
     @PrimaryKey
     private int id;
@@ -17,11 +17,11 @@ public class DataItem extends RealmObject {
     private int day, month, year, image;
     private float amount;
 
-    public DataItem() {
+    public RealmDataItem() {
 
     }
 
-    public DataItem(float amount, String category, String subcategory, boolean type, int day, int month, int year, String note, int image) {
+    public RealmDataItem(float amount, String category, String subcategory, boolean type, int day, int month, int year, String note, int image) {
         String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         this.amount = amount;
         this.category = category;

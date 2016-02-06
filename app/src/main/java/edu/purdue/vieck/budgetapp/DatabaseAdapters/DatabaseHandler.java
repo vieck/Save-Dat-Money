@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 
 /**
  * Created by vieck on 7/22/15.
@@ -56,38 +56,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addData(DataItem dataItem) {
+    public void addData(RealmDataItem realmDataItem) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_CATEGORY, dataItem.getCategory());
-        contentValues.put(COLUMN_SUB_CATEGORY, dataItem.getSubcategory());
-        contentValues.put(COLUMN_AMOUNT, dataItem.getAmount());
-        contentValues.put(COLUMN_TYPE, dataItem.getType());
-        contentValues.put(COLUMN_DAY, dataItem.getDay());
-        contentValues.put(COLUMN_MONTH, dataItem.getMonth());
-        contentValues.put(COLUMN_YEAR, dataItem.getYear());
-        contentValues.put(COLUMN_NOTE, dataItem.getNote());
+        contentValues.put(COLUMN_CATEGORY, realmDataItem.getCategory());
+        contentValues.put(COLUMN_SUB_CATEGORY, realmDataItem.getSubcategory());
+        contentValues.put(COLUMN_AMOUNT, realmDataItem.getAmount());
+        contentValues.put(COLUMN_TYPE, realmDataItem.getType());
+        contentValues.put(COLUMN_DAY, realmDataItem.getDay());
+        contentValues.put(COLUMN_MONTH, realmDataItem.getMonth());
+        contentValues.put(COLUMN_YEAR, realmDataItem.getYear());
+        contentValues.put(COLUMN_NOTE, realmDataItem.getNote());
 
         database.insert(TABLE_DATA, null, contentValues);
         database.close();
     }
 
-    private DataItem convertCursorToItem(Cursor cursor) {
-        DataItem dataItem = new DataItem();
+    private RealmDataItem convertCursorToItem(Cursor cursor) {
+        RealmDataItem realmDataItem = new RealmDataItem();
         cursor.getLong(0);
-        dataItem.setCategory(cursor.getString(1));
-        dataItem.setSubcategory(cursor.getString(2));
-        dataItem.setAmount(cursor.getFloat(3));
+        realmDataItem.setCategory(cursor.getString(1));
+        realmDataItem.setSubcategory(cursor.getString(2));
+        realmDataItem.setAmount(cursor.getFloat(3));
         if (cursor.getInt(4) == 0) {
-            dataItem.setType(false);
+            realmDataItem.setType(false);
         } else {
-            dataItem.setType(true);
+            realmDataItem.setType(true);
         }
-        dataItem.setDay(cursor.getInt(5));
-        dataItem.setMonth(cursor.getInt(6));
-        dataItem.setYear(cursor.getInt(7));
-        dataItem.setNote(cursor.getString(8));
-        return dataItem;
+        realmDataItem.setDay(cursor.getInt(5));
+        realmDataItem.setMonth(cursor.getInt(6));
+        realmDataItem.setYear(cursor.getInt(7));
+        realmDataItem.setNote(cursor.getString(8));
+        return realmDataItem;
     }
 
     public boolean isEmpty(int type) {
@@ -112,8 +112,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public Stack<DataItem> getAllDataAsStack(int type) {
-        Stack<DataItem> mDataset = new Stack<>();
+    public Stack<RealmDataItem> getAllDataAsStack(int type) {
+        Stack<RealmDataItem> mDataset = new Stack<>();
         String selectQuery;
         if (type == 2) {
             selectQuery = "SELECT  * FROM " + TABLE_DATA
@@ -133,8 +133,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
-    public List<DataItem> getAllMonthsAsList() {
-        List<DataItem> mDataset = new ArrayList<>();
+    public List<RealmDataItem> getAllMonthsAsList() {
+        List<RealmDataItem> mDataset = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_DATA
                 + " ORDER BY " + COLUMN_MONTH + " ASC," + COLUMN_YEAR + " DESC";
         SQLiteDatabase database = this.getReadableDatabase();
@@ -148,8 +148,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
-    public HashMap<Integer, List<DataItem>> getAllYearsAsHashmap(int type) {
-        HashMap<Integer, List<DataItem>> mDataset = new HashMap<>();
+    public HashMap<Integer, List<RealmDataItem>> getAllYearsAsHashmap(int type) {
+        HashMap<Integer, List<RealmDataItem>> mDataset = new HashMap<>();
         String selectQuery;
         if (type == 2) {
             selectQuery = "SELECT * FROM " + TABLE_DATA
@@ -162,23 +162,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                DataItem dataItem = convertCursorToItem(cursor);
-                if (mDataset.get(dataItem.getYear()) == null) {
-                    List<DataItem> list = new ArrayList<>();
-                    list.add(dataItem);
-                    mDataset.put(dataItem.getYear(), list);
+                RealmDataItem realmDataItem = convertCursorToItem(cursor);
+                if (mDataset.get(realmDataItem.getYear()) == null) {
+                    List<RealmDataItem> list = new ArrayList<>();
+                    list.add(realmDataItem);
+                    mDataset.put(realmDataItem.getYear(), list);
                 } else {
-                    List<DataItem> list = mDataset.get(dataItem.getYear());
-                    list.add(dataItem);
-                    mDataset.put(dataItem.getYear(), list);
+                    List<RealmDataItem> list = mDataset.get(realmDataItem.getYear());
+                    list.add(realmDataItem);
+                    mDataset.put(realmDataItem.getYear(), list);
                 }
             } while (cursor.moveToNext());
         }
         return mDataset;
     }
 
-    public List<DataItem> getAllUniqueMonthsAsList(int type) {
-        List<DataItem> months = new ArrayList<>();
+    public List<RealmDataItem> getAllUniqueMonthsAsList(int type) {
+        List<RealmDataItem> months = new ArrayList<>();
         String selectQuery;
         if (type == 2) {
             selectQuery = "SELECT " + COLUMN_MONTH + "," + COLUMN_YEAR + ",COUNT(*)"
@@ -193,7 +193,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                DataItem item = new DataItem();
+                RealmDataItem item = new RealmDataItem();
                 item.setMonth(cursor.getInt(0));
                 item.setYear(cursor.getInt(1));
                 months.add(item);
@@ -202,8 +202,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return months;
     }
 
-    public LinkedList<DataItem> getAllUniqueMonthsAsLinkedList(int type) {
-        LinkedList<DataItem> months = new LinkedList<>();
+    public LinkedList<RealmDataItem> getAllUniqueMonthsAsLinkedList(int type) {
+        LinkedList<RealmDataItem> months = new LinkedList<>();
         String selectQuery;
         if (type == 2) {
             selectQuery = "SELECT " + COLUMN_MONTH + "," + COLUMN_YEAR + ",COUNT(*)"
@@ -218,7 +218,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                DataItem item = new DataItem();
+                RealmDataItem item = new RealmDataItem();
                 item.setMonth(cursor.getInt(0));
                 item.setYear(cursor.getInt(1));
                 months.add(item);
@@ -236,8 +236,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
-    public Stack<DataItem> getSpecificMonthYearAsStack(int month, int year, int type) {
-        Stack<DataItem> mDataset = new Stack<>();
+    public Stack<RealmDataItem> getSpecificMonthYearAsStack(int month, int year, int type) {
+        Stack<RealmDataItem> mDataset = new Stack<>();
         String selectQuery;
         if (type == 2) {
             selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_MONTH + " = " + month
@@ -333,8 +333,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return categoryPercent;
     }
 
-    public ArrayList<DataItem> getFilteredDataAsArrayList(String filter) {
-        ArrayList<DataItem> mDataset = new ArrayList<>();
+    public ArrayList<RealmDataItem> getFilteredDataAsArrayList(String filter) {
+        ArrayList<RealmDataItem> mDataset = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE category LIKE '%" + filter + "%'";
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
@@ -347,8 +347,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
-    public Stack<DataItem> searchDatabase(String searchParameters) {
-        Stack<DataItem> mDataset = new Stack<>();
+    public Stack<RealmDataItem> searchDatabase(String searchParameters) {
+        Stack<RealmDataItem> mDataset = new Stack<>();
         String selectQuery = "SELECT * FROM " + TABLE_DATA + " WHERE " + COLUMN_CATEGORY + "LIKE '%" + searchParameters + "%' or "
                 + COLUMN_AMOUNT + " LIKE '" + searchParameters + "' or "
                 + COLUMN_DAY + " LIKE '%" + searchParameters + "%' or "
@@ -366,9 +366,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mDataset;
     }
 
-    public void delete(DataItem dataItem) {
+    public void delete(RealmDataItem realmDataItem) {
         SQLiteDatabase database = this.getWritableDatabase();
-        database.delete(TABLE_DATA, COLUMN_ID + " = " + "'" + dataItem.getCategory() + "'", null);
+        database.delete(TABLE_DATA, COLUMN_ID + " = " + "'" + realmDataItem.getCategory() + "'", null);
         database.close();
     }
 

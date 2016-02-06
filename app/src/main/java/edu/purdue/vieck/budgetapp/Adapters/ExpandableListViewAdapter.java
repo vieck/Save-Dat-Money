@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -24,8 +24,8 @@ import edu.purdue.vieck.budgetapp.R;
 public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     Context context;
     RealmHandler mRealmHandler;
-    HashMap<Integer, List<DataItem>> years;
-    List<DataItem> mMonths;
+    HashMap<Integer, List<RealmDataItem>> years;
+    List<RealmDataItem> mMonths;
     String currencySymbol;
     int actionBarColor;
     SharedPreferences mSharedPreferences;
@@ -82,7 +82,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int group, boolean b, View view, ViewGroup viewGroup) {
         LinearLayout linearLayout;
         TextView date;
-        final DataItem item = (DataItem) getGroup(group);
+        final RealmDataItem item = (RealmDataItem) getGroup(group);
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -100,7 +100,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int group, int child, boolean b, View view, ViewGroup viewGroup) {
         TextView date, amount, category, subcategory, type;
-        final DataItem item = (DataItem) getChild(group, child);
+        final RealmDataItem item = (RealmDataItem) getChild(group, child);
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

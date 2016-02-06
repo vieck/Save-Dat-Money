@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -37,7 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.DataItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.Fragments.ChartFragment;
 import edu.purdue.vieck.budgetapp.R;
@@ -254,7 +252,7 @@ public class ChartActivity extends AppCompatActivity {
         bundle.putInt("year", -1);
         chartFragment.setArguments(bundle);
         adapter.addFragment(chartFragment, "Total");
-        HashMap<Integer, List<DataItem>> years = mRealmHandler.getAllYearsAsHashmap(2);
+        HashMap<Integer, List<RealmDataItem>> years = mRealmHandler.getAllYearsAsHashmap(2);
 
         //Check if the arraylist is null first
         if (years != null) {
@@ -274,8 +272,8 @@ public class ChartActivity extends AppCompatActivity {
 
             //Sort years in hashmap keys
             for (int i : keys) {
-                List<DataItem> dataItems = years.get(i);
-                for (DataItem element : dataItems) {
+                List<RealmDataItem> realmDataItems = years.get(i);
+                for (RealmDataItem element : realmDataItems) {
                     bundle = new Bundle();
                     bundle.putInt("year", i);
                     bundle.putInt("month", element.getMonth());
