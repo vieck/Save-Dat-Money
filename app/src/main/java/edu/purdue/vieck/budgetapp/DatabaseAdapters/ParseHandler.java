@@ -8,7 +8,7 @@ public class ParseHandler {
     /*boolean empty;
     double amount;
 
-    public void addData(RealmDataItem budgetItem) {
+    public void add(RealmDataItem budgetItem) {
         /*RealmDataItem budgetObject = new ParseObject("RealmDataItem");
         budgetObject.put("amount", budgetItem.getBudget());
         budgetObject.put("category", budgetItem.getCategory());

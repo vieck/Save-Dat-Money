@@ -204,7 +204,7 @@ public class ChartFragment extends Fragment {
                 public void onClick(View view) {
                     try {
                         float budget = Float.parseFloat(mBudgetView.getText().toString());
-                        mRealmHandler.updateBudget(budget, month, year);
+                        mRealmHandler.update(budget, month, year);
                         mCancelButton.setVisibility(View.INVISIBLE);
                         mConfirmButton.setVisibility(View.INVISIBLE);
                     } catch (NumberFormatException ex) {

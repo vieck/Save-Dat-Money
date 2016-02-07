@@ -1,7 +1,6 @@
 package edu.purdue.vieck.budgetapp.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -14,8 +13,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import edu.purdue.vieck.budgetapp.CustomObjects.AddItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTree;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -24,14 +23,14 @@ import edu.purdue.vieck.budgetapp.R;
 public class AddAdapter extends BaseAdapter {
 
     Context context;
-    List<AddTree.Node> categoryNodes;
+    List<RealmCategoryItem> categoryItems;
     Bundle bundle;
     int selection;
     int actionBarColor, primaryColor, primaryColorDark, accentColor;
 
-    public AddAdapter(Context context, List<AddTree.Node> objects, Bundle bundle, int actionBarColor, int primaryColor, int primaryColorDark, int accentColor) {
+    public AddAdapter(Context context, List<RealmCategoryItem> categoryItems, Bundle bundle, int actionBarColor, int primaryColor, int primaryColorDark, int accentColor) {
         this.context = context;
-        this.categoryNodes = objects;
+        this.categoryItems = categoryItems;
         this.bundle = bundle;
         selection = -1;
         this.primaryColor = primaryColor;
@@ -55,16 +54,16 @@ public class AddAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return categoryNodes.size();
+        return categoryItems.size();
     }
 
-    public List<AddTree.Node> getCategoryNodes() {
-        return categoryNodes;
+    public List<RealmCategoryItem> getCategoryItems() {
+        return categoryItems;
     }
 
     @Override
     public Object getItem(int position) {
-        return categoryNodes.get(position);
+        return categoryItems.get(position);
     }
 
     @Override
@@ -84,8 +83,12 @@ public class AddAdapter extends BaseAdapter {
         }
         ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
         TextView textView = (TextView) view.findViewById(R.id.textview);
-        final AddItem addItem = categoryNodes.get(position).getItem();
-        textView.setText(addItem.getType());
+        final RealmCategoryItem addItem = categoryItems.get(position);
+        if (addItem.isChild()) {
+            textView.setText(addItem.getSubcategory());
+        } else {
+            textView.setText(addItem.getCategory());
+        }
         imageView.setImageDrawable(ContextCompat.getDrawable(context, addItem.getIcon()));
         return view;
     }

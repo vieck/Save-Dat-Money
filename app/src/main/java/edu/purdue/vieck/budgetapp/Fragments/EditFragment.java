@@ -191,7 +191,7 @@ public class EditFragment extends android.app.Fragment {
                     realmDataItem.setMonthString(months[datePicker.getMonth()]);
 
                     try {
-                        mRealmHandler.updateData(realmDataItem);
+                        mRealmHandler.update(realmDataItem);
                     }  finally {
                         Intent intent = new Intent(getActivity(), ChartActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

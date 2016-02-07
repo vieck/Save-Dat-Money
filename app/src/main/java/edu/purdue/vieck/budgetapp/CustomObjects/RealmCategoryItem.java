@@ -11,10 +11,14 @@ public class RealmCategoryItem extends RealmObject {
     private int key;
     private boolean isChild;
     private String category, subcategory;
+    private int icon;
 
-    public RealmCategoryItem(String category, String subcategory, boolean isChild) {
+    public RealmCategoryItem() {}
+
+    public RealmCategoryItem(String category, String subcategory, int icon, boolean isChild) {
         this.category = category;
         this.subcategory = subcategory;
+        this.icon = icon;
         this.isChild = isChild;
     }
 
@@ -28,6 +32,10 @@ public class RealmCategoryItem extends RealmObject {
 
     public String getSubcategory() {
         return subcategory;
+    }
+
+    public int getIcon() {
+        return icon;
     }
 
     public boolean isChild() {
@@ -48,5 +56,9 @@ public class RealmCategoryItem extends RealmObject {
 
     public void setChild(boolean child) {
         isChild = child;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 }

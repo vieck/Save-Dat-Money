@@ -226,8 +226,8 @@ public class AddDataFragment extends Fragment {
                         RealmBudgetItem realmBudgetItem = new RealmBudgetItem(monthNum, yearNum, defaultBudget);
                         Toast.makeText(getActivity(), "Added Data", Toast.LENGTH_LONG).show();
                         try {
-                            mRealmHandler.addData(realmDataItem);
-                            mRealmHandler.addBudget(realmBudgetItem);
+                            mRealmHandler.add(realmDataItem);
+                            mRealmHandler.add(realmBudgetItem);
                         }  finally {
                             Intent intent = new Intent(getActivity(), ChartActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -13,6 +13,7 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmBudgetItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -34,7 +35,17 @@ public class RealmHandler {
         id = new AtomicInteger();
     }
 
-    public void addData(final RealmDataItem realmDataItem) {
+    public void add(final RealmCategoryItem categoryItem) {
+                categoryItem.setKey(getCategoryCount() + 1);
+                realm = Realm.getInstance(mContext);
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(categoryItem);
+                realm.commitTransaction();
+                realm.close();
+    }
+
+
+    public void add(final RealmDataItem realmDataItem) {
         realmDataItem.setId(getCount() + 1);
         realm = Realm.getInstance(mContext);
         realm.beginTransaction();
@@ -43,7 +54,28 @@ public class RealmHandler {
         realm.close();
     }
 
-    public void updateData(final RealmDataItem realmDataItem) {
+    public void add(RealmBudgetItem realmBudgetItem) {
+        realm = Realm.getInstance(mContext);
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(realmBudgetItem);
+        realm.commitTransaction();
+        realm.close();
+    }
+
+    public void update(final RealmCategoryItem realmCategoryItem) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                realm = Realm.getInstance(mContext);
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(realmCategoryItem);
+                realm.commitTransaction();
+                realm.close();
+            }
+        });
+        thread.start();
+    }
+    public void update(final RealmDataItem realmDataItem) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -57,15 +89,9 @@ public class RealmHandler {
         thread.start();
     }
 
-    public void addBudget(RealmBudgetItem realmBudgetItem) {
-        realm = Realm.getInstance(mContext);
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(realmBudgetItem);
-        realm.commitTransaction();
-        realm.close();
-    }
 
-    public void updateBudget(final float budget, final int month, final int year) {
+
+    public void update(final float budget, final int month, final int year) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -81,6 +107,34 @@ public class RealmHandler {
             }
         });
         thread.start();
+    }
+
+    public List<RealmCategoryItem> getCategoryParents() {
+        realm = Realm.getInstance(mContext);
+        RealmQuery query = realm.where(RealmCategoryItem.class).equalTo("isChild",false);
+        RealmResults<RealmCategoryItem> results = query.findAll();
+        List<RealmCategoryItem> items = new ArrayList<>();
+        for (RealmCategoryItem item : results) {
+            items.add(item);
+        }
+        return items;
+    }
+
+    public List<RealmCategoryItem> getCategoryChildren(String category) {
+        realm = Realm.getInstance(mContext);
+        RealmQuery query = realm.where(RealmCategoryItem.class).equalTo("category",category);
+        RealmResults<RealmCategoryItem> results = query.findAll();
+        List<RealmCategoryItem> items = new ArrayList<>();
+        for (RealmCategoryItem item : results) {
+            items.add(item);
+        }
+        return items;
+    }
+
+    public int getCategoryCount() {
+        realm = Realm.getInstance(mContext);
+        RealmQuery query = realm.where(RealmCategoryItem.class);
+        return (int)query.count();
     }
 
     public float getBudget() {
@@ -112,6 +166,16 @@ public class RealmHandler {
         }
 
         return query.findAll().isEmpty();
+    }
+
+    public boolean isCategoriesEmpty() {
+        realm = Realm.getInstance(mContext);
+        RealmQuery<RealmCategoryItem> query = realm.where(RealmCategoryItem.class);
+        if (query.findAll().isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public int getCount() {
@@ -401,6 +465,14 @@ public class RealmHandler {
         realm.close();
     }
 
+    public void delete(final RealmCategoryItem realmCategoryItem) {
+        realm = Realm.getInstance(mContext);
+        realm.beginTransaction();
+        realm.where(RealmCategoryItem.class).equalTo("key",realmCategoryItem.getKey()).findAll().clear();
+        realm.commitTransaction();
+        realm.close();
+    }
+
     public void deleteAll() {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -418,9 +490,10 @@ public class RealmHandler {
             thread.join();
         } catch (InterruptedException ex) {
             Log.e("Thread", "Delete thread interrupted");
+        } finally {
+            Intent intent = ((Activity) mContext).getIntent();
+            ((Activity) mContext).finish();
+            mContext.startActivity(intent);
         }
-        Intent intent = ((Activity) mContext).getIntent();
-        ((Activity) mContext).finish();
-        mContext.startActivity(intent);
     }
 }

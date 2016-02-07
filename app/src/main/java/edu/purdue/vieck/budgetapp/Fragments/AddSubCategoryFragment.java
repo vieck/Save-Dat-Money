@@ -16,10 +16,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.List;
+
 import edu.purdue.vieck.budgetapp.Activities.AddActivity;
 import edu.purdue.vieck.budgetapp.Adapters.AddAdapter;
-import edu.purdue.vieck.budgetapp.CustomObjects.AddItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.AddTree;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
@@ -34,6 +37,7 @@ public class AddSubCategoryFragment extends Fragment {
     private TypedValue primaryColor;
     private TypedValue accentColor;
     private int mActionBarColor;
+    private RealmHandler mRealmHandler;
     private SharedPreferences mSharedPreferences;
     private Bundle bundle;
 
@@ -43,13 +47,15 @@ public class AddSubCategoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_subcategory, container, false);
         bundle = getArguments();
         int position = bundle.getInt("Position");
+        String category = bundle.getString("Category");
         bundle.remove("Position");
         listView = (ListView) view.findViewById(R.id.listview);
         floatingActionButtonBackwards = (FloatingActionButton) view.findViewById(R.id.fab_back);
         floatingActionButtonFoward = (FloatingActionButton) view.findViewById(R.id.fab_next);
         layoutManager = new LinearLayoutManager(getActivity());
+        mRealmHandler = new RealmHandler(getActivity());
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mActionBarColor = mSharedPreferences.getInt("actionBarColor",getResources().getColor(R.color.md_black_1000));
+        mActionBarColor = mSharedPreferences.getInt("actionBarColor", getResources().getColor(R.color.md_black_1000));
         primaryColor = new TypedValue();
         primaryDarkColor = new TypedValue();
         accentColor = new TypedValue();
@@ -57,8 +63,8 @@ public class AddSubCategoryFragment extends Fragment {
         getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, primaryDarkColor, true);
         getActivity().getTheme().resolveAttribute(R.attr.colorAccent, accentColor, true);
 
-        final AddTree tree = createTree(position);
-        addAdapter = new AddAdapter(getActivity(), tree.getChildNodes(), bundle, mActionBarColor, primaryColor.data, primaryDarkColor.data, accentColor.data);
+        final List<RealmCategoryItem> tree = createTree(category);
+        addAdapter = new AddAdapter(getActivity(), tree, bundle, mActionBarColor, primaryColor.data, primaryDarkColor.data, accentColor.data);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter(addAdapter);
@@ -87,9 +93,9 @@ public class AddSubCategoryFragment extends Fragment {
             public void onClick(View view) {
                 int position = listView.getCheckedItemPosition();
                 if (position != ListView.INVALID_POSITION) {
-                    AddItem item = tree.getChildNodes().get(position).getItem();
-                    bundle.putString("Category", item.getType());
-                    bundle.putString("Subcategory", item.getSubType());
+                    RealmCategoryItem item = tree.get(position);
+                    bundle.putString("Category", item.getCategory());
+                    bundle.putString("Subcategory", item.getSubcategory());
                     if (getActivity() instanceof AddActivity) {
                         AddDataFragment addDataFragment = new AddDataFragment();
                         addDataFragment.setArguments(bundle);
@@ -108,55 +114,12 @@ public class AddSubCategoryFragment extends Fragment {
         return view;
     }
 
-    private AddTree createTree(int position) {
-        String[] categoryNames = getResources().getStringArray(R.array.categoryarray);
-        String[] subCategoryFood = getResources().getStringArray(R.array.subgroceryarray);
-        String[] subCategoryUtility = getResources().getStringArray(R.array.subutilityarray);
-        String[] subCategoryEntertainment = getResources().getStringArray(R.array.subentertainmentarray);
-        String[] subCategoryMedical = getResources().getStringArray(R.array.submedicalarray);
-        String[] subCategoryInsurance = getResources().getStringArray(R.array.subinsurancearray);
-        int[] drawables = {R.drawable.food_groceries_dark, R.drawable.utility_misc_dark, R.drawable.entertainment_dark, R.drawable.medical_misc_dark, R.drawable.insurance_dark, R.drawable.graph_dark};
-        int[] groceryDrawables = {R.drawable.food_groceries_dark, R.drawable.food_groceries_dark, R.drawable.food_groceries_dark};
-        int[] utilitiesDrawables = {R.drawable.utility_misc_dark, R.drawable.utility_gas_dark, R.drawable.landline_phone_bill_dark, R.drawable.cell_phone_bill_dark,
-                R.drawable.entertainment_web_dark, R.drawable.satellite_bill_dark, R.drawable.utility_water_dark, R.drawable.utility_trash_dark, R.drawable.utility_misc_dark};
-        int[] entertainmentDrawables = {R.drawable.entertainment_theater_dark, R.drawable.entertainment_vaction_dark, R.drawable.digital_media_dark, R.drawable.digital_music_dark, R.drawable.ecommerce_dark, R.drawable.entertainment_dark};
-        int[] medicalDrawables = {R.drawable.medical_visit_dark, R.drawable.emergence_room_dark, R.drawable.medical_prescription_dark, R.drawable.medical_misc_dark};
-        int[] insuranceDrawables = {R.drawable.home_insurance_dark, R.drawable.car_insurance_dark, R.drawable.medical_misc_dark, R.drawable.life_insurance_dark};
+    private List<RealmCategoryItem> createTree(String category) {
 
+        AddTree tree = new AddTree(null);
 
-        final AddTree tree = new AddTree(new AddItem(R.drawable.calculator, "root", categoryNames[0]));
-        switch (position) {
-            case 0:
-                // Grocery Sub List
-                for (int j = 0; j < subCategoryFood.length; j++) {
-                    tree.getRoot().addChild(new AddTree.Node(new AddItem(groceryDrawables[j], subCategoryFood[j], categoryNames[0])));
-                }
-                break;
-            case 1:
-                // Utility Sub List
-                for (int j = 0; j < subCategoryUtility.length; j++) {
-                    tree.getRoot().addChild(new AddTree.Node(new AddItem(utilitiesDrawables[j], subCategoryUtility[j], categoryNames[1])));
-                }
-                break;
-            case 2:
-                // Entertainment Sub List
-                for (int j = 0; j < subCategoryEntertainment.length; j++) {
-                    tree.getRoot().addChild(new AddTree.Node(new AddItem(entertainmentDrawables[j], subCategoryEntertainment[j], categoryNames[2])));
-                }
-                break;
-            case 3:
-                // Medical Sub List
-                for (int j = 0; j < subCategoryMedical.length; j++) {
-                    tree.getRoot().getChildNodes().add(new AddTree.Node(new AddItem(medicalDrawables[j], subCategoryMedical[j], categoryNames[3])));
-                }
-                break;
-            case 4:
-                // Insurance Sub List
-                for (int j = 0; j < subCategoryInsurance.length; j++) {
-                    tree.getRoot().getChildNodes().add(new AddTree.Node(new AddItem(insuranceDrawables[j], subCategoryInsurance[j], categoryNames[4])));
-                }
-                break;
-        }
-        return tree;
+        List<RealmCategoryItem> categoryChildren = mRealmHandler.getCategoryChildren(category);
+
+        return categoryChildren;
     }
 }

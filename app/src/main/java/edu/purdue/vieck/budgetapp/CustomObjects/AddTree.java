@@ -3,6 +3,7 @@ package edu.purdue.vieck.budgetapp.CustomObjects;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mvieck on 9/29/2015.
@@ -11,8 +12,8 @@ public class AddTree {
 
     private Node root;
 
-    public AddTree(AddItem addItem) {
-        root = new Node(addItem);
+    public AddTree(RealmCategoryItem categoryItem) {
+        root = new Node(categoryItem);
     }
 
     public Node getRoot() {
@@ -25,7 +26,7 @@ public class AddTree {
 
     public void walkTree(Node node, ArrayList<Node> nodes) {
         nodes.add(node);
-        Log.d("Tree", "Name " + node.getItem().getType());
+        Log.d("Tree", "Name " + node.getItem().getCategory());
         for (Node data : node.getChildNodes()) {
             walkTree(data, nodes);
         }
@@ -39,7 +40,7 @@ public class AddTree {
         return root.childNodes.size();
     }
 
-    public ArrayList<Node> getChildNodes() {
+    public List<Node> getChildNodes() {
         return root.childNodes;
     }
 
@@ -48,25 +49,48 @@ public class AddTree {
     }
 
     public void addNode(Node node) {
-        if (!root.hasChildren()) {
-            root.childNodes.add(node);
+        List<Node> parents = root.getChildNodes();
+        boolean test = node.categoryItem.isChild();
+        if (test) {
+            boolean exists = false;
+            for (Node parent : parents) {
+                if (parent.categoryItem.getCategory() == node.categoryItem.getCategory()) {
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                node.addChild(node);
+            }
         } else {
-
+            for (Node parent : parents) {
+                if (parent.categoryItem.getCategory().compareTo(node.categoryItem.getCategory()) == 0) {
+                    List<Node> children = parent.getChildNodes();
+                    boolean exists = false;
+                    for (Node child : children) {
+                        if (child.categoryItem.getSubcategory().compareTo(node.categoryItem.getSubcategory()) == 0) {
+                            exists = true;
+                        }
+                    }
+                    if (!exists) {
+                        parent.addChild(node);
+                    }
+                }
+            }
         }
     }
 
     public static class Node {
-        private AddItem addItem;
+        private RealmCategoryItem categoryItem;
         private Node parent;
-        private ArrayList<Node> childNodes;
+        private List<Node> childNodes;
 
-        public Node(AddItem addItem) {
-            this.addItem = addItem;
+        public Node(RealmCategoryItem categoryItem) {
+            this.categoryItem = categoryItem;
             childNodes = new ArrayList<>();
         }
 
-        public Node(AddItem addItem, Node parent) {
-            this.addItem = addItem;
+        public Node(RealmCategoryItem categoryItem, Node parent) {
+            this.categoryItem = categoryItem;
             childNodes = new ArrayList<>();
             this.parent = parent;
         }
@@ -75,7 +99,7 @@ public class AddTree {
             return getChildNodes().isEmpty();
         }
 
-        public ArrayList<Node> getChildNodes() {
+        public List<Node> getChildNodes() {
             return childNodes;
         }
 
@@ -103,8 +127,8 @@ public class AddTree {
             return childNodes.get(index);
         }
 
-        public AddItem getItem() {
-            return addItem;
+        public RealmCategoryItem getItem() {
+            return categoryItem;
         }
 
     }
