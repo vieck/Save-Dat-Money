@@ -123,11 +123,11 @@ public class AddCategoryFragment extends Fragment {
             for (int i = 0; i < drawables.length; i++) {
                 switch (i) {
                     case 0:
-                        categoryItem = new RealmCategoryItem(categoryNames[i], categoryNames[0], drawables[i], false);
+                        categoryItem = new RealmCategoryItem(categoryNames[i], categoryNames[0], drawables[i], getResources().getColor(R.color.md_green_300), false);
                         AddTree.Node node = new AddTree.Node(categoryItem);
                         // Grocery Sub List
                         for (int j = 0; j < subCategoryFood.length; j++) {
-                            subCategoryItem = new RealmCategoryItem(categoryNames[0], subCategoryFood[j],groceryDrawables[j], true);
+                            subCategoryItem = new RealmCategoryItem(categoryNames[0], subCategoryFood[j],groceryDrawables[j],getResources().getColor(R.color.md_green_300), true);
                             node.addChild(new AddTree.Node(subCategoryItem));
                             mRealmHandler.add(subCategoryItem);
                         }
@@ -136,12 +136,12 @@ public class AddCategoryFragment extends Fragment {
                         tree.getRoot().addChild(node);
                         break;
                     case 1:
-                        categoryItem = new RealmCategoryItem( categoryNames[1], categoryNames[i], drawables[i], false);
+                        categoryItem = new RealmCategoryItem( categoryNames[1], categoryNames[i], drawables[i], getResources().getColor(R.color.md_blue_300), false);
                         node = new AddTree.Node(categoryItem);
 
                         // Utility Sub List
                         for (int j = 0; j < subCategoryUtility.length; j++) {
-                            subCategoryItem = new RealmCategoryItem(categoryNames[i],subCategoryUtility[j], utilitiesDrawables[j], true);
+                            subCategoryItem = new RealmCategoryItem(categoryNames[i],subCategoryUtility[j], utilitiesDrawables[j], getResources().getColor(R.color.md_blue_300), true);
                             node.addChild(new AddTree.Node(subCategoryItem));
                             mRealmHandler.add(subCategoryItem);
                         }
@@ -149,12 +149,12 @@ public class AddCategoryFragment extends Fragment {
                         tree.getRoot().addChild(node);
                         break;
                     case 2:
-                        categoryItem = new RealmCategoryItem(categoryNames[i], categoryNames[i], drawables[i], false);
+                        categoryItem = new RealmCategoryItem(categoryNames[i], categoryNames[i], drawables[i], getResources().getColor(R.color.md_yellow_300), false);
                         node = new AddTree.Node(categoryItem);
 
                         // Entertainment Sub List
                         for (int j = 0; j < subCategoryEntertainment.length; j++) {
-                            subCategoryItem = new RealmCategoryItem(categoryNames[i], subCategoryEntertainment[j], entertainmentDrawables[j], true);
+                            subCategoryItem = new RealmCategoryItem(categoryNames[i], subCategoryEntertainment[j], entertainmentDrawables[j], getResources().getColor(R.color.md_yellow_300), true);
                             node.addChild(new AddTree.Node(subCategoryItem));
                             mRealmHandler.add(subCategoryItem);
                         }
@@ -162,12 +162,12 @@ public class AddCategoryFragment extends Fragment {
                         tree.getRoot().addChild(node);
                         break;
                     case 3:
-                        categoryItem = new RealmCategoryItem(categoryNames[i], categoryNames[i],drawables[i], false);
+                        categoryItem = new RealmCategoryItem(categoryNames[i], categoryNames[i],drawables[i], getResources().getColor(R.color.md_red_300), false);
                         node = new AddTree.Node(categoryItem);
 
                         // Medical Sub List
                         for (int j = 0; j < subCategoryMedical.length; j++) {
-                            subCategoryItem = new RealmCategoryItem(categoryNames[i],subCategoryMedical[j], medicalDrawables[j], true);
+                            subCategoryItem = new RealmCategoryItem(categoryNames[i],subCategoryMedical[j], medicalDrawables[j], getResources().getColor(R.color.md_red_300), true);
                             node.getChildNodes().add(new AddTree.Node(subCategoryItem));
                             mRealmHandler.add(subCategoryItem);
                         }
@@ -175,11 +175,11 @@ public class AddCategoryFragment extends Fragment {
                         tree.getRoot().addChild(node);
                         break;
                     case 4:
-                        categoryItem = new RealmCategoryItem(categoryNames[i], categoryNames[i], drawables[i], false);
+                        categoryItem = new RealmCategoryItem(categoryNames[i], categoryNames[i], drawables[i], getResources().getColor(R.color.md_purple_300), false);
                         node = new AddTree.Node(categoryItem);
                         // Insurance Sub List
                         for (int j = 0; j < subCategoryInsurance.length; j++) {
-                            subCategoryItem = new RealmCategoryItem(categoryNames[i], subCategoryInsurance[j], insuranceDrawables[j], true);
+                            subCategoryItem = new RealmCategoryItem(categoryNames[i], subCategoryInsurance[j], insuranceDrawables[j],getResources().getColor(R.color.md_purple_300), true);
                             node.getChildNodes().add(new AddTree.Node(subCategoryItem));
                             mRealmHandler.add(subCategoryItem);
                         }

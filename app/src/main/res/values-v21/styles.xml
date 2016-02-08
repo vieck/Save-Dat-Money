@@ -38,6 +38,7 @@
     </style>
 
     <style name="MyAppBarLayout" parent="AppTheme">
+        <item name="android:statusBarColor">@color/md_black_1000</item>
         <item name="android:background">?android:attr/colorPrimary</item>
     </style>
 

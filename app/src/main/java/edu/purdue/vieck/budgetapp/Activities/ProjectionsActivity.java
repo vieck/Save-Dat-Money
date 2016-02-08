@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
@@ -43,6 +45,7 @@ public class ProjectionsActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,12 @@ public class ProjectionsActivity extends AppCompatActivity {
     }
 
     private void setUpToolbar() {
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        window.setStatusBarColor(getResources().getColor(R.color.md_black_1000));
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setBackgroundColor(actionBarColor);
         mToolbar.setTitleTextColor(Color.WHITE);
@@ -85,8 +94,8 @@ public class ProjectionsActivity extends AppCompatActivity {
     private void setUpNavigationView() {
         final Activity currentActivity = this;
         mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
-            mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
-            mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
+        mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
+        mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
         mNavigationView.setBackgroundColor(actionBarColor);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -145,8 +154,8 @@ public class ProjectionsActivity extends AppCompatActivity {
         for (String label : labels) {
             if (i >= 1) {
                 present = uniqueMonths.get(labels[i]);
-                past = uniqueMonths.get(labels[i-1]);
-                future = ((present - past) / past) * uniqueMonths.get(labels[i-1]) + present;
+                past = uniqueMonths.get(labels[i - 1]);
+                future = ((present - past) / past) * uniqueMonths.get(labels[i - 1]) + present;
                 Log.i("Projection", "" + past + " " + present + " " + future + " i " + i);
                 expenseProjectionEntries.add(new Entry(future, i));
             } else {

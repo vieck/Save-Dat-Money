@@ -35,9 +35,11 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 
 import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
 import edu.purdue.vieck.budgetapp.Adapters.ChartRecyclerAdapter;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -136,7 +138,7 @@ public class ChartFragment extends Fragment {
         //mPieChart.setHoleColor(Color.WHITE);
         chart.setCenterTextColor(Color.BLACK);
         chart.setTransparentCircleColor(Color.WHITE);
-        chart.setHoleRadius(45f);
+        chart.setHoleRadius(55f);
         chart.setTransparentCircleRadius(45f);
         chart.setDrawCenterText(true);
 
@@ -156,8 +158,8 @@ public class ChartFragment extends Fragment {
         Legend l = chart.getLegend();
         l.setPosition(LegendPosition.PIECHART_CENTER);
         l.setXEntrySpace(7f);
-        l.setYEntrySpace(7f);
-        l.setYOffset(0f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(-20f);
         l.setXOffset(5f);
         return chart;
     }
@@ -229,7 +231,8 @@ public class ChartFragment extends Fragment {
 
     private void setData(int type) {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        List<Entry> yVals = new ArrayList<Entry>();
+        List<RealmCategoryItem> categories = mRealmHandler.getCategoryParents();
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
@@ -241,52 +244,14 @@ public class ChartFragment extends Fragment {
         if (!mRealmHandler.isEmpty(type)) {
             int index = 0;
             int total = 0;
-            if (mRealmHandler.getSpecificDateAmountByType("Misc", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                float amount = mRealmHandler.getSpecificDateAmountByType("Misc", month, year, type);
-                total += amount;
-                yVals.add(new Entry(amount, index++));
-                xVals.add("Misc");
-                colors.add(getResources().getColor(R.color.md_white_1000));
-            }
-
-            if (mRealmHandler.getSpecificDateAmountByType("Utilities", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                float amount = mRealmHandler.getSpecificDateAmountByType("Utilities", month, year, type);
-                total += amount;
-                yVals.add(new Entry(amount, index++));
-                xVals.add("Utilities");
-                colors.add(ColorTemplate.VORDIPLOM_COLORS[0]);
-            }
-
-            if (mRealmHandler.getSpecificDateAmountByType("Entertainment", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                float amount = mRealmHandler.getSpecificDateAmountByType("Entertainment", month, year, type);
-                total += amount;
-                yVals.add(new Entry(amount, index++));
-                xVals.add("Entertainment");
-                colors.add(ColorTemplate.VORDIPLOM_COLORS[1]);
-            }
-
-            if (mRealmHandler.getSpecificDateAmountByType("Medical", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                float amount = mRealmHandler.getSpecificDateAmountByType("Medical", month, year, type);
-                total += amount;
-                yVals.add(new Entry(amount, index++));
-                xVals.add("Medical");
-                colors.add(ColorTemplate.VORDIPLOM_COLORS[2]);
-            }
-
-            if (mRealmHandler.getSpecificDateAmountByType("Food", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                float amount = mRealmHandler.getSpecificDateAmountByType("Food", month, year, type);
-                total += amount;
-                yVals.add(new Entry(amount, index++));
-                xVals.add("Food");
-                colors.add(ColorTemplate.VORDIPLOM_COLORS[3]);
-            }
-
-            if (mRealmHandler.getSpecificDateAmountByType("Insurance", month, year, ((ChartActivity) getActivity()).getSpinnerPosition()) != 0) {
-                float amount = mRealmHandler.getSpecificDateAmountByType("Insurance", month, year, type);
-                total += amount;
-                yVals.add(new Entry(amount, index++));
-                xVals.add("Insurance");
-                colors.add(ColorTemplate.VORDIPLOM_COLORS[4]);
+            for (int i = 0; i < categories.size(); i++) {
+                float amount = mRealmHandler.getSpecificDateAmountByType(categories.get(i).getCategory(), month, year, type);
+                if (amount != 0) {
+                    total += amount;
+                    yVals.add(new Entry(amount, index++));
+                    xVals.add(categories.get(i).getCategory());
+                    colors.add(categories.get(i).getColor());
+                }
             }
 
             if (total > 0) {
@@ -298,7 +263,7 @@ public class ChartFragment extends Fragment {
                 PieData data = new PieData(xVals, dataSet);
                 data.setValueFormatter(new PercentFormatter());
                 data.setValueTextSize(11f);
-                data.setValueTextColor(Color.BLACK);
+                data.setValueTextColor(Color.WHITE);
                 mPieChart.setData(data);
 
                 // undo all highlights

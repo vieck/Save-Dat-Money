@@ -123,6 +123,7 @@ public class EditFragment extends android.app.Fragment {
                         deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_delete));
                         editButton.setImageResource(android.R.drawable.ic_menu_edit);
                     }
+                    deleteButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{actionBarColor}));
                     editButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{actionBarColor}));
                     confirm = false;
                 } else if (editing) {

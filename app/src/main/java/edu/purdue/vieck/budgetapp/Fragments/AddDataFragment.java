@@ -109,8 +109,8 @@ public class AddDataFragment extends Fragment {
             }
             String currencyString = mSharedPreferences.getString("currencySymbol", Currency.getInstance(getResources().getConfiguration().locale).getSymbol());
             currency.setText(currencyString);
-            categories.setText(bundle.getString("Subcategory") + "");
-            subcategory.setText(bundle.getString("Category") + "");
+            categories.setText(bundle.getString("Category") + "");
+            subcategory.setText(bundle.getString("Subcategory") + "");
             if (bundle.getBoolean("Type")) {
                 incomeButton.toggle();
             } else {

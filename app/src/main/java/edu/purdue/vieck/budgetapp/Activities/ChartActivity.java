@@ -108,7 +108,7 @@ public class ChartActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
-            //mRealmHandler.deleteAll();
+            mRealmHandler.deleteAll();
             return true;
         } else if (id == R.id.action_add) {
             startActivity(new Intent(this, AddActivity.class));
