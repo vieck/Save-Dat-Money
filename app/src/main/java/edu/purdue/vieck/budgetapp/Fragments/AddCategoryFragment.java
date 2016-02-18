@@ -31,12 +31,9 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class AddCategoryFragment extends Fragment {
     private ListView listView;
-    private LinearLayoutManager layoutManager;
     private AddAdapter addAdapter;
     private FloatingActionButton floatingActionButton;
     private TypedValue primaryColorDark;
-    private TypedValue primaryColor;
-    private TypedValue accentColor;
     private RealmHandler mRealmHandler;
     private SharedPreferences mSharedPreferences;
     private int mActionBarColor;
@@ -53,27 +50,21 @@ public class AddCategoryFragment extends Fragment {
         }
         listView = (ListView) view.findViewById(R.id.listview);
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab_next);
-        layoutManager = new LinearLayoutManager(getActivity());
         mRealmHandler = new RealmHandler(getActivity());
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mActionBarColor = mSharedPreferences.getInt("actionBarColor",getResources().getColor(R.color.md_black_1000));
-        primaryColor = new TypedValue();
         primaryColorDark = new TypedValue();
-        accentColor = new TypedValue();
-        getActivity().getTheme().resolveAttribute(R.attr.colorPrimary, primaryColor, true);
         getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, primaryColorDark, true);
-        getActivity().getTheme().resolveAttribute(R.attr.colorAccent, accentColor, true);
 
         final List<RealmCategoryItem> parents = createTree();
 
-        addAdapter = new AddAdapter(getActivity(), parents, bundle, mActionBarColor, primaryColor.data, primaryColorDark.data, accentColor.data);
+        addAdapter = new AddAdapter(getActivity(), parents, bundle, mActionBarColor, primaryColorDark.data);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter(addAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                int prevPosition = listView.getCheckedItemPosition();
                 addAdapter.updateSelection(position);
             }
         });

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,39 +15,26 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 
 /**
- * Created by mvieck on 9/27/2015.
+ * Created by vieck on 2/7/16.
  */
-public class AddAdapter extends BaseAdapter {
-
+public class AddCategoryAdapter extends BaseAdapter {
     Context context;
+    RealmHandler mRealmHandler;
     List<RealmCategoryItem> categoryItems;
-    Bundle bundle;
     int selection;
     int actionBarColor, primaryColor;
 
-    public AddAdapter(Context context, List<RealmCategoryItem> categoryItems, Bundle bundle, int actionBarColor, int primaryColor) {
+    public AddCategoryAdapter(Context context, RealmHandler mRealmHandler, List<RealmCategoryItem> categoryItems, int actionBarColor, int primaryColor) {
         this.context = context;
+        this.mRealmHandler = mRealmHandler;
         this.categoryItems = categoryItems;
-        this.bundle = bundle;
         selection = -1;
-        this.primaryColor = primaryColor;
         this.actionBarColor = actionBarColor;
-    }
-
-    public void setSelection(int selection) {
-        this.selection = selection;
-    }
-
-    public int getSelection() {
-        return selection;
-    }
-
-    public void updateSelection(int selection) {
-        this.selection = selection;
-        notifyDataSetChanged();
+        this.primaryColor = primaryColor;
     }
 
     @Override
@@ -56,6 +44,11 @@ public class AddAdapter extends BaseAdapter {
 
     public List<RealmCategoryItem> getCategoryItems() {
         return categoryItems;
+    }
+
+    public void updateSelection(int selection) {
+        this.selection = selection;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -72,7 +65,7 @@ public class AddAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_add, parent, false);
+        View view = inflater.inflate(R.layout.item_add_category, parent, false);
         RelativeLayout linearLayout = (RelativeLayout) view.findViewById(R.id.linear_layout);
         if (position == selection) {
             linearLayout.setBackgroundColor(actionBarColor);
@@ -81,14 +74,22 @@ public class AddAdapter extends BaseAdapter {
         }
         ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
         TextView textView = (TextView) view.findViewById(R.id.textview);
-        final RealmCategoryItem addItem = categoryItems.get(position);
-        if (addItem.isChild()) {
-            textView.setText(addItem.getSubcategory());
+        ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete_button);
+        final RealmCategoryItem categoryItem = categoryItems.get(position);
+        if (categoryItem.isChild()) {
+            textView.setText(categoryItem.getSubcategory());
         } else {
-            textView.setText(addItem.getCategory());
+            textView.setText(categoryItem.getCategory());
         }
-        imageView.setImageDrawable(ContextCompat.getDrawable(context, addItem.getIcon()));
+        imageView.setImageDrawable(ContextCompat.getDrawable(context, categoryItem.getIcon()));
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRealmHandler.delete(categoryItem);
+                categoryItems = mRealmHandler.getCategoryParents();
+                notifyDataSetChanged();
+            }
+        });
         return view;
     }
-
 }

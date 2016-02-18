@@ -34,8 +34,6 @@ public class AddSubCategoryFragment extends Fragment {
     private AddAdapter addAdapter;
     private FloatingActionButton floatingActionButtonFoward, floatingActionButtonBackwards;
     private TypedValue primaryDarkColor;
-    private TypedValue primaryColor;
-    private TypedValue accentColor;
     private int mActionBarColor;
     private RealmHandler mRealmHandler;
     private SharedPreferences mSharedPreferences;
@@ -56,15 +54,11 @@ public class AddSubCategoryFragment extends Fragment {
         mRealmHandler = new RealmHandler(getActivity());
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mActionBarColor = mSharedPreferences.getInt("actionBarColor", getResources().getColor(R.color.md_black_1000));
-        primaryColor = new TypedValue();
         primaryDarkColor = new TypedValue();
-        accentColor = new TypedValue();
-        getActivity().getTheme().resolveAttribute(R.attr.colorPrimary, primaryColor, true);
         getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, primaryDarkColor, true);
-        getActivity().getTheme().resolveAttribute(R.attr.colorAccent, accentColor, true);
 
         final List<RealmCategoryItem> tree = createTree(category);
-        addAdapter = new AddAdapter(getActivity(), tree, bundle, mActionBarColor, primaryColor.data, primaryDarkColor.data, accentColor.data);
+        addAdapter = new AddAdapter(getActivity(), tree, bundle, mActionBarColor, primaryDarkColor.data);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter(addAdapter);

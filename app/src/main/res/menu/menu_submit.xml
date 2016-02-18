@@ -2,9 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:mContext="edu.purdue.vieck.budgetapp.Activities.AddActivity">
-    <item
-        android:id="@+id/action_settings"
+    <item android:id="@+id/action_edit"
+        android:icon="@android:drawable/ic_menu_edit"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="@string/edittext_add_hint"
+        app:showAsAction="ifRoom"/>
 </menu>

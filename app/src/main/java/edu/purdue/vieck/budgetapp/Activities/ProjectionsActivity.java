@@ -66,7 +66,7 @@ public class ProjectionsActivity extends AppCompatActivity {
     private void setUpToolbar() {
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        
+
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
         window.setStatusBarColor(getResources().getColor(R.color.md_black_1000));

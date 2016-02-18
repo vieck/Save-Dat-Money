@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import edu.purdue.vieck.budgetapp.Fragments.AddCategoryFragment;
 import edu.purdue.vieck.budgetapp.Fragments.AddDataFragment;
+import edu.purdue.vieck.budgetapp.Fragments.EditCategoryFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 public class AddActivity extends AppCompatActivity {
@@ -59,7 +60,9 @@ public class AddActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_edit) {
+            EditCategoryFragment editCategoryFragment = new EditCategoryFragment();
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container,editCategoryFragment,"editCategory").commit();
             return true;
         }
 
