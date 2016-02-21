@@ -51,6 +51,12 @@
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
+    <style name="ActivityEditCategory" parent="AppTheme">
+        <item name="android:colorPrimary">@color/md_red_300</item>
+        <item name="android:colorPrimaryDark">@color/md_red_700</item>
+        <item name="android:colorAccent">@color/md_red_500</item>
+    </style>
+
     <style name="StyleFragment" parent="AppTheme">
         <item name="android:background">?android:attr/colorPrimary</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>

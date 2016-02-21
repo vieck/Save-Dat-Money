@@ -1,9 +1,12 @@
 package edu.purdue.vieck.budgetapp.Activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,7 +14,6 @@ import android.view.MenuItem;
 
 import edu.purdue.vieck.budgetapp.Fragments.AddCategoryFragment;
 import edu.purdue.vieck.budgetapp.Fragments.AddDataFragment;
-import edu.purdue.vieck.budgetapp.Fragments.EditCategoryFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 public class AddActivity extends AppCompatActivity {
@@ -61,9 +63,13 @@ public class AddActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_edit) {
-            EditCategoryFragment editCategoryFragment = new EditCategoryFragment();
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container,editCategoryFragment,"editCategory").commit();
+            Intent intent = new Intent(this, CategoryEditingActivity.class);
+            startActivity(intent);
             return true;
+        } else if (id == android.R.id.home) {
+            Intent upIntent = new Intent(this, ChartActivity.class);
+            startActivity(upIntent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -71,13 +77,15 @@ public class AddActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
-            mToolbar.setTitleTextColor(Color.BLACK);
-        } else {
-            mToolbar.setTitleTextColor(Color.WHITE);
+        if (mToolbar != null) {
+            if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
+                mToolbar.setTitleTextColor(Color.BLACK);
+            } else {
+                mToolbar.setTitleTextColor(Color.WHITE);
+            }
+            mToolbar.setBackgroundColor(actionBarColor);
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        mToolbar.setBackgroundColor(actionBarColor);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 }

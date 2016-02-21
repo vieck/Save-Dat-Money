@@ -30,7 +30,7 @@ import edu.purdue.vieck.budgetapp.R;
 /**
  * Created by Stealth on 12/25/2015.
  */
-public class EditFragment extends android.app.Fragment {
+public class EditDataFragment extends android.app.Fragment {
     TextView currency;
     RadioGroup radioGroup;
     RadioButton incomeButton, expenseButton;

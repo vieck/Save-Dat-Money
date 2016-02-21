@@ -16,12 +16,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import edu.purdue.vieck.budgetapp.Fragments.EditFragment;
+import edu.purdue.vieck.budgetapp.Fragments.EditDataFragment;
 import edu.purdue.vieck.budgetapp.R;
 
 public class EditActivity extends AppCompatActivity {
     private Toolbar mToolbar;
-    private EditFragment editFragment;
+    private EditDataFragment editDataFragment;
     private SharedPreferences mSharedPreferences;
     private int actionBarColor;
 
@@ -33,9 +33,9 @@ public class EditActivity extends AppCompatActivity {
         actionBarColor = mSharedPreferences.getInt("actionBarColor",0);
         setUpToolbar();
         Bundle bundle = getIntent().getExtras();
-        editFragment = new EditFragment();
-        editFragment.setArguments(bundle);
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, editFragment).commit();
+        editDataFragment = new EditDataFragment();
+        editDataFragment.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, editDataFragment).commit();
     }
 
     @Override

@@ -4,20 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
-    <!--
-      IMPORTANT: Change "com.parse.starter.permission.C2D_MESSAGE" in the lines below
-      to match your app's package name + ".permission.C2D_MESSAGE".
-    -->
-    <permission
-        android:name="edu.purdue.vieck.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="edu.purdue.vieck.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -25,13 +11,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data
-            android:name="com.parse.APPLICATION_ID"
-            android:value="Gpyb8G3WsyI2ys158lag2JC4339FLzL6xdUbrQxc" />
-        <meta-data
-            android:name="com.parse.CLIENT_KEY"
-            android:value="RjYuaiJ9XulYRUThIOyqBvLrSeVdDPsrPHLIOjkD" />
-
         <activity
             android:name=".Activities.DashboardActivity"
             android:label="@string/app_name"
@@ -61,7 +40,20 @@
             android:name=".Activities.AddActivity"
             android:label="@string/title_activity_submit"
             android:parentActivityName=".Activities.ChartActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.purdue.vieck.budgetapp.Activities.ChartActivity" />
+        </activity>
+
+        <activity android:name=".Activities.CategoryEditingActivity"
+            android:label="@string/title_activity_edit_category"
+            android:parentActivityName=".Activities.AddActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.purdue.vieck.budgetapp.Activities.AddActivity" />
+        </activity>
         <activity
             android:name=".Activities.SettingsActivity"
             android:label="@string/action_settings"
@@ -76,32 +68,9 @@
                 android:value="edu.purdue.vieck.budgetapp.Activities.ChartActivity" />
         </activity>
 
-        <service android:name="com.parse.PushService" />
-
-        <receiver
-            android:name="com.parse.ParsePushBroadcastReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.parse.push.intent.RECEIVE" />
-                <action android:name="com.parse.push.intent.DELETE" />
-                <action android:name="com.parse.push.intent.OPEN" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
-                <!--                   IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
-                <category android:name="edu.purdue.vieck.budgetapp" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".Activities.ProjectionsActivity"
-            android:label="@string/title_activity_projections"></activity>
+            android:label="@string/title_activity_projections"/>
     </application>
 
 </manifest>

@@ -36,7 +36,8 @@ public class RealmHandler {
     }
 
     public void add(final RealmCategoryItem categoryItem) {
-                categoryItem.setKey(getCategoryCount() + 1);
+                categoryItem.setKey(getCategoryCount() + 2);
+                Log.d("Category Key", categoryItem.getKey()+"");
                 realm = Realm.getInstance(mContext);
                 realm.beginTransaction();
                 realm.copyToRealmOrUpdate(categoryItem);

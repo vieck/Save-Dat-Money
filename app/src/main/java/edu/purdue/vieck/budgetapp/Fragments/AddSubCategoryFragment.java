@@ -95,9 +95,9 @@ public class AddSubCategoryFragment extends Fragment {
                         addDataFragment.setArguments(bundle);
                         getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container, addDataFragment).commit();
                     } else {
-                        EditFragment editFragment = new EditFragment();
-                        editFragment.setArguments(bundle);
-                        getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container, editFragment).commit();
+                        EditDataFragment editDataFragment = new EditDataFragment();
+                        editDataFragment.setArguments(bundle);
+                        getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container, editDataFragment).commit();
                     }
                 } else {
                     Snackbar.make(getView(), "No Item Selected", Snackbar.LENGTH_LONG).show();

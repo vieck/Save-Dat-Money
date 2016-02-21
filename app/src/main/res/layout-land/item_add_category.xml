@@ -3,7 +3,8 @@
     android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorAccent">
+    android:background="?android:attr/colorAccent"
+    android:descendantFocusability="blocksDescendants">
 
     <ImageView
         android:id="@+id/imageview"
@@ -18,5 +19,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/imageview" />
+        android:layout_toEndOf="@id/imageview"/>
+
+    <ImageButton android:id="@+id/delete_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/utility_trash_dark"
+        android:background="@null"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="25dp"/>
 </RelativeLayout>
