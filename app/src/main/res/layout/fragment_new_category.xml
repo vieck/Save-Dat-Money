@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="edu.purdue.vieck.budgetapp.Fragments.NewCategoryFragment">
+
+        <EditText android:id="@+id/edittext_add_category_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:hint="@string/category_dialog_title"
+            android:textSize="12sp"
+            android:layout_margin="12dp"/>
+
+        <EditText android:id="@+id/edittext_add_subcategory_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edittext_add_category_name"
+            android:visibility="invisible"
+            android:hint="@string/subcategory_dialog_title"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:textSize="12sp" />
+
+        <com.lukedeighton.wheelview.WheelView android:id="@+id/wheel_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/edittext_add_subcategory_name"
+            android:layout_margin="12dp"
+            app:wheelColor="@color/md_black_1000"
+            app:rotatableWheelDrawable="true"
+            app:repeatItems="true"
+            app:selectionAngle="90.0"
+            app:selectionColor="@color/md_green_A400"
+            app:selectionPadding="10dp"
+            app:wheelRadius="120dp"
+            app:wheelItemCount="29"
+            app:wheelPadding="5dp"
+            app:wheelItemRadius="12dp"/>
+
+</RelativeLayout>

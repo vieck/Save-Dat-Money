@@ -35,6 +35,7 @@ public class RealmHandler {
         id = new AtomicInteger();
     }
 
+
     public void add(final RealmCategoryItem categoryItem) {
                 categoryItem.setKey(getCategoryCount() + 2);
                 Log.d("Category Key", categoryItem.getKey()+"");
@@ -118,17 +119,19 @@ public class RealmHandler {
         for (RealmCategoryItem item : results) {
             items.add(item);
         }
+        Log.d("Category",""+items.size());
         return items;
     }
 
     public List<RealmCategoryItem> getCategoryChildren(String category) {
         realm = Realm.getInstance(mContext);
-        RealmQuery query = realm.where(RealmCategoryItem.class).equalTo("category",category);
+        RealmQuery query = realm.where(RealmCategoryItem.class).equalTo("category",category).equalTo("isChild",true);
         RealmResults<RealmCategoryItem> results = query.findAll();
         List<RealmCategoryItem> items = new ArrayList<>();
         for (RealmCategoryItem item : results) {
             items.add(item);
         }
+        Log.d("Subcategory",""+items.size());
         return items;
     }
 
@@ -474,6 +477,23 @@ public class RealmHandler {
         realm.close();
     }
 
+    public void deleteCategory(String category) {
+        realm = Realm.getInstance(mContext);
+        realm.beginTransaction();
+        realm.where(RealmCategoryItem.class).equalTo("category",category).findAll().clear();
+        realm.commitTransaction();
+        realm.close();
+    }
+
+    public void deleteSubcategory(final String subcategory) {
+
+                realm = Realm.getInstance(mContext);
+                realm.beginTransaction();
+                realm.where(RealmCategoryItem.class).equalTo("subcategory",subcategory).findAll().clear();
+                realm.commitTransaction();
+                realm.close();
+    }
+
     public void deleteAll() {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -482,6 +502,7 @@ public class RealmHandler {
                 realm.beginTransaction();
                 realm.clear(RealmBudgetItem.class);
                 realm.clear(RealmDataItem.class);
+                realm.clear(RealmCategoryItem.class);
                 realm.commitTransaction();
                 realm.close();
             }

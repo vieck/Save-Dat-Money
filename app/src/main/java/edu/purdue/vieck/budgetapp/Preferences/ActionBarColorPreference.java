@@ -51,7 +51,7 @@ public class ActionBarColorPreference extends ListPreference {
 
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
-        int selectedPosition = mSharedPreferences.getInt("actionBarPosition", 0);
+        int selectedPosition = mSharedPreferences.getInt("actionBarPosition", 69);
 
         if (mEntries == null) {
             throw new IllegalStateException(

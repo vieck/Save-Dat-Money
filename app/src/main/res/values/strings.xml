@@ -155,6 +155,7 @@
 
     <!-- Category Strings -->
     <string name="category_dialog_title">Type in a Category</string>
+    <string name="subcategory_dialog_title">Type in a Subcategory</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
 
@@ -183,5 +184,6 @@
     <string name="title_activity_description">Description</string>
     <string name="title_activity_projections">Projections</string>
     <string name="title_activity_edit_category">Edit Category</string>
+
 
 </resources>

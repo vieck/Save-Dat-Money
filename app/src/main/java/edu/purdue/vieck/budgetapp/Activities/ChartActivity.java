@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -189,6 +190,9 @@ public class ChartActivity extends AppCompatActivity {
         });
     }
 
+    /*
+     * Spinner to filter income, expenses, or both
+     */
     private Spinner setUpSpinner(final Spinner spinner) {
         spinnerPosition = 2;
         CharSequence[] simpleSpinner = getResources().getStringArray(R.array.chartarray);
@@ -258,17 +262,9 @@ public class ChartActivity extends AppCompatActivity {
         if (years != null) {
             ArrayList<Integer> uniqueMonths = new ArrayList<>();
             Integer[] keys = years.keySet().toArray(new Integer[years.keySet().size()]);
-
-            //Sort hashmap keys
-            for (int i = 0; i < keys.length; i++) {
-                for (int j = i + 1; j < keys.length; j++) {
-                    if (keys[j] > keys[i]) {
-                        int hold = keys[i];
-                        keys[i] = keys[j];
-                        keys[j] = hold;
-                    }
-                }
-            }
+            // Sort years in ascending order
+            Arrays.sort(keys);
+            Log.d("Sorted Array",Arrays.toString(keys));
 
             //Sort years in hashmap keys
             for (int i : keys) {
@@ -286,7 +282,7 @@ public class ChartActivity extends AppCompatActivity {
                         uniqueMonths.add(element.getMonth());
                     }
                 }
-                uniqueMonths = new ArrayList<>();
+                uniqueMonths.clear();
             }
         }
 
@@ -333,6 +329,7 @@ public class ChartActivity extends AppCompatActivity {
             notifyDataSetChanged();
         }
 
+        // Change the types of all tabs between income, expense, and both
         public void changeType(int type) {
             Log.d("Fragments", "" + mFragmentList.size());
             for (int i = 0; i < mFragmentList.size(); i++) {

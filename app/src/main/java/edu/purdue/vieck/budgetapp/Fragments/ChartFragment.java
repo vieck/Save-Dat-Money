@@ -48,8 +48,6 @@ public class ChartFragment extends Fragment {
 
     int month, year, type;
     RealmHandler mRealmHandler;
-    private int mInstance;
-    private int yInstance;
     private PieChart mPieChart;
     private EditText mBudgetView;
     private TextView mCurrencyLabel;
@@ -119,13 +117,6 @@ public class ChartFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            mInstance = savedInstanceState.getInt("Month", -1);
-            yInstance = savedInstanceState.getInt("Year", -1);
-        } else {
-            mInstance = -1;
-            yInstance = -1;
-        }
     }
 
     private PieChart setupPieChart(PieChart chart) {
@@ -146,10 +137,6 @@ public class ChartFragment extends Fragment {
         // enable rotation of the chart by touch
         chart.setRotationEnabled(true);
 
-        // mChart.setUnit(" €");
-        // mChart.setDrawUnitsInChart(true);
-
-        //mPieChart.setCenterText("MPAndroidChart\nby Philipp Jahoda");
         chart.setCenterTextSize(9.5f);
 
         chart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
