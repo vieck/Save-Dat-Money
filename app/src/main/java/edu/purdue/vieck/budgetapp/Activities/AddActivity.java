@@ -88,11 +88,9 @@ public class AddActivity extends AppCompatActivity {
             mToolbar.setBackgroundColor(actionBarColor);
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            if (actionBarColor == getResources().getColor(R.color.md_black_1000)){
                 Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
                 upArrow.setColorFilter(getResources().getColor(R.color.White), PorterDuff.Mode.SRC_ATOP);
                 getSupportActionBar().setHomeAsUpIndicator(upArrow);
-            }
 
         }
     }

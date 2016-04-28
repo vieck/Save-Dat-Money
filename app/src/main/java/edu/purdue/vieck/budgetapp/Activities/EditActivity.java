@@ -3,6 +3,8 @@ package edu.purdue.vieck.budgetapp.Activities;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -30,7 +32,7 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        actionBarColor = mSharedPreferences.getInt("actionBarColor",0);
+        actionBarColor = mSharedPreferences.getInt("actionBarColor",getResources().getColor(R.color.md_black_1000));
         setUpToolbar();
         Bundle bundle = getIntent().getExtras();
         editDataFragment = new EditDataFragment();
@@ -88,6 +90,9 @@ public class EditActivity extends AppCompatActivity {
             mToolbar.setBackgroundColor(actionBarColor);
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+                upArrow.setColorFilter(getResources().getColor(R.color.White), PorterDuff.Mode.SRC_ATOP);
+                getSupportActionBar().setHomeAsUpIndicator(upArrow);
         }
     }
 }
