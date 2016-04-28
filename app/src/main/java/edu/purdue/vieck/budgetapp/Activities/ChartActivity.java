@@ -154,11 +154,6 @@ public class ChartActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 Intent intent;
                 switch (id) {
-                    case R.id.nav_item_dashboard:
-                        intent = new Intent(currentActivity, DashboardActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        currentActivity.startActivity(intent);
-                        break;
                     case R.id.nav_item_chart:
                         intent = new Intent(currentActivity, ChartActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

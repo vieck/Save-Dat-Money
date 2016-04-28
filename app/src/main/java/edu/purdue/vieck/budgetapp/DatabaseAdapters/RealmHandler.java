@@ -3,8 +3,10 @@ package edu.purdue.vieck.budgetapp.DatabaseAdapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -27,6 +29,11 @@ public class RealmHandler {
 
     private static AtomicInteger id;
     Realm realm;
+
+    private File EXPORT_REALM_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    private String EXPORT_REALM_FILE_NAME = "glucosio.realm";
+    private String IMPORT_REALM_FILE_NAME = "default.realm"; // Eventually replace this if you're using a custom db name
+
 
     Context mContext;
 

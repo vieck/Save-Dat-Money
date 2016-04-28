@@ -4,11 +4,6 @@
     <group android:checkableBehavior="all">
 
         <item
-            android:id="@+id/nav_item_dashboard"
-            android:icon="@drawable/exit_dark"
-            android:title="@string/dashboard" />
-
-        <item
             android:id="@+id/nav_item_chart"
             android:icon="@drawable/chart_panel_dark"
             android:title="@string/charts" />
