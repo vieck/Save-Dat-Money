@@ -117,8 +117,11 @@ public class NewCategoryFragment extends android.app.Fragment {
         int icon = mDrawableIds.get(mWheelView.getSelectedPosition());
         RealmCategoryItem item = new RealmCategoryItem(mCategoryEditText.getText().toString(), mSubcategoryEditText.getText().toString(), icon, R.color.md_white_1000, !isCategory);
         mRealmHandler.add(item);
-        mCategoryEditText.setText("");
-        mSubcategoryEditText.setText("");
+        if (isCategory) {
+            mCategoryEditText.setText("");
+        } else {
+            mSubcategoryEditText.setText("");
+        }
         mWheelView.setPosition(0);
         ((CategoryEditingActivity)getActivity()).addedCategory();
     }

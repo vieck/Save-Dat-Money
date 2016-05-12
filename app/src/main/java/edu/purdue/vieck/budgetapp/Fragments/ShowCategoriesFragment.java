@@ -84,7 +84,7 @@ public class ShowCategoriesFragment extends Fragment {
                             categoryAdapter.setCategoryItems(categoryItems);
                         } else {
                             String subcategory = categoryItems.get(i).getSubcategory();
-                            mRealmHandler.deleteSubcategory(categoryItems.get(i).getSubcategory());
+                            mRealmHandler.deleteSubcategory(subcategory);
                             categoryItems = mRealmHandler.getCategoryChildren(category);
                             categoryAdapter.setCategoryItems(categoryItems);
                         }
@@ -145,11 +145,16 @@ public class ShowCategoriesFragment extends Fragment {
 
     public void refreshAdapter() {
         if (isCategory) {
-            categoryAdapter.setCategoryItems(mRealmHandler.getCategoryParents());
+            categoryItems = mRealmHandler.getCategoryParents();
+            categoryAdapter.setCategoryItems(categoryItems);
         } else {
-            categoryAdapter.setCategoryItems(mRealmHandler.getCategoryChildren(category));
+            categoryItems = mRealmHandler.getCategoryChildren(category);
+            categoryAdapter.setCategoryItems(categoryItems);
+
         }
         categoryAdapter.notifyDataSetChanged();
+
+        Log.d("CategoryFragment","Refreshed CategoryList");
     }
 
     public void changeCategory(String category) {
@@ -157,8 +162,6 @@ public class ShowCategoriesFragment extends Fragment {
     }
 
     private List<RealmCategoryItem> createTree() {
-
-        final AddTree tree = new AddTree(null);
 
         Log.d("Count", "" + mRealmHandler.getCategoryCount());
 
