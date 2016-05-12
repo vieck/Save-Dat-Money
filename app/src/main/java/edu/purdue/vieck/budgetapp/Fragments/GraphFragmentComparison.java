@@ -14,7 +14,9 @@ import com.github.mikephil.charting.data.BarEntry;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
@@ -54,24 +56,24 @@ public class GraphFragmentComparison extends Fragment {
     private void generateChart(BarChart chartView) {
 
         Stack<RealmDataItem> stack = mRealmHandler.getAllDataAsStack(0);
+        HashMap<String, Float> uniqueMonths = mRealmHandler.getAllMonthsAsOneElement(0);
         List<BarEntry> entryList = new ArrayList<>();
-
-        final String[] mLabelsThree = new String[stack.size()];
+        Set<String> keys = uniqueMonths.keySet();
+        String[] labels = keys.toArray(new String[keys.size()]);
 
         int i = 0;
         BarEntry entry;
-        for (RealmDataItem item : stack) {
-            entry = new BarEntry(item.getAmount(), i);
+        for (String label : labels) {
+
+            entry = new BarEntry(uniqueMonths.get(label), i++);
             entryList.add(entry);
-            mLabelsThree[i] = item.getMonth() + "/" + item.getYear();
-            i++;
         }
 
         BarDataSet dataSet = new BarDataSet(entryList, "Values");
         dataSet.setValueTextColor(getResources().getColor(R.color.md_white_1000));
         dataSet.setValueTextSize(8f);
         dataSet.setColor(getResources().getColor(R.color.md_white_1000));
-        BarData data = new BarData(mLabelsThree, dataSet);
+        BarData data = new BarData(labels, dataSet);
         chartView.setData(data);
         chartView.setDescription("");
 

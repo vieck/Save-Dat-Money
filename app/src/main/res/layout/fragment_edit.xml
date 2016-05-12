@@ -23,7 +23,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginEnd="0dp"
         android:textAlignment="viewEnd"
-        android:hint="@string/budget"
+        android:hint="@string/amount"
         android:inputType="numberDecimal" />
 
     <EditText
