@@ -27,6 +27,7 @@
     <string name="charts">Charts</string>
     <string name="graphs">Graphs</string>
     <string name="data">Data</string>
+    <string name="backup">Backup</string>
     <string name="settings">Settings</string>
 
     <!-- Setting Activity Strings -->

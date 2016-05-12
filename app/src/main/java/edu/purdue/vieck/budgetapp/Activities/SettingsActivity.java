@@ -95,6 +95,11 @@ public class SettingsActivity extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         currentActivity.startActivity(intent);
                         break;
+                    case R.id.nav_item_backup:
+                        intent = new Intent(currentActivity, BackupActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        currentActivity.startActivity(intent);
+                        break;
                     case R.id.nav_item_settings:
                         intent = new Intent(currentActivity, SettingsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
