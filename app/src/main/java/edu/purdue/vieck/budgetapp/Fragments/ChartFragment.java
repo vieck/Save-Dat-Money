@@ -52,7 +52,7 @@ public class ChartFragment extends Fragment {
     private EditText mBudgetView;
     private TextView mCurrencyLabel;
     private FloatingActionButton mConfirmButton, mCancelButton;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    //private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private ChartRecyclerAdapter mChartRecyclerAdapter;
     private Context mContext;
@@ -86,13 +86,13 @@ public class ChartFragment extends Fragment {
 
         mRealmHandler = new RealmHandler(getActivity());
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        //mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.budget_recycler_view);
         mChartRecyclerAdapter = new ChartRecyclerAdapter(mContext, month, year, type);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(mChartRecyclerAdapter);
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        /*mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mChartRecyclerAdapter = new ChartRecyclerAdapter(mContext, month, year, type);
@@ -100,7 +100,7 @@ public class ChartFragment extends Fragment {
                 setData(type);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
-        });
+        });*/
 
 
         mPieChart = (PieChart) view.findViewById(R.id.pie_chart);

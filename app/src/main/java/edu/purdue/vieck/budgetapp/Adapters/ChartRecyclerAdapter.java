@@ -46,6 +46,7 @@ public class ChartRecyclerAdapter extends RecyclerView.Adapter<ChartRecyclerAdap
         } else {
             mDataset = mRealmHandler.getAllDataAsStack(position);
         }
+        Log.d("RecyclerView Amount",Integer.toString(mDataset.size()));
     }
 
     public void updatePosition(int position) {
