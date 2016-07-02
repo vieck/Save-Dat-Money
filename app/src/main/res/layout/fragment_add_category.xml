@@ -1,30 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MyAppBarLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/listview"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_next"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="28dp"
-        android:layout_marginEnd="28dp"
-        android:scaleType="center"
-        android:src="@drawable/ic_action_next_item"
-        android:stateListAnimator="@anim/button_elevation"
-        android:tint="?android:colorPrimary"
-        app:backgroundTint="?android:attr/colorPrimaryDark"
-        app:borderWidth="0dp" />
-
-
-</RelativeLayout>
+</FrameLayout>

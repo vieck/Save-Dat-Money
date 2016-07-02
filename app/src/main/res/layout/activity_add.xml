@@ -1,4 +1,5 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/header_container"
     android:layout_width="match_parent"
@@ -11,22 +12,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/toolbar"
             style="@style/MyAppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize" />
 
-        <RelativeLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <RelativeLayout
-            android:id="@+id/snackbar_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
     </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_next"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="28dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_action_next_item"
+        android:stateListAnimator="@anim/button_elevation"
+        android:tint="?android:colorPrimary"
+        app:backgroundTint="?android:attr/colorPrimaryDark"
+        app:borderWidth="0dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_back"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="28dp"
+        android:layout_marginStart="28dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_action_previous_item"
+        android:stateListAnimator="@anim/button_elevation"
+        android:tint="?android:colorPrimary"
+        app:backgroundTint="?android:attr/colorPrimaryDark"
+        app:borderWidth="0dp"
+        android:visibility="gone"/>
 </android.support.design.widget.CoordinatorLayout>

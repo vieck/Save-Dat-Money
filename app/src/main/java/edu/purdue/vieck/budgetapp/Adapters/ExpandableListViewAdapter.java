@@ -50,7 +50,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int group) {
-        return mRealmHandler.getSpecificMonthYearAsStack(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).size();
+        return mRealmHandler.getDataByMonthYearAndType(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).size();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int group, int child) {
-        return mRealmHandler.getSpecificMonthYearAsStack(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).get(child);
+        return mRealmHandler.getDataByMonthYearAndType(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).get(child);
     }
 
     @Override

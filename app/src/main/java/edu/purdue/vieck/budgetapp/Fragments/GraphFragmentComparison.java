@@ -22,6 +22,7 @@ import java.util.Stack;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
+import io.realm.RealmResults;
 
 /**
  * Created by mvieck on 10/7/2015.
@@ -55,7 +56,7 @@ public class GraphFragmentComparison extends Fragment {
     /* Creates a chart to compare */
     private void generateChart(BarChart chartView) {
 
-        Stack<RealmDataItem> stack = mRealmHandler.getAllDataAsStack(0);
+        RealmResults<RealmDataItem> stack = mRealmHandler.getAllRealmResults(0);
         HashMap<String, Float> uniqueMonths = mRealmHandler.getAllMonthsAsOneElement(0);
         List<BarEntry> entryList = new ArrayList<>();
         Set<String> keys = uniqueMonths.keySet();

@@ -44,9 +44,10 @@
 
     <!-- FRAGMENT CHART -->
     <string-array name="chartarray">
-        <item>Expense</item>
-        <item>Income</item>
-        <item>Both</item>
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+        <item>Year</item>
     </string-array>
 
     <!-- FRAGMENT GRAPH -->

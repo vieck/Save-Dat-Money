@@ -8,7 +8,9 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +26,13 @@ import edu.purdue.vieck.budgetapp.CustomObjects.AddTree;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
+import io.realm.RealmResults;
 
 /**
  * Created by mvieck on 9/27/2015.
  */
 public class AddSubCategoryFragment extends Fragment {
-    private ListView listView;
+    private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private AddAdapter addAdapter;
     private FloatingActionButton floatingActionButtonFoward, floatingActionButtonBackwards;
@@ -47,9 +50,9 @@ public class AddSubCategoryFragment extends Fragment {
         int position = bundle.getInt("Position");
         String category = bundle.getString("Category");
         bundle.remove("Position");
-        listView = (ListView) view.findViewById(R.id.listview);
-        floatingActionButtonBackwards = (FloatingActionButton) view.findViewById(R.id.fab_back);
-        floatingActionButtonFoward = (FloatingActionButton) view.findViewById(R.id.fab_next);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        floatingActionButtonBackwards = (FloatingActionButton) getActivity().findViewById(R.id.fab_back);
+        floatingActionButtonFoward = (FloatingActionButton) getActivity().findViewById(R.id.fab_next);
         layoutManager = new LinearLayoutManager(getActivity());
         mRealmHandler = new RealmHandler(getActivity());
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -57,25 +60,21 @@ public class AddSubCategoryFragment extends Fragment {
         primaryDarkColor = new TypedValue();
         getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, primaryDarkColor, true);
 
-        final List<RealmCategoryItem> tree = createTree(category);
-        addAdapter = new AddAdapter(getActivity(), tree, bundle, mActionBarColor, primaryDarkColor.data);
+        final RealmResults<RealmCategoryItem> tree = createTree(category);
+        addAdapter = new AddAdapter(getActivity(), tree, ContextCompat.getColor(getActivity(), R.color.md_deep_purple_200));
 
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        listView.setAdapter(addAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                int prevPosition = listView.getCheckedItemPosition();
-                addAdapter.updateSelection(position);
-            }
-        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(addAdapter);
 
         floatingActionButtonFoward.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{mActionBarColor}));
         floatingActionButtonBackwards.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{mActionBarColor}));
+        floatingActionButtonBackwards.setVisibility(View.VISIBLE);
 
         floatingActionButtonBackwards.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                floatingActionButtonBackwards.setVisibility(View.GONE);
                 AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
                 addCategoryFragment.setArguments(bundle);
                 getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container, addCategoryFragment).commit();
@@ -85,11 +84,12 @@ public class AddSubCategoryFragment extends Fragment {
         floatingActionButtonFoward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = listView.getCheckedItemPosition();
-                if (position != ListView.INVALID_POSITION) {
+                int position = 0;
                     RealmCategoryItem item = tree.get(position);
                     bundle.putString("Category", item.getCategory());
                     bundle.putString("Subcategory", item.getSubcategory());
+                    floatingActionButtonFoward.setVisibility(View.GONE);
+                    floatingActionButtonBackwards.setVisibility(View.GONE);
                     if (getActivity() instanceof AddActivity) {
                         AddDataFragment addDataFragment = new AddDataFragment();
                         addDataFragment.setArguments(bundle);
@@ -99,21 +99,16 @@ public class AddSubCategoryFragment extends Fragment {
                         editDataFragment.setArguments(bundle);
                         getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container, editDataFragment).commit();
                     }
-                } else {
-                    Snackbar.make(getView(), "No Item Selected", Snackbar.LENGTH_LONG).show();
-                }
             }
         });
 
         return view;
     }
 
-    private List<RealmCategoryItem> createTree(String category) {
+    private RealmResults<RealmCategoryItem> createTree(String category) {
 
         AddTree tree = new AddTree(null);
 
-        List<RealmCategoryItem> categoryChildren = mRealmHandler.getCategoryChildren(category);
-
-        return categoryChildren;
+        return mRealmHandler.getCategoryChildren(category);
     }
 }

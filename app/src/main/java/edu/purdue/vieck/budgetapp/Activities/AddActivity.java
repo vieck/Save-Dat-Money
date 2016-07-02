@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 
 import edu.purdue.vieck.budgetapp.Fragments.AddCategoryFragment;
 import edu.purdue.vieck.budgetapp.Fragments.AddDataFragment;
@@ -30,6 +31,7 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        WebView.setWebContentsDebuggingEnabled(true);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         actionBarColor = mSharedPreferences.getInt("actionBarColor", Color.BLACK);
         setupToolbar();
@@ -88,7 +90,7 @@ public class AddActivity extends AppCompatActivity {
             mToolbar.setBackgroundColor(actionBarColor);
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+                Drawable upArrow = getResources().getDrawable(R.drawable.ic_action_back);
                 upArrow.setColorFilter(getResources().getColor(R.color.White), PorterDuff.Mode.SRC_ATOP);
                 getSupportActionBar().setHomeAsUpIndicator(upArrow);
 

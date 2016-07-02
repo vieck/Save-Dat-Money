@@ -14,92 +14,75 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.Currency;
-import java.util.Stack;
 
 import edu.purdue.vieck.budgetapp.Activities.EditActivity;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
+import io.realm.RealmRecyclerViewAdapter;
+import io.realm.RealmResults;
 
 /**
  * Created by vieck on 7/16/15.
  */
-public class ChartRecyclerAdapter extends RecyclerView.Adapter<ChartRecyclerAdapter.mViewHolder> {
+public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem, ChartRecyclerAdapter.mViewHolder> {
 
-    Context mContext;
-    int month, year, position;
-    String currencySymbol;
+    private String currencySymbol;
     RealmHandler mRealmHandler;
-    Stack<RealmDataItem> mDataset = new Stack<>();
-    SharedPreferences mSharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
-    public ChartRecyclerAdapter(Context mContext, int month, int year, int position) {
-        this.mContext = mContext;
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        currencySymbol = mSharedPreferences.getString("currencySymbol",Currency.getInstance(mContext.getResources().getConfiguration().locale).getSymbol());
-        this.month = month;
-        this.year = year;
-        this.position = position;
-        mRealmHandler = new RealmHandler(mContext);
-        if (month != -1 || year != -1) {
-            mDataset = mRealmHandler.getSpecificMonthYearAsStack(month, year, position);
-        } else {
-            mDataset = mRealmHandler.getAllDataAsStack(position);
-        }
-        Log.d("RecyclerView Amount",Integer.toString(mDataset.size()));
-    }
+    public ChartRecyclerAdapter(Context context, RealmResults<RealmDataItem> data) {
 
-    public void updatePosition(int position) {
-        this.position = position;
-        if (month != -1 || year != -1) {
-            mDataset = mRealmHandler.getSpecificMonthYearAsStack(month, year, position);
-        } else {
-            mDataset = mRealmHandler.getAllDataAsStack(position);
-        }
-        notifyDataSetChanged();
+        super(context, data, true);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        currencySymbol = mSharedPreferences.getString("currencySymbol",Currency.getInstance(context.getResources().getConfiguration().locale).getSymbol());
     }
 
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_chart, viewGroup, false);
-        mViewHolder viewHolder = new mViewHolder(view);
-        return viewHolder;
-    }
+        return new mViewHolder(view);
+}
 
     @Override
-    public void onBindViewHolder(mViewHolder viewHolder, final int i) {
-        final RealmDataItem realmDataItem = mDataset.get(i);
-        viewHolder.date.setText(realmDataItem.getMonth() + "-" + realmDataItem.getDay() + "-" + realmDataItem.getYear());
-        viewHolder.category.setText("" + realmDataItem.getCategory());
-        viewHolder.subcategory.setText("" + realmDataItem.getSubcategory());
-        viewHolder.amount.setText(realmDataItem.getAmount() + " " + currencySymbol);
-        if (realmDataItem.getType()) {
-            viewHolder.amount.setTextColor(mContext.getResources().getColor(R.color.Lime));
+    public void onBindViewHolder(mViewHolder holder, final int i) {
+        final RealmDataItem item = getItem(i);
+        String date = item.getMonth() + "-" + item.getDay() + "-" + item.getYear();
+        String category = item.getCategory();
+        String subcategory = item.getSubcategory();
+        String currency = item.getAmount() + " " + currencySymbol;
+
+        holder.date.setText(date);
+        holder.category.setText(category);
+        holder.subcategory.setText(subcategory);
+        holder.amount.setText(currency);
+        if (item.getType()) {
+            holder.amount.setTextColor(context.getResources().getColor(R.color.Lime));
         } else {
-            viewHolder.amount.setTextColor(mContext.getResources().getColor(R.color.md_red_A400));
+            holder.amount.setTextColor(context.getResources().getColor(R.color.md_red_A400));
         }
         //viewHolder.income.setText("" + realmDataItem.getCategory());
-        viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("Deleted", "Deleted Item");
                 Bundle bundle = new Bundle();
-                bundle.putInt("Id", realmDataItem.getId());
-                bundle.putBoolean("Type", realmDataItem.getType());
-                bundle.putString("TypeString", realmDataItem.getTypeString());
-                bundle.putString("Category", realmDataItem.getCategory());
-                bundle.putString("Subcategory", realmDataItem.getSubcategory());
-                bundle.putDouble("Amount", realmDataItem.getAmount());
-                bundle.putString("Note", realmDataItem.getNote());
-                bundle.putInt("Month", realmDataItem.getMonth());
-                bundle.putInt("Day", realmDataItem.getDay());
-                bundle.putInt("Year", realmDataItem.getYear());
-                bundle.putString("MonthString", realmDataItem.getMonthString());
-                bundle.putInt("Image", realmDataItem.getImage());
-                Intent intent = new Intent(mContext, EditActivity.class);
+                bundle.putInt("Id", item.getId());
+                bundle.putBoolean("Type", item.getType());
+                bundle.putString("TypeString", item.getTypeString());
+                bundle.putString("Category", item.getCategory());
+                bundle.putString("Subcategory", item.getSubcategory());
+                bundle.putDouble("Amount", item.getAmount());
+                bundle.putString("Note", item.getNote());
+                bundle.putInt("Month", item.getMonth());
+                bundle.putInt("Day", item.getDay());
+                bundle.putInt("Year", item.getYear());
+                bundle.putString("MonthString", item.getMonthString());
+                bundle.putInt("Image", item.getImage());
+                Intent intent = new Intent(context, EditActivity.class);
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
+                context.startActivity(intent);
                 // databaseHandler.delete(realmDataItem);
             }
         });
@@ -107,14 +90,14 @@ public class ChartRecyclerAdapter extends RecyclerView.Adapter<ChartRecyclerAdap
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return super.getItemCount();
     }
 
-    public class mViewHolder extends RecyclerView.ViewHolder {
+    class mViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         TextView date, amount, category, subcategory, income;
 
-        public mViewHolder(View v) {
+        private mViewHolder(View v) {
             super(v);
             cardView = (CardView) v.findViewById(R.id.cardview);
             date = (TextView) v.findViewById(R.id.cardview_date);
@@ -123,5 +106,6 @@ public class ChartRecyclerAdapter extends RecyclerView.Adapter<ChartRecyclerAdap
             subcategory = (TextView) v.findViewById(R.id.cardview_subcategory);
             income = (TextView) v.findViewById(R.id.cardview_budget);
         }
+
     }
 }

@@ -24,8 +24,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.astuetz.PagerSlidingTabStrip;
-
 import java.util.ArrayList;
 
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentMonthly;
@@ -40,7 +38,6 @@ public class GraphActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private ViewPager mViewPager;
-    private PagerSlidingTabStrip mTabLayout;
 
     private SharedPreferences mSharedPreferences;
 
@@ -59,13 +56,7 @@ public class GraphActivity extends AppCompatActivity {
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
         mViewPager.setPageMargin(pageMargin);
-        mTabLayout.setViewPager(mViewPager);
-        mTabLayout.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
-            @Override
-            public void onTabReselected(int i) {
-                mViewPager.setCurrentItem(i);
-            }
-        });
+
     }
 
     @Override
@@ -182,7 +173,6 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     private void setupViewPager() {
-        mTabLayout = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());

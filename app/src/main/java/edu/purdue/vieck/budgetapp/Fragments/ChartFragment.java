@@ -31,30 +31,28 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
-import edu.purdue.vieck.budgetapp.Activities.ChartActivity;
 import edu.purdue.vieck.budgetapp.Adapters.ChartRecyclerAdapter;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
+import io.realm.RealmResults;
 
 
 public class ChartFragment extends Fragment {
 
-    int month, year, type;
+    private int month, year, type;
     RealmHandler mRealmHandler;
     private PieChart mPieChart;
     private EditText mBudgetView;
     private TextView mCurrencyLabel;
     private FloatingActionButton mConfirmButton, mCancelButton;
     //private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView mRecyclerView;
-    private ChartRecyclerAdapter mChartRecyclerAdapter;
     private Context mContext;
     private SharedPreferences mSharedPreferences;
 
@@ -86,21 +84,21 @@ public class ChartFragment extends Fragment {
 
         mRealmHandler = new RealmHandler(getActivity());
 
-        //mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.budget_recycler_view);
-        mChartRecyclerAdapter = new ChartRecyclerAdapter(mContext, month, year, type);
+        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        final RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.budget_recycler_view);
+        RealmResults<RealmDataItem> items = mRealmHandler.getDataByMonthYearAndType(month,year,type);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.setAdapter(mChartRecyclerAdapter);
+        mRecyclerView.setAdapter(new ChartRecyclerAdapter(mContext, items));
 
-        /*mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mChartRecyclerAdapter = new ChartRecyclerAdapter(mContext, month, year, type);
-                mRecyclerView.setAdapter(mChartRecyclerAdapter);
+               // mRecyclerView.getAdapter().inser
+               // mRecyclerView.setAdapter(mChartRecyclerAdapter);
                 setData(type);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
-        });*/
+        });
 
 
         mPieChart = (PieChart) view.findViewById(R.id.pie_chart);
@@ -197,7 +195,7 @@ public class ChartFragment extends Fragment {
                         mCancelButton.setVisibility(View.INVISIBLE);
                         mConfirmButton.setVisibility(View.INVISIBLE);
                     } catch (NumberFormatException ex) {
-                        Toast.makeText(getActivity(),"Invalid number",Toast.LENGTH_SHORT);
+                        Toast.makeText(getActivity(),"Invalid number",Toast.LENGTH_SHORT).show();
                     } finally {
                         InputMethodManager inputManager = (InputMethodManager)
                                 mContext.getSystemService(getActivity().INPUT_METHOD_SERVICE);
@@ -263,12 +261,12 @@ public class ChartFragment extends Fragment {
 
     public void updateAdapter(int position) {
         this.type = position;
-        if (mChartRecyclerAdapter != null) {
-            mChartRecyclerAdapter.updatePosition(position);
-            mPieChart.clear();
-            setData(position);
-            mPieChart.notifyDataSetChanged();
-        }
+//        if (mChartRecyclerAdapter != null) {
+//            mChartRecyclerAdapter.updatePosition(position);
+//            mPieChart.clear();
+//            setData(position);
+//            mPieChart.notifyDataSetChanged();
+//        }
     }
 
 }

@@ -8,6 +8,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,43 +16,63 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.astuetz.PagerSlidingTabStrip;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.purdue.vieck.budgetapp.Adapters.ChartRecyclerAdapter;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.Fragments.ChartFragment;
 import edu.purdue.vieck.budgetapp.R;
+import io.realm.RealmResults;
 
 
 public class ChartActivity extends AppCompatActivity {
-    ViewPagerAdapter adapter;
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private Spinner mSpinner;
-    private ViewPager mViewPager;
-    private PagerSlidingTabStrip mTabLayout;
-    private RealmHandler mRealmHandler;
     private Context mContext;
+
+    private int month, year, type;
+    RealmHandler mRealmHandler;
+    private PieChart mPieChart;
+    private EditText mBudgetView;
+    private TextView mCurrencyLabel;
+    private FloatingActionButton mConfirmButton, mCancelButton;
 
     private SharedPreferences mSharedPreferences;
 
@@ -76,20 +97,30 @@ public class ChartActivity extends AppCompatActivity {
         mSpinner = (Spinner) findViewById(R.id.spinner);
         mSpinner = setUpSpinner(mSpinner);
 
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(mViewPager);
+        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        final RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.budget_recycler_view);
+        RealmResults<RealmDataItem> items = mRealmHandler.getDataByMonthYearAndType(month,year,type);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerView.setAdapter(new ChartRecyclerAdapter(mContext, items));
 
-        mTabLayout = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        mTabLayout.setViewPager(mViewPager);
-        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
-                .getDisplayMetrics());
-        mViewPager.setPageMargin(pageMargin);
-        mTabLayout.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onTabReselected(int i) {
-                mViewPager.setCurrentItem(i);
+            public void onRefresh() {
+                // mRecyclerView.getAdapter().inser
+                // mRecyclerView.setAdapter(mChartRecyclerAdapter);
+                setData(type);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        mPieChart = (PieChart) findViewById(R.id.pie_chart);
+        mPieChart = setupPieChart(mPieChart);
+        mBudgetView = (EditText) findViewById(R.id.edittext_budget);
+        mCurrencyLabel = (TextView) findViewById(R.id.currency_textview);
+        mCancelButton = (FloatingActionButton) findViewById(R.id.budget_button_cancel);
+        mConfirmButton = (FloatingActionButton) findViewById(R.id.budget_button_ok);
+        setupBudget();
+        setData(type);
 
     }
 
@@ -194,7 +225,7 @@ public class ChartActivity extends AppCompatActivity {
      * Spinner to filter income, expenses, or both
      */
     private Spinner setUpSpinner(final Spinner spinner) {
-        spinnerPosition = 2;
+        spinnerPosition = 1;
         CharSequence[] simpleSpinner = getResources().getStringArray(R.array.chartarray);
         CustomArrayAdapter<CharSequence> spinnerArrayAdapter = new CustomArrayAdapter<>(this, simpleSpinner);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
@@ -213,7 +244,6 @@ public class ChartActivity extends AppCompatActivity {
                 }
                 spinnerPosition = position;
                 Toast.makeText(mContext, mSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-                adapter.changeType(position);
             }
 
             @Override
@@ -244,51 +274,193 @@ public class ChartActivity extends AppCompatActivity {
         }
     }
 
+    private PieChart setupPieChart(PieChart chart) {
+        chart.setDescription("");
+        chart.setDescriptionColor(getResources().getColor(R.color.White));
+        chart.setUsePercentValues(true);
+        chart.setDragDecelerationFrictionCoef(0.95f);
+        //mTypeface = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        chart.setDrawHoleEnabled(true);
+        //mPieChart.setHoleColor(Color.WHITE);
+        chart.setCenterTextColor(Color.BLACK);
+        chart.setTransparentCircleColor(Color.WHITE);
+        chart.setHoleRadius(55f);
+        chart.setTransparentCircleRadius(45f);
+        chart.setDrawCenterText(true);
+
+        chart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        chart.setRotationEnabled(true);
+
+        chart.setCenterTextSize(9.5f);
+
+        chart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
+        // mChart.spin(2000, 0, 360);*/
+
+        Legend l = chart.getLegend();
+        l.setPosition(Legend.LegendPosition.PIECHART_CENTER);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(-20f);
+        l.setXOffset(5f);
+        return chart;
+    }
+
+    private void setupBudget() {
+        if (month != -1 && year != -1) {
+            final float budget = mRealmHandler.getBudget(month, year);
+            mBudgetView.setText(budget + "");
+            mBudgetView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if (charSequence.length() != i1) {
+                        mCancelButton.setVisibility(View.VISIBLE);
+                        mConfirmButton.setVisibility(View.VISIBLE);
+                    }
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                }
+            });
+
+            mCancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mBudgetView.setText(budget+"");
+                    mCancelButton.setVisibility(View.INVISIBLE);
+                    mConfirmButton.setVisibility(View.INVISIBLE);
+                    InputMethodManager inputManager = (InputMethodManager)
+                            mContext.getSystemService(INPUT_METHOD_SERVICE);
+
+                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            });
+
+            mConfirmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        float budget = Float.parseFloat(mBudgetView.getText().toString());
+                        mRealmHandler.update(budget, month, year);
+                        mCancelButton.setVisibility(View.INVISIBLE);
+                        mConfirmButton.setVisibility(View.INVISIBLE);
+                    } catch (NumberFormatException ex) {
+                        Toast.makeText(getApplicationContext(),"Invalid number",Toast.LENGTH_SHORT).show();
+                    } finally {
+                        InputMethodManager inputManager = (InputMethodManager)
+                                mContext.getSystemService(INPUT_METHOD_SERVICE);
+
+                        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                }
+            });
+        } else {
+            float budget = mRealmHandler.getBudget();
+            mBudgetView.setText(budget+"");
+            mBudgetView.setFocusable(false);
+            mBudgetView.setEnabled(false);
+        }
+        mCurrencyLabel.setText(mSharedPreferences.getString("currencySymbol", Currency.getInstance(mContext.getResources().getConfiguration().locale).getSymbol()));
+    }
+
+    private void setData(int type) {
+
+        List<Entry> yVals = new ArrayList<Entry>();
+        List<RealmCategoryItem> categories = mRealmHandler.getCategoryParents();
+
+        // IMPORTANT: In a PieChart, no values (Entry) should have the same
+        // xIndex (even if from different DataSets), since no values can be
+        // drawn above each other.
+
+        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        if (!mRealmHandler.isEmpty(type)) {
+            int index = 0;
+            int total = 0;
+            for (int i = 0; i < categories.size(); i++) {
+                float amount = mRealmHandler.getSpecificDateAmountByType(categories.get(i).getCategory(), month, year, type);
+                if (amount != 0) {
+                    total += amount;
+                    yVals.add(new Entry(amount, index++));
+                    xVals.add(categories.get(i).getCategory());
+                    colors.add(categories.get(i).getColor());
+                }
+            }
+
+            if (total > 0) {
+                PieDataSet dataSet = new PieDataSet(yVals, "Category Legend");
+                dataSet.setSliceSpace(2f);
+                dataSet.setSelectionShift(5f);
+                dataSet.setColors(colors);
+
+                PieData data = new PieData(xVals, dataSet);
+                data.setValueFormatter(new PercentFormatter());
+                data.setValueTextSize(11f);
+                data.setValueTextColor(Color.WHITE);
+                mPieChart.setData(data);
+
+                // undo all highlights
+                mPieChart.highlightValues(null);
+
+                mPieChart.invalidate();
+            }
+        }
+    }
+
     /*
     * Get a list of all years back as a hashmap and sort them accorrding to year
      */
-    private void setupViewPager(ViewPager viewPager) {
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        String[] list = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-        ChartFragment chartFragment = new ChartFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("month", -1);
-        bundle.putInt("year", -1);
-        chartFragment.setArguments(bundle);
-        adapter.addFragment(chartFragment, "Total");
-        HashMap<Integer, List<RealmDataItem>> years = mRealmHandler.getAllYearsAsHashmap(2);
-
-        //Check if the arraylist is null first
-        if (years != null) {
-            ArrayList<Integer> uniqueMonths = new ArrayList<>();
-            Integer[] keys = years.keySet().toArray(new Integer[years.keySet().size()]);
-            // Sort years in ascending order
-            Arrays.sort(keys);
-            Log.d("Sorted Array",Arrays.toString(keys));
-
-            //Sort years in hashmap keys
-            for (int i : keys) {
-                List<RealmDataItem> realmDataItems = years.get(i);
-                for (RealmDataItem element : realmDataItems) {
-                    bundle = new Bundle();
-                    bundle.putInt("year", i);
-                    bundle.putInt("month", element.getMonth());
-                    chartFragment = new ChartFragment();
-                    chartFragment.setArguments(bundle);
-                    Log.d("Tabs", "YEAR " + i + " AND  MONTH " + element.getMonth() + " SIZE " + years.size());
-                    if (!uniqueMonths.contains(element.getMonth())) {
-                        Log.d("Month", element.getMonth() + " " + element.getMonthString());
-                        adapter.addFragment(chartFragment, element.getMonthString() + " " + i);
-                        uniqueMonths.add(element.getMonth());
-                    }
-                }
-                uniqueMonths.clear();
-            }
-        }
-
-        for (int i = 0; i < list.length; i++)
-            viewPager.setAdapter(adapter);
-    }
+//    private void setupViewPager(ViewPager viewPager) {
+//        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+//        String[] list = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+//        ChartFragment chartFragment = new ChartFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putInt("month", -1);
+//        bundle.putInt("year", -1);
+//        chartFragment.setArguments(bundle);
+//        adapter.addFragment(chartFragment, "Total");
+//        HashMap<Integer, List<RealmDataItem>> years = mRealmHandler.getAllYearsAsHashmap(2);
+//
+//        //Check if the arraylist is null first
+//        if (years != null) {
+//            ArrayList<Integer> uniqueMonths = new ArrayList<>();
+//            Integer[] keys = years.keySet().toArray(new Integer[years.keySet().size()]);
+//            // Sort years in ascending order
+//            Arrays.sort(keys);
+//            Log.d("Sorted Array",Arrays.toString(keys));
+//
+//            //Sort years in hashmap keys
+//            for (int i : keys) {
+//                List<RealmDataItem> realmDataItems = years.get(i);
+//                for (RealmDataItem element : realmDataItems) {
+//                    bundle = new Bundle();
+//                    bundle.putInt("year", i);
+//                    bundle.putInt("month", element.getMonth());
+//                    chartFragment = new ChartFragment();
+//                    chartFragment.setArguments(bundle);
+//                    Log.d("Tabs", "YEAR " + i + " AND  MONTH " + element.getMonth() + " SIZE " + years.size());
+//                    if (!uniqueMonths.contains(element.getMonth())) {
+//                        Log.d("Month", element.getMonth() + " " + element.getMonthString());
+//                        adapter.addFragment(chartFragment, element.getMonthString() + " " + i);
+//                        uniqueMonths.add(element.getMonth());
+//                    }
+//                }
+//                uniqueMonths.clear();
+//            }
+//        }
+//
+//        for (int i = 0; i < list.length; i++)
+//            viewPager.setAdapter(adapter);
+//    }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
         private final ArrayList<Fragment> mFragmentList = new ArrayList<>();
