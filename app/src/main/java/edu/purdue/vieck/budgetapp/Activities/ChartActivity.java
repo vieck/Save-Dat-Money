@@ -97,21 +97,22 @@ public class ChartActivity extends AppCompatActivity {
         mSpinner = (Spinner) findViewById(R.id.spinner);
         mSpinner = setUpSpinner(mSpinner);
 
-        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+//        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         final RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.budget_recycler_view);
-        RealmResults<RealmDataItem> items = mRealmHandler.getDataByMonthYearAndType(month,year,type);
+       // RealmResults<RealmDataItem> items = mRealmHandler.getDataByMonthYearAndType(month,year,type);
+        RealmResults<RealmDataItem> items = mRealmHandler.getAllRealmResults(1);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(new ChartRecyclerAdapter(mContext, items));
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // mRecyclerView.getAdapter().inser
-                // mRecyclerView.setAdapter(mChartRecyclerAdapter);
-                setData(type);
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                // mRecyclerView.getAdapter().inser
+//                // mRecyclerView.setAdapter(mChartRecyclerAdapter);
+//                setData(type);
+//                mSwipeRefreshLayout.setRefreshing(false);
+//            }
+//        });
 
         mPieChart = (PieChart) findViewById(R.id.pie_chart);
         mPieChart = setupPieChart(mPieChart);

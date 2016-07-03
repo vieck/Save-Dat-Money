@@ -28,21 +28,20 @@ import io.realm.RealmResults;
 public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem, ChartRecyclerAdapter.mViewHolder> {
 
     private String currencySymbol;
-    RealmHandler mRealmHandler;
     private SharedPreferences mSharedPreferences;
 
     public ChartRecyclerAdapter(Context context, RealmResults<RealmDataItem> data) {
 
         super(context, data, true);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        currencySymbol = mSharedPreferences.getString("currencySymbol",Currency.getInstance(context.getResources().getConfiguration().locale).getSymbol());
+        currencySymbol = mSharedPreferences.getString("currencySymbol", Currency.getInstance(context.getResources().getConfiguration().locale).getSymbol());
     }
 
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_chart, viewGroup, false);
         return new mViewHolder(view);
-}
+    }
 
     @Override
     public void onBindViewHolder(mViewHolder holder, final int i) {
@@ -62,30 +61,6 @@ public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem
             holder.amount.setTextColor(context.getResources().getColor(R.color.md_red_A400));
         }
         //viewHolder.income.setText("" + realmDataItem.getCategory());
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Deleted", "Deleted Item");
-                Bundle bundle = new Bundle();
-                bundle.putInt("Id", item.getId());
-                bundle.putBoolean("Type", item.getType());
-                bundle.putString("TypeString", item.getTypeString());
-                bundle.putString("Category", item.getCategory());
-                bundle.putString("Subcategory", item.getSubcategory());
-                bundle.putDouble("Amount", item.getAmount());
-                bundle.putString("Note", item.getNote());
-                bundle.putInt("Month", item.getMonth());
-                bundle.putInt("Day", item.getDay());
-                bundle.putInt("Year", item.getYear());
-                bundle.putString("MonthString", item.getMonthString());
-                bundle.putInt("Image", item.getImage());
-                Intent intent = new Intent(context, EditActivity.class);
-                intent.putExtras(bundle);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-                // databaseHandler.delete(realmDataItem);
-            }
-        });
     }
 
     @Override
@@ -93,7 +68,7 @@ public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem
         return super.getItemCount();
     }
 
-    class mViewHolder extends RecyclerView.ViewHolder {
+    class mViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
         TextView date, amount, category, subcategory, income;
 
@@ -107,5 +82,29 @@ public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem
             income = (TextView) v.findViewById(R.id.cardview_budget);
         }
 
+        @Override
+        public void onClick(View view) {
+            final RealmDataItem item = getItem(getAdapterPosition());
+
+            Log.d("Deleted", "Deleted Item");
+            Bundle bundle = new Bundle();
+            bundle.putInt("Id", item.getId());
+            bundle.putBoolean("Type", item.getType());
+            bundle.putString("TypeString", item.getTypeString());
+            bundle.putString("Category", item.getCategory());
+            bundle.putString("Subcategory", item.getSubcategory());
+            bundle.putDouble("Amount", item.getAmount());
+            bundle.putString("Note", item.getNote());
+            bundle.putInt("Month", item.getMonth());
+            bundle.putInt("Day", item.getDay());
+            bundle.putInt("Year", item.getYear());
+            bundle.putString("MonthString", item.getMonthString());
+            bundle.putInt("Image", item.getImage());
+            Intent intent = new Intent(context, EditActivity.class);
+            intent.putExtras(bundle);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+            // databaseHandler.delete(realmDataItem);
+        }
     }
 }
