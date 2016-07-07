@@ -86,7 +86,7 @@ public class ChartFragment extends Fragment {
 
         final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         final RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.budget_recycler_view);
-        RealmResults<RealmDataItem> items = mRealmHandler.getDataByMonthYearAndType(month,year,type);
+        RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(month,year,type);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(new ChartRecyclerAdapter(mContext, items));
 

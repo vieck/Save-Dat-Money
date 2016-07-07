@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
@@ -56,7 +55,7 @@ public class GraphFragmentComparison extends Fragment {
     /* Creates a chart to compare */
     private void generateChart(BarChart chartView) {
 
-        RealmResults<RealmDataItem> stack = mRealmHandler.getAllRealmResults(0);
+        RealmResults<RealmDataItem> stack = mRealmHandler.getResultsByFilter();
         HashMap<String, Float> uniqueMonths = mRealmHandler.getAllMonthsAsOneElement(0);
         List<BarEntry> entryList = new ArrayList<>();
         Set<String> keys = uniqueMonths.keySet();

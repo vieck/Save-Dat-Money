@@ -1,6 +1,7 @@
 package edu.purdue.vieck.budgetapp.Activities;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,21 +11,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +26,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,33 +42,36 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Currency;
-import java.util.HashMap;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.Adapters.ChartRecyclerAdapter;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
-import edu.purdue.vieck.budgetapp.Fragments.ChartFragment;
+import edu.purdue.vieck.budgetapp.Dialogs.ChartDatePicker;
 import edu.purdue.vieck.budgetapp.R;
 import io.realm.RealmResults;
 
 
-public class ChartActivity extends AppCompatActivity {
+public class ChartActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private Spinner mSpinner;
     private Context mContext;
 
-    private int month, year, type;
+    private int day, month, year, type;
     RealmHandler mRealmHandler;
     private PieChart mPieChart;
     private EditText mBudgetView;
-    private TextView mCurrencyLabel;
+    private TextView mCurrencyLabel, mDateLabel;
     private FloatingActionButton mConfirmButton, mCancelButton;
+
+    private ImageButton leftArrow, rightArrow;
+
+    private RecyclerView mRecyclerView;
 
     private SharedPreferences mSharedPreferences;
 
@@ -94,13 +93,16 @@ public class ChartActivity extends AppCompatActivity {
 
         mContext = this;
 
+        day = -1;
+        month = -1;
+        year = -1;
+
         mSpinner = (Spinner) findViewById(R.id.spinner);
         mSpinner = setUpSpinner(mSpinner);
 
 //        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        final RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.budget_recycler_view);
-       // RealmResults<RealmDataItem> items = mRealmHandler.getDataByMonthYearAndType(month,year,type);
-        RealmResults<RealmDataItem> items = mRealmHandler.getAllRealmResults(1);
+        mRecyclerView = (RecyclerView) findViewById(R.id.budget_recycler_view);
+        RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(new ChartRecyclerAdapter(mContext, items));
 
@@ -120,9 +122,20 @@ public class ChartActivity extends AppCompatActivity {
         mCurrencyLabel = (TextView) findViewById(R.id.currency_textview);
         mCancelButton = (FloatingActionButton) findViewById(R.id.budget_button_cancel);
         mConfirmButton = (FloatingActionButton) findViewById(R.id.budget_button_ok);
+
+        leftArrow = (ImageButton) findViewById(R.id.left_arrow);
+        rightArrow = (ImageButton) findViewById(R.id.right_arrow);
         setupBudget();
         setData(type);
 
+        mDateLabel = (TextView) findViewById(R.id.date_display_text);
+
+        Calendar c = Calendar.getInstance();
+        day = c.get(Calendar.DAY_OF_MONTH) + 1;
+        month = c.get(Calendar.MONTH) + 1;
+        year = c.get(Calendar.YEAR);
+        setDateLabel(month, year);
+        setupDateArrows();
     }
 
     @Override
@@ -147,6 +160,9 @@ public class ChartActivity extends AppCompatActivity {
             startActivity(new Intent(this, AddActivity.class));
             finish();
             return true;
+        } else if (id == R.id.action_date) {
+            ChartDatePicker datePicker = new ChartDatePicker();
+            datePicker.show(getFragmentManager(), "datePicker");
         }
 
         return super.onOptionsItemSelected(item);
@@ -236,7 +252,7 @@ public class ChartActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if ((adapterView.getChildAt(0)) != null){
+                if ((adapterView.getChildAt(0)) != null) {
                     if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
                         ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
                     } else {
@@ -245,6 +261,21 @@ public class ChartActivity extends AppCompatActivity {
                 }
                 spinnerPosition = position;
                 Toast.makeText(mContext, mSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+                Calendar c = Calendar.getInstance();
+                switch (mSpinner.getSelectedItemPosition()) {
+                    case 0:
+                        setDateLabel();
+                        break;
+                    case 1:
+                        setDateLabel(c.get(Calendar.DAY_OF_MONTH) + 1, c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+                        break;
+                    case 2:
+                        setDateLabel(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+                        break;
+                    case 3:
+                        setDateLabel(c.get(Calendar.YEAR));
+                        break;
+                }
             }
 
             @Override
@@ -255,7 +286,7 @@ public class ChartActivity extends AppCompatActivity {
         return spinner;
     }
 
-    class CustomArrayAdapter<T> extends ArrayAdapter<T> {
+    private class CustomArrayAdapter<T> extends ArrayAdapter<T> {
         public CustomArrayAdapter(Context context, T[] objects) {
             super(context, R.layout.simple_spinner_item, objects);
         }
@@ -266,13 +297,106 @@ public class ChartActivity extends AppCompatActivity {
             TextView textView = (TextView) view.findViewById(R.id.simple_spinner_text_view);
             if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
                 textView.setTextColor(Color.BLACK);
-            } else  {
+            } else {
                 textView.setTextColor(Color.WHITE);
             }
             textView.setBackgroundColor(actionBarColor);
             return view;
 
         }
+    }
+
+    private void setupDateArrows() {
+        leftArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (mSpinner.getSelectedItemPosition()) {
+                    case 1:
+                        day--;
+                        if (day > 1 && day <= 31) {
+                            setDateLabel(day, month, year);
+                        }
+                        break;
+                    case 2:
+                        if (month == 1) {
+                            year--;
+                            month = 12;
+                        } else {
+                            month--;
+                        }
+                        setDateLabel(month, year);
+                        break;
+                    case 3:
+                        if (year > 1920) {
+                            year--;
+                            setDateLabel(year);
+                        }
+                        break;
+                }
+            }
+        });
+        rightArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (mSpinner.getSelectedItemPosition()) {
+                    case 1:
+                        day++;
+                        if (day > 1 && day <= 31) {
+                            setDateLabel(day, month, year);
+                        }
+                        break;
+                    case 2:
+                        if (month == 12) {
+                            year++;
+                            month = 1;
+                        } else {
+                            month++;
+                        }
+                        setDateLabel(month, year);
+                        break;
+                    case 3:
+                        year++;
+                        setDateLabel(year);
+                        break;
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        this.day = day + 1;
+        this.month = month + 1;
+        this.year = year;
+        setDateLabel(month + 1, year);
+    }
+
+    private void setDateLabel(int day, int month, int year) {
+        mDateLabel.setText(month + "/" + day + "/" + year);
+        RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(day, month, year, 2);
+        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
+        adapter.updateData(items);
+    }
+
+    private void setDateLabel(int month, int year) {
+        mDateLabel.setText(month + "/" + year);
+        RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(month, year, 2);
+        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
+        adapter.updateData(items);
+    }
+
+    private void setDateLabel(int year) {
+        mDateLabel.setText("" + year);
+        RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(year, 2);
+        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
+        adapter.updateData(items);
+    }
+
+    private void setDateLabel() {
+        mDateLabel.setText("All");
+        RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter();
+        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
+        adapter.updateData(items);
     }
 
     private PieChart setupPieChart(PieChart chart) {
@@ -333,7 +457,7 @@ public class ChartActivity extends AppCompatActivity {
             mCancelButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mBudgetView.setText(budget+"");
+                    mBudgetView.setText(budget + "");
                     mCancelButton.setVisibility(View.INVISIBLE);
                     mConfirmButton.setVisibility(View.INVISIBLE);
                     InputMethodManager inputManager = (InputMethodManager)
@@ -353,7 +477,7 @@ public class ChartActivity extends AppCompatActivity {
                         mCancelButton.setVisibility(View.INVISIBLE);
                         mConfirmButton.setVisibility(View.INVISIBLE);
                     } catch (NumberFormatException ex) {
-                        Toast.makeText(getApplicationContext(),"Invalid number",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Invalid number", Toast.LENGTH_SHORT).show();
                     } finally {
                         InputMethodManager inputManager = (InputMethodManager)
                                 mContext.getSystemService(INPUT_METHOD_SERVICE);
@@ -365,7 +489,7 @@ public class ChartActivity extends AppCompatActivity {
             });
         } else {
             float budget = mRealmHandler.getBudget();
-            mBudgetView.setText(budget+"");
+            mBudgetView.setText(budget + "");
             mBudgetView.setFocusable(false);
             mBudgetView.setEnabled(false);
         }
@@ -463,65 +587,4 @@ public class ChartActivity extends AppCompatActivity {
 //            viewPager.setAdapter(adapter);
 //    }
 
-    static class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final ArrayList<Fragment> mFragmentList = new ArrayList<>();
-        private final ArrayList<String> mTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            mFragmentList.get(position);
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mTitleList.add(title);
-        }
-
-        public void replaceFragment(Fragment fragment, String title) {
-            for (int i = 0; i < mTitleList.size(); i++) {
-                if (mTitleList.get(i).equals(title)) {
-                    mFragmentList.set(i, fragment);
-                    notifyDataSetChanged();
-                    return;
-                }
-            }
-        }
-
-        public void removeFragment(int position) {
-            mFragmentList.remove(position);
-            notifyDataSetChanged();
-        }
-
-        // Change the types of all tabs between income, expense, and both
-        public void changeType(int type) {
-            Log.d("Fragments", "" + mFragmentList.size());
-            for (int i = 0; i < mFragmentList.size(); i++) {
-                ChartFragment fragment = (ChartFragment) mFragmentList.get(i);
-                if (fragment.getArguments() != null) {
-                    fragment.getArguments().putInt("type", type);
-                }
-                fragment.updateAdapter(type);
-            }
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mTitleList.get(position);
-        }
-    }
-
-    public int getSpinnerPosition() {
-        return spinnerPosition;
-    }
 }

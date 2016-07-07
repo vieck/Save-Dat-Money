@@ -28,89 +28,128 @@
                     android:id="@+id/spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="16dp"
                     android:background="?android:colorPrimary" />
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
 
-            <RelativeLayout
-                android:id="@+id/fragment_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize">
 
-                <FrameLayout
-                    android:id="@+id/frame_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_alignParentTop="true"
+            <RelativeLayout
+                android:id="@+id/date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp">
+
+                <ImageButton
+                    android:id="@+id/left_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/date_display_text"
+                    android:tint="@color/Black"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_arrow_back_black_24dp" />
+
+                <TextView
+                    android:id="@+id/date_display_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginEnd="24dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="20dp">
+                    android:gravity="center"
+                    android:textColor="@color/Black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/pie_chart"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/currency_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="$"
-                            android:textColor="@color/md_black_1000"
-                            android:textSize="16sp" />
-
-                        <EditText
-                            android:id="@+id/edittext_budget"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBaseline="@id/currency_textview"
-                            android:layout_toStartOf="@id/currency_textview"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:hint="@string/budget"
-                            android:inputType="numberDecimal"
-                            android:textColor="@color/md_black_1000"
-                            android:textSize="16sp" />
-                    </RelativeLayout>
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/budget_button_cancel"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_gravity="bottom|start|left"
-                        android:src="@android:drawable/ic_menu_close_clear_cancel"
-                        android:tint="@color/md_white_1000"
-                        android:visibility="invisible"
-                        app:backgroundTint="@color/md_red_400" />
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/budget_button_ok"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_gravity="bottom|end|right"
-                        android:src="@drawable/ic_confirm"
-                        android:tint="@color/md_white_1000"
-                        android:visibility="invisible"
-                        app:backgroundTint="@color/md_green_400" />
-
-
-
-                </FrameLayout>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/budget_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scrollbars="vertical"
-                    android:layout_below="@id/frame_layout"/>
+                <ImageButton
+                    android:id="@+id/right_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/date_display_text"
+                    android:tint="@color/Black"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_arrow_forward_black_24dp" />
             </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_below="@id/date_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pie_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/currency_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="$"
+                        android:textColor="@color/md_black_1000"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edittext_budget"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/currency_textview"
+                        android:layout_toStartOf="@id/currency_textview"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/budget"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/md_black_1000"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/budget_button_cancel"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="bottom|start|left"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:tint="@color/md_white_1000"
+                    android:visibility="invisible"
+                    app:backgroundTint="@color/md_red_400" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/budget_button_ok"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="bottom|end|right"
+                    android:src="@drawable/ic_confirm"
+                    android:tint="@color/md_white_1000"
+                    android:visibility="invisible"
+                    app:backgroundTint="@color/md_green_400" />
+
+
+            </FrameLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/budget_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/frame_layout"
+                android:scrollbars="vertical" />
+        </RelativeLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 

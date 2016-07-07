@@ -77,32 +77,32 @@ public class RealmHandler {
     }
 
     public void update(final RealmCategoryItem realmCategoryItem) {
-                createRealm();
-                realm.beginTransaction();
-                realm.copyToRealmOrUpdate(realmCategoryItem);
-                realm.commitTransaction();
-                realm.close();
+        createRealm();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(realmCategoryItem);
+        realm.commitTransaction();
+        realm.close();
     }
 
     public void update(final RealmDataItem realmDataItem) {
-                createRealm();
-                realm.beginTransaction();
-                realm.copyToRealmOrUpdate(realmDataItem);
-                realm.commitTransaction();
-                realm.close();
+        createRealm();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(realmDataItem);
+        realm.commitTransaction();
+        realm.close();
     }
 
 
     public void update(final float budget, final int month, final int year) {
-                createRealm();
-                realm.beginTransaction();
-                RealmQuery query = realm.where(RealmBudgetItem.class).equalTo("key", month + "/" + year);
-                RealmResults<RealmBudgetItem> items = query.findAll();
-                for (int i = 0; i < items.size(); i++) {
-                    items.get(i).setBudget(budget);
-                }
-                realm.copyToRealmOrUpdate(items);
-                realm.commitTransaction();
+        createRealm();
+        realm.beginTransaction();
+        RealmQuery query = realm.where(RealmBudgetItem.class).equalTo("key", month + "/" + year);
+        RealmResults<RealmBudgetItem> items = query.findAll();
+        for (int i = 0; i < items.size(); i++) {
+            items.get(i).setBudget(budget);
+        }
+        realm.copyToRealmOrUpdate(items);
+        realm.commitTransaction();
     }
 
     public RealmResults<RealmCategoryItem> getCategoryParents() {
@@ -169,45 +169,31 @@ public class RealmHandler {
     }
 
 
-    public RealmResults<RealmDataItem> getAllRealmResults(int type) {
-        createRealm();
-
-        RealmQuery query = realm.where(RealmDataItem.class);
-
-        if (type == 1) {
-            query.equalTo("type", true);
-        } else {
-            query.equalTo("type", false);
-        }
-
-        return query.findAll().sort("month", Sort.ASCENDING).sort("year", Sort.DESCENDING);
-    }
-
-    public HashMap<Integer, List<RealmDataItem>> getAllYearsAsHashmap(int type) {
-        HashMap<Integer, List<RealmDataItem>> mDataset = new HashMap<>();
-        createRealm();
-        RealmQuery query = realm.where(RealmDataItem.class);
-        if (type == 1) {
-            query.equalTo("type", true);
-        } else {
-            query.equalTo("type", false);
-        }
-
-        RealmResults<RealmDataItem> results = query.findAll().sort("month", Sort.DESCENDING).sort("year", Sort.DESCENDING);
-
-        for (RealmDataItem realmDataItem : results) {
-            if (mDataset.get(realmDataItem.getYear()) == null) {
-                List<RealmDataItem> list = new ArrayList<>();
-                list.add(realmDataItem);
-                mDataset.put(realmDataItem.getYear(), list);
-            } else {
-                List<RealmDataItem> list = mDataset.get(realmDataItem.getYear());
-                list.add(realmDataItem);
-                mDataset.put(realmDataItem.getYear(), list);
-            }
-        }
-        return mDataset;
-    }
+//    public HashMap<Integer, List<RealmDataItem>> getAllYearsAsHashmap(int type) {
+//        HashMap<Integer, List<RealmDataItem>> mDataset = new HashMap<>();
+//        createRealm();
+//        RealmQuery query = realm.where(RealmDataItem.class);
+//        if (type == 1) {
+//            query.equalTo("type", true);
+//        } else {
+//            query.equalTo("type", false);
+//        }
+//
+//        RealmResults<RealmDataItem> results = query.findAll().sort("month", Sort.DESCENDING).sort("year", Sort.DESCENDING);
+//
+//        for (RealmDataItem realmDataItem : results) {
+//            if (mDataset.get(realmDataItem.getYear()) == null) {
+//                List<RealmDataItem> list = new ArrayList<>();
+//                list.add(realmDataItem);
+//                mDataset.put(realmDataItem.getYear(), list);
+//            } else {
+//                List<RealmDataItem> list = mDataset.get(realmDataItem.getYear());
+//                list.add(realmDataItem);
+//                mDataset.put(realmDataItem.getYear(), list);
+//            }
+//        }
+//        return mDataset;
+//    }
 
     public List<RealmDataItem> getAllUniqueMonthsAsList(int type) {
         List<RealmDataItem> items = new ArrayList<>();
@@ -303,17 +289,56 @@ public class RealmHandler {
         return hashMap;
     }
 
-    public RealmResults<RealmDataItem> getDataByMonthYearAndType(int month, int year, int type) {
+    public RealmResults<RealmDataItem> getResultsByFilter() {
+        createRealm();
+
+        RealmQuery query = realm.where(RealmDataItem.class);
+
+//        if (type == 1) {
+//            query.equalTo("type", true);
+//        } else {
+//            query.equalTo("type", false);
+//        }
+
+        return query.findAll().sort("day",Sort.DESCENDING).sort("month", Sort.DESCENDING).sort("year", Sort.DESCENDING);
+    }
+
+    public RealmResults<RealmDataItem> getResultsByFilter(int year, int type) {
         createRealm();
         RealmQuery query = realm.where(RealmDataItem.class);
-        if (type == 2) {
-            query.equalTo("month", month).equalTo("year", year);
-        } else if (type == 1) {
-            query.equalTo("type", true).equalTo("month", month).equalTo("year", year);
-        } else {
-            query.equalTo("type", false).equalTo("month", month).equalTo("year", year);
+        query.equalTo("year", year);
+        if (type == 1) {
+            query.equalTo("type", true);
+        } else if (type == 0){
+            query.equalTo("type", false);
         }
-        return query.findAll().sort("month", Sort.DESCENDING).sort("year", Sort.DESCENDING);
+        return query.findAll().sort("day",Sort.DESCENDING).sort("month",Sort.DESCENDING);
+    }
+
+    public RealmResults<RealmDataItem> getResultsByFilter(int month, int year, int type) {
+        createRealm();
+        RealmQuery query = realm.where(RealmDataItem.class);
+        query.equalTo("month", month).equalTo("year", year);
+        if (type == 1) {
+            query.equalTo("type", true);
+        } else if (type == 0){
+            query.equalTo("type", false);
+        }
+        return query.findAll().sort("day",Sort.DESCENDING).sort("month",Sort.DESCENDING);
+    }
+
+    public RealmResults<RealmDataItem> getResultsByFilter(int day, int month, int year, int type) {
+        createRealm();
+        RealmQuery query = realm.where(RealmDataItem.class);
+
+        query.equalTo("day", day).equalTo("month", month).equalTo("year", year);
+
+        if (type == 1) {
+            query.equalTo("type", true);
+        } else if (type == 0) {
+            query.equalTo("type", false);
+        }
+        return query.findAll();
     }
 
     public float getSpecificDateAmount(int month, int year, int type) {
