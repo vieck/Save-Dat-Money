@@ -51,6 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textview_note"
+        android:layout_centerHorizontal="true"
         android:hint="@string/category" />
 
     <EditText
@@ -59,13 +60,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/edittext_category"
+        android:layout_centerHorizontal="true"
         android:hint="@string/subcategory"/>
 
     <RadioGroup
         android:id="@+id/radio_group"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/edittext_subcategory"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="12dp"
         android:layout_marginStart="50dp"
         android:orientation="horizontal">
