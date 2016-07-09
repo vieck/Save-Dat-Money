@@ -80,6 +80,7 @@ public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem
             category = (TextView) v.findViewById(R.id.cardview_category);
             subcategory = (TextView) v.findViewById(R.id.cardview_subcategory);
             income = (TextView) v.findViewById(R.id.cardview_budget);
+            cardView.setOnClickListener(this);
         }
 
         @Override

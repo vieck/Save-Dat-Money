@@ -44,6 +44,8 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.Adapters.ChartRecyclerAdapter;
@@ -55,7 +57,7 @@ import edu.purdue.vieck.budgetapp.R;
 import io.realm.RealmResults;
 
 
-public class ChartActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class ChartActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -78,6 +80,11 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     private int actionBarColor;
 
     private int spinnerPosition;
+
+    ChartDatePicker datePicker;
+
+    // Use to change date
+    private GregorianCalendar date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,10 +137,10 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
         mDateLabel = (TextView) findViewById(R.id.date_display_text);
 
-        Calendar c = Calendar.getInstance();
-        day = c.get(Calendar.DAY_OF_MONTH) + 1;
-        month = c.get(Calendar.MONTH) + 1;
-        year = c.get(Calendar.YEAR);
+        date = new GregorianCalendar();
+        day = date.get(Calendar.DAY_OF_MONTH);
+        month = date.get(Calendar.MONTH) + 1;
+        year = date.get(Calendar.YEAR);
         setDateLabel(month, year);
         setupDateArrows();
     }
@@ -161,7 +168,8 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             finish();
             return true;
         } else if (id == R.id.action_date) {
-            ChartDatePicker datePicker = new ChartDatePicker();
+            datePicker = new ChartDatePicker();
+
             datePicker.show(getFragmentManager(), "datePicker");
         }
 
@@ -248,7 +256,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         spinner.setBackgroundColor(actionBarColor);
         spinner.setAdapter(spinnerArrayAdapter);
-        spinner.setSelection(2);
+        spinner.setSelection(0);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -267,12 +275,29 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
                         setDateLabel();
                         break;
                     case 1:
-                        setDateLabel(c.get(Calendar.DAY_OF_MONTH) + 1, c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+                        setDateLabel(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
                         break;
                     case 2:
-                        setDateLabel(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+                        date.add(Calendar.WEEK_OF_YEAR,-1);
+
+                        int weekday = date.get(Calendar.DAY_OF_WEEK);
+
+                        int firstDay, lastDay, firstMonth, secondMonth;
+                        date.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+                        firstDay = date.get(Calendar.DAY_OF_MONTH);
+                        firstMonth = date.get(Calendar.MONTH);
+
+                        date.add(Calendar.DATE, 7);
+                        lastDay = date.get(Calendar.DAY_OF_MONTH);
+                        secondMonth = date.get(Calendar.MONTH);
+
+                        date.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                        setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, c.get(Calendar.YEAR));
                         break;
                     case 3:
+                        setDateLabel(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+                        break;
+                    case 4:
                         setDateLabel(c.get(Calendar.YEAR));
                         break;
                 }
@@ -312,25 +337,33 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             public void onClick(View view) {
                 switch (mSpinner.getSelectedItemPosition()) {
                     case 1:
-                        day--;
-                        if (day > 1 && day <= 31) {
-                            setDateLabel(day, month, year);
-                        }
+                        date.add(Calendar.DAY_OF_MONTH,-1);
+                        setDateLabel(date.get(Calendar.DAY_OF_MONTH),date.get(Calendar.MONTH)+1,date.get(Calendar.YEAR));
                         break;
                     case 2:
-                        if (month == 1) {
-                            year--;
-                            month = 12;
+                        int firstDay, lastDay, oldDay, firstMonth, secondMonth;
+                        date.add(Calendar.WEEK_OF_YEAR,-1);
+                        oldDay = date.get(Calendar.DAY_OF_MONTH);
+                        date.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+                        firstDay = date.get(Calendar.DAY_OF_MONTH);
+                        firstMonth = date.get(Calendar.MONTH);
+                        date.add(Calendar.DATE, 7);
+                        lastDay = date.get(Calendar.DAY_OF_MONTH);
+                        secondMonth = date.get(Calendar.MONTH);
+                        date.set(Calendar.DAY_OF_MONTH, oldDay);
+                        if (firstMonth > secondMonth) {
+                            setDateLabel(firstDay, lastDay,secondMonth+1, firstMonth + 1, date.get(Calendar.YEAR));
                         } else {
-                            month--;
+                            setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
                         }
-                        setDateLabel(month, year);
                         break;
                     case 3:
-                        if (year > 1920) {
-                            year--;
-                            setDateLabel(year);
-                        }
+                        date.add(Calendar.MONTH,-1);
+                        setDateLabel(date.get(Calendar.MONTH)+1,date.get(Calendar.YEAR));
+                        break;
+                    case 4:
+                        date.add(Calendar.YEAR,-1);
+                        setDateLabel(date.get(Calendar.YEAR));
                         break;
                 }
             }
@@ -340,23 +373,29 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             public void onClick(View view) {
                 switch (mSpinner.getSelectedItemPosition()) {
                     case 1:
-                        day++;
-                        if (day > 1 && day <= 31) {
-                            setDateLabel(day, month, year);
-                        }
+                        date.add(Calendar.DAY_OF_MONTH,1);
+                        setDateLabel(date.get(Calendar.DAY_OF_MONTH),date.get(Calendar.MONTH)+1,date.get(Calendar.YEAR));
                         break;
                     case 2:
-                        if (month == 12) {
-                            year++;
-                            month = 1;
-                        } else {
-                            month++;
-                        }
-                        setDateLabel(month, year);
+                        int firstDay, lastDay, oldDay, firstMonth, secondMonth;
+                        date.add(Calendar.WEEK_OF_YEAR,1);
+                        oldDay = date.get(Calendar.DAY_OF_MONTH);
+                        date.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+                        firstDay = date.get(Calendar.DAY_OF_MONTH);
+                        firstMonth = date.get(Calendar.MONTH);
+                        date.add(Calendar.DATE, 7);
+                        lastDay = date.get(Calendar.DAY_OF_MONTH);
+                        secondMonth = date.get(Calendar.MONTH);
+                        date.set(Calendar.DAY_OF_MONTH, oldDay);
+                        setDateLabel(firstDay,lastDay,firstMonth+1, secondMonth+1,date.get(Calendar.YEAR));
                         break;
                     case 3:
-                        year++;
-                        setDateLabel(year);
+                        date.add(Calendar.MONTH,1);
+                        setDateLabel(date.get(Calendar.MONTH)+1,date.get(Calendar.YEAR));
+                        break;
+                    case 4:
+                        date.add(Calendar.YEAR,1);
+                        setDateLabel(date.get(Calendar.YEAR));
                         break;
                 }
             }
@@ -365,15 +404,21 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        this.day = day + 1;
-        this.month = month + 1;
-        this.year = year;
+        date.set(day,month,year);
         setDateLabel(month + 1, year);
     }
+
 
     private void setDateLabel(int day, int month, int year) {
         mDateLabel.setText(month + "/" + day + "/" + year);
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(day, month, year, 2);
+        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
+        adapter.updateData(items);
+    }
+
+    private void setDateLabel(int startDay, int endDay, int firstMonth, int secondMonth, int year) {
+        mDateLabel.setText(firstMonth + "/" + startDay + "/" + year + " - " + secondMonth + "/" + endDay + "/" + year);
+        RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(startDay,endDay, firstMonth, secondMonth, year, 2);
         ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
         adapter.updateData(items);
     }
@@ -540,7 +585,6 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             }
         }
     }
-
     /*
     * Get a list of all years back as a hashmap and sort them accorrding to year
      */

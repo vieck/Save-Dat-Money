@@ -46,6 +46,7 @@
     <string-array name="chartarray">
         <item>All</item>
         <item>Day</item>
+        <item>Week</item>
         <item>Month</item>
         <item>Year</item>
     </string-array>

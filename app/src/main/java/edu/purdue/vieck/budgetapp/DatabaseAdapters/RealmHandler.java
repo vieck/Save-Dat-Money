@@ -300,7 +300,7 @@ public class RealmHandler {
 //            query.equalTo("type", false);
 //        }
 
-        return query.findAll().sort("day",Sort.DESCENDING).sort("month", Sort.DESCENDING).sort("year", Sort.DESCENDING);
+        return query.findAll().sort("day", Sort.DESCENDING).sort("month", Sort.DESCENDING).sort("year", Sort.DESCENDING);
     }
 
     public RealmResults<RealmDataItem> getResultsByFilter(int year, int type) {
@@ -309,10 +309,10 @@ public class RealmHandler {
         query.equalTo("year", year);
         if (type == 1) {
             query.equalTo("type", true);
-        } else if (type == 0){
+        } else if (type == 0) {
             query.equalTo("type", false);
         }
-        return query.findAll().sort("day",Sort.DESCENDING).sort("month",Sort.DESCENDING);
+        return query.findAll().sort("day", Sort.DESCENDING).sort("month", Sort.DESCENDING);
     }
 
     public RealmResults<RealmDataItem> getResultsByFilter(int month, int year, int type) {
@@ -321,10 +321,10 @@ public class RealmHandler {
         query.equalTo("month", month).equalTo("year", year);
         if (type == 1) {
             query.equalTo("type", true);
-        } else if (type == 0){
+        } else if (type == 0) {
             query.equalTo("type", false);
         }
-        return query.findAll().sort("day",Sort.DESCENDING).sort("month",Sort.DESCENDING);
+        return query.findAll().sort("day", Sort.DESCENDING).sort("month", Sort.DESCENDING);
     }
 
     public RealmResults<RealmDataItem> getResultsByFilter(int day, int month, int year, int type) {
@@ -332,6 +332,35 @@ public class RealmHandler {
         RealmQuery query = realm.where(RealmDataItem.class);
 
         query.equalTo("day", day).equalTo("month", month).equalTo("year", year);
+
+        if (type == 1) {
+            query.equalTo("type", true);
+        } else if (type == 0) {
+            query.equalTo("type", false);
+        }
+        return query.findAll();
+    }
+
+    public RealmResults<RealmDataItem> getResultsByFilter(int startDay, int endDay, int firstMonth, int secondMonth, int year, int type) {
+        createRealm();
+        RealmQuery query = realm.where(RealmDataItem.class);
+
+        if (firstMonth != secondMonth) {
+            query.beginGroup()
+                    .between("day", startDay - 1, 32)
+                    .or()
+                    .between("day", 0, endDay + 1)
+                    .endGroup();
+            query.beginGroup().equalTo("month",firstMonth).or().equalTo("month",secondMonth).endGroup();
+        } else {
+            query.beginGroup()
+                    .greaterThanOrEqualTo("day", startDay)
+                    .or()
+                    .lessThanOrEqualTo("day", endDay)
+                    .endGroup();
+            query.equalTo("year",firstMonth);
+        }
+        query.equalTo("year", year);
 
         if (type == 1) {
             query.equalTo("type", true);
