@@ -70,7 +70,7 @@ public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem
 
     class mViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
-        TextView date, amount, category, subcategory, income;
+        TextView date, amount, category, subcategory;
 
         private mViewHolder(View v) {
             super(v);
@@ -79,7 +79,6 @@ public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem
             amount = (TextView) v.findViewById(R.id.cardview_amount);
             category = (TextView) v.findViewById(R.id.cardview_category);
             subcategory = (TextView) v.findViewById(R.id.cardview_subcategory);
-            income = (TextView) v.findViewById(R.id.cardview_budget);
             cardView.setOnClickListener(this);
         }
 
