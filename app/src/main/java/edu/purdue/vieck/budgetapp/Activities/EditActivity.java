@@ -34,6 +34,7 @@ public class EditActivity extends AppCompatActivity {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         actionBarColor = mSharedPreferences.getInt("actionBarColor",getResources().getColor(R.color.md_black_1000));
         setUpToolbar();
+
         Bundle bundle = getIntent().getExtras();
         editDataFragment = new EditDataFragment();
         editDataFragment.setArguments(bundle);

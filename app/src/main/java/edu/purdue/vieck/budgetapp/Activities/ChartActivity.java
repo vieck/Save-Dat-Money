@@ -13,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -109,21 +110,21 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         mSpinner = (Spinner) findViewById(R.id.spinner);
         mSpinner = setUpSpinner(mSpinner);
 
-//        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         mRecyclerView = (RecyclerView) findViewById(R.id.budget_recycler_view);
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(new ChartRecyclerAdapter(mContext, items));
 
-//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                // mRecyclerView.getAdapter().inser
-//                // mRecyclerView.setAdapter(mChartRecyclerAdapter);
-//                setData(type);
-//                mSwipeRefreshLayout.setRefreshing(false);
-//            }
-//        });
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // mRecyclerView.getAdapter().inser
+                // mRecyclerView.setAdapter(mChartRecyclerAdapter);
+                setData(type);
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         mPieChart = (PieChart) findViewById(R.id.pie_chart);
         mPieChart = setupPieChart(mPieChart);

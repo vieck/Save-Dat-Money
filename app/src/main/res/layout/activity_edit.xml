@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/header_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,6 +24,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_next"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="28dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_action_next_item"
+        android:stateListAnimator="@anim/button_elevation"
+        android:tint="?android:colorPrimary"
+        app:backgroundTint="?android:attr/colorPrimaryDark"
+        app:borderWidth="0dp"
+        android:visibility="gone"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_back"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="28dp"
+        android:layout_marginStart="28dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_action_previous_item"
+        android:stateListAnimator="@anim/button_elevation"
+        android:tint="?android:colorPrimary"
+        app:backgroundTint="?android:attr/colorPrimaryDark"
+        app:borderWidth="0dp"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/snackbar_layout"
