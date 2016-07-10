@@ -49,8 +49,8 @@
 
                 <ImageButton
                     android:id="@+id/left_arrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_toStartOf="@+id/date_display_text"
                     android:tint="@color/Black"
                     android:background="@android:color/transparent"
@@ -70,8 +70,8 @@
 
                 <ImageButton
                     android:id="@+id/right_arrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_toEndOf="@id/date_display_text"
                     android:tint="@color/Black"
                     android:background="@android:color/transparent"
