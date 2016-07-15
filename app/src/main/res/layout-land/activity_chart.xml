@@ -116,6 +116,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_toStartOf="@id/currency_textview"
                                 android:layout_alignBaseline="@id/currency_textview"
+                                android:windowSoftInputMode="stateHidden"
                                 android:inputType="numberDecimal"
                                 android:hint="@string/budget"
                                 android:textSize="16sp"
