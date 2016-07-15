@@ -40,8 +40,11 @@ import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.data.realm.implementation.RealmPieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
@@ -67,7 +70,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     private Spinner mSpinner;
     private Context mContext;
 
-    private int day, month, year, type;
+    //private int day, month, year;
     RealmHandler mRealmHandler;
     private PieChart mPieChart;
     private EditText mBudgetView;
@@ -81,8 +84,6 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     private SharedPreferences mSharedPreferences;
 
     private int actionBarColor;
-
-    private int spinnerPosition;
 
     ChartDatePicker datePicker;
 
@@ -103,9 +104,6 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
         mContext = this;
 
-        day = -1;
-        month = -1;
-        year = -1;
 
         mSpinner = (Spinner) findViewById(R.id.spinner);
         mSpinner = setUpSpinner(mSpinner);
@@ -121,7 +119,6 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             public void onRefresh() {
                 // mRecyclerView.getAdapter().inser
                 // mRecyclerView.setAdapter(mChartRecyclerAdapter);
-                setData(type);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -136,16 +133,17 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         leftArrow = (ImageButton) findViewById(R.id.left_arrow);
         rightArrow = (ImageButton) findViewById(R.id.right_arrow);
         setupBudget();
-        setData(type);
+
 
         mDateLabel = (TextView) findViewById(R.id.date_display_text);
 
         date = new GregorianCalendar();
-        day = date.get(Calendar.DAY_OF_MONTH);
-        month = date.get(Calendar.MONTH) + 1;
-        year = date.get(Calendar.YEAR);
-        setDateLabel(month, year);
+//        day = date.get(Calendar.DAY_OF_MONTH);
+//        month = date.get(Calendar.MONTH) + 1;
+//        year = date.get(Calendar.YEAR);
+        // setDateLabel(month, year);
         setupDateArrows();
+        //setData(mSpinner.getSelectedItemPosition());
     }
 
     @Override
@@ -164,7 +162,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
-           // mRealmHandler.deleteAll();
+            // mRealmHandler.deleteAll();
             return true;
         } else if (id == R.id.action_add) {
             startActivity(new Intent(this, AddActivity.class));
@@ -253,13 +251,12 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
      * Spinner to filter income, expenses, or both
      */
     private Spinner setUpSpinner(final Spinner spinner) {
-        spinnerPosition = 1;
         CharSequence[] simpleSpinner = getResources().getStringArray(R.array.chartarray);
         CustomArrayAdapter<CharSequence> spinnerArrayAdapter = new CustomArrayAdapter<>(this, simpleSpinner);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         spinner.setBackgroundColor(actionBarColor);
         spinner.setAdapter(spinnerArrayAdapter);
-        spinner.setSelection(0);
+        // spinner.setSelection(0);
         spinner.dispatchSetSelected(true);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -271,7 +268,6 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
                         ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                     }
                 }
-                spinnerPosition = position;
                 //Toast.makeText(mContext, mSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                 switch (mSpinner.getSelectedItemPosition()) {
                     case 0:
@@ -308,6 +304,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
                         setDateLabel(date.get(Calendar.YEAR));
                         break;
                 }
+                setData(mSpinner.getSelectedItemPosition());
             }
 
             @Override
@@ -349,7 +346,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
                         setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
                         break;
                     case 2:
-                        int firstDay, lastDay, oldDay, firstMonth, secondMonth;
+                        int firstDay, lastDay, firstMonth, secondMonth;
                         lastDay = date.get(Calendar.DAY_OF_MONTH);
                         secondMonth = date.get(Calendar.MONTH);
 
@@ -368,6 +365,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
                         setDateLabel(date.get(Calendar.YEAR));
                         break;
                 }
+                setData(mSpinner.getSelectedItemPosition());
             }
         });
         rightArrow.setOnClickListener(new View.OnClickListener() {
@@ -399,6 +397,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
                         setDateLabel(date.get(Calendar.YEAR));
                         break;
                 }
+                setData(mSpinner.getSelectedItemPosition());
             }
         });
         Log.d("After Date Change", date.toString());
@@ -491,112 +490,112 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     }
 
     private void setupBudget() {
-        if (month != -1 && year != -1) {
-            final float budget = mRealmHandler.getBudget(month, year);
-            mBudgetView.setText(budget + "");
-            mBudgetView.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    if (charSequence.length() != i1) {
-                        mCancelButton.setVisibility(View.VISIBLE);
-                        mConfirmButton.setVisibility(View.VISIBLE);
-                    }
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                }
-            });
-
-            mCancelButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mBudgetView.setText(budget + "");
-                    mCancelButton.setVisibility(View.INVISIBLE);
-                    mConfirmButton.setVisibility(View.INVISIBLE);
-                    InputMethodManager inputManager = (InputMethodManager)
-                            mContext.getSystemService(INPUT_METHOD_SERVICE);
-
-                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
-                }
-            });
-
-            mConfirmButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        float budget = Float.parseFloat(mBudgetView.getText().toString());
-                        mRealmHandler.update(budget, month, year);
-                        mCancelButton.setVisibility(View.INVISIBLE);
-                        mConfirmButton.setVisibility(View.INVISIBLE);
-                    } catch (NumberFormatException ex) {
-                        Toast.makeText(getApplicationContext(), "Invalid number", Toast.LENGTH_SHORT).show();
-                    } finally {
-                        InputMethodManager inputManager = (InputMethodManager)
-                                mContext.getSystemService(INPUT_METHOD_SERVICE);
-
-                        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                                InputMethodManager.HIDE_NOT_ALWAYS);
-                    }
-                }
-            });
-        } else {
-            float budget = mRealmHandler.getBudget();
-            mBudgetView.setText(budget + "");
-            mBudgetView.setFocusable(false);
-            mBudgetView.setEnabled(false);
-        }
-        mCurrencyLabel.setText(mSharedPreferences.getString("currencySymbol", Currency.getInstance(mContext.getResources().getConfiguration().locale).getSymbol()));
+//        if (month != -1 && year != -1) {
+//            final float budget = mRealmHandler.getBudget(month, year);
+//            mBudgetView.setText(budget + "");
+//            mBudgetView.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                    if (charSequence.length() != i1) {
+//                        mCancelButton.setVisibility(View.VISIBLE);
+//                        mConfirmButton.setVisibility(View.VISIBLE);
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable editable) {
+//                }
+//            });
+//
+//            mCancelButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    mBudgetView.setText(budget + "");
+//                    mCancelButton.setVisibility(View.INVISIBLE);
+//                    mConfirmButton.setVisibility(View.INVISIBLE);
+//                    InputMethodManager inputManager = (InputMethodManager)
+//                            mContext.getSystemService(INPUT_METHOD_SERVICE);
+//
+//                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+//                            InputMethodManager.HIDE_NOT_ALWAYS);
+//                }
+//            });
+//
+//            mConfirmButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    try {
+//                        float budget = Float.parseFloat(mBudgetView.getText().toString());
+//                        mRealmHandler.update(budget, month, year);
+//                        mCancelButton.setVisibility(View.INVISIBLE);
+//                        mConfirmButton.setVisibility(View.INVISIBLE);
+//                    } catch (NumberFormatException ex) {
+//                        Toast.makeText(getApplicationContext(), "Invalid number", Toast.LENGTH_SHORT).show();
+//                    } finally {
+//                        InputMethodManager inputManager = (InputMethodManager)
+//                                mContext.getSystemService(INPUT_METHOD_SERVICE);
+//
+//                        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+//                                InputMethodManager.HIDE_NOT_ALWAYS);
+//                    }
+//                }
+//            });
+//        } else {
+//            float budget = mRealmHandler.getBudget();
+//            mBudgetView.setText(budget + "");
+//            mBudgetView.setFocusable(false);
+//            mBudgetView.setEnabled(false);
+//        }
+//        mCurrencyLabel.setText(mSharedPreferences.getString("currencySymbol", Currency.getInstance(mContext.getResources().getConfiguration().locale).getSymbol()));
     }
 
     private void setData(int type) {
 
-        List<Entry> yVals = new ArrayList<Entry>();
+        mPieChart.setData(null);
+        mPieChart.invalidate();
+
+        ArrayList<PieEntry> yVals = new ArrayList<PieEntry>();
         List<RealmCategoryItem> categories = mRealmHandler.getCategoryParents();
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
 
+        List<Number> amounts = mRealmHandler.getPieChartData(date, type);
+
         ArrayList<String> xVals = new ArrayList<String>();
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        if (!mRealmHandler.isEmpty(type)) {
-            int index = 0;
-            int total = 0;
-            for (int i = 0; i < categories.size(); i++) {
-                float amount = mRealmHandler.getSpecificDateAmountByType(categories.get(i).getCategory(), month, year, type);
-                if (amount != 0) {
-                    total += amount;
-                    yVals.add(new Entry(amount, index++));
-                    xVals.add(categories.get(i).getCategory());
-                    colors.add(categories.get(i).getColor());
-                }
+        int total = 0;
+        for (int i = 0; i < categories.size(); i++) {
+            float amount = amounts.get(i).floatValue();
+            if (amount != 0) {
+                total += amount;
+                yVals.add(new PieEntry(amount, categories.get(i).getCategory()));
+                xVals.add(categories.get(i).getCategory());
+                colors.add(categories.get(i).getColor());
             }
+        }
 
-            if (total > 0) {
-                PieDataSet dataSet = new PieDataSet(yVals, "Category Legend");
-                dataSet.setSliceSpace(2f);
-                dataSet.setSelectionShift(5f);
-                dataSet.setColors(colors);
+        if (total > 0) {
+            PieDataSet dataSet = new PieDataSet(yVals, "Category Legend");
+            dataSet.setSliceSpace(2f);
+            dataSet.setSelectionShift(5f);
+            dataSet.setColors(colors);
+            PieData data = new PieData(dataSet);
+            data.setValueFormatter(new PercentFormatter());
+            data.setValueTextSize(11f);
+            data.setValueTextColor(Color.WHITE);
+            mPieChart.setData(data);
+            // undo all highlights
+            mPieChart.highlightValues(null);
 
-                PieData data = new PieData(xVals, dataSet);
-                data.setValueFormatter(new PercentFormatter());
-                data.setValueTextSize(11f);
-                data.setValueTextColor(Color.WHITE);
-                mPieChart.setData(data);
-
-                // undo all highlights
-                mPieChart.highlightValues(null);
-
-                mPieChart.invalidate();
-            }
+            mPieChart.invalidate();
         }
     }
     /*
