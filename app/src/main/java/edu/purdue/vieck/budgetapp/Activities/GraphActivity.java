@@ -8,10 +8,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +40,7 @@ public class GraphActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private ViewPager mViewPager;
+    private TabLayout tabLayout;
 
     private SharedPreferences mSharedPreferences;
 
@@ -53,10 +56,11 @@ public class GraphActivity extends AppCompatActivity {
         setUpNavigationDrawer();
         setUpNavigationView();
         setupViewPager();
-        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120 , getResources()
                 .getDisplayMetrics());
         mViewPager.setPageMargin(pageMargin);
-
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -236,7 +240,6 @@ public class GraphActivity extends AppCompatActivity {
             if (fragmentOverview.getArguments() != null) {
                 fragmentOverview.getArguments().putInt("type", type);
             }
-            //fragmentOverview.updateType(type);
 
             GraphFragmentMonthly fragmentCategory = (GraphFragmentMonthly) mFragmentList.get(1);
             if (fragmentCategory.getArguments() != null) {
