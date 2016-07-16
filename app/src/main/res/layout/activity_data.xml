@@ -24,12 +24,18 @@
                 style="@style/MyAppBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize" />
-
-            <RelativeLayout
-                android:id="@+id/fragment_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
         </android.support.design.widget.AppBarLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.widget.ExpandableListView
+                    android:id="@+id/data_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:groupIndicator="@drawable/custom_indicator" />
+            </RelativeLayout>
+
 
     </android.support.design.widget.CoordinatorLayout>
 

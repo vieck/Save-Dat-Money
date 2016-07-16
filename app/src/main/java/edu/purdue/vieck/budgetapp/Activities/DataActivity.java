@@ -15,7 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ExpandableListView;
 
+import edu.purdue.vieck.budgetapp.Adapters.ExpandableListViewAdapter;
+import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.Fragments.DataFragment;
 import edu.purdue.vieck.budgetapp.R;
 
@@ -24,22 +27,29 @@ public class DataActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
-    DataFragment dataFragment;
-
+    private ExpandableListView mExpandableListView;
+    private ExpandableListViewAdapter mDataAdapter;
+    private RealmHandler mRealmHandler;
     SharedPreferences mSharedPreferences;
     private int actionBarColor;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data);
+        mRealmHandler = new RealmHandler(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         actionBarColor = mSharedPreferences.getInt("actionBarColor",getResources().getColor(R.color.md_black_1000));
         setUpToolbar();
         setUpNavigationDrawer();
         setUpNavigationView();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, dataFragment = new DataFragment()).commit();
+
+        mExpandableListView = (ExpandableListView) findViewById(R.id.data_list);
+        mDataAdapter = new ExpandableListViewAdapter(this, mRealmHandler, "");
+        mExpandableListView.setAdapter(mDataAdapter);
     }
 
     @Override

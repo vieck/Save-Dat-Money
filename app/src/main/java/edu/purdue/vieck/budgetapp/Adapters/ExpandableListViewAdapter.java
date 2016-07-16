@@ -1,9 +1,11 @@
 package edu.purdue.vieck.budgetapp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,11 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmBudgetItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
+import io.realm.RealmResults;
 
 /**
  * Created by vieck on 12/20/15.
@@ -30,6 +34,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     int actionBarColor;
     SharedPreferences mSharedPreferences;
 
+    String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
     public ExpandableListViewAdapter(Context context, RealmHandler realmHandler, String filter) {
         this.context = context;
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -39,7 +45,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         if (filter == "") {
             mMonths = mRealmHandler.getAllUniqueMonthsAsList(2);
         } else {
-            mMonths = mRealmHandler.getAllUniqueMonthsAsLinkedList(2);
+            //mMonths = mRealmHandler.getAllUniqueMonthsAsLinkedList(2);
         }
     }
 
@@ -55,6 +61,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int group) {
+        Log.d("Group Position", Integer.toString(group));
         return mMonths.get(group);
     }
 
