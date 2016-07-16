@@ -165,7 +165,6 @@ public class ProjectionsActivity extends AppCompatActivity {
         }
 
         LineDataSet expenseLineSet = new LineDataSet(expenseEntries, "Expense");
-        expenseLineSet.setDrawCubic(false);
         expenseLineSet.setLabel("Expenses");
         expenseLineSet.setDrawCircleHole(false);
         expenseLineSet.setColor(ColorTemplate.rgb("#FF5722"));
@@ -173,7 +172,6 @@ public class ProjectionsActivity extends AppCompatActivity {
         expenseLineSet.setLineWidth(1.8f);
 
         LineDataSet expenseProjectionLineSet = new LineDataSet(expenseProjectionEntries, "Expense Projection");
-        expenseProjectionLineSet.setDrawCubic(false);
         expenseProjectionLineSet.enableDashedLine(10f, 10f, 10f);
         expenseProjectionLineSet.setLabel("Expenses");
         expenseProjectionLineSet.setDrawCircleHole(false);
@@ -186,13 +184,13 @@ public class ProjectionsActivity extends AppCompatActivity {
         dataSets.add(expenseProjectionLineSet);
 
         // create a data object with the dataset list
-        LineData data = new LineData(labels, dataSets);
-        data.setValueTextSize(8f);
-        data.setValueTextColor(Color.DKGRAY);
-
-        // expenseLineSet data
-        mProjectionChart.setData(data);
-        mProjectionChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
+//        LineData data = new LineData(labels, dataSets);
+//        data.setValueTextSize(8f);
+//        data.setValueTextColor(Color.DKGRAY);
+//
+//        // expenseLineSet data
+//        mProjectionChart.setData(data);
+//        mProjectionChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
 
     }
 }

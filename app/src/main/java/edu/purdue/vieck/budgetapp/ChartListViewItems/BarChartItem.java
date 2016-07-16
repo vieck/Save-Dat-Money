@@ -48,7 +48,6 @@ public class BarChartItem extends ChartItem {
         XAxis xAxis = holder.chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(false);
-        xAxis.setSpaceBetweenLabels(1);
 
         Legend l = holder.chart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);

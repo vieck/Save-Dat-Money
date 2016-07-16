@@ -457,13 +457,34 @@ public class RealmHandler {
                     int originalDay = calendar.get(Calendar.DATE);
                     int originalMonth = calendar.get(Calendar.MONTH);
                     int originalYear = calendar.get(Calendar.YEAR);
+                    calendar.setFirstDayOfWeek(Calendar.MONDAY);
                     int firstDayOfWeek = calendar.getFirstDayOfWeek();
                     int firstMonth = calendar.get(Calendar.MONTH) + 1;
                     calendar.add(Calendar.DATE, 7);
-                    int secondDayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
+                    int lastDayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
+
                     int secondMonth = calendar.get(Calendar.MONTH) + 1;
-                    query.beginGroup().between("day", firstDayOfWeek - 1, secondDayOfWeek + 1).endGroup();
+                    query.beginGroup().between("day", firstDayOfWeek - 1, lastDayOfWeek + 1).endGroup();
                     query.beginGroup().equalTo("month", firstMonth).or().equalTo("month", secondMonth).endGroup();
+
+                    if (firstMonth == secondMonth) {
+                        query.beginGroup()
+                                .between("day", firstDayOfWeek - 1, lastDayOfWeek + 1)
+                                .endGroup();
+                        query.equalTo("month", firstMonth);
+                    } else if (firstMonth < secondMonth) {
+                        query.beginGroup()
+                                .between("day", firstDayOfWeek - 1, 32).equalTo("month", firstMonth)
+                                .endGroup().or().beginGroup()
+                                .between("day", 0, lastDayOfWeek + 1).equalTo("month", secondMonth)
+                                .endGroup();
+                    } else {
+                        query.beginGroup()
+                                .between("day", 0, firstDayOfWeek).equalTo("month", firstMonth)
+                                .endGroup().or().beginGroup()
+                                .between("day", lastDayOfWeek - 1, 31).equalTo("month", secondMonth)
+                                .endGroup();
+                    }
                     query.equalTo("year", calendar.get(Calendar.YEAR));
                     calendar.set(Calendar.DATE, originalDay);
                     calendar.set(Calendar.MONTH, originalMonth);

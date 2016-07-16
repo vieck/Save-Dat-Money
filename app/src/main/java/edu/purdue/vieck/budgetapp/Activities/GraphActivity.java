@@ -189,16 +189,19 @@ public class GraphActivity extends AppCompatActivity {
             fragmentOverview = new GraphFragmentOverview();
         }
         adapter.addFragment(fragmentOverview, "Overview");
+
         GraphFragmentMonthly fragmentCategory = (GraphFragmentMonthly) fragmentManager.findFragmentByTag("Category");
         if (fragmentCategory == null) {
             fragmentCategory = new GraphFragmentMonthly();
         }
         adapter.addFragment(fragmentCategory, "Category");
+
         GraphFragmentComparison fragmentComparison = (GraphFragmentComparison) fragmentManager.findFragmentByTag("Comparison");
         if (fragmentComparison == null) {
             fragmentComparison = new GraphFragmentComparison();
         }
         adapter.addFragment(fragmentComparison,"Comparison");
+
         mViewPager.setAdapter(adapter);
     }
 
