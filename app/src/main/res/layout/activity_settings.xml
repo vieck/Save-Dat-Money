@@ -20,13 +20,14 @@
                 style="@style/MyAppBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize" />
+        </android.support.design.widget.AppBarLayout>
 
             <RelativeLayout
                 android:id="@+id/fragment_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="?android:actionBarSize"/>
 
-        </android.support.design.widget.AppBarLayout>
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
