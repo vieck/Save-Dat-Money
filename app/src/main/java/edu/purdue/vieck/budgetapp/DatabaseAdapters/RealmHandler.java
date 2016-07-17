@@ -508,28 +508,17 @@ public class RealmHandler {
     }
 
     public void deleteAll() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 createRealm();
                 realm.beginTransaction();
-                realm.delete(RealmBudgetItem.class);
+               // realm.delete(RealmBudgetItem.class);
                 realm.delete(RealmDataItem.class);
-                realm.delete(RealmCategoryItem.class);
+              //  realm.delete(RealmCategoryItem.class);
                 realm.commitTransaction();
                 realm.close();
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException ex) {
-            Log.e("Thread", "Delete thread interrupted");
-        } finally {
-            Intent intent = ((Activity) mContext).getIntent();
-            ((Activity) mContext).finish();
-            mContext.startActivity(intent);
-        }
+
+//            Intent intent = ((Activity) mContext).getIntent();
+//            ((Activity) mContext).finish();
+//            mContext.startActivity(intent);
     }
 
 

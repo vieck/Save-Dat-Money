@@ -39,7 +39,49 @@ public class RealmHandlerTest extends AndroidJUnitRunner {
     }
 
     @Test
-    public void fillRealmWithFakeDataTest() {
+    public void fillRealmWithAllData() {
+        fillRealmWithFakeIncomeData();
+        fillRealmWithFakeExpenseData();
+    }
+
+    private void fillRealmWithFakeIncomeData() {
+        RealmHandler realm = new RealmHandler(InstrumentationRegistry.getTargetContext());
+        RealmDataItem realmDataItem;
+        RealmResults<RealmCategoryItem> subCategories;
+        // inflate the food category
+        subCategories = realm.getCategoryChildren(categories[0]);
+        for (int i = 0; i < foodCategories.length; i++) {
+            realmDataItem = new RealmDataItem(150f, categories[0], foodCategories[i], true, 17, 7, 2016, "Food Category Test", subCategories.get(i).getIcon());
+            realm.add(realmDataItem);
+        }
+        // inflate the utility category
+        subCategories = realm.getCategoryChildren(categories[1]);
+        for (int i = 0; i < utilityCategories.length; i++) {
+            realmDataItem = new RealmDataItem(150f, categories[1], utilityCategories[i], true, 17, 7, 2016, "Utility Category Test", subCategories.get(i).getIcon());
+            realm.add(realmDataItem);
+        }
+        // inflate the entertainment category
+        subCategories = realm.getCategoryChildren(categories[2]);
+        for (int i = 0; i < entertainmentCategories.length; i++) {
+            realmDataItem = new RealmDataItem(150f, categories[2], entertainmentCategories[i], true, 17, 7, 2016, "Entertainment Category Test", subCategories.get(i).getIcon());
+            realm.add(realmDataItem);
+        }
+        // inflate the medical category
+        subCategories = realm.getCategoryChildren(categories[3]);
+        for (int i = 0; i < medicalCategories.length; i++) {
+            realmDataItem = new RealmDataItem(150f, categories[3], medicalCategories[i], true, 17, 7, 2016, "Medical Category Test", subCategories.get(i).getIcon());
+            realm.add(realmDataItem);
+        }
+        // inflate the insurance category
+        subCategories = realm.getCategoryChildren(categories[4]);
+        for (int i = 0; i < insuranceCategories.length; i++) {
+            realmDataItem = new RealmDataItem(150f, categories[4], insuranceCategories[i], true, 17, 7, 2016, "Insurance Category Test", subCategories.get(i).getIcon());
+            realm.add(realmDataItem);
+        }
+    }
+
+    @Test
+    public void fillRealmWithFakeExpenseData() {
         RealmHandler realm = new RealmHandler(InstrumentationRegistry.getTargetContext());
         RealmDataItem realmDataItem;
         RealmResults<RealmCategoryItem> subCategories;
@@ -78,6 +120,6 @@ public class RealmHandlerTest extends AndroidJUnitRunner {
     @Test
     public void removeAllFakeData() {
         RealmHandler realm = new RealmHandler(InstrumentationRegistry.getTargetContext());
-        realm.getResultsByFilter().deleteAllFromRealm();
+        realm.deleteAll();
     }
 }
