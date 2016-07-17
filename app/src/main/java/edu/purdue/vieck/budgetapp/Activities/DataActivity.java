@@ -48,6 +48,7 @@ public class DataActivity extends AppCompatActivity {
         setUpNavigationView();
 
         mExpandableListView = (ExpandableListView) findViewById(R.id.data_list);
+        mExpandableListView.setDividerHeight(3);
         mDataAdapter = new ExpandableListViewAdapter(this, mRealmHandler, "");
         mExpandableListView.setAdapter(mDataAdapter);
     }

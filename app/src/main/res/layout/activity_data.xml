@@ -27,12 +27,15 @@
         </android.support.design.widget.AppBarLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize">
 
                 <android.widget.ExpandableListView
                     android:id="@+id/data_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:divider="@color/md_black_1000"
+                    android:childDivider="@color/md_black_1000"
                     android:groupIndicator="@drawable/custom_indicator" />
             </RelativeLayout>
 

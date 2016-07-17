@@ -51,22 +51,25 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
+        Log.d("Group Size: ", Integer.toString(mMonths.size()));
         return mMonths.size();
     }
 
     @Override
-    public int getChildrenCount(int group) {
-        return mRealmHandler.getResultsByFilter(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).size();
-    }
-
-    @Override
     public Object getGroup(int group) {
-        Log.d("Group Position", Integer.toString(group));
+        Log.d("Group Position", Integer.toString(group) + " " + mMonths.get(group).getMonthString());
         return mMonths.get(group);
     }
 
     @Override
+    public int getChildrenCount(int group) {
+        int children =  mRealmHandler.getResultsByFilter(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).size();
+        Log.d("Child Count", "Group: " + Integer.toString(group) + ", Child Count: " + Integer.toString(children));
+        return children;
+    }
+    @Override
     public Object getChild(int group, int child) {
+        Log.d("Child Position", "Group: " + Integer.toString(group) + ", Child: " + Integer.toString(child));
         return mRealmHandler.getResultsByFilter(mMonths.get(group).getMonth(), mMonths.get(group).getYear(), 2).get(child);
     }
 
@@ -136,7 +139,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int group, int child) {
-        return false;
+        return true;
     }
 
 
