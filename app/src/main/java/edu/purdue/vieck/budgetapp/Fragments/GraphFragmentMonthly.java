@@ -112,8 +112,8 @@ public class GraphFragmentMonthly extends Fragment {
                     }
                 }
             });
-           // produceOne(months.get(count).getMonth(), months.get(count).getYear());
-           // produceTwo(months.get(count).getMonth(), months.get(count).getYear());
+           produceOne(months.get(count).getMonth(), months.get(count).getYear());
+           produceTwo(months.get(count).getMonth(), months.get(count).getYear());
             mAdapter = new GraphMonthlyAdapter(getActivity(), mCharts, mRealmHandler);
             mListView.setAdapter(mAdapter);
         } else {
@@ -166,15 +166,15 @@ public class GraphFragmentMonthly extends Fragment {
         barDataSets.add(dataSetIncome);
         barDataSets.add(dataSetExpense);
 
-//        BarData barData = new BarData(categories, barDataSets);
-//        barData.setGroupSpace(30f);
+        BarData barData = new BarData(barDataSets);
+        barData.setBarWidth(30f);
 
-        //mCharts.add(new BarChartItem(barData));
+        mCharts.add(new BarChartItem(barData));
 
     }
 
     /* Creates a graph for expenses vs income */
-    private void produceTwo(HorizontalBarChart chart, int month, int year) {
+    private void produceTwo(int month, int year) {
 
         float total;
         List<BarEntry> barEntries = new ArrayList<>();
@@ -192,26 +192,26 @@ public class GraphFragmentMonthly extends Fragment {
         } else {
             total = -expense + 10;
         }
-
-        chart.setDescription("");
-
-        chart.getAxisLeft().setEnabled(false);
-        chart.getAxisRight().setStartAtZero(false);
-        chart.getAxisRight().setAxisMaxValue(total);
-        chart.getAxisRight().setAxisMinValue(-total);
-        chart.getAxisRight().setTextSize(9f);
-
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(false);
-        xAxis.setTextSize(9f);
-
-        Legend l = chart.getLegend();
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
-        l.setFormSize(8f);
-        l.setFormToTextSpace(4f);
-        l.setXEntrySpace(6f);
+//
+//        chart.setDescription("");
+//
+//        chart.getAxisLeft().setEnabled(false);
+//        chart.getAxisRight().setStartAtZero(false);
+//        chart.getAxisRight().setAxisMaxValue(total);
+//        chart.getAxisRight().setAxisMinValue(-total);
+//        chart.getAxisRight().setTextSize(9f);
+//
+//        XAxis xAxis = chart.getXAxis();
+//        xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+//        xAxis.setDrawGridLines(false);
+//        xAxis.setDrawAxisLine(false);
+//        xAxis.setTextSize(9f);
+//
+//        Legend l = chart.getLegend();
+//        l.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
+//        l.setFormSize(8f);
+//        l.setFormToTextSpace(4f);
+//        l.setXEntrySpace(6f);
 
         if (income > -expense) {
             total = income + 10;
@@ -219,30 +219,30 @@ public class GraphFragmentMonthly extends Fragment {
             total = -expense + 10;
         }
 
-        chart.setDescription("");
-
-        chart.getAxisLeft().setEnabled(false);
-        chart.getAxisRight().setStartAtZero(false);
-        chart.getAxisRight().setAxisMaxValue(total);
-        chart.getAxisRight().setAxisMinValue(-total);
-        chart.getAxisRight().setTextSize(9f);
-
-//        ArrayList<BarEntry> yValues = new ArrayList<>();
-//        yValues.add(new BarEntry(new float[]{-expense, income}, 0));
+//        chart.setDescription("");
 //
-//        BarDataSet barDataSet = new BarDataSet(yValues, "");
-//        barDataSet.setValueTextSize(7f);
-//        barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
-//        barDataSet.setBarSpacePercent(40f);
-//        barDataSet.setColors(new int[]{getResources().getColor(R.color.md_red_A400), getResources().getColor(R.color.md_green_A400)});
-//        barDataSet.setStackLabels(new String[]{
-//                "Expenses", "Income"
-//        });
-//        BarData barData = new BarData(new String[]{""}, barDataSet);
+//        chart.getAxisLeft().setEnabled(false);
+//        chart.getAxisRight().setStartAtZero(false);
+//        chart.getAxisRight().setAxisMaxValue(total);
+//        chart.getAxisRight().setAxisMinValue(-total);
+//        chart.getAxisRight().setTextSize(9f);
+
+        ArrayList<BarEntry> yValues = new ArrayList<>();
+        yValues.add(new BarEntry(0,new float[]{-expense, income}));
+
+        BarDataSet barDataSet = new BarDataSet(yValues, "");
+        barDataSet.setValueTextSize(7f);
+        barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        barDataSet.setBarBorderWidth(40f);
+        barDataSet.setColors(new int[]{getResources().getColor(R.color.md_red_A400), getResources().getColor(R.color.md_green_A400)});
+        barDataSet.setStackLabels(new String[]{
+                "Expenses", "Income"
+        });
+        BarData barData = new BarData(barDataSet);
 
         total = mRealmHandler.getSpecificDateAmount(month, year, 2);
 
-//        mCharts.add(new HorizontalBarChartItem(barData, total));
+        mCharts.add(new HorizontalBarChartItem(barData, total));
     }
 
 //    private ChartData updateOne(int month, int year) {

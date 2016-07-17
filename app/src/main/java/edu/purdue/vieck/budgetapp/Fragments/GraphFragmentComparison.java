@@ -28,11 +28,11 @@ import io.realm.RealmResults;
  */
 public class GraphFragmentComparison extends Fragment {
 
-    BarChart mChart;
+    private BarChart barChart;
 
-    DecimalFormat decimalFormat;
-    RealmHandler mRealmHandler;
-    String[] categories;
+    private DecimalFormat decimalFormat;
+    private RealmHandler mRealmHandler;
+    private String[] categories;
 
     @Nullable
     @Override
@@ -43,10 +43,10 @@ public class GraphFragmentComparison extends Fragment {
         categories = getResources().getStringArray(R.array.categoryarray);
         mRealmHandler = new RealmHandler(getActivity());
 
-        mChart = (BarChart) view.findViewById(R.id.chart_one);
+        barChart = (BarChart) view.findViewById(R.id.chart_one);
 
         if (mRealmHandler != null && !mRealmHandler.isEmpty(2)) {
-            generateChart(mChart);
+            generateChart(barChart);
         } else {
         }
         return view;
@@ -55,30 +55,31 @@ public class GraphFragmentComparison extends Fragment {
     /* Creates a chart to compare */
     private void generateChart(BarChart chartView) {
 
-//        RealmResults<RealmDataItem> stack = mRealmHandler.getResultsByFilter();
-//        HashMap<String, Float> uniqueMonths = mRealmHandler.getAllMonthsAsOneElement(0);
-//        List<BarEntry> entryList = new ArrayList<>();
-//        Set<String> keys = uniqueMonths.keySet();
-//        String[] labels = keys.toArray(new String[keys.size()]);
-//
-//        int i = 0;
-//        BarEntry entry;
-//        for (String label : labels) {
-//
-//            entry = new BarEntry(uniqueMonths.get(label), i++);
-//            entryList.add(entry);
-//        }
-//
-//        BarDataSet dataSet = new BarDataSet(entryList, "Values");
-//        dataSet.setValueTextColor(getResources().getColor(R.color.md_white_1000));
-//        dataSet.setValueTextSize(8f);
-//        dataSet.setColor(getResources().getColor(R.color.md_white_1000));
-//        BarData data = new BarData(labels, dataSet);
-//        chartView.setData(data);
-//        chartView.setDescription("");
-//
-//        chartView.setGridBackgroundColor(getResources().getColor(R.color.md_black_1000));
-//        chartView.setPinchZoom(true);
+        RealmResults<RealmDataItem> stack = mRealmHandler.getResultsByFilter();
+        HashMap<String, Float> uniqueMonths = mRealmHandler.getAllMonthsAsOneElement(0);
+        List<BarEntry> entryList = new ArrayList<>();
+        Set<String> keys = uniqueMonths.keySet();
+        String[] labels = keys.toArray(new String[keys.size()]);
+
+        int i = 0;
+        BarEntry entry;
+        for (String label : labels) {
+
+            entry = new BarEntry(uniqueMonths.get(label), i++);
+            entryList.add(entry);
+        }
+
+        BarDataSet dataSet = new BarDataSet(entryList, "Values");
+        dataSet.setValueTextColor(getResources().getColor(R.color.md_white_1000));
+        dataSet.setValueTextSize(8f);
+        dataSet.setColor(getResources().getColor(R.color.md_white_1000));
+//        labels,
+        BarData data = new BarData(dataSet);
+        chartView.setData(data);
+        chartView.setDescription("");
+
+        chartView.setGridBackgroundColor(getResources().getColor(R.color.md_black_1000));
+        chartView.setPinchZoom(true);
 
     }
 
