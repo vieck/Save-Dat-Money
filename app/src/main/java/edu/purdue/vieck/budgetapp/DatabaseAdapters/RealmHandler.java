@@ -8,6 +8,8 @@ import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -345,28 +347,31 @@ public class RealmHandler {
         createRealm();
         RealmQuery query = realm.where(RealmDataItem.class);
 
-        if (firstMonth != secondMonth) {
+        if (firstMonth == secondMonth) {
             query.beginGroup()
-                    .between("day", startDay - 1, 32)
-                    .or()
-                    .between("day", 0, endDay + 1)
+                    .between("day", startDay - 1, endDay + 1)
                     .endGroup();
-            query.beginGroup().equalTo("month",firstMonth).or().equalTo("month",secondMonth).endGroup();
+            query.equalTo("month", firstMonth);
+        } else if (firstMonth < secondMonth) {
+            query.beginGroup()
+                    .between("day", startDay - 1, 32).equalTo("month", firstMonth)
+                    .endGroup().or().beginGroup()
+                    .between("day", 0, endDay + 1).equalTo("month", secondMonth)
+                    .endGroup();
         } else {
             query.beginGroup()
-                    .greaterThanOrEqualTo("day", startDay)
-                    .or()
-                    .lessThanOrEqualTo("day", endDay)
+                    .between("day", 0, startDay).equalTo("month", firstMonth)
+                    .endGroup().or().beginGroup()
+                    .between("day", endDay - 1, 31).equalTo("month", secondMonth)
                     .endGroup();
-            query.equalTo("year",firstMonth);
         }
         query.equalTo("year", year);
-
-        if (type == 1) {
-            query.equalTo("type", true);
-        } else if (type == 0) {
-            query.equalTo("type", false);
-        }
+//
+//        if (type == 1) {
+//            query.equalTo("type", true);
+//        } else if (type == 0) {
+//            query.equalTo("type", false);
+//        }
         return query.findAll();
     }
 
@@ -431,6 +436,74 @@ public class RealmHandler {
             days[item.getDay() - 1] += item.getAmount();
         }
         return days;
+    }
+
+    public List<Number> getPieChartData(GregorianCalendar calendar, int filter) {
+        float categoryPercent = 0;
+        createRealm();
+        RealmResults<RealmCategoryItem> categories = getCategoryParents();
+        List<Number> amounts = new ArrayList<>();
+
+        RealmQuery query;
+        for (RealmCategoryItem category : categories) {
+            query = realm.where(RealmDataItem.class).equalTo("category", category.getCategory());
+            switch (filter) {
+                case 0:
+                    break;
+                case 1:
+                    query.beginGroup().equalTo("day", calendar.get(Calendar.DATE)).equalTo("month", calendar.get(Calendar.MONTH) + 1).equalTo("year", calendar.get(Calendar.YEAR)).endGroup();
+                    break;
+                case 2:
+                    int originalDay = calendar.get(Calendar.DATE);
+                    int originalMonth = calendar.get(Calendar.MONTH);
+                    int originalYear = calendar.get(Calendar.YEAR);
+                    calendar.setFirstDayOfWeek(Calendar.MONDAY);
+                    int firstDayOfWeek = calendar.getFirstDayOfWeek();
+                    int firstMonth = calendar.get(Calendar.MONTH) + 1;
+                    calendar.add(Calendar.DATE, 7);
+                    int lastDayOfWeek = calendar.get(Calendar.DAY_OF_MONTH);
+
+                    int secondMonth = calendar.get(Calendar.MONTH) + 1;
+                    query.beginGroup().between("day", firstDayOfWeek - 1, lastDayOfWeek + 1).endGroup();
+                    query.beginGroup().equalTo("month", firstMonth).or().equalTo("month", secondMonth).endGroup();
+
+                    if (firstMonth == secondMonth) {
+                        query.beginGroup()
+                                .between("day", firstDayOfWeek - 1, lastDayOfWeek + 1)
+                                .endGroup();
+                        query.equalTo("month", firstMonth);
+                    } else if (firstMonth < secondMonth) {
+                        query.beginGroup()
+                                .between("day", firstDayOfWeek - 1, 32).equalTo("month", firstMonth)
+                                .endGroup().or().beginGroup()
+                                .between("day", 0, lastDayOfWeek + 1).equalTo("month", secondMonth)
+                                .endGroup();
+                    } else {
+                        query.beginGroup()
+                                .between("day", 0, firstDayOfWeek).equalTo("month", firstMonth)
+                                .endGroup().or().beginGroup()
+                                .between("day", lastDayOfWeek - 1, 31).equalTo("month", secondMonth)
+                                .endGroup();
+                    }
+                    query.equalTo("year", calendar.get(Calendar.YEAR));
+                    calendar.set(Calendar.DATE, originalDay);
+                    calendar.set(Calendar.MONTH, originalMonth);
+                    calendar.set(Calendar.YEAR, originalYear);
+                    break;
+                case 3:
+                    query.beginGroup().equalTo("month", calendar.get(Calendar.MONTH) + 1).equalTo("year", calendar.get(Calendar.YEAR)).endGroup();
+                    break;
+                case 4:
+                    query.equalTo("year", calendar.get(Calendar.YEAR));
+                    break;
+            }
+
+            amounts.add(query.findAll().sum("amount"));
+        }
+
+        Log.d("DATE", (calendar.get(Calendar.MONTH) + 1) + " " + calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.YEAR));
+
+        return amounts;
     }
 
     public float getSpecificDateAmountByType(String category, int month, int year, int type) {

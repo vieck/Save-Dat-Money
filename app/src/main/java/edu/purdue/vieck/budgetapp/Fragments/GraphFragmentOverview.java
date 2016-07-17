@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class GraphFragmentOverview extends Fragment {
 
-    LineChart mChart;
+    LineChart lineChart;
 
     DecimalFormat decimalFormat;
     RealmHandler mRealmHandler;
@@ -41,21 +43,18 @@ public class GraphFragmentOverview extends Fragment {
         categories = getResources().getStringArray(R.array.categoryarray);
         mRealmHandler = new RealmHandler(getActivity());
 
-        mChart = (LineChart) view.findViewById(R.id.chart_one);
-        if (mRealmHandler != null && !mRealmHandler.isEmpty(2)) {
-            generateChart(mChart);
-        } else {
-        }
+        lineChart = (LineChart) view.findViewById(R.id.chart_one);
+        generateChart();
         return view;
     }
 
     /* Creates a line chart for total expense vs income */
-    private void generateChart(LineChart lineChartView) {
+    private void generateChart() {
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 
         List<Entry> incomeEntries = new ArrayList<>();
         List<Entry> expenseEntries = new ArrayList<>();
         List<String> xAxisLabels = new ArrayList<>();
-
 
         float[] expenseArray = mRealmHandler.getAllDataAsArray(0);
         float[] incomeArray = mRealmHandler.getAllDataAsArray(1);
@@ -69,9 +68,30 @@ public class GraphFragmentOverview extends Fragment {
             incomeEntries.add(new Entry(incomeArray[i], i));
         }
 
-        YAxis leftAxis = lineChartView.getAxisLeft();
+        LineDataSet incomeData = new LineDataSet(incomeEntries, "income");
+        incomeData.setColor(getResources().getColor(R.color.md_green_A400));
+        incomeData.setValueTextSize(10f);
+        incomeData.setValueTextColor(Color.WHITE);
+
+        LineDataSet expenseData = new LineDataSet(expenseEntries, "expense");
+        expenseData.setColor(getResources().getColor(R.color.md_red_A400));
+        expenseData.setValueTextSize(10f);
+        expenseData.setValueTextColor(Color.WHITE);
+//        new String[] { "income","expense"},dataSets
+
+        LineData data = new LineData();
+        data.addDataSet(incomeData);
+        data.addDataSet(expenseData);
+        lineChart.setData(data);
+        lineChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
+        lineChart.setGridBackgroundColor(getResources().getColor(R.color.md_black_1000));
+        lineChart.setBackgroundColor(getResources().getColor(R.color.md_black_1000));
+        lineChart.setDescriptionColor(Color.WHITE);
+        lineChart.getLegend().setTextColor(Color.WHITE);
+
+
+        YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-        leftAxis.setStartAtZero(false);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setGridColor(Color.WHITE);
         leftAxis.setTextColor(Color.WHITE);
@@ -79,28 +99,9 @@ public class GraphFragmentOverview extends Fragment {
         // limit lines are drawn behind data (and not on top)
         leftAxis.setDrawLimitLinesBehindData(true);
 
-        lineChartView.getXAxis().setTextColor(Color.WHITE);
+        lineChart.getXAxis().setTextColor(Color.WHITE);
 
-        lineChartView.getAxisRight().setEnabled(false);
-
-
-        LineDataSet lineSet = new LineDataSet(incomeEntries, "income");
-        lineSet.setColor(getResources().getColor(R.color.md_green_A400));
-        lineSet.setValueTextColor(Color.WHITE);
-
-        lineSet = new LineDataSet(expenseEntries, "expense");
-        lineSet.setColor(getResources().getColor(R.color.md_red_A400));
-        lineSet.setValueTextSize(10f);
-        lineSet.setValueTextColor(Color.WHITE);
-
-        LineData data = new LineData(xAxisLabels, lineSet);
-
-        lineChartView.setGridBackgroundColor(getResources().getColor(R.color.md_black_1000));
-        lineChartView.setBackgroundColor(getResources().getColor(R.color.md_black_1000));
-        lineChartView.setDescriptionColor(Color.WHITE);
-        lineChartView.getLegend().setTextColor(Color.WHITE);
-        lineChartView.setData(data);
-
+        lineChart.getAxisRight().setEnabled(false);
     }
 
 }

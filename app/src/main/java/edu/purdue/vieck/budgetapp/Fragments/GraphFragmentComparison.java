@@ -28,11 +28,11 @@ import io.realm.RealmResults;
  */
 public class GraphFragmentComparison extends Fragment {
 
-    BarChart mChart;
+    private BarChart barChart;
 
-    DecimalFormat decimalFormat;
-    RealmHandler mRealmHandler;
-    String[] categories;
+    private DecimalFormat decimalFormat;
+    private RealmHandler mRealmHandler;
+    private String[] categories;
 
     @Nullable
     @Override
@@ -43,10 +43,10 @@ public class GraphFragmentComparison extends Fragment {
         categories = getResources().getStringArray(R.array.categoryarray);
         mRealmHandler = new RealmHandler(getActivity());
 
-        mChart = (BarChart) view.findViewById(R.id.chart_one);
+        barChart = (BarChart) view.findViewById(R.id.chart_one);
 
         if (mRealmHandler != null && !mRealmHandler.isEmpty(2)) {
-            generateChart(mChart);
+            generateChart(barChart);
         } else {
         }
         return view;
@@ -73,7 +73,8 @@ public class GraphFragmentComparison extends Fragment {
         dataSet.setValueTextColor(getResources().getColor(R.color.md_white_1000));
         dataSet.setValueTextSize(8f);
         dataSet.setColor(getResources().getColor(R.color.md_white_1000));
-        BarData data = new BarData(labels, dataSet);
+//        labels,
+        BarData data = new BarData(dataSet);
         chartView.setData(data);
         chartView.setDescription("");
 

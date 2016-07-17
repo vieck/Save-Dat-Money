@@ -51,7 +51,7 @@ public class AddAdapter extends RealmRecyclerViewAdapter<RealmCategoryItem, AddA
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.itemView.setSelected(selectedItem == position);
         if (holder.itemView.isSelected()) {
-            holder.itemView.setBackgroundColor(Color.CYAN);
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.Gold));
         } else {
             holder.itemView.setBackgroundColor(default_color);
         }
