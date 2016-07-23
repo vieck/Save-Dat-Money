@@ -11,27 +11,23 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,18 +35,13 @@ import android.widget.Toast;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.data.realm.implementation.RealmPieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Currency;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -74,10 +65,10 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     RealmHandler mRealmHandler;
     private PieChart mPieChart;
     private EditText mBudgetView;
-    private TextView mCurrencyLabel, mDateLabel;
+    private TextView mCurrencyLabel;
     private FloatingActionButton mConfirmButton, mCancelButton;
 
-    private ImageButton leftArrow, rightArrow;
+    private TabLayout dateTabs;
 
     private RecyclerView mRecyclerView;
 
@@ -130,19 +121,17 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         mCancelButton = (FloatingActionButton) findViewById(R.id.budget_button_cancel);
         mConfirmButton = (FloatingActionButton) findViewById(R.id.budget_button_ok);
 
-        leftArrow = (ImageButton) findViewById(R.id.left_arrow);
-        rightArrow = (ImageButton) findViewById(R.id.right_arrow);
         setupBudget();
 
 
-        mDateLabel = (TextView) findViewById(R.id.date_display_text);
+        dateTabs = (TabLayout) findViewById(R.id.tablayout_date);
 
         date = new GregorianCalendar();
 //        day = date.get(Calendar.DAY_OF_MONTH);
 //        month = date.get(Calendar.MONTH) + 1;
 //        year = date.get(Calendar.YEAR);
         // setDateLabel(month, year);
-        setupDateArrows();
+        setupDateTabs();
         //setData(mSpinner.getSelectedItemPosition());
     }
 
@@ -180,7 +169,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitleTextColor(Color.WHITE);
-     //   mToolbar.setBackgroundColor(actionBarColor);
+        //   mToolbar.setBackgroundColor(actionBarColor);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
@@ -325,71 +314,76 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         }
     }
 
-    private void setupDateArrows() {
+    private void setupDateTabs() {
         Log.d("Before Date Change", date.toString());
-        leftArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (mSpinner.getSelectedItemPosition()) {
-                    case 1:
-                        date.add(Calendar.DAY_OF_MONTH, -1);
-                        setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
-                        break;
-                    case 2:
-                        int firstDay, lastDay, firstMonth, secondMonth;
-                        lastDay = date.get(Calendar.DAY_OF_MONTH);
-                        secondMonth = date.get(Calendar.MONTH);
-
-                        date.add(Calendar.DATE, -7);
-
-                        firstDay = date.get(Calendar.DAY_OF_MONTH);
-                        firstMonth = date.get(Calendar.MONTH);
-                        setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
-                        break;
-                    case 3:
-                        date.add(Calendar.MONTH, -1);
-                        setDateLabel(date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
-                        break;
-                    case 4:
-                        date.add(Calendar.YEAR, -1);
-                        setDateLabel(date.get(Calendar.YEAR));
-                        break;
-                }
-                setData(mSpinner.getSelectedItemPosition());
-            }
-        });
-        rightArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (mSpinner.getSelectedItemPosition()) {
-                    case 1:
-                        date.add(Calendar.DAY_OF_MONTH, 1);
-                        setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
-                        break;
-                    case 2:
-                        int firstDay, lastDay, oldDay, firstMonth, secondMonth;
-                        oldDay = date.get(Calendar.DAY_OF_MONTH);
-                        firstDay = date.get(Calendar.DAY_OF_MONTH);
-                        firstMonth = date.get(Calendar.MONTH);
-
-                        date.add(Calendar.DATE, 7);
-
-                        lastDay = date.get(Calendar.DAY_OF_MONTH);
-                        secondMonth = date.get(Calendar.MONTH);
-                        setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
-                        break;
-                    case 3:
-                        date.add(Calendar.MONTH, 1);
-                        setDateLabel(date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
-                        break;
-                    case 4:
-                        date.add(Calendar.YEAR, 1);
-                        setDateLabel(date.get(Calendar.YEAR));
-                        break;
-                }
-                setData(mSpinner.getSelectedItemPosition());
-            }
-        });
+        dateTabs.addTab(dateTabs.newTab().setText("This Week").setTag(date.get(Calendar.MONTH) + "," + date.get(Calendar.DAY_OF_MONTH) + "," + date.get(Calendar.YEAR)));
+        dateTabs.addTab(dateTabs.newTab().setText("Today").setTag(date.get(Calendar.MONTH) + "," + date.get(Calendar.DAY_OF_MONTH) + "," + date.get(Calendar.YEAR)));
+        dateTabs.addTab(dateTabs.newTab().setText("This Month").setTag(date.get(Calendar.MONTH) + "," + date.get(Calendar.DAY_OF_MONTH) + "," + date.get(Calendar.YEAR)));
+        dateTabs.addTab(dateTabs.newTab().setText("This Year").setTag(date.get(Calendar.MONTH) + "," + date.get(Calendar.DAY_OF_MONTH) + "," + date.get(Calendar.YEAR)));
+        dateTabs.getTabAt(1).select();
+//        leftArrow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                switch (mSpinner.getSelectedItemPosition()) {
+//                    case 1:
+//                        date.add(Calendar.DAY_OF_MONTH, -1);
+//                        setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+//                        break;
+//                    case 2:
+//                        int firstDay, lastDay, firstMonth, secondMonth;
+//                        lastDay = date.get(Calendar.DAY_OF_MONTH);
+//                        secondMonth = date.get(Calendar.MONTH);
+//
+//                        date.add(Calendar.DATE, -7);
+//
+//                        firstDay = date.get(Calendar.DAY_OF_MONTH);
+//                        firstMonth = date.get(Calendar.MONTH);
+//                        setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
+//                        break;
+//                    case 3:
+//                        date.add(Calendar.MONTH, -1);
+//                        setDateLabel(date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+//                        break;
+//                    case 4:
+//                        date.add(Calendar.YEAR, -1);
+//                        setDateLabel(date.get(Calendar.YEAR));
+//                        break;
+//                }
+//                setData(mSpinner.getSelectedItemPosition());
+//            }
+//        });
+//        rightArrow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                switch (mSpinner.getSelectedItemPosition()) {
+//                    case 1:
+//                        date.add(Calendar.DAY_OF_MONTH, 1);
+//                        setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+//                        break;
+//                    case 2:
+//                        int firstDay, lastDay, oldDay, firstMonth, secondMonth;
+//                        oldDay = date.get(Calendar.DAY_OF_MONTH);
+//                        firstDay = date.get(Calendar.DAY_OF_MONTH);
+//                        firstMonth = date.get(Calendar.MONTH);
+//
+//                        date.add(Calendar.DATE, 7);
+//
+//                        lastDay = date.get(Calendar.DAY_OF_MONTH);
+//                        secondMonth = date.get(Calendar.MONTH);
+//                        setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
+//                        break;
+//                    case 3:
+//                        date.add(Calendar.MONTH, 1);
+//                        setDateLabel(date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+//                        break;
+//                    case 4:
+//                        date.add(Calendar.YEAR, 1);
+//                        setDateLabel(date.get(Calendar.YEAR));
+//                        break;
+//                }
+//                setData(mSpinner.getSelectedItemPosition());
+//            }
+//        });
         Log.d("After Date Change", date.toString());
     }
 
@@ -413,35 +407,35 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
 
     private void setDateLabel(int day, int month, int year) {
-        mDateLabel.setText(month + "/" + day + "/" + year);
+//        mDateLabel.setText(month + "/" + day + "/" + year);
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(day, month, year, 2);
         ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
         adapter.updateData(items);
     }
 
     private void setDateLabel(int startDay, int endDay, int firstMonth, int secondMonth, int year) {
-        mDateLabel.setText(firstMonth + "/" + startDay + "/" + year + " - " + secondMonth + "/" + endDay + "/" + year);
+//        mDateLabel.setText(firstMonth + "/" + startDay + "/" + year + " - " + secondMonth + "/" + endDay + "/" + year);
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(startDay, endDay, firstMonth, secondMonth, year, 2);
         ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
         adapter.updateData(items);
     }
 
     private void setDateLabel(int month, int year) {
-        mDateLabel.setText(month + "/" + year);
+//        mDateLabel.setText(month + "/" + year);
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(month, year, 2);
         ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
         adapter.updateData(items);
     }
 
     private void setDateLabel(int year) {
-        mDateLabel.setText("" + year);
+//        mDateLabel.setText("" + year);
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(year, 2);
         ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
         adapter.updateData(items);
     }
 
     private void setDateLabel() {
-        mDateLabel.setText("All");
+//        mDateLabel.setText("All");
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter();
         ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
         adapter.updateData(items);
