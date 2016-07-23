@@ -22,14 +22,15 @@
                 android:id="@+id/toolbar"
                 style="@style/MyAppBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/flat_wetasphalt">
 
                 <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:background="?android:colorPrimary" />
+                    android:background="@color/flat_wetasphalt" />
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
@@ -38,60 +39,20 @@
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize">
-
-            <RelativeLayout
-                android:id="@+id/date_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="20dp">
-
-                <ImageButton
-                    android:id="@+id/left_arrow"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_toStartOf="@+id/date_display_text"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_arrow_back_black_24dp"
-                    android:tint="@color/Black" />
-
-                <TextView
-                    android:id="@+id/date_display_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginStart="24dp"
-                    android:gravity="center"
-                    android:textColor="@color/Black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <ImageButton
-                    android:id="@+id/right_arrow"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_toEndOf="@id/date_display_text"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_arrow_forward_black_24dp"
-                    android:tint="@color/Black" />
-            </RelativeLayout>
+            android:layout_marginTop="?attr/actionBarSize"
+            android:background="@color/flat_midnight_blue">
 
             <FrameLayout
                 android:id="@+id/frame_layout"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_below="@id/date_layout"
-                android:layout_centerHorizontal="true"
-                android:layout_marginEnd="24dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="20dp">
+                android:layout_height="250dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true">
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pie_chart"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -112,11 +73,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@id/currency_textview"
                         android:layout_toStartOf="@id/currency_textview"
-                        android:windowSoftInputMode="stateHidden"
                         android:hint="@string/budget"
                         android:inputType="numberDecimal"
                         android:textColor="@color/md_black_1000"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:windowSoftInputMode="stateAlwaysHidden" />
                 </RelativeLayout>
 
                 <android.support.design.widget.FloatingActionButton
@@ -142,11 +103,48 @@
 
             </FrameLayout>
 
+            <RelativeLayout
+                android:id="@+id/date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/frame_layout">
+
+                <ImageButton
+                    android:id="@+id/left_arrow"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_toStartOf="@+id/date_display_text"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_arrow_back_black_24dp"
+                    android:tint="@color/md_white_1000" />
+
+                <TextView
+                    android:id="@+id/date_display_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginStart="24dp"
+                    android:gravity="center"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/right_arrow"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_toEndOf="@id/date_display_text"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_arrow_forward_black_24dp"
+                    android:tint="@color/md_white_1000" />
+            </RelativeLayout>
+
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/frame_layout">
+                android:layout_below="@+id/date_layout">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/budget_recycler_view"
@@ -165,6 +163,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/flat_wetasphalt"
         app:itemIconTint="?android:attr/colorPrimary"
         app:menu="@menu/nav_menu" />
 </android.support.v4.widget.DrawerLayout>

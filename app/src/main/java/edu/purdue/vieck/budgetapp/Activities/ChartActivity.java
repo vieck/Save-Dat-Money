@@ -106,7 +106,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
 
         mSpinner = (Spinner) findViewById(R.id.spinner);
-        mSpinner = setUpSpinner(mSpinner);
+        setUpSpinner();
 
         final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         mRecyclerView = (RecyclerView) findViewById(R.id.budget_recycler_view);
@@ -124,7 +124,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         });
 
         mPieChart = (PieChart) findViewById(R.id.pie_chart);
-        mPieChart = setupPieChart(mPieChart);
+        setupPieChart();
         mBudgetView = (EditText) findViewById(R.id.edittext_budget);
         mCurrencyLabel = (TextView) findViewById(R.id.currency_textview);
         mCancelButton = (FloatingActionButton) findViewById(R.id.budget_button_cancel);
@@ -180,7 +180,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitleTextColor(Color.WHITE);
-        mToolbar.setBackgroundColor(actionBarColor);
+     //   mToolbar.setBackgroundColor(actionBarColor);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
@@ -202,7 +202,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     private void setUpNavigationView() {
         final Activity currentActivity = this;
         mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
-        mNavigationView.setBackgroundColor(actionBarColor);
+//        mNavigationView.setBackgroundColor(actionBarColor);
         mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
         mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -250,24 +250,16 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     /*
      * Spinner to filter income, expenses, or both
      */
-    private Spinner setUpSpinner(final Spinner spinner) {
+    private void setUpSpinner() {
         CharSequence[] simpleSpinner = getResources().getStringArray(R.array.chartarray);
         CustomArrayAdapter<CharSequence> spinnerArrayAdapter = new CustomArrayAdapter<>(this, simpleSpinner);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-        spinner.setBackgroundColor(actionBarColor);
-        spinner.setAdapter(spinnerArrayAdapter);
+        mSpinner.setAdapter(spinnerArrayAdapter);
         // spinner.setSelection(0);
-        spinner.dispatchSetSelected(true);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSpinner.dispatchSetSelected(true);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if ((adapterView.getChildAt(0)) != null) {
-                    if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
-                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
-                    } else {
-                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
-                    }
-                }
                 //Toast.makeText(mContext, mSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                 switch (mSpinner.getSelectedItemPosition()) {
                     case 0:
@@ -312,7 +304,6 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
             }
         });
-        return spinner;
     }
 
     private class CustomArrayAdapter<T> extends ArrayAdapter<T> {
@@ -321,15 +312,14 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         }
 
         @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+            return view;
+        }
+
+        @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             View view = super.getDropDownView(position, convertView, parent);
-            TextView textView = (TextView) view.findViewById(R.id.simple_spinner_text_view);
-            if (actionBarColor == getResources().getColor(R.color.md_white_1000)) {
-                textView.setTextColor(Color.BLACK);
-            } else {
-                textView.setTextColor(Color.WHITE);
-            }
-            textView.setBackgroundColor(actionBarColor);
             return view;
 
         }
@@ -457,36 +447,36 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         adapter.updateData(items);
     }
 
-    private PieChart setupPieChart(PieChart chart) {
-        chart.setDescription("");
-        chart.setDescriptionColor(getResources().getColor(R.color.White));
-        chart.setUsePercentValues(true);
-        chart.setDragDecelerationFrictionCoef(0.95f);
+    private void setupPieChart() {
+        mPieChart.setDescription("");
+        mPieChart.setDescriptionColor(getResources().getColor(R.color.White));
+        mPieChart.setUsePercentValues(true);
+        mPieChart.setDragDecelerationFrictionCoef(0.95f);
         //mTypeface = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-        chart.setDrawHoleEnabled(true);
-        //mPieChart.setHoleColor(Color.WHITE);
-        chart.setCenterTextColor(Color.BLACK);
-        chart.setTransparentCircleColor(Color.WHITE);
-        chart.setHoleRadius(55f);
-        chart.setTransparentCircleRadius(45f);
-        chart.setDrawCenterText(true);
-
-        chart.setRotationAngle(0);
+        mPieChart.setDrawHoleEnabled(true);
+        mPieChart.setHoleColor(Color.TRANSPARENT);
+        mPieChart.setCenterTextColor(Color.WHITE);
+        mPieChart.setHoleRadius(60f);
+        mPieChart.setTransparentCircleRadius(63f);
+        mPieChart.setTransparentCircleColor(getResources().getColor(R.color.flat_wetasphalt));
+        mPieChart.setTransparentCircleAlpha(200);
+        mPieChart.setDrawCenterText(true);
+        mPieChart.setRotationAngle(0);
         // enable rotation of the chart by touch
-        chart.setRotationEnabled(true);
+        mPieChart.setRotationEnabled(true);
 
-        chart.setCenterTextSize(9.5f);
+//        mPieChart.setCenterTextSize(12.5f);
 
-        chart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
+        mPieChart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);*/
 
-        Legend l = chart.getLegend();
+        Legend l = mPieChart.getLegend();
         l.setPosition(Legend.LegendPosition.PIECHART_CENTER);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(-20f);
         l.setXOffset(5f);
-        return chart;
+        l.setTextColor(Color.WHITE);
     }
 
     private void setupBudget() {
@@ -589,9 +579,11 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             dataSet.setColors(colors);
             PieData data = new PieData(dataSet);
             data.setValueFormatter(new PercentFormatter());
-            data.setValueTextSize(11f);
+            data.setValueTextSize(14f);
             data.setValueTextColor(Color.WHITE);
             mPieChart.setData(data);
+            //Hide labels since the legend is shown
+            mPieChart.setDrawEntryLabels(false);
             // undo all highlights
             mPieChart.highlightValues(null);
 

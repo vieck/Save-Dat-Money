@@ -83,7 +83,7 @@ public class BudgetApplication extends Application {
                         mRealmHandler.add(categoryItem);
                         break;
                     case 2:
-                        categoryItem = new RealmCategoryItem(categoryNames[i], categoryNames[i], drawables[i], getResources().getColor(R.color.md_yellow_300), false);
+                        categoryItem = new RealmCategoryItem(categoryNames[i], categoryNames[i], drawables[i], getResources().getColor(R.color.md_orange_300), false);
 
                         // Entertainment Sub List
                         for (int j = 0; j < subCategoryEntertainment.length; j++) {
