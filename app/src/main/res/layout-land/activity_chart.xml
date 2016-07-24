@@ -64,9 +64,9 @@
                     android:id="@+id/tablayout_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/pie_chart"
-                    app:tabTextColor="@color/md_white_1000"
+                    android:layout_alignParentBottom="true"
                     android:background="@color/flat_wetasphalt"
+                    app:tabTextColor="@color/md_white_1000"
                     app:tabGravity="fill"
                     app:tabSelectedTextColor="@color/md_white_1000"
                     app:tabIndicatorColor="@color/flat_clouds"
@@ -75,56 +75,15 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/flat_wetasphalt"/>
+
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/currency_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:text="$"
-                        android:textColor="@color/md_black_1000"
-                        android:textSize="16sp" />
-
-                    <EditText
-                        android:id="@+id/edittext_budget"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/currency_textview"
-                        android:layout_toStartOf="@id/currency_textview"
-                        android:hint="@string/budget"
-                        android:inputType="numberDecimal"
-                        android:textColor="@color/md_black_1000"
-                        android:textSize="16sp"
-                        android:windowSoftInputMode="stateHidden" />
-                </RelativeLayout>
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/budget_button_cancel"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_gravity="bottom|start|left"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
-                    android:tint="@color/md_white_1000"
-                    android:visibility="invisible"
-                    app:backgroundTint="@color/md_red_400" />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/budget_button_ok"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_gravity="bottom|end|right"
-                    android:src="@drawable/ic_confirm"
-                    android:tint="@color/md_white_1000"
-                    android:visibility="invisible"
-                    app:backgroundTint="@color/md_green_400" />
 
                 <android.support.v4.widget.SwipeRefreshLayout
                     android:id="@+id/swipe_refresh_layout"

@@ -46,6 +46,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import edu.purdue.vieck.budgetapp.Adapters.ChartRecyclerAdapter;
+import edu.purdue.vieck.budgetapp.Adapters.DividerItemDecoration;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
@@ -64,9 +65,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     //private int day, month, year;
     RealmHandler mRealmHandler;
     private PieChart mPieChart;
-    private EditText mBudgetView;
     private TextView mCurrencyLabel;
-    private FloatingActionButton mConfirmButton, mCancelButton;
 
     private TabLayout dateTabs;
 
@@ -104,6 +103,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(new ChartRecyclerAdapter(mContext, items));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL, getResources().getColor(R.color.flat_peterriver)));
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -116,10 +116,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
         mPieChart = (PieChart) findViewById(R.id.pie_chart);
         setupPieChart();
-        mBudgetView = (EditText) findViewById(R.id.edittext_budget);
         mCurrencyLabel = (TextView) findViewById(R.id.currency_textview);
-        mCancelButton = (FloatingActionButton) findViewById(R.id.budget_button_cancel);
-        mConfirmButton = (FloatingActionButton) findViewById(R.id.budget_button_ok);
 
         setupBudget();
 

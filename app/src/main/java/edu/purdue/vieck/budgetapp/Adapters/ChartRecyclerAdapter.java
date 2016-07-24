@@ -5,19 +5,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Currency;
 
 import edu.purdue.vieck.budgetapp.Activities.EditActivity;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
-import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
 import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
@@ -39,7 +38,7 @@ public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem
 
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_chart, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycler_view_item_chart, viewGroup, false);
         return new mViewHolder(view);
     }
 
@@ -51,6 +50,7 @@ public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem
         String subcategory = item.getSubcategory();
         String currency = item.getAmount() + " " + currencySymbol;
 
+        holder.icon.setImageDrawable(context.getDrawable(item.getImage()));
         holder.date.setText(date);
         holder.category.setText(category);
         holder.subcategory.setText(subcategory);
@@ -69,17 +69,17 @@ public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem
     }
 
     class mViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        CardView cardView;
+        ImageView icon;
         TextView date, amount, category, subcategory;
 
         private mViewHolder(View v) {
             super(v);
-            cardView = (CardView) v.findViewById(R.id.cardview);
-            date = (TextView) v.findViewById(R.id.cardview_date);
-            amount = (TextView) v.findViewById(R.id.cardview_amount);
-            category = (TextView) v.findViewById(R.id.cardview_category);
-            subcategory = (TextView) v.findViewById(R.id.cardview_subcategory);
-            cardView.setOnClickListener(this);
+            icon = (ImageView) v.findViewById(R.id.chart_item_icon);
+            date = (TextView) v.findViewById(R.id.chart_item_date);
+            amount = (TextView) v.findViewById(R.id.chart_item_amount);
+            category = (TextView) v.findViewById(R.id.chart_item_category);
+            subcategory = (TextView) v.findViewById(R.id.chart_item_subcategory);
+            v.getRootView().setOnClickListener(this);
         }
 
         @Override
