@@ -41,7 +41,9 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -243,53 +245,53 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         mSpinner.setAdapter(spinnerArrayAdapter);
         // spinner.setSelection(0);
         mSpinner.dispatchSetSelected(true);
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                //Toast.makeText(mContext, mSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-                switch (mSpinner.getSelectedItemPosition()) {
-                    case 0:
-                        setDateLabel();
-                        break;
-                    case 1:
-                        Toast.makeText(getApplicationContext(), (date.get(Calendar.MONTH) + 1) + "/" + date.get(Calendar.DAY_OF_MONTH) + "/" + date.get(Calendar.YEAR), Toast.LENGTH_SHORT).show();
-                        setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
-                        break;
-                    case 2:
-                        date.add(Calendar.WEEK_OF_YEAR, -1);
-
-                        int weekday = date.get(Calendar.DAY_OF_WEEK);
-
-                        int firstDay, lastDay, firstMonth, secondMonth;
-                        date.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                        firstDay = date.get(Calendar.DAY_OF_MONTH);
-                        firstMonth = date.get(Calendar.MONTH);
-
-                        date.add(Calendar.DATE, 7);
-                        lastDay = date.get(Calendar.DAY_OF_MONTH);
-                        secondMonth = date.get(Calendar.MONTH);
-
-                        date.set(Calendar.DAY_OF_WEEK, weekday);
-
-                        Toast.makeText(getApplicationContext(), (date.get(Calendar.MONTH) + 1) + "/" + date.get(Calendar.DAY_OF_MONTH) + "/" + date.get(Calendar.YEAR), Toast.LENGTH_SHORT).show();
-
-                        setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
-                        break;
-                    case 3:
-                        setDateLabel(date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
-                        break;
-                    case 4:
-                        setDateLabel(date.get(Calendar.YEAR));
-                        break;
-                }
-                setData(mSpinner.getSelectedItemPosition());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+//                //Toast.makeText(mContext, mSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+//                switch (mSpinner.getSelectedItemPosition()) {
+//                    case 0:
+//                        setDateLabel();
+//                        break;
+//                    case 1:
+//                        Toast.makeText(getApplicationContext(), (date.get(Calendar.MONTH) + 1) + "/" + date.get(Calendar.DAY_OF_MONTH) + "/" + date.get(Calendar.YEAR), Toast.LENGTH_SHORT).show();
+//                        setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+//                        break;
+//                    case 2:
+//                        date.add(Calendar.WEEK_OF_YEAR, -1);
+//
+//                        int weekday = date.get(Calendar.DAY_OF_WEEK);
+//
+//                        int firstDay, lastDay, firstMonth, secondMonth;
+//                        date.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+//                        firstDay = date.get(Calendar.DAY_OF_MONTH);
+//                        firstMonth = date.get(Calendar.MONTH);
+//
+//                        date.add(Calendar.DATE, 7);
+//                        lastDay = date.get(Calendar.DAY_OF_MONTH);
+//                        secondMonth = date.get(Calendar.MONTH);
+//
+//                        date.set(Calendar.DAY_OF_WEEK, weekday);
+//
+//                        Toast.makeText(getApplicationContext(), (date.get(Calendar.MONTH) + 1) + "/" + date.get(Calendar.DAY_OF_MONTH) + "/" + date.get(Calendar.YEAR), Toast.LENGTH_SHORT).show();
+//
+//                        setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
+//                        break;
+//                    case 3:
+//                        setDateLabel(date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+//                        break;
+//                    case 4:
+//                        setDateLabel(date.get(Calendar.YEAR));
+//                        break;
+//                }
+//                setData(mSpinner.getSelectedItemPosition());
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
     }
 
     private class CustomArrayAdapter<T> extends ArrayAdapter<T> {
@@ -313,11 +315,58 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
     private void setupDateTabs() {
         Log.d("Before Date Change", date.toString());
-        dateTabs.addTab(dateTabs.newTab().setText("This Week").setTag(date.get(Calendar.MONTH) + "," + date.get(Calendar.DAY_OF_MONTH) + "," + date.get(Calendar.YEAR)));
-        dateTabs.addTab(dateTabs.newTab().setText("Today").setTag(date.get(Calendar.MONTH) + "," + date.get(Calendar.DAY_OF_MONTH) + "," + date.get(Calendar.YEAR)));
-        dateTabs.addTab(dateTabs.newTab().setText("This Month").setTag(date.get(Calendar.MONTH) + "," + date.get(Calendar.DAY_OF_MONTH) + "," + date.get(Calendar.YEAR)));
-        dateTabs.addTab(dateTabs.newTab().setText("This Year").setTag(date.get(Calendar.MONTH) + "," + date.get(Calendar.DAY_OF_MONTH) + "," + date.get(Calendar.YEAR)));
+        final String dateTag = Integer.toString(date.get(Calendar.MONTH)) + "," + Integer.toString(date.get(Calendar.DATE)) + "," + Integer.toString(date.get(Calendar.YEAR));
+        dateTabs.addTab(dateTabs.newTab().setText("This Week").setTag(dateTag));
+        dateTabs.addTab(dateTabs.newTab().setText("Today").setTag(dateTag));
+        dateTabs.addTab(dateTabs.newTab().setText("This Month").setTag(dateTag));
+        dateTabs.addTab(dateTabs.newTab().setText("This Year").setTag(dateTag));
         dateTabs.getTabAt(1).select();
+        dateTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                String[] dateString = tab.getTag().toString().split(",");
+                for (int i = 0; i < dateString.length; i++) {
+                    date.set(Integer.parseInt(dateString[2]), Integer.parseInt(dateString[0]), Integer.parseInt(dateString[1]));
+                }
+                switch (tab.getPosition()) {
+                    case 1:
+                        setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+                        setData(1);
+                        break;
+                    case 0:
+
+                        int firstDay, lastDay, firstMonth, secondMonth;
+                        lastDay = date.get(Calendar.DAY_OF_MONTH);
+                        secondMonth = date.get(Calendar.MONTH);
+
+                        date.add(Calendar.DATE, -7);
+
+                        firstDay = date.get(Calendar.DAY_OF_MONTH);
+                        firstMonth = date.get(Calendar.MONTH);
+                        setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
+                        setData(2);
+                        break;
+                    case 2:
+                        setDateLabel(date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+                        setData(3);
+                        break;
+                    case 3:
+                        setDateLabel(date.get(Calendar.YEAR));
+                        setData(4);
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 //        leftArrow.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
