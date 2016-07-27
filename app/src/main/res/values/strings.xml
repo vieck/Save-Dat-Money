@@ -10,6 +10,7 @@
     <string name="category">Category</string>
     <string name="subcategory">Subcategory</string>
     <string name="amount">Amount</string>
+    <string name="choose_amount_label">Choose an amount</string>
     <string name="expense">Expense</string>
     <string name="expenses">Expenses</string>
     <string name="type">Type</string>
@@ -176,6 +177,8 @@
     <string name="summary_action_bar_color">Change the action bar color</string>
 
     <string name="title_links">Links</string>
+
+    <string name="number_picker_result_value"></string>
 
     <!-- Action Bar Titles -->
     <string name="title_activity_dashboard">Dashboard</string>

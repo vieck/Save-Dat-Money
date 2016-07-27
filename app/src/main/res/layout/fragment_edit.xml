@@ -12,10 +12,10 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_alignBaseline="@+id/edittext_amount"/>
+        android:layout_alignBaseline="@+id/add_textview_amount"/>
 
     <EditText
-        android:id="@+id/edittext_amount"
+        android:id="@+id/add_textview_amount"
         style="@style/edittext_amount_add_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         style="@style/edittext_note_add_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edittext_amount"
+        android:layout_below="@id/add_textview_amount"
         android:inputType="none"
         android:hint="@string/edittext_note_hint"/>
 

@@ -1,57 +1,196 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/header_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:mContext="edu.purdue.vieck.budgetapp.Activities.AddActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/header_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/flat_midnight_blue"
+        tools:mContext="edu.purdue.vieck.budgetapp.Activities.AddActivity">
 
-        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/toolbar"
-            style="@style/MyAppBarLayout"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
+            android:layout_height="wrap_content">
 
-    </android.support.design.widget.AppBarLayout>
+            <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/toolbar"
+                style="@style/MyAppBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/flat_wetasphalt"/>
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize"/>
+        </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_next"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="28dp"
-        android:layout_marginEnd="28dp"
-        android:scaleType="center"
-        android:src="@drawable/ic_action_next_item"
-        android:stateListAnimator="@anim/button_elevation"
-        android:tint="?android:colorPrimary"
-        app:backgroundTint="?android:attr/colorPrimaryDark"
-        app:borderWidth="0dp" />
+        <RelativeLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_back"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom|start"
-        android:layout_marginBottom="28dp"
-        android:layout_marginStart="28dp"
-        android:scaleType="center"
-        android:src="@drawable/ic_action_previous_item"
-        android:stateListAnimator="@anim/button_elevation"
-        android:tint="?android:colorPrimary"
-        app:backgroundTint="?android:attr/colorPrimaryDark"
-        app:borderWidth="0dp"
-        android:visibility="gone"/>
-</android.support.design.widget.CoordinatorLayout>
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="50dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/income_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/income"
+                    android:textOff="@string/expense"
+                    android:textOn="@string/income"
+                    android:buttonTint="@color/flat_emerland"
+                    android:textColor="@color/flat_clouds"/>
+
+                <RadioButton
+                    android:id="@+id/expense_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/expense"
+                    android:textOff="@string/expense"
+                    android:textOn="@string/income"
+                    android:buttonTint="@color/flat_alizarin"
+                    android:textColor="@color/flat_clouds"/>
+            </RadioGroup>
+
+            <RelativeLayout
+                android:id="@+id/amount_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/radio_group"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/choose_amount_label"
+                    android:textColor="@color/flat_clouds"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:id="@+id/currency_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:textSize="36sp"
+                    android:textColor="@color/flat_clouds"
+                    android:layout_toStartOf="@+id/add_textview_amount"/>
+
+                <TextView
+                    android:id="@+id/add_textview_amount"
+                    style="@style/edittext_amount_add_fragment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0.0"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="25dp"
+                    android:textSize="36sp"
+                    android:textColor="@color/flat_clouds"
+                    android:maxLength="9"/>
+
+            </RelativeLayout>
+
+            <View android:id="@+id/divider_1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/amount_layout"
+                android:background="@color/flat_clouds" />
+
+            <!--TextView
+                android:id="@+id/textview_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/divider_1"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/textview_note_description"
+                android:textSize="16sp"
+                android:textColor="@color/flat_clouds"/-->
+
+            <EditText
+                android:id="@+id/edittext_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/divider_1"
+                android:hint="@string/textview_note_description"
+                android:maxLength="100"
+                android:maxLines="3"
+                android:textColorHint="@color/flat_alizarin"
+                android:textColor="@color/flat_clouds"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"/>
+
+            <View android:id="@+id/divider_2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/edittext_note"
+                android:background="@color/flat_clouds"
+                android:layout_marginBottom="20dp"/>
+
+            <TextView
+                android:id="@+id/add_textview_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/divider_2"
+                android:layout_marginStart="50dp"
+                android:layout_alignParentStart="true"
+                android:hint="@string/category"
+                android:textColor="@color/flat_clouds"
+                android:textColorHint="@color/flat_alizarin"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/add_textview_subcategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/divider_2"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="50dp"
+                android:hint="@string/subcategory"
+                android:textColor="@color/flat_clouds"
+                android:textColorHint="@color/flat_alizarin"
+                android:textSize="20sp"/>
+
+
+            <DatePicker
+                android:id="@+id/datepicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:calendarTextColor="@color/flat_clouds"/>
+        </RelativeLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_next"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="28dp"
+            android:layout_marginEnd="28dp"
+            android:scaleType="center"
+            android:src="@android:drawable/ic_input_add"
+            android:stateListAnimator="@anim/button_elevation"
+            android:tint="@color/flat_clouds"
+            app:backgroundTint="@color/flat_wetasphalt"
+            app:borderWidth="0dp" />
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

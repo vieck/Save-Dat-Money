@@ -42,7 +42,7 @@
             android:name=".Activities.CategoryEditingActivity"
             android:label="@string/title_activity_edit_category"
             android:parentActivityName=".Activities.AddActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/StyleActivityAdd">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.purdue.vieck.budgetapp.Activities.AddActivity" />

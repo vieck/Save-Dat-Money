@@ -54,7 +54,7 @@ public class EditDataFragment extends android.app.Fragment {
         radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
         incomeButton = (RadioButton) view.findViewById(R.id.income__button);
         expenseButton = (RadioButton) view.findViewById(R.id.expense_button);
-        amount = (EditText) view.findViewById(R.id.edittext_amount);
+        amount = (EditText) view.findViewById(R.id.add_textview_amount);
         currency = (TextView) view.findViewById(R.id.currency_label);
         note = (EditText) view.findViewById(R.id.edittext_note);
         datePicker = (DatePicker) view.findViewById(R.id.datepicker);

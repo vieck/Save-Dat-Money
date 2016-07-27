@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/edittext_amount"
+        android:id="@+id/add_textview_amount"
         style="@style/edittext_amount_add_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,17 +24,17 @@
         style="@style/edittext_amount_add_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/edittext_amount"
+        android:layout_alignBaseline="@id/add_textview_amount"
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
-        android:layout_toEndOf="@id/edittext_amount" />
+        android:layout_toEndOf="@id/add_textview_amount" />
 
     <RadioGroup
         android:id="@+id/radio_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/edittext_amount"
-        android:layout_below="@id/edittext_amount"
+        android:layout_alignStart="@id/add_textview_amount"
+        android:layout_below="@id/add_textview_amount"
         android:layout_marginBottom="12dp"
         android:orientation="horizontal">
 
