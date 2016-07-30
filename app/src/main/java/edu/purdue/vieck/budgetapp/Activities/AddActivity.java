@@ -182,6 +182,7 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
             String category = data.getStringExtra("Category");
             iconResourceId = data.getIntExtra("Icon", R.drawable.insurance_dark);
             binding.addTextviewCategory.setText(category);
+            binding.addTextviewSubcategory.setText("");
             binding.addIcon.setImageDrawable(getDrawable(iconResourceId));
         }
 
