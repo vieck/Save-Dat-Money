@@ -49,8 +49,8 @@ public class ChartRecyclerAdapter extends RealmRecyclerViewAdapter<RealmDataItem
         String category = item.getCategory();
         String subcategory = item.getSubcategory();
         String currency = item.getAmount() + " " + currencySymbol;
-
-        holder.icon.setImageDrawable(context.getDrawable(item.getImage()));
+        int image = item.getImage();
+        holder.icon.setImageDrawable(context.getDrawable(image));
         holder.date.setText(date);
         holder.category.setText(category);
         holder.subcategory.setText(subcategory);

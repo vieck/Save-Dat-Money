@@ -1,5 +1,6 @@
 package edu.purdue.vieck.budgetapp.Activities;
 
+import android.app.DatePickerDialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,14 +18,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
+import com.codetroopers.betterpickers.datepicker.DatePickerDialogFragment;
 import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
 import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.util.Currency;
+import java.util.Locale;
 
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmBudgetItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
@@ -32,7 +39,7 @@ import edu.purdue.vieck.budgetapp.Fragments.AddCategoryFragment;
 import edu.purdue.vieck.budgetapp.R;
 import edu.purdue.vieck.budgetapp.databinding.ActivityAddBinding;
 
-public class AddActivity extends AppCompatActivity implements NumberPickerDialogFragment.NumberPickerDialogHandlerV2 {
+public class AddActivity extends AppCompatActivity implements NumberPickerDialogFragment.NumberPickerDialogHandlerV2, DatePickerDialogFragment.DatePickerDialogHandler {
 
 
     ActivityAddBinding binding;
@@ -42,6 +49,7 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
     private int actionBarColor;
     RealmHandler mRealmHandler;
     int iconResourceId;
+    int day, month, year;
 
     private Bundle bundle;
 
@@ -70,7 +78,9 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
                 npb.show();
             }
         });
-        binding.edittextNote.getBackground().mutate().setColorFilter(getResources().getColor(R.color.flat_peterriver), PorterDuff.Mode.SRC_ATOP);
+        binding.addTextviewDate.setVisibility(View.GONE);
+        binding.edittextNote.getBackground().mutate().setColorFilter(getResources().getColor(R.color.md_blue_500), PorterDuff.Mode.SRC_ATOP);
+        setDatePickerListener();
         setCategoryListener();
         setSubcategoryListener();
         setSubmitButtonListener();
@@ -79,11 +89,12 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("Month", binding.datepicker.getMonth() + 1);
-        outState.putInt("Day", binding.datepicker.getDayOfMonth());
-        outState.putInt("Year", binding.datepicker.getYear());
+        outState.putInt("Month", month);
+        outState.putInt("Day", day);
+        outState.putInt("Year", year);
         outState.putString("Category", binding.addTextviewCategory.getText().toString());
         outState.putString("Subcategory", binding.addTextviewSubcategory.getText().toString());
+        outState.putInt("Icon",iconResourceId);
         if (!binding.addTextviewAmount.getText().toString().equals("")) {
             outState.putDouble("Amount", Double.parseDouble(binding.addTextviewAmount.getText().toString()));
         }
@@ -146,7 +157,10 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
                     binding.edittextNote.setHint("Type a description");
                 }
                 iconResourceId = bundle.getInt("Icon", R.drawable.cell_phone_bill_dark);
-                binding.datepicker.updateDate(bundle.getInt("Year"), bundle.getInt("Month"), bundle.getInt("Day"));
+                day = bundle.getInt("Day");
+                month = bundle.getInt("Month");
+                year = bundle.getInt("Year");
+                binding.addTextviewDate.setText(months[month] + " " + day + ", " + year);
             }
 
             binding.addTextviewCategory.setText(bundle.getString("Category") + "");
@@ -166,18 +180,33 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0 && resultCode == RESULT_OK) {
             String category = data.getStringExtra("Category");
+            iconResourceId = data.getIntExtra("Icon", R.drawable.insurance_dark);
             binding.addTextviewCategory.setText(category);
+            binding.addIcon.setImageDrawable(getDrawable(iconResourceId));
         }
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String subCategory = data.getStringExtra("Subcategory");
             binding.addTextviewSubcategory.setText(subCategory);
+            iconResourceId = data.getIntExtra("Icon", R.drawable.insurance_dark);
+            binding.addIcon.setImageDrawable(getDrawable(iconResourceId));
         }
     }
 
     @Override
     public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
-        binding.addTextviewAmount.setText(fullNumber.toString());
+        String dec = String.format(Locale.getDefault(),"%.2f",fullNumber);
+        binding.addTextviewAmount.setText(dec);
+    }
+
+    @Override
+    public void onDialogDateSet(int reference, int year, int monthOfYear, int dayOfMonth) {
+        this.day = dayOfMonth;
+        this.month = monthOfYear;
+        this.year = year;
+        binding.addTextviewDate.setVisibility(View.VISIBLE);
+        binding.addTextviewDate.setText(months[monthOfYear] + " " + day + ", " + year);
+        binding.addButtonDate.setText(getString(R.string.add_data_date_change_button));
     }
 
     private void setCategoryListener() {
@@ -196,10 +225,11 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
                 if (!binding.addTextviewAmount.getText().toString().equals("")) {
                     bundle.putDouble("Amount", Double.parseDouble(binding.addTextviewAmount.getText().toString()));
                 }
+                bundle.putInt("Icon",iconResourceId);
                 bundle.putString("Note", binding.edittextNote.getText().toString());
-                bundle.putInt("Month", binding.datepicker.getMonth());
-                bundle.putInt("Day", binding.datepicker.getDayOfMonth());
-                bundle.putInt("Year", binding.datepicker.getYear());
+                bundle.putInt("Month", month);
+                bundle.putInt("Day", day);
+                bundle.putInt("Year", year);
                 Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
                 intent.putExtras(bundle);
                 startActivityForResult(intent, 0);
@@ -224,14 +254,32 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
                     if (!binding.addTextviewAmount.getText().toString().equals("")) {
                         bundle.putDouble("Amount", Double.parseDouble(binding.addTextviewAmount.getText().toString()));
                     }
+                    bundle.putInt("Icon",iconResourceId);
                     bundle.putString("Note", binding.edittextNote.getText().toString());
-                    bundle.putInt("Month", binding.datepicker.getMonth());
-                    bundle.putInt("Day", binding.datepicker.getDayOfMonth());
-                    bundle.putInt("Year", binding.datepicker.getYear());
+                    bundle.putInt("Month", month);
+                    bundle.putInt("Day", day);
+                    bundle.putInt("Year", year);
                     Intent intent = new Intent(getApplicationContext(), SubCategoryActivity.class);
                     intent.putExtras(bundle);
                     startActivityForResult(intent, 1);
                 }
+            }
+        });
+    }
+
+    private void setDatePickerListener() {
+        binding.addButtonDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerBuilder dpb = new DatePickerBuilder()
+                        .setFragmentManager(getSupportFragmentManager())
+                        .setStyleResId(R.style.BetterPickersDialogFragment);
+                if (binding.addTextviewDate.getText().equals("")) {
+                    dpb.setDayOfMonth(day);
+                    dpb.setMonthOfYear(month);
+                    dpb.setYear(year);
+                }
+                dpb.show();
             }
         });
     }
@@ -244,6 +292,15 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
                 if (binding.addTextviewAmount.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Invalid Amount", Toast.LENGTH_LONG).show();
                     return;
+                } else if (binding.addTextviewCategory.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "Invalid Category", Toast.LENGTH_LONG).show();
+                    return;
+                } else if (binding.addTextviewSubcategory.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "Invalid Refined Category", Toast.LENGTH_LONG).show();
+                    return;
+                } else if (binding.addTextviewDate.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "Invalid Date", Toast.LENGTH_LONG).show();
+                    return;
                 }
                 float amountV = Float.parseFloat(binding.addTextviewAmount.getText().toString());
                 Boolean incomeOrExpense;
@@ -252,9 +309,6 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
                 } else {
                     incomeOrExpense = false;
                 }
-                int dayNum = binding.datepicker.getDayOfMonth();
-                int monthNum = binding.datepicker.getMonth() + 1;
-                int yearNum = binding.datepicker.getYear();
                 String categoryString = binding.addTextviewCategory.getText().toString();
                 String subcategoryString = binding.addTextviewSubcategory.getText().toString();
                 String noteString = binding.edittextNote.getText().toString();
@@ -263,15 +317,15 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
                 realmDataItem.setCategory(categoryString);
                 realmDataItem.setSubcategory(subcategoryString);
                 realmDataItem.setType(incomeOrExpense);
-                realmDataItem.setDay(dayNum);
-                realmDataItem.setMonth(monthNum);
-                realmDataItem.setYear(yearNum);
+                realmDataItem.setDay(day);
+                realmDataItem.setMonth(month+1);
+                realmDataItem.setYear(year);
                 realmDataItem.setNote(noteString);
                 realmDataItem.setImage(iconResourceId);
-                realmDataItem.setMonthString(months[monthNum - 1]);
+                realmDataItem.setMonthString(months[month]);
 
                 float defaultBudget = Float.parseFloat(mSharedPreferences.getString(getResources().getString(R.string.key_budget), "500.00"));
-                RealmBudgetItem realmBudgetItem = new RealmBudgetItem(monthNum, yearNum, defaultBudget);
+                RealmBudgetItem realmBudgetItem = new RealmBudgetItem(month, year, defaultBudget);
                 Toast.makeText(getApplicationContext(), "Added Data", Toast.LENGTH_LONG).show();
                 try {
                     mRealmHandler.add(realmDataItem);

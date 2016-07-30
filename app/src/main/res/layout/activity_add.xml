@@ -38,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginStart="50dp"
                 android:orientation="horizontal">
@@ -68,8 +69,7 @@
                 android:id="@+id/amount_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/radio_group"
-                android:layout_marginBottom="10dp">
+                android:layout_below="@id/radio_group">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
                     style="@style/edittext_amount_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="0.0" />
+                    android:text="0.0" />
 
             </RelativeLayout>
 
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/divider_1"
                 android:hint="@string/add_data_note_description"
-                android:textColorHint="@color/flat_alizarin"
+                android:textColorHint="@color/md_blue_500"
                 android:textColor="@color/flat_clouds"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
@@ -138,37 +138,64 @@
 
             <TextView
                 android:id="@+id/add_textview_category"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/divider_2"
-                android:layout_alignParentStart="true"
+                android:gravity="center_horizontal"
                 android:hint="@string/add_data_category_hint"
                 android:textColor="@color/flat_clouds"
-                android:textColorHint="@color/flat_alizarin"
+                android:textColorHint="@color/md_blue_500"
                 android:textSize="20sp"
                 android:layout_marginBottom="20dp"/>
 
             <TextView
                 android:id="@+id/add_textview_subcategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/add_textview_category"
-                android:hint="@string/add_data_subcategory_hint"
-                android:textColor="@color/flat_clouds"
-                android:textColorHint="@color/flat_alizarin"
-                android:textSize="20sp"/>
-
-
-            <DatePicker
-                android:id="@+id/datepicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
+                android:layout_below="@id/add_textview_category"
+                android:gravity="center_horizontal"
+                android:hint="@string/add_data_subcategory_hint"
+                android:textColor="@color/flat_clouds"
+                android:textColorHint="@color/md_blue_500"
+                android:textSize="20sp"
+                android:layout_marginBottom="20dp"/>
+
+            <ImageView android:id="@+id/add_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/add_textview_subcategory"
                 android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:calendarViewShown="false"
-                android:datePickerMode="spinner"
-                android:calendarTextColor="@color/flat_clouds"/>
+                android:layout_marginBottom="20dp"/>
+
+            <View android:id="@+id/divider_3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/add_icon"
+                android:background="@color/flat_clouds"
+                android:layout_marginBottom="20dp"/>
+
+            <TextView android:id="@+id/add_textview_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/divider_3"
+                android:gravity="center_horizontal"
+                android:hint="@string/add_data_date_hint"
+                android:textSize="24sp"
+                android:textColor="@color/flat_clouds"
+                android:textColorHint="@color/flat_peterriver"
+                android:layout_marginBottom="20dp"/>
+
+            <Button android:id="@+id/add_button_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/add_textview_date"
+                android:layout_centerHorizontal="true"
+                android:text="@string/add_data_date_hint"
+                android:textColor="@color/flat_clouds"
+                android:background="@color/md_blue_500"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"/>
+
         </RelativeLayout>
 
         <android.support.design.widget.FloatingActionButton
@@ -181,7 +208,7 @@
             android:scaleType="center"
             android:src="@android:drawable/ic_input_add"
             android:stateListAnimator="@anim/button_elevation"
-            android:tint="@color/flat_clouds"
+            android:tint="@color/md_blue_500"
             app:backgroundTint="@color/flat_wetasphalt"
             app:borderWidth="0dp" />
 

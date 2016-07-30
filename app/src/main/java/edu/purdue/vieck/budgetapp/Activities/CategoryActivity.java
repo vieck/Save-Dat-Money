@@ -53,6 +53,7 @@ public class CategoryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.putExtra("Category",parents.get(addAdapter.getSelectedItem()).getCategory());
+                intent.putExtra("Icon",parents.get(addAdapter.getSelectedItem()).getIcon());
                 setResult(RESULT_OK, intent);
                 finish();
             }

@@ -132,8 +132,6 @@
     <!-- Add Activity Styles -->
 
     <style name="add_data_edittext">
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textColorHint">?android:attr/textColorHint</item>
         <item name="android:layout_marginBottom">24dp</item>
     </style>
 
@@ -150,7 +148,7 @@
         <item name="android:inputType">none</item>
         <item name="android:textSize">36sp</item>
         <item name="android:textColor">@color/flat_clouds</item>
-        <item name="android:maxLength">9</item>
+        <item name="android:maxLength">8</item>
         <item name="android:layout_alignParentEnd">true</item>
     </style>
 
@@ -183,6 +181,11 @@
 
     <style name="textview_add_note" parent="add_data_edittext">
         <item name="android:textSize">12sp</item>
+    </style>
+    
+    <style name="add_data_datepicker">
+        <item name="bpTextColor">@color/flat_clouds</item>
+        <item name="bpDividerColor">@color/flat_clouds</item>
     </style>
 
     <!-- DASHBOARD STYLES -->

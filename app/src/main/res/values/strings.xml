@@ -43,6 +43,9 @@
     <string name="add_data_note_hint">Description</string>
     <string name="add_data_category_hint">Set A Category</string>
     <string name="add_data_subcategory_hint">Choose A Refined Category</string>
+    <string name="add_data_date_hint">Date not set</string>
+    <string name="add_data_date_button">Select a date</string>
+    <string name="add_data_date_change_button">Change date</string>
 
     <!-- FRAGMENT CHART -->
     <string-array name="chartarray">
