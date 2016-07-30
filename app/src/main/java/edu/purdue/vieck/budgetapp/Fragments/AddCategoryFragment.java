@@ -79,10 +79,10 @@ public class AddCategoryFragment extends Fragment {
                 RealmCategoryItem item = parents.get(position);
                 bundle.putInt("Position", position);
                 bundle.putString("Category", item.getCategory());
-                AddSubCategoryFragment subCategoryFragment = new AddSubCategoryFragment();
-                subCategoryFragment.setArguments(bundle);
-                FragmentManager fragmentManager = getActivity().getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragment_container, subCategoryFragment).setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).commit();
+//                AddSubCategoryFragment subCategoryFragment = new AddSubCategoryFragment();
+//                subCategoryFragment.setArguments(bundle);
+//                FragmentManager fragmentManager = getActivity().getFragmentManager();
+//                fragmentManager.beginTransaction().replace(R.id.fragment_container, subCategoryFragment).setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).commit();
 
             }
         });

@@ -39,9 +39,10 @@
     <string name="dashboard_title">Overview</string>
 
     <!-- Fragment Add Data -->
-    <string name="edittext_add_hint">Tap me to add category</string>
-    <string name="edittext_note_hint">Description</string>
-    <string name="textview_note_description">Write a note that is no more than 100 words</string>
+    <string name="add_data_note_description">Write a note that is no more than 100 words</string>
+    <string name="add_data_note_hint">Description</string>
+    <string name="add_data_category_hint">Set A Category</string>
+    <string name="add_data_subcategory_hint">Choose A Refined Category</string>
 
     <!-- FRAGMENT CHART -->
     <string-array name="chartarray">
@@ -187,6 +188,8 @@
     <string name="title_activity_submit">Add Data</string>
     <string name="title_activity_data">Data</string>
     <string name="title_activity_category">Categories</string>
+    <string name="title_activity_add_category">Add Category</string>
+    <string name="title_activity_add_sub_category">Add Subcategory</string>
     <string name="title_activity_description">Description</string>
     <string name="title_activity_projections">Projections</string>
     <string name="title_activity_edit_category">Edit Category</string>

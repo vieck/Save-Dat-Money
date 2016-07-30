@@ -11,7 +11,7 @@
 
     <EditText
         android:id="@+id/add_textview_amount"
-        style="@style/edittext_amount_add_fragment"
+        style="@style/edittext_amount_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -23,7 +23,7 @@
         android:inputType="numberDecimal" />
 
     <TextView android:id="@+id/currency_label"
-        style="@style/edittext_amount_add_fragment"
+        style="@style/edittext_amount_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/add_textview_amount"
@@ -97,7 +97,7 @@
         android:layout_alignStart="@id/datepicker"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="56dp"
-        android:hint="@string/edittext_note_hint"
+        android:hint="@string/add_data_note_hint"
         android:maxLength="100"
         android:maxLines="3"/>
 
@@ -109,6 +109,6 @@
         android:layout_alignStart="@id/edittext_note"
         android:layout_below="@id/edittext_note"
         android:layout_marginStart="0dp"
-        android:text="@string/textview_note_description" />
+        android:text="@string/add_data_note_description" />
 
 </RelativeLayout>

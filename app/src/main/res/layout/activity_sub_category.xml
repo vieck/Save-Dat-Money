@@ -2,13 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:mContext="edu.purdue.vieck.budgetapp.Activities.CategoryActivity">
+    tools:context="edu.purdue.vieck.budgetapp.Activities.SubCategoryActivity">
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/header_container"
+        android:id="@+id/activity_sub_category"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/flat_midnight_blue">
 
         <android.support.design.widget.AppBarLayout
@@ -22,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:titleTextColor="@color/flat_clouds"
-                android:background="@color/flat_wetasphalt"/>
+                android:background="@color/flat_wetasphalt" />
 
         </android.support.design.widget.AppBarLayout>
 

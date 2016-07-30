@@ -40,10 +40,16 @@ public class RealmHandlerTest extends AndroidJUnitRunner {
 
     @Test
     public void fillRealmWithAllData() {
+        removeAllFakeData();
         fillRealmWithFakeIncomeData();
         fillRealmWithFakeExpenseData();
     }
 
+    @Test
+    public void removeAllFakeData() {
+        RealmHandler realm = new RealmHandler(InstrumentationRegistry.getTargetContext());
+        realm.deleteAll();
+    }
     private void fillRealmWithFakeIncomeData() {
         RealmHandler realm = new RealmHandler(InstrumentationRegistry.getTargetContext());
         RealmDataItem realmDataItem;
@@ -117,9 +123,5 @@ public class RealmHandlerTest extends AndroidJUnitRunner {
         }
     }
 
-    @Test
-    public void removeAllFakeData() {
-        RealmHandler realm = new RealmHandler(InstrumentationRegistry.getTargetContext());
-        realm.deleteAll();
-    }
+
 }

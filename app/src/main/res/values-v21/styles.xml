@@ -129,36 +129,38 @@
         <item name="android:textColor">@color/flat_clouds</item>
     </style>
 
-    <!-- Add Fragment Styles -->
+    <!-- Add Activity Styles -->
 
-    <style name="edittext_add_fragment">
+    <style name="add_data_edittext">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textColorHint">?android:attr/textColorHint</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:layout_marginStart">50dp</item>
-        <item name="android:layout_marginEnd">50dp</item>
         <item name="android:layout_marginBottom">24dp</item>
     </style>
 
-    <style name="edittext_add_category" parent="edittext_add_fragment">
+    <style name="edittext_add_category" parent="add_data_edittext">
         <item name="android:editable">false</item>
         <item name="android:inputType">none</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="edittext_amount_add_fragment" parent="edittext_add_fragment">
-        <item name="android:layout_marginEnd">0dp</item>
+    <style name="edittext_amount_add" parent="add_data_edittext">
+        <item name="android:layout_marginEnd">25dp</item>
         <item name="android:layout_marginStart">0dp</item>
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:inputType">none</item>
         <item name="android:textSize">36sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textColorHint">?android:attr/textColorHint</item>
+        <item name="android:textColor">@color/flat_clouds</item>
+        <item name="android:maxLength">9</item>
+        <item name="android:layout_alignParentEnd">true</item>
     </style>
 
-    <style name="edittext_note_add_fragment" parent="edittext_add_fragment">
+    <style name="edittext_note_add_fragment" parent="add_data_edittext">
         <item name="android:layout_marginBottom">0dp</item>
-        <item name="android:maxLines">100</item>
+        <item name="android:maxLength">100</item>
+        <item name="android:maxLines">3</item>
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">@color/flat_turquoise</item>
+        <item name="colorControlHighlight">@color/flat_turquoise</item>
     </style>
 
     <style name="button_add_fragment">
@@ -168,7 +170,7 @@
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
-    <style name="textview_add_item" parent="edittext_add_fragment">
+    <style name="textview_add_item" parent="add_data_edittext">
         <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
         <item name="android:textSize">24sp</item>
         <item name="android:layout_centerVertical">true</item>
@@ -179,7 +181,7 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="textview_add_note" parent="edittext_add_fragment">
+    <style name="textview_add_note" parent="add_data_edittext">
         <item name="android:textSize">12sp</item>
     </style>
 

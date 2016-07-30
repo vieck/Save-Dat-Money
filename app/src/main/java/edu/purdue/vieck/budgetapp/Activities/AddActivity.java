@@ -29,7 +29,6 @@ import edu.purdue.vieck.budgetapp.CustomObjects.RealmBudgetItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.Fragments.AddCategoryFragment;
-import edu.purdue.vieck.budgetapp.Fragments.AddSubCategoryFragment;
 import edu.purdue.vieck.budgetapp.R;
 import edu.purdue.vieck.budgetapp.databinding.ActivityAddBinding;
 
@@ -71,23 +70,10 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
                 npb.show();
             }
         });
+        binding.edittextNote.getBackground().mutate().setColorFilter(getResources().getColor(R.color.flat_peterriver), PorterDuff.Mode.SRC_ATOP);
         setCategoryListener();
         setSubcategoryListener();
         setSubmitButtonListener();
-//        if (savedInstanceState == null) {
-//            addCategoryFragment = new AddCategoryFragment();
-//            getFragmentManager().beginTransaction().add(R.id.fragment_container, addCategoryFragment, "addCategory").commit();
-//        } else {
-//            addCategoryFragment = (AddCategoryFragment) getFragmentManager().findFragmentByTag("addCategory");
-//
-//            if (addDataFragment == null) {
-//                addCategoryFragment = new AddCategoryFragment();
-//                getFragmentManager().beginTransaction().add(R.id.fragment_container, addCategoryFragment, "addCategory");
-//            } else {
-//                getFragmentManager().beginTransaction().replace(R.id.fragment_container, addCategoryFragment).commit();
-//            }
-//        }
-
     }
 
     @Override
@@ -176,6 +162,20 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0 && resultCode == RESULT_OK) {
+            String category = data.getStringExtra("Category");
+            binding.addTextviewCategory.setText(category);
+        }
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            String subCategory = data.getStringExtra("Subcategory");
+            binding.addTextviewSubcategory.setText(subCategory);
+        }
+    }
+
+    @Override
     public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
         binding.addTextviewAmount.setText(fullNumber.toString());
     }
@@ -184,7 +184,7 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
         binding.addTextviewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
+                CategoryActivity categoryActivity = new CategoryActivity();
                 Bundle bundle = new Bundle();
                 if (binding.incomeButton.isChecked()) {
                     bundle.putBoolean("Type", true);
@@ -200,10 +200,9 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
                 bundle.putInt("Month", binding.datepicker.getMonth());
                 bundle.putInt("Day", binding.datepicker.getDayOfMonth());
                 bundle.putInt("Year", binding.datepicker.getYear());
-                addCategoryFragment.setArguments(bundle);
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, addCategoryFragment);
-                fragmentTransaction.commit();
+                Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+                intent.putExtras(bundle);
+                startActivityForResult(intent, 0);
             }
         });
     }
@@ -212,26 +211,27 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
         binding.addTextviewSubcategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddSubCategoryFragment addSubCategoryFragment = new AddSubCategoryFragment();
-                Bundle bundle = new Bundle();
-                if (binding.incomeButton.isChecked()) {
-                    bundle.putBoolean("Type", true);
-                } else {
-                    bundle.putBoolean("Type", false);
+                if (!binding.addTextviewCategory.getText().equals("")) {
+                    SubCategoryActivity subCategoryActivity = new SubCategoryActivity();
+                    Bundle bundle = new Bundle();
+                    if (binding.incomeButton.isChecked()) {
+                        bundle.putBoolean("Type", true);
+                    } else {
+                        bundle.putBoolean("Type", false);
+                    }
+                    bundle.putString("Category", binding.addTextviewCategory.getText().toString());
+                    bundle.putString("Subcategory", binding.addTextviewSubcategory.getText().toString());
+                    if (!binding.addTextviewAmount.getText().toString().equals("")) {
+                        bundle.putDouble("Amount", Double.parseDouble(binding.addTextviewAmount.getText().toString()));
+                    }
+                    bundle.putString("Note", binding.edittextNote.getText().toString());
+                    bundle.putInt("Month", binding.datepicker.getMonth());
+                    bundle.putInt("Day", binding.datepicker.getDayOfMonth());
+                    bundle.putInt("Year", binding.datepicker.getYear());
+                    Intent intent = new Intent(getApplicationContext(), SubCategoryActivity.class);
+                    intent.putExtras(bundle);
+                    startActivityForResult(intent, 1);
                 }
-                bundle.putString("Category", binding.addTextviewCategory.getText().toString());
-                bundle.putString("Subcategory", binding.addTextviewSubcategory.getText().toString());
-                if (!binding.addTextviewAmount.getText().toString().equals("")) {
-                    bundle.putDouble("Amount", Double.parseDouble(binding.addTextviewAmount.getText().toString()));
-                }
-                bundle.putString("Note", binding.edittextNote.getText().toString());
-                bundle.putInt("Month", binding.datepicker.getMonth());
-                bundle.putInt("Day", binding.datepicker.getDayOfMonth());
-                bundle.putInt("Year", binding.datepicker.getYear());
-                addSubCategoryFragment.setArguments(bundle);
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, addSubCategoryFragment);
-                fragmentTransaction.commit();
             }
         });
     }
@@ -279,7 +279,7 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
                 } finally {
                     Intent intent = new Intent(getApplicationContext(), ChartActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                     finish();
                 }
 

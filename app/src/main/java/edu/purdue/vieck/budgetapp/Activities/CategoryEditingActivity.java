@@ -1,35 +1,14 @@
 package edu.purdue.vieck.budgetapp.Activities;
 
-import android.app.Dialog;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
-import com.lukedeighton.wheelview.WheelView;
-import com.lukedeighton.wheelview.transformer.SimpleItemTransformer;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import edu.purdue.vieck.budgetapp.Adapters.AddCategoryAdapter;
-import edu.purdue.vieck.budgetapp.Adapters.DrawableAdapter;
-import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
-import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
-import edu.purdue.vieck.budgetapp.Fragments.AddCategoryFragment;
-import edu.purdue.vieck.budgetapp.Fragments.AddSubCategoryFragment;
 import edu.purdue.vieck.budgetapp.Fragments.NewCategoryFragment;
 import edu.purdue.vieck.budgetapp.Fragments.ShowCategoriesFragment;
 import edu.purdue.vieck.budgetapp.R;
