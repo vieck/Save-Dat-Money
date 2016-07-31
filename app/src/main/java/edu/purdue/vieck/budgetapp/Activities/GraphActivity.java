@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -32,15 +33,13 @@ import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentMonthly;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentComparison;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentOverview;
 import edu.purdue.vieck.budgetapp.R;
+import edu.purdue.vieck.budgetapp.databinding.ActivityGraphBinding;
 
 public class GraphActivity extends AppCompatActivity {
 
+    ActivityGraphBinding binding;
+
     ViewPagerAdapter adapter;
-    private Toolbar mToolbar;
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
-    private ViewPager mViewPager;
-    private TabLayout tabLayout;
 
     private SharedPreferences mSharedPreferences;
 
@@ -49,7 +48,7 @@ public class GraphActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_graph);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         actionBarColor = mSharedPreferences.getInt("actionBarColor", getResources().getColor(R.color.md_black_1000));
         setUpToolbar();
@@ -58,9 +57,8 @@ public class GraphActivity extends AppCompatActivity {
         setupViewPager();
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120 , getResources()
                 .getDisplayMetrics());
-        mViewPager.setPageMargin(pageMargin);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        binding.viewpager.setPageMargin(pageMargin);
+        binding.tabs.setupWithViewPager(binding.viewpager);
     }
 
     @Override
@@ -86,23 +84,20 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     private void setUpToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-            mToolbar.setTitleTextColor(Color.WHITE);
-        mToolbar.setBackgroundColor(actionBarColor);
-        setSupportActionBar(mToolbar);
+        binding.toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(binding.toolbar);
     }
 
     private void setUpNavigationDrawer() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (mToolbar != null) {
+        if (binding.toolbar != null) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
-            mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
-            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            binding.toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+            binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mDrawerLayout.openDrawer(GravityCompat.START);
+                    binding.drawerLayout.openDrawer(GravityCompat.START);
                 }
             });
         }
@@ -110,11 +105,10 @@ public class GraphActivity extends AppCompatActivity {
 
     private void setUpNavigationView() {
         final Activity currentActivity = this;
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
-        mNavigationView.setBackgroundColor(actionBarColor);
-        mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
-        mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        //mNavigationView.setBackgroundColor(actionBarColor);
+        binding.navigationLayout.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
+        binding.navigationLayout.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
+        binding.navigationLayout.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
@@ -157,7 +151,7 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     private Spinner setUpSpinner(final Spinner spinner) {
-        ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(mToolbar.getContext(), R.array.chartarray, R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(binding.toolbar.getContext(), R.array.chartarray, R.layout.simple_spinner_item);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerArrayAdapter);
         spinner.setSelection(2);
@@ -177,8 +171,6 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     private void setupViewPager() {
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         String[] list = {"Overview", "Categories", "Comparison"};
 
@@ -202,7 +194,7 @@ public class GraphActivity extends AppCompatActivity {
         }
         adapter.addFragment(fragmentComparison,"Comparison");
 
-        mViewPager.setAdapter(adapter);
+        binding.viewpager.setAdapter(adapter);
     }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
