@@ -46,6 +46,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import edu.purdue.vieck.budgetapp.Adapters.ChartRecyclerAdapter;
 import edu.purdue.vieck.budgetapp.Adapters.DividerItemDecoration;
@@ -78,6 +79,12 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     private int actionBarColor;
 
     ChartDatePicker datePicker;
+
+    int allDataTab = -1;
+    int weekTab = -1;
+    int todayTab = -1;
+    int monthTab = -1;
+    int yearTab = -1;
 
     // Use to change date
     private GregorianCalendar date;
@@ -315,12 +322,38 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
     private void setupDateTabs() {
         Log.d("Before Date Change", date.toString());
-        final String dateTag = Integer.toString(date.get(Calendar.MONTH)) + "," + Integer.toString(date.get(Calendar.DATE)) + "," + Integer.toString(date.get(Calendar.YEAR));
-        dateTabs.addTab(dateTabs.newTab().setText("This Week").setTag(dateTag));
-        dateTabs.addTab(dateTabs.newTab().setText("Today").setTag(dateTag));
-        dateTabs.addTab(dateTabs.newTab().setText("This Month").setTag(dateTag));
-        dateTabs.addTab(dateTabs.newTab().setText("This Year").setTag(dateTag));
-        dateTabs.getTabAt(1).select();
+
+        final String dateTag = Integer.toString(date.get(Calendar.MONTH)+1) + "," + Integer.toString(date.get(Calendar.DATE)) + "," + Integer.toString(date.get(Calendar.YEAR));
+        if (!mRealmHandler.getResultsByFilter(date.get(Calendar.DATE), date.get(Calendar.MONTH), date.get(Calendar.YEAR), 2).isEmpty()) {
+            dateTabs.addTab(dateTabs.newTab().setText("This Week").setTag(dateTag));
+            weekTab = dateTabs.getTabCount();
+        }
+        if (!mRealmHandler.getResultsByFilter(date.get(Calendar.DATE), date.get(Calendar.MONTH), date.get(Calendar.YEAR), 2).isEmpty()) {
+            dateTabs.addTab(dateTabs.newTab().setText("Today").setTag(dateTag));
+            todayTab = dateTabs.getTabCount();
+        }
+        if (!mRealmHandler.getResultsByFilter().isEmpty()) {
+            dateTabs.addTab(dateTabs.newTab().setText("All").setTag(dateTag));
+            allDataTab = dateTabs.getTabCount();
+        }
+        if (!mRealmHandler.getResultsByFilter(date.get(Calendar.MONTH), date.get(Calendar.YEAR), 2).isEmpty()) {
+            dateTabs.addTab(dateTabs.newTab().setText("This Month").setTag(dateTag));
+            monthTab = dateTabs.getTabCount();
+        }
+        if (!mRealmHandler.getResultsByFilter(date.get(Calendar.YEAR), 2).isEmpty()) {
+            dateTabs.addTab(dateTabs.newTab().setText("This Year").setTag(dateTag));
+            yearTab = dateTabs.getTabCount();
+        }
+        if (allDataTab != -1)
+            dateTabs.getTabAt(allDataTab - 1).select();
+        else {
+            dateTabs.addTab(dateTabs.newTab().setText("No data"));
+        }
+        final int week = weekTab - 1;
+        final int today = todayTab - 1;
+        final int all = allDataTab - 1;
+        final int month = monthTab - 1;
+        final int year = yearTab - 1;
         dateTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -328,32 +361,33 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
                 for (int i = 0; i < dateString.length; i++) {
                     date.set(Integer.parseInt(dateString[2]), Integer.parseInt(dateString[0]), Integer.parseInt(dateString[1]));
                 }
-                switch (tab.getPosition()) {
-                    case 1:
-                        setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
-                        setData(1);
-                        break;
-                    case 0:
+                if (tab.getPosition() == today) {
+                    setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+                    setData(1);
 
-                        int firstDay, lastDay, firstMonth, secondMonth;
-                        lastDay = date.get(Calendar.DAY_OF_MONTH);
-                        secondMonth = date.get(Calendar.MONTH);
+                } else if (tab.getPosition() == week) {
+                    int firstDay, lastDay, firstMonth, secondMonth;
+                    lastDay = date.get(Calendar.DAY_OF_MONTH);
+                    secondMonth = date.get(Calendar.MONTH);
 
-                        date.add(Calendar.DATE, -7);
+                    date.add(Calendar.DATE, -7);
 
-                        firstDay = date.get(Calendar.DAY_OF_MONTH);
-                        firstMonth = date.get(Calendar.MONTH);
-                        setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
-                        setData(2);
-                        break;
-                    case 2:
-                        setDateLabel(date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
-                        setData(3);
-                        break;
-                    case 3:
-                        setDateLabel(date.get(Calendar.YEAR));
-                        setData(4);
-                        break;
+                    firstDay = date.get(Calendar.DAY_OF_MONTH);
+                    firstMonth = date.get(Calendar.MONTH);
+                    setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
+                    setData(2);
+
+                } else if (tab.getPosition() == all) {
+                    setDateLabel();
+                    setData(0);
+                } else if (tab.getPosition() == month) {
+                    setDateLabel(date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+                    setData(3);
+
+                } else if (tab.getPosition() == year) {
+                    setDateLabel(date.get(Calendar.YEAR));
+                    setData(4);
+
                 }
             }
 
@@ -437,6 +471,15 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
         date.set(day, month, year);
+        String monthName = date.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+        String name = monthName + " " + Integer.toString(date.get(Calendar.DATE)) + ", " + Integer.toString(date.get(Calendar.YEAR));
+        final String dateTag = Integer.toString(date.get(Calendar.MONTH)) + "," + Integer.toString(date.get(Calendar.DATE)) + "," + Integer.toString(date.get(Calendar.YEAR));
+        if (todayTab == -1) {
+            dateTabs.addTab(dateTabs.newTab().setText(name).setTag(dateTag));
+
+        } else {
+            dateTabs.getTabAt(todayTab).setText(name).setTag(dateTag);
+        }
         switch (mSpinner.getSelectedItemPosition()) {
             case 1:
             case 2:
