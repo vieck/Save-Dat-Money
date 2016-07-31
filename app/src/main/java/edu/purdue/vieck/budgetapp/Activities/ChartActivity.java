@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -55,24 +56,16 @@ import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.Dialogs.ChartDatePicker;
 import edu.purdue.vieck.budgetapp.R;
+import edu.purdue.vieck.budgetapp.databinding.ActivityChartBinding;
 import io.realm.RealmResults;
 
 
 public class ChartActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private Toolbar mToolbar;
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
-    private Spinner mSpinner;
-    private Context mContext;
+
+    ActivityChartBinding binding;
 
     //private int day, month, year;
     RealmHandler mRealmHandler;
-    private PieChart mPieChart;
-    private TextView mCurrencyLabel;
-
-    private TabLayout dateTabs;
-
-    private RecyclerView mRecyclerView;
 
     private SharedPreferences mSharedPreferences;
 
@@ -92,7 +85,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chart);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_chart);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         actionBarColor = mSharedPreferences.getInt("actionBarColor", getResources().getColor(R.color.md_black_1000));
         setUpToolbar();
@@ -101,18 +94,13 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
         mRealmHandler = new RealmHandler(this);
 
-        mContext = this;
-
-
-        mSpinner = (Spinner) findViewById(R.id.spinner);
         setUpSpinner();
 
         final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        mRecyclerView = (RecyclerView) findViewById(R.id.budget_recycler_view);
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.setAdapter(new ChartRecyclerAdapter(mContext, items));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL, getResources().getColor(R.color.flat_peterriver)));
+        binding.budgetRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.budgetRecyclerView.setAdapter(new ChartRecyclerAdapter(this, items));
+        binding.budgetRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL, getResources().getColor(R.color.flat_peterriver)));
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -123,14 +111,9 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             }
         });
 
-        mPieChart = (PieChart) findViewById(R.id.pie_chart);
         setupPieChart();
-        mCurrencyLabel = (TextView) findViewById(R.id.currency_textview);
 
         setupBudget();
-
-
-        dateTabs = (TabLayout) findViewById(R.id.tablayout_date);
 
         date = new GregorianCalendar();
 //        day = date.get(Calendar.DAY_OF_MONTH);
@@ -173,22 +156,20 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     }
 
     private void setUpToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitleTextColor(Color.WHITE);
+        binding.toolbar.setTitleTextColor(Color.WHITE);
         //   mToolbar.setBackgroundColor(actionBarColor);
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
     private void setUpNavigationDrawer() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (mToolbar != null) {
+        if (binding.toolbar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
-            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            binding.toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+            binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mDrawerLayout.openDrawer(GravityCompat.START);
+                    binding.drawerLayout.openDrawer(GravityCompat.START);
                 }
             });
         }
@@ -196,11 +177,10 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
     private void setUpNavigationView() {
         final Activity currentActivity = this;
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
 //        mNavigationView.setBackgroundColor(actionBarColor);
-        mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
-        mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        binding.navigationLayout.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
+        binding.navigationLayout.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
+        binding.navigationLayout.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
@@ -249,9 +229,9 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         CharSequence[] simpleSpinner = getResources().getStringArray(R.array.chartarray);
         CustomArrayAdapter<CharSequence> spinnerArrayAdapter = new CustomArrayAdapter<>(this, simpleSpinner);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-        mSpinner.setAdapter(spinnerArrayAdapter);
+        binding.spinner.setAdapter(spinnerArrayAdapter);
         // spinner.setSelection(0);
-        mSpinner.dispatchSetSelected(true);
+        binding.spinner.dispatchSetSelected(true);
 //        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
 //            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -325,36 +305,36 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
         final String dateTag = Integer.toString(date.get(Calendar.MONTH)+1) + "," + Integer.toString(date.get(Calendar.DATE)) + "," + Integer.toString(date.get(Calendar.YEAR));
         if (!mRealmHandler.getResultsByFilter(date.get(Calendar.DATE), date.get(Calendar.MONTH), date.get(Calendar.YEAR), 2).isEmpty()) {
-            dateTabs.addTab(dateTabs.newTab().setText("This Week").setTag(dateTag));
-            weekTab = dateTabs.getTabCount();
+            binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("This Week").setTag(dateTag));
+            weekTab = binding.tablayoutDate.getTabCount();
         }
         if (!mRealmHandler.getResultsByFilter(date.get(Calendar.DATE), date.get(Calendar.MONTH), date.get(Calendar.YEAR), 2).isEmpty()) {
-            dateTabs.addTab(dateTabs.newTab().setText("Today").setTag(dateTag));
-            todayTab = dateTabs.getTabCount();
+            binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("Today").setTag(dateTag));
+            todayTab = binding.tablayoutDate.getTabCount();
         }
         if (!mRealmHandler.getResultsByFilter().isEmpty()) {
-            dateTabs.addTab(dateTabs.newTab().setText("All").setTag(dateTag));
-            allDataTab = dateTabs.getTabCount();
+            binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("All").setTag(dateTag));
+            allDataTab = binding.tablayoutDate.getTabCount();
         }
         if (!mRealmHandler.getResultsByFilter(date.get(Calendar.MONTH), date.get(Calendar.YEAR), 2).isEmpty()) {
-            dateTabs.addTab(dateTabs.newTab().setText("This Month").setTag(dateTag));
-            monthTab = dateTabs.getTabCount();
+            binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("This Month").setTag(dateTag));
+            monthTab = binding.tablayoutDate.getTabCount();
         }
         if (!mRealmHandler.getResultsByFilter(date.get(Calendar.YEAR), 2).isEmpty()) {
-            dateTabs.addTab(dateTabs.newTab().setText("This Year").setTag(dateTag));
-            yearTab = dateTabs.getTabCount();
+            binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("This Year").setTag(dateTag));
+            yearTab = binding.tablayoutDate.getTabCount();
         }
         if (allDataTab != -1)
-            dateTabs.getTabAt(allDataTab - 1).select();
+            binding.tablayoutDate.getTabAt(allDataTab - 1).select();
         else {
-            dateTabs.addTab(dateTabs.newTab().setText("No data"));
+            binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("No data"));
         }
         final int week = weekTab - 1;
         final int today = todayTab - 1;
         final int all = allDataTab - 1;
         final int month = monthTab - 1;
         final int year = yearTab - 1;
-        dateTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tablayoutDate.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 String[] dateString = tab.getTag().toString().split(",");
@@ -475,12 +455,12 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         String name = monthName + " " + Integer.toString(date.get(Calendar.DATE)) + ", " + Integer.toString(date.get(Calendar.YEAR));
         final String dateTag = Integer.toString(date.get(Calendar.MONTH)) + "," + Integer.toString(date.get(Calendar.DATE)) + "," + Integer.toString(date.get(Calendar.YEAR));
         if (todayTab == -1) {
-            dateTabs.addTab(dateTabs.newTab().setText(name).setTag(dateTag));
+            binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText(name).setTag(dateTag));
 
         } else {
-            dateTabs.getTabAt(todayTab).setText(name).setTag(dateTag);
+            binding.tablayoutDate.getTabAt(todayTab).setText(name).setTag(dateTag);
         }
-        switch (mSpinner.getSelectedItemPosition()) {
+        switch (binding.spinner.getSelectedItemPosition()) {
             case 1:
             case 2:
                 setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
@@ -498,62 +478,62 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     private void setDateLabel(int day, int month, int year) {
 //        mDateLabel.setText(month + "/" + day + "/" + year);
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(day, month, year, 2);
-        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
+        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) binding.budgetRecyclerView.getAdapter();
         adapter.updateData(items);
     }
 
     private void setDateLabel(int startDay, int endDay, int firstMonth, int secondMonth, int year) {
 //        mDateLabel.setText(firstMonth + "/" + startDay + "/" + year + " - " + secondMonth + "/" + endDay + "/" + year);
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(startDay, endDay, firstMonth, secondMonth, year, 2);
-        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
+        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) binding.budgetRecyclerView.getAdapter();
         adapter.updateData(items);
     }
 
     private void setDateLabel(int month, int year) {
 //        mDateLabel.setText(month + "/" + year);
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(month, year, 2);
-        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
+        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) binding.budgetRecyclerView.getAdapter();
         adapter.updateData(items);
     }
 
     private void setDateLabel(int year) {
 //        mDateLabel.setText("" + year);
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(year, 2);
-        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
+        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) binding.budgetRecyclerView.getAdapter();
         adapter.updateData(items);
     }
 
     private void setDateLabel() {
 //        mDateLabel.setText("All");
         RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter();
-        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) mRecyclerView.getAdapter();
+        ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) binding.budgetRecyclerView.getAdapter();
         adapter.updateData(items);
     }
 
     private void setupPieChart() {
-        mPieChart.setDescription("");
-        mPieChart.setDescriptionColor(getResources().getColor(R.color.White));
-        mPieChart.setUsePercentValues(true);
-        mPieChart.setDragDecelerationFrictionCoef(0.95f);
+        binding.pieChart.setDescription("");
+        binding.pieChart.setDescriptionColor(getResources().getColor(R.color.White));
+        binding.pieChart.setUsePercentValues(true);
+        binding.pieChart.setDragDecelerationFrictionCoef(0.95f);
         //mTypeface = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-        mPieChart.setDrawHoleEnabled(true);
-        mPieChart.setHoleColor(Color.TRANSPARENT);
-        mPieChart.setCenterTextColor(Color.WHITE);
-        mPieChart.setHoleRadius(60f);
-        mPieChart.setTransparentCircleRadius(63f);
-        mPieChart.setTransparentCircleColor(getResources().getColor(R.color.flat_wetasphalt));
-        mPieChart.setTransparentCircleAlpha(200);
-        mPieChart.setDrawCenterText(true);
-        mPieChart.setRotationAngle(0);
+        binding.pieChart.setDrawHoleEnabled(true);
+        binding.pieChart.setHoleColor(Color.TRANSPARENT);
+        binding.pieChart.setCenterTextColor(Color.WHITE);
+        binding.pieChart.setHoleRadius(60f);
+        binding.pieChart.setTransparentCircleRadius(63f);
+        binding.pieChart.setTransparentCircleColor(getResources().getColor(R.color.flat_wetasphalt));
+        binding.pieChart.setTransparentCircleAlpha(200);
+        binding.pieChart.setDrawCenterText(true);
+        binding.pieChart.setRotationAngle(0);
         // enable rotation of the chart by touch
-        mPieChart.setRotationEnabled(true);
+        binding.pieChart.setRotationEnabled(true);
 
 //        mPieChart.setCenterTextSize(12.5f);
 
-        mPieChart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
+        binding.pieChart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);*/
 
-        Legend l = mPieChart.getLegend();
+        Legend l = binding.pieChart.getLegend();
         l.setPosition(Legend.LegendPosition.PIECHART_CENTER);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
@@ -629,8 +609,8 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
     private void setData(int type) {
 
-        mPieChart.setData(null);
-        mPieChart.invalidate();
+        binding.pieChart.setData(null);
+        binding.pieChart.invalidate();
 
         ArrayList<PieEntry> yVals = new ArrayList<PieEntry>();
         List<RealmCategoryItem> categories = mRealmHandler.getCategoryParents();
@@ -664,13 +644,13 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             data.setValueFormatter(new PercentFormatter());
             data.setValueTextSize(14f);
             data.setValueTextColor(Color.WHITE);
-            mPieChart.setData(data);
+            binding.pieChart.setData(data);
             //Hide labels since the legend is shown
-            mPieChart.setDrawEntryLabels(false);
+            binding.pieChart.setDrawEntryLabels(false);
             // undo all highlights
-            mPieChart.highlightValues(null);
+            binding.pieChart.highlightValues(null);
 
-            mPieChart.invalidate();
+            binding.pieChart.invalidate();
         }
     }
     /*
