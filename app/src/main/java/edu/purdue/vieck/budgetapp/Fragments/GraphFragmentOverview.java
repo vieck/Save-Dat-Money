@@ -78,23 +78,33 @@ public class GraphFragmentOverview extends Fragment {
         }
 
         LineDataSet income = new LineDataSet(incomeEntries, "income");
-        income.setColor(getResources().getColor(R.color.md_green_A400));
-        income.setValueTextSize(10f);
+        income.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        income.setColor(getResources().getColor(R.color.flat_turquoise));
+        income.setDrawCircles(false);
+        income.setDrawValues(false);
+        income.setValueTextSize(12f);
         income.setValueTextColor(Color.WHITE);
+        income.setLineWidth(2.8f);
+//        income.setDrawFilled(true);
+//        income.setFillColor(getResources().getColor(R.color.flat_emerland));
 
         LineDataSet expense = new LineDataSet(expenseEntries, "expense");
-        expense.setColor(getResources().getColor(R.color.md_red_A400));
-        expense.setValueTextSize(10f);
+        expense.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        expense.setColor(getResources().getColor(R.color.flat_alizarin));
+        expense.setDrawCircles(false);
+        expense.setDrawValues(false);
+        expense.setValueTextSize(12f);
         expense.setValueTextColor(Color.WHITE);
-//        new String[] { "income","expense"},dataSets
+        expense.setLineWidth(2.8f);
+//        expense.setDrawFilled(true);
+//        expense.setFillColor(getResources().getColor(R.color.flat_thunderbird));
 
         LineData data = new LineData();
         data.addDataSet(income);
         data.addDataSet(expense);
         lineChart.setData(data);
         lineChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
-        lineChart.setGridBackgroundColor(getResources().getColor(R.color.md_black_1000));
-        lineChart.setBackgroundColor(getResources().getColor(R.color.md_black_1000));
+        lineChart.setBackgroundColor(getResources().getColor(R.color.flat_wisteria));
         lineChart.setDescriptionColor(Color.WHITE);
         lineChart.getLegend().setTextColor(Color.WHITE);
 
