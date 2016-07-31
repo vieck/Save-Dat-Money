@@ -14,14 +14,19 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
+import io.realm.RealmResults;
 
 /**
  * Created by mvieck on 10/7/2015.
@@ -56,32 +61,36 @@ public class GraphFragmentOverview extends Fragment {
         List<Entry> expenseEntries = new ArrayList<>();
         List<String> xAxisLabels = new ArrayList<>();
 
-        float[] expenseArray = mRealmHandler.getAllDataAsArray(0);
-        float[] incomeArray = mRealmHandler.getAllDataAsArray(1);
+        HashMap<String, Float> expenseData = mRealmHandler.getAllDataPerMonth(0);
+        HashMap<String, Float> incomeData = mRealmHandler.getAllDataPerMonth(1);
 
-        for (int i = 0; i < expenseArray.length; i++) {
-            expenseEntries.add(new Entry(expenseArray[i], i));
-            xAxisLabels.add(i + "");
+        Set<String> expenseKeys = expenseData.keySet();
+        int i = 0;
+        for (String key : expenseKeys) {
+            expenseEntries.add(new Entry(i++,expenseData.get(key)));
+            xAxisLabels.add(key);
         }
 
-        for (int i = 0; i < incomeArray.length; i++) {
-            incomeEntries.add(new Entry(incomeArray[i], i));
+        i = 0;
+        Set<String> incomeKeys = incomeData.keySet();
+        for (String key : incomeKeys) {
+            incomeEntries.add(new Entry(i++, incomeData.get(key)));
         }
 
-        LineDataSet incomeData = new LineDataSet(incomeEntries, "income");
-        incomeData.setColor(getResources().getColor(R.color.md_green_A400));
-        incomeData.setValueTextSize(10f);
-        incomeData.setValueTextColor(Color.WHITE);
+        LineDataSet income = new LineDataSet(incomeEntries, "income");
+        income.setColor(getResources().getColor(R.color.md_green_A400));
+        income.setValueTextSize(10f);
+        income.setValueTextColor(Color.WHITE);
 
-        LineDataSet expenseData = new LineDataSet(expenseEntries, "expense");
-        expenseData.setColor(getResources().getColor(R.color.md_red_A400));
-        expenseData.setValueTextSize(10f);
-        expenseData.setValueTextColor(Color.WHITE);
+        LineDataSet expense = new LineDataSet(expenseEntries, "expense");
+        expense.setColor(getResources().getColor(R.color.md_red_A400));
+        expense.setValueTextSize(10f);
+        expense.setValueTextColor(Color.WHITE);
 //        new String[] { "income","expense"},dataSets
 
         LineData data = new LineData();
-        data.addDataSet(incomeData);
-        data.addDataSet(expenseData);
+        data.addDataSet(income);
+        data.addDataSet(expense);
         lineChart.setData(data);
         lineChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
         lineChart.setGridBackgroundColor(getResources().getColor(R.color.md_black_1000));
@@ -89,10 +98,10 @@ public class GraphFragmentOverview extends Fragment {
         lineChart.setDescriptionColor(Color.WHITE);
         lineChart.getLegend().setTextColor(Color.WHITE);
 
-
         YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setDrawGridLines(false);
+       // leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setGridColor(Color.WHITE);
         leftAxis.setTextColor(Color.WHITE);
 
@@ -100,6 +109,7 @@ public class GraphFragmentOverview extends Fragment {
         leftAxis.setDrawLimitLinesBehindData(true);
 
         lineChart.getXAxis().setTextColor(Color.WHITE);
+        lineChart.getXAxis().setDrawGridLines(false);
 
         lineChart.getAxisRight().setEnabled(false);
     }

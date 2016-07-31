@@ -55,7 +55,7 @@ public class GraphFragmentComparison extends Fragment {
     /* Creates a chart to compare */
     private void generateChart(BarChart chartView) {
 
-        RealmResults<RealmDataItem> stack = mRealmHandler.getResultsByFilter();
+        RealmResults<RealmDataItem> stack = mRealmHandler.getResultsByFilter(2);
         HashMap<String, Float> uniqueMonths = mRealmHandler.getAllMonthsAsOneElement(0);
         List<BarEntry> entryList = new ArrayList<>();
         Set<String> keys = uniqueMonths.keySet();
