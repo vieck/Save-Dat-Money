@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -55,7 +56,6 @@ public class GraphFragmentComparison extends Fragment {
     /* Creates a chart to compare */
     private void generateChart(BarChart chartView) {
 
-        RealmResults<RealmDataItem> stack = mRealmHandler.getResultsByFilter(2);
         HashMap<String, Float> uniqueMonths = mRealmHandler.getAllMonthsAsOneElement(0);
         List<BarEntry> entryList = new ArrayList<>();
         Set<String> keys = uniqueMonths.keySet();
@@ -64,8 +64,7 @@ public class GraphFragmentComparison extends Fragment {
         int i = 0;
         BarEntry entry;
         for (String label : labels) {
-
-            entry = new BarEntry(uniqueMonths.get(label), i++);
+            entry = new BarEntry(i++, uniqueMonths.get(label));
             entryList.add(entry);
         }
 
@@ -73,14 +72,14 @@ public class GraphFragmentComparison extends Fragment {
         dataSet.setValueTextColor(getResources().getColor(R.color.md_white_1000));
         dataSet.setValueTextSize(8f);
         dataSet.setColor(getResources().getColor(R.color.md_white_1000));
-//        labels,
         BarData data = new BarData(dataSet);
+        data.setBarWidth(5f);
         chartView.setData(data);
         chartView.setDescription("");
 
-        chartView.setGridBackgroundColor(getResources().getColor(R.color.md_black_1000));
+        chartView.setBackgroundColor(getResources().getColor(R.color.flat_wisteria));
         chartView.setPinchZoom(true);
-
+        chartView.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
     }
 
 }

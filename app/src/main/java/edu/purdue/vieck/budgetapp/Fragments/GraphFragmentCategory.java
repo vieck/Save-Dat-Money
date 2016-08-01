@@ -8,13 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -34,7 +28,7 @@ import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
-import edu.purdue.vieck.budgetapp.databinding.FragmentGraphMonthlyBinding;
+import edu.purdue.vieck.budgetapp.databinding.FragmentGraphCategoryBinding;
 import io.realm.RealmResults;
 
 /**
@@ -42,7 +36,7 @@ import io.realm.RealmResults;
  */
 public class GraphFragmentCategory extends Fragment {
 
-    FragmentGraphMonthlyBinding binding;
+    FragmentGraphCategoryBinding binding;
 
     private RealmHandler mRealmHandler;
     private LinkedList<RealmDataItem> months;
@@ -58,7 +52,7 @@ public class GraphFragmentCategory extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_graph_monthly, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_graph_category, container, false);
 
         mRealmHandler = new RealmHandler(getActivity());
 
