@@ -113,7 +113,7 @@
     </style>
 
     <style name="date_textview">
-        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textColor">@color/flat_clouds</item>
         <item name="android:textSize">14sp</item>
     </style>
 

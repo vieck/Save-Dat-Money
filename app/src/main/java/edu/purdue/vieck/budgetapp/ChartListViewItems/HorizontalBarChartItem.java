@@ -18,10 +18,12 @@ import edu.purdue.vieck.budgetapp.R;
  */
 public class HorizontalBarChartItem extends ChartItem {
     private float total;
+    private int backgroundColor;
 
-    public HorizontalBarChartItem(ChartData<?> chartData, float total) {
+    public HorizontalBarChartItem(ChartData<?> chartData, float total, int backgroundColor) {
         super(chartData);
         this.total = total;
+        this.backgroundColor = backgroundColor;
     }
 
     @Override
@@ -54,7 +56,7 @@ public class HorizontalBarChartItem extends ChartItem {
         holder.chart.setDescription("");
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
-        holder.chart.setBackgroundColor(Color.BLACK);
+        holder.chart.setBackgroundColor(backgroundColor);
 
         holder.chart.getAxisLeft().setEnabled(false);
         holder.chart.getAxisRight().setStartAtZero(false);

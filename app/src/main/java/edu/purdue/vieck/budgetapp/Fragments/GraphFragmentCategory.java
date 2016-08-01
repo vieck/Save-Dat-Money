@@ -1,5 +1,6 @@
 package edu.purdue.vieck.budgetapp.Fragments;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,13 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -29,23 +24,26 @@ import edu.purdue.vieck.budgetapp.Adapters.GraphMonthlyAdapter;
 import edu.purdue.vieck.budgetapp.ChartListViewItems.BarChartItem;
 import edu.purdue.vieck.budgetapp.ChartListViewItems.ChartItem;
 import edu.purdue.vieck.budgetapp.ChartListViewItems.HorizontalBarChartItem;
+import edu.purdue.vieck.budgetapp.CustomObjects.RealmCategoryItem;
 import edu.purdue.vieck.budgetapp.CustomObjects.RealmDataItem;
 import edu.purdue.vieck.budgetapp.DatabaseAdapters.RealmHandler;
 import edu.purdue.vieck.budgetapp.R;
+import edu.purdue.vieck.budgetapp.databinding.FragmentGraphCategoryBinding;
+import io.realm.RealmResults;
 
 /**
  * Created by mvieck on 10/7/2015.
  */
-public class GraphFragmentMonthly extends Fragment {
+public class GraphFragmentCategory extends Fragment {
+
+    FragmentGraphCategoryBinding binding;
+
     private RealmHandler mRealmHandler;
     private LinkedList<RealmDataItem> months;
-    ImageButton left, right;
-    TextView monthTxt, yearTxt;
     private int count, type;
 
-    String[] categories;
+    RealmResults<RealmCategoryItem> categories;
 
-    ListView mListView;
     GraphMonthlyAdapter mAdapter;
 
     List<ChartItem> mCharts;
@@ -53,74 +51,70 @@ public class GraphFragmentMonthly extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_graph_monthly, container, false);
 
-        categories = getResources().getStringArray(R.array.categoryarray);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_graph_category, container, false);
+
         mRealmHandler = new RealmHandler(getActivity());
 
-        mListView = (ListView) view.findViewById(R.id.listview);
-        mCharts = new ArrayList<>();
+        categories = mRealmHandler.getCategoryParents();
 
-        monthTxt = (TextView) view.findViewById(R.id.label_month);
-        yearTxt = (TextView) view.findViewById(R.id.label_year);
-        left = (ImageButton) view.findViewById(R.id.left_arrow);
-        right = (ImageButton) view.findViewById(R.id.right_arrow);
+        mCharts = new ArrayList<>();
 
         if (!mRealmHandler.isEmpty(type)) {
             months = mRealmHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;
             RealmDataItem item = months.get(count);
-            monthTxt.setText(item.getMonthString());
-            yearTxt.setText(Integer.toString(item.getYear()));
-            left.setOnClickListener(new View.OnClickListener() {
+            binding.labelMonth.setText(item.getMonthString());
+            binding.labelYear.setText(Integer.toString(item.getYear()));
+            binding.leftArrow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d("Category Position", "" + count);
                     if (count < months.size() - 1) {
                         count++;
                         RealmDataItem item = months.get(count);
-                        monthTxt.setText(item.getMonthString());
-                        yearTxt.setText(Integer.toString(item.getYear()));
+                        binding.labelMonth.setText(item.getMonthString());
+                        binding.labelYear.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());
                     } else {
                         count = 0;
                         RealmDataItem item = months.get(count);
-                        monthTxt.setText(item.getMonthString());
-                        yearTxt.setText(Integer.toString(item.getYear()));
+                        binding.labelMonth.setText(item.getMonthString());
+                        binding.labelYear.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());
 
                     }
                 }
             });
 
-            right.setOnClickListener(new View.OnClickListener() {
+            binding.rightArrow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d("Category Count", "" + count);
                     if (count > 0) {
                         count--;
                         RealmDataItem item = months.get(count);
-                        monthTxt.setText(item.getMonthString());
-                        yearTxt.setText(Integer.toString(item.getYear()));
+                        binding.labelMonth.setText(item.getMonthString());
+                        binding.labelYear.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());
                     } else {
                         count = months.size() - 1;
                         RealmDataItem item = months.get(count);
-                        monthTxt.setText(item.getMonthString());
-                        yearTxt.setText(Integer.toString(item.getYear()));
+                        binding.labelMonth.setText(item.getMonthString());
+                        binding.labelYear.setText(Integer.toString(item.getYear()));
                         updateGraphs(item.getMonth(), item.getYear());
                     }
                 }
             });
-           produceOne(months.get(count).getMonth(), months.get(count).getYear());
-           produceTwo(months.get(count).getMonth(), months.get(count).getYear());
+            produceOne(months.get(count).getMonth(), months.get(count).getYear());
+            produceTwo(months.get(count).getMonth(), months.get(count).getYear());
             mAdapter = new GraphMonthlyAdapter(getActivity(), mCharts, mRealmHandler);
-            mListView.setAdapter(mAdapter);
+            binding.listview.setAdapter(mAdapter);
         } else {
-            monthTxt.setText("No Data");
-            yearTxt.setText("");
+            binding.labelMonth.setText("No Data");
+            binding.labelYear.setText("");
         }
-        return view;
+        return binding.getRoot();
     }
 
     public void updateType(int type) {
@@ -128,19 +122,19 @@ public class GraphFragmentMonthly extends Fragment {
         if (mRealmHandler != null && !mRealmHandler.isEmpty(type)) {
             months = mRealmHandler.getAllUniqueMonthsAsLinkedList(type);
             count = months.size() - 1;
-            monthTxt.setText(months.get(count).getMonthString());
-            yearTxt.setText(Integer.toString(months.get(count).getYear()));
+            binding.labelMonth.setText(months.get(count).getMonthString());
+            binding.labelMonth.setText(Integer.toString(months.get(count).getYear()));
             updateGraphs(months.get(count).getMonth(), months.get(count).getYear());
         } else {
-            monthTxt.setText("No Data");
-            yearTxt.setText("");
+            binding.labelMonth.setText("No Data");
+            binding.labelMonth.setText("");
         }
     }
 
     private void updateGraphs(int month, int year) {
-        //.get(0).updateData(updateOne(month, year), 0);
-       // mCharts.get(1).updateData(updateTwo(month, year), mRealmHandler.getSpecificDateAmount(month, year, 2));
-        //mAdapter.notifyDataSetChanged();
+        mCharts.get(0).updateData(updateOne(month, year), 0);
+//         mCharts.get(1).updateData(updateTwo(month, year), mRealmHandler.getSpecificDateAmount(month, year, 2));
+        mAdapter.notifyDataSetChanged();
     }
 
     /* Creates a line chart for expense vs income */
@@ -149,27 +143,28 @@ public class GraphFragmentMonthly extends Fragment {
         ArrayList<BarEntry> incomeValues = new ArrayList<>();
         ArrayList<BarEntry> expenseValues = new ArrayList<>();
 
-        for (int i = 0; i < categories.length; i++) {
-            float incomeValue = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 1);
-            float expenseValue = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
-            incomeValues.add(new BarEntry(incomeValue, i));
-            expenseValues.add(new BarEntry(expenseValue, i));
+        int i = 0;
+        for (RealmCategoryItem category : categories) {
+            float incomeValue = mRealmHandler.getSpecificDateAmountByType(category.getCategory(), month, year, 1);
+            float expenseValue = mRealmHandler.getSpecificDateAmountByType(category.getCategory(), month, year, 0);
+            incomeValues.add(new BarEntry(i, incomeValue));
+            expenseValues.add(new BarEntry(i++, expenseValue));
         }
 
         List<IBarDataSet> barDataSets = new ArrayList<>();
         BarDataSet dataSetIncome = new BarDataSet(incomeValues, "Income");
         dataSetIncome.setDrawValues(false);
-        dataSetIncome.setColor(getResources().getColor(R.color.md_green_A400));
+        dataSetIncome.setColor(getResources().getColor(R.color.flat_nephritis));
         BarDataSet dataSetExpense = new BarDataSet(expenseValues, "Expense");
         dataSetExpense.setDrawValues(false);
-        dataSetExpense.setColor(getResources().getColor(R.color.md_red_A400));
+        dataSetExpense.setColor(getResources().getColor(R.color.flat_pomegranate));
         barDataSets.add(dataSetIncome);
         barDataSets.add(dataSetExpense);
 
         BarData barData = new BarData(barDataSets);
-        barData.setBarWidth(30f);
+        barData.setBarWidth(15f);
 
-        mCharts.add(new BarChartItem(barData));
+        mCharts.add(new BarChartItem(barData, getResources().getColor(R.color.flat_wisteria)));
 
     }
 
@@ -228,7 +223,7 @@ public class GraphFragmentMonthly extends Fragment {
 //        chart.getAxisRight().setTextSize(9f);
 
         ArrayList<BarEntry> yValues = new ArrayList<>();
-        yValues.add(new BarEntry(0,new float[]{-expense, income}));
+        yValues.add(new BarEntry(0, new float[]{-expense, income}));
 
         BarDataSet barDataSet = new BarDataSet(yValues, "");
         barDataSet.setValueTextSize(7f);
@@ -242,41 +237,45 @@ public class GraphFragmentMonthly extends Fragment {
 
         total = mRealmHandler.getSpecificDateAmount(month, year, 2);
 
-        mCharts.add(new HorizontalBarChartItem(barData, total));
+        mCharts.add(new HorizontalBarChartItem(barData, total, getResources().getColor(R.color.flat_wisteria)));
     }
 
-//    private ChartData updateOne(int month, int year) {
-//        ArrayList<BarEntry> incomeValues = new ArrayList<>();
-//        ArrayList<BarEntry> expenseValues = new ArrayList<>();
-//
-//        for (int i = 0; i < categories.length; i++) {
-//            float value = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 1);
-//            incomeValues.add(new BarEntry(value, i));
-//        }
-//
-//        for (int i = 0; i < categories.length; i++) {
-//            float value = mRealmHandler.getSpecificDateAmountByType(categories[i], month, year, 0);
-//            expenseValues.add(new BarEntry(value, i));
-//        }
-//
-//        List<IBarDataSet> barDataSets = new ArrayList<>();
-//        BarDataSet dataSetIncome = new BarDataSet(incomeValues, "Income");
-//        dataSetIncome.setDrawValues(false);
-//        dataSetIncome.setColor(getResources().getColor(R.color.md_green_A400));
-//        BarDataSet dataSetExpense = new BarDataSet(expenseValues, "Expense");
-//        dataSetExpense.setDrawValues(false);
-//        dataSetExpense.setColor(getResources().getColor(R.color.md_red_A400));
-//        barDataSets.add(dataSetIncome);
-//        barDataSets.add(dataSetExpense);
-//
-//        return new BarData(categories, barDataSets);
-//    }
+    private ChartData updateOne(int month, int year) {
+        ArrayList<BarEntry> incomeValues = new ArrayList<>();
+        ArrayList<BarEntry> expenseValues = new ArrayList<>();
 
-    private void updateTwo(int month, int year) {
+        int i = 0;
+        for (RealmCategoryItem category : categories) {
+            float value = mRealmHandler.getSpecificDateAmountByType(category.getCategory(), month, year, 1);
+            incomeValues.add(new BarEntry(i++, value));
+        }
 
+        i = 0;
+        for (RealmCategoryItem category : categories) {
+            float value = mRealmHandler.getSpecificDateAmountByType(category.getCategory(), month, year, 0);
+            expenseValues.add(new BarEntry(i++, value));
+        }
+
+        List<IBarDataSet> barDataSets = new ArrayList<>();
+        BarDataSet dataSetIncome = new BarDataSet(incomeValues, "Income");
+        dataSetIncome.setDrawValues(false);
+        dataSetIncome.setColor(getResources().getColor(R.color.md_green_A400));
+        BarDataSet dataSetExpense = new BarDataSet(expenseValues, "Expense");
+        dataSetExpense.setDrawValues(false);
+        dataSetExpense.setColor(getResources().getColor(R.color.md_red_A400));
+        barDataSets.add(dataSetIncome);
+        barDataSets.add(dataSetExpense);
+
+        BarData barData = new BarData(barDataSets);
+        barData.setBarWidth(5f);
+        return barData;
+    }
+
+//    private void updateTwo(int month, int year) {
+//
 //        float total = mRealmHandler.getSpecificDateAmount(month, year, 2);
-//        chart.getAxisRight().setAxisMaxValue(total+10);
-//        chart.getAxisRight().setAxisMinValue(-total-10);
+////        chart.getAxisRight().setAxisMaxValue(total+10);
+////        chart.getAxisRight().setAxisMinValue(-total-10);
 //        List<BarEntry> barEntries = new ArrayList<>();float income = mRealmHandler.getSpecificDateAmount(month, year, 1);
 //        String[] incomeLabel = {"Income"};
 //
@@ -286,14 +285,14 @@ public class GraphFragmentMonthly extends Fragment {
 //        String[] labels = {"Income", "Expense"};
 //
 //        ArrayList<BarEntry> yValues = new ArrayList<>();
-//        yValues.add(new BarEntry(new float[]{expense, income}, 0));
+////        yValues.add(new BarEntry(new float[]{expense, income}, 0));
 //
 //        BarDataSet barDataSet = new BarDataSet(yValues, "Data Comparison");
 //        barDataSet.setValueTextSize(7f);
 //        barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
-//        barDataSet.setBarSpacePercent(40f);
+////        barDataSet.setBarSpacePercent(40f);
 //        barDataSet.setColors(new int[]{getResources().getColor(R.color.md_red_A400), getResources().getColor(R.color.md_green_A400)});
-//        return new BarData(new String[]{""}, barDataSet);
-    }
+////        return new BarData(new String[]{""}, barDataSet);
+//    }
 
 }

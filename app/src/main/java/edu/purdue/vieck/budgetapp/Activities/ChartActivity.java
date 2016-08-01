@@ -97,7 +97,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         setUpSpinner();
 
         final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter();
+        RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(2);
         binding.budgetRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.budgetRecyclerView.setAdapter(new ChartRecyclerAdapter(this, items));
         binding.budgetRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL, getResources().getColor(R.color.flat_peterriver)));
@@ -312,7 +312,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("Today").setTag(dateTag));
             todayTab = binding.tablayoutDate.getTabCount();
         }
-        if (!mRealmHandler.getResultsByFilter().isEmpty()) {
+        if (!mRealmHandler.getResultsByFilter(2).isEmpty()) {
             binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("All").setTag(dateTag));
             allDataTab = binding.tablayoutDate.getTabCount();
         }
@@ -505,7 +505,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
     private void setDateLabel() {
 //        mDateLabel.setText("All");
-        RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter();
+        RealmResults<RealmDataItem> items = mRealmHandler.getResultsByFilter(2);
         ChartRecyclerAdapter adapter = (ChartRecyclerAdapter) binding.budgetRecyclerView.getAdapter();
         adapter.updateData(items);
     }

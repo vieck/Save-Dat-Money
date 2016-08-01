@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 
 import java.io.File;
@@ -203,12 +204,11 @@ public class RealmHandler {
         final HashMap<Integer, List<Integer>> monthHashmap = new HashMap<>();
         createRealm();
         RealmQuery query;
-        if (type == 2) {
             query = realm.where(RealmDataItem.class);
-        } else if (type == 1) {
-            query = realm.where(RealmDataItem.class).equalTo("type", true);
-        } else {
-            query = realm.where(RealmDataItem.class).equalTo("type", false);
+        if (type == 1) {
+            query.equalTo("type", true);
+        } else if (type == 0){
+            query.equalTo("type", false);
         }
         RealmResults<RealmDataItem> results = query.findAll();
         results.sort("month", Sort.DESCENDING);
@@ -291,16 +291,16 @@ public class RealmHandler {
         return hashMap;
     }
 
-    public RealmResults<RealmDataItem> getResultsByFilter() {
+    public RealmResults<RealmDataItem> getResultsByFilter(int type) {
         createRealm();
 
         RealmQuery query = realm.where(RealmDataItem.class);
 
-//        if (type == 1) {
-//            query.equalTo("type", true);
-//        } else {
-//            query.equalTo("type", false);
-//        }
+        if (type == 1) {
+            query.equalTo("type", true);
+        } else if (type == 0) {
+            query.equalTo("type", false);
+        }
 
         return query.findAll().sort("day", Sort.DESCENDING).sort("month", Sort.DESCENDING).sort("year", Sort.DESCENDING);
     }
@@ -378,13 +378,11 @@ public class RealmHandler {
     public float getSpecificDateAmount(int month, int year, int type) {
         float amount = 0;
         createRealm();
-        RealmQuery query;
-        if (type == 2) {
-            query = realm.where(RealmDataItem.class).equalTo("month", month).equalTo("year", year);
-        } else if (type == 1) {
-            query = realm.where(RealmDataItem.class).equalTo("type", true).equalTo("month", month).equalTo("year", year);
-        } else {
-            query = realm.where(RealmDataItem.class).equalTo("type", false).equalTo("month", month).equalTo("year", year);
+        RealmQuery query = realm.where(RealmDataItem.class).equalTo("month", month).equalTo("year", year);
+        if (type == 1) {
+            query.equalTo("type", true);
+        } else if (type == 0){
+            query.equalTo("type", false);
         }
         RealmResults<RealmDataItem> results = query.findAll();
         for (RealmDataItem realmDataItem : results) {
@@ -411,6 +409,17 @@ public class RealmHandler {
             data[i++] = realmDataItem.getAmount();
         }
         return data;
+    }
+
+    public HashMap<String,Float> getAllDataPerMonth(int type) {
+        HashMap<String,Float> dataWithDate = new HashMap<>();
+        List<RealmDataItem> realmDataItems = getAllUniqueMonthsAsList(type);
+        for (RealmDataItem realmDataItem : realmDataItems) {
+            String date = realmDataItem.getMonth()+ "/" + realmDataItem.getDay() + "/" + realmDataItem.getYear();
+            Log.d("GraphOverview",date);
+            dataWithDate.put(date,getSpecificDateAmount(realmDataItem.getMonth(),realmDataItem.getYear(),type));
+        }
+        return dataWithDate;
     }
 
     public float[] getListOfDays(String category, int month, int year, int type) {
