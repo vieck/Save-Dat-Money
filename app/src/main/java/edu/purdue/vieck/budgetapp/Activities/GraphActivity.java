@@ -9,16 +9,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerTabStrip;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +24,7 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 
-import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentMonthly;
+import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentCategory;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentComparison;
 import edu.purdue.vieck.budgetapp.Fragments.GraphFragmentOverview;
 import edu.purdue.vieck.budgetapp.R;
@@ -182,9 +177,9 @@ public class GraphActivity extends AppCompatActivity {
         }
         adapter.addFragment(fragmentOverview, "Overview");
 
-        GraphFragmentMonthly fragmentCategory = (GraphFragmentMonthly) fragmentManager.findFragmentByTag("Category");
+        GraphFragmentCategory fragmentCategory = (GraphFragmentCategory) fragmentManager.findFragmentByTag("Category");
         if (fragmentCategory == null) {
-            fragmentCategory = new GraphFragmentMonthly();
+            fragmentCategory = new GraphFragmentCategory();
         }
         adapter.addFragment(fragmentCategory, "Category");
 
@@ -236,7 +231,7 @@ public class GraphActivity extends AppCompatActivity {
                 fragmentOverview.getArguments().putInt("type", type);
             }
 
-            GraphFragmentMonthly fragmentCategory = (GraphFragmentMonthly) mFragmentList.get(1);
+            GraphFragmentCategory fragmentCategory = (GraphFragmentCategory) mFragmentList.get(1);
             if (fragmentCategory.getArguments() != null) {
                 fragmentOverview.getArguments().putInt("type", type);
             }

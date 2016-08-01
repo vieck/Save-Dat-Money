@@ -17,8 +17,12 @@ import edu.purdue.vieck.budgetapp.R;
  * Created by vieck on 1/20/16.
  */
 public class BarChartItem extends ChartItem {
-    public BarChartItem(ChartData<?> chartData) {
+
+    int backgroundColor;
+
+    public BarChartItem(ChartData<?> chartData, int backgroundColor) {
         super(chartData);
+        this.backgroundColor = backgroundColor;
     }
     @Override
     public int getItemType() {
@@ -61,7 +65,7 @@ public class BarChartItem extends ChartItem {
         // set data
         holder.chart.setData(barData);
         holder.chart.setGridBackgroundColor(Color.BLACK);
-
+        holder.chart.setBackgroundColor(backgroundColor);
 
         holder.chart.animateY(700);
         holder.chart.notifyDataSetChanged();

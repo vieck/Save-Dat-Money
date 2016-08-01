@@ -44,6 +44,7 @@
                     app:tabSelectedTextColor="@color/flat_clouds"
                     app:tabTextColor="@color/flat_amethyst"
                     android:background="@color/flat_medium_purple"
+                    app:tabIndicatorColor="@color/flat_clouds"
                     app:tabMode="fixed" />
 
             </android.support.v4.view.ViewPager>
