@@ -136,7 +136,6 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
             } else {
                 binding.toolbar.setTitleTextColor(Color.WHITE);
             }
-            binding.toolbar.setBackgroundColor(actionBarColor);
             setSupportActionBar(binding.toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 Drawable upArrow = getResources().getDrawable(R.drawable.ic_action_back);
