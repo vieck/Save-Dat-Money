@@ -303,7 +303,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     private void setupDateTabs() {
         Log.d("Before Date Change", date.toString());
 
-        final String dateTag = Integer.toString(date.get(Calendar.MONTH)+1) + "," + Integer.toString(date.get(Calendar.DATE)) + "," + Integer.toString(date.get(Calendar.YEAR));
+        final String dateTag = Integer.toString(date.get(Calendar.MONTH) + 1) + "," + Integer.toString(date.get(Calendar.DATE)) + "," + Integer.toString(date.get(Calendar.YEAR));
         if (!mRealmHandler.getResultsByFilter(date.get(Calendar.DATE), date.get(Calendar.MONTH), date.get(Calendar.YEAR), 2).isEmpty()) {
             binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("This Week").setTag(dateTag));
             weekTab = binding.tablayoutDate.getTabCount();
@@ -323,11 +323,6 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         if (!mRealmHandler.getResultsByFilter(date.get(Calendar.YEAR), 2).isEmpty()) {
             binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("This Year").setTag(dateTag));
             yearTab = binding.tablayoutDate.getTabCount();
-        }
-        if (allDataTab != -1)
-            binding.tablayoutDate.getTabAt(allDataTab - 1).select();
-        else {
-            binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("No data"));
         }
         final int week = weekTab - 1;
         final int today = todayTab - 1;
@@ -445,6 +440,13 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 //            }
 //        });
         Log.d("After Date Change", date.toString());
+        if (allDataTab != -1) {
+            binding.tablayoutDate.getTabAt(allDataTab - 1).select();
+            setDateLabel();
+            setData(0);
+        } else {
+            binding.tablayoutDate.addTab(binding.tablayoutDate.newTab().setText("No data"));
+        }
     }
 
     @Override
