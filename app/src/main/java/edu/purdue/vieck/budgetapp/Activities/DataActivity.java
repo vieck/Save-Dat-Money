@@ -77,7 +77,7 @@ public class DataActivity extends AppCompatActivity {
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitleTextColor(Color.WHITE);
-        mToolbar.setBackgroundColor(actionBarColor);
+//        mToolbar.setBackgroundColor(actionBarColor);
         setSupportActionBar(mToolbar);
     }
 
@@ -99,7 +99,7 @@ public class DataActivity extends AppCompatActivity {
     private void setUpNavigationView() {
         final Activity currentActivity = this;
         mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
-        mNavigationView.setBackgroundColor(actionBarColor);
+//        mNavigationView.setBackgroundColor(actionBarColor);
         mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
         mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

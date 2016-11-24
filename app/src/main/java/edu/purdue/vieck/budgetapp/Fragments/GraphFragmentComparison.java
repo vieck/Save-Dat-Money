@@ -77,9 +77,12 @@ public class GraphFragmentComparison extends Fragment {
         chartView.setData(data);
         chartView.setDescription("");
 
-        chartView.setBackgroundColor(getResources().getColor(R.color.flat_wisteria));
+        chartView.setBackgroundColor(getResources().getColor(R.color.flat_wetasphalt));
         chartView.setPinchZoom(true);
         chartView.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+        chartView.getAxisLeft().setTextColor(getResources().getColor(R.color.md_white_1000));
+        chartView.getAxisRight().setTextColor(getResources().getColor(R.color.md_white_1000));
+        chartView.getXAxis().setTextColor(getResources().getColor(R.color.md_white_1000));
     }
 
 }

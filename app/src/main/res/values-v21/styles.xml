@@ -2,8 +2,8 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorPrimary">@color/md_white_1000</item>
-        <item name="android:colorPrimaryDark">@color/md_indigo_300</item>
+        <item name="android:colorPrimary">@color/flat_wetasphalt</item>
+        <item name="android:colorPrimaryDark">@color/flat_midnight_blue</item>
         <item name="android:colorBackground">@color/md_white_1000</item>
         <item name="android:colorAccent">@color/md_deep_purple_200</item>
         <item name="android:textColorPrimary">@color/md_black_1000</item>

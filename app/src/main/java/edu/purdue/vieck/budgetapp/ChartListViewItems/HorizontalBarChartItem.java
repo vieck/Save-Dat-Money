@@ -56,7 +56,7 @@ public class HorizontalBarChartItem extends ChartItem {
         holder.chart.setDescription("");
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
-        holder.chart.setBackgroundColor(backgroundColor);
+//        holder.chart.setBackgroundColor(backgroundColor);
 
         holder.chart.getAxisLeft().setEnabled(false);
         holder.chart.getAxisRight().setStartAtZero(false);

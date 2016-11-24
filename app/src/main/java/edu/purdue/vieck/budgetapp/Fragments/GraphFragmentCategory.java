@@ -164,7 +164,7 @@ public class GraphFragmentCategory extends Fragment {
         BarData barData = new BarData(barDataSets);
         barData.setBarWidth(15f);
 
-        mCharts.add(new BarChartItem(barData, getResources().getColor(R.color.flat_wisteria)));
+        mCharts.add(new BarChartItem(barData, getResources().getColor(R.color.flat_wetasphalt)));
 
     }
 
@@ -237,7 +237,7 @@ public class GraphFragmentCategory extends Fragment {
 
         total = mRealmHandler.getSpecificDateAmount(month, year, 2);
 
-        mCharts.add(new HorizontalBarChartItem(barData, total, getResources().getColor(R.color.flat_wisteria)));
+        mCharts.add(new HorizontalBarChartItem(barData, total, getResources().getColor(R.color.flat_wetasphalt)));
     }
 
     private ChartData updateOne(int month, int year) {

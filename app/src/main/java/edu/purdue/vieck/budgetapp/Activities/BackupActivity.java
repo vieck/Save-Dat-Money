@@ -54,7 +54,7 @@ public class BackupActivity extends AppCompatActivity {
 
         window.setStatusBarColor(getResources().getColor(R.color.md_black_1000));
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setBackgroundColor(actionBarColor);
+//        mToolbar.setBackgroundColor(actionBarColor);
         mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -79,7 +79,7 @@ public class BackupActivity extends AppCompatActivity {
         mNavigationView = (NavigationView) findViewById(R.id.navigation_layout);
         mNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
         mNavigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
-        mNavigationView.setBackgroundColor(actionBarColor);
+//        mNavigationView.setBackgroundColor(actionBarColor);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {

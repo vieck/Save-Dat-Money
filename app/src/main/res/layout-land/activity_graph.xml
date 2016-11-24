@@ -23,7 +23,7 @@
                 style="@style/MyAppBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways" />
+                app:layout_scrollFlags="scroll|enterAlways"/>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.view.ViewPager
@@ -36,6 +36,10 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:tabSelectedTextColor="@color/flat_clouds"
+                app:tabTextColor="@color/flat_wetasphalt"
+                android:background="@color/flat_midnight_blue"
+                app:tabIndicatorColor="@color/flat_clouds"
                 app:tabMode="fixed"/>
 
         </android.support.v4.view.ViewPager>

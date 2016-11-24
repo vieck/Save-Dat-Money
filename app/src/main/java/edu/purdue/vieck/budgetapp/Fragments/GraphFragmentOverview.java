@@ -104,7 +104,7 @@ public class GraphFragmentOverview extends Fragment {
         data.addDataSet(expense);
         lineChart.setData(data);
         lineChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
-        lineChart.setBackgroundColor(getResources().getColor(R.color.flat_wisteria));
+        lineChart.setBackgroundColor(getResources().getColor(R.color.flat_wetasphalt));
         lineChart.setDescriptionColor(Color.WHITE);
         lineChart.getLegend().setTextColor(Color.WHITE);
 

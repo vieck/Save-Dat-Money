@@ -65,7 +65,11 @@ public class BarChartItem extends ChartItem {
         // set data
         holder.chart.setData(barData);
         holder.chart.setGridBackgroundColor(Color.BLACK);
-        holder.chart.setBackgroundColor(backgroundColor);
+//        holder.chart.setBackgroundColor(backgroundColor);
+        holder.chart.getAxisRight().setTextColor(Color.WHITE);
+        holder.chart.getAxisLeft().setTextColor(Color.WHITE);
+        holder.chart.getXAxis().setTextColor(Color.WHITE);
+
 
         holder.chart.animateY(700);
         holder.chart.notifyDataSetChanged();

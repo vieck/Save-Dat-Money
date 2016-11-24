@@ -25,8 +25,7 @@
                     style="@style/MyAppBarLayout"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    android:background="@color/flat_wisteria"/>
+                    app:layout_scrollFlags="scroll|enterAlways"/>
 
 
             </android.support.design.widget.AppBarLayout>
@@ -42,8 +41,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:tabSelectedTextColor="@color/flat_clouds"
-                    app:tabTextColor="@color/flat_amethyst"
-                    android:background="@color/flat_medium_purple"
+                    app:tabTextColor="@color/flat_wetasphalt"
+                    android:background="@color/flat_midnight_blue"
                     app:tabIndicatorColor="@color/flat_clouds"
                     app:tabMode="fixed" />
 
@@ -57,7 +56,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/flat_wisteria"
             app:itemIconTint="?android:attr/colorPrimary"
             app:menu="@menu/nav_menu" />
     </android.support.v4.widget.DrawerLayout>
