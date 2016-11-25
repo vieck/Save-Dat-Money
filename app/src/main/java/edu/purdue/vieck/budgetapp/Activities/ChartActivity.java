@@ -332,37 +332,39 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         binding.tablayoutDate.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                String[] dateString = tab.getTag().toString().split(",");
-                for (int i = 0; i < dateString.length; i++) {
-                    date.set(Integer.parseInt(dateString[2]), Integer.parseInt(dateString[0]), Integer.parseInt(dateString[1]));
-                }
-                if (tab.getPosition() == today) {
-                    setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
-                    setData(1);
+                if (tab.getTag() != null) {
+                    String[] dateString = tab.getTag().toString().split(",");
+                    for (int i = 0; i < dateString.length; i++) {
+                        date.set(Integer.parseInt(dateString[2]), Integer.parseInt(dateString[0]), Integer.parseInt(dateString[1]));
+                    }
+                    if (tab.getPosition() == today) {
+                        setDateLabel(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+                        setData(1);
 
-                } else if (tab.getPosition() == week) {
-                    int firstDay, lastDay, firstMonth, secondMonth;
-                    lastDay = date.get(Calendar.DAY_OF_MONTH);
-                    secondMonth = date.get(Calendar.MONTH);
+                    } else if (tab.getPosition() == week) {
+                        int firstDay, lastDay, firstMonth, secondMonth;
+                        lastDay = date.get(Calendar.DAY_OF_MONTH);
+                        secondMonth = date.get(Calendar.MONTH);
 
-                    date.add(Calendar.DATE, -7);
+                        date.add(Calendar.DATE, -7);
 
-                    firstDay = date.get(Calendar.DAY_OF_MONTH);
-                    firstMonth = date.get(Calendar.MONTH);
-                    setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
-                    setData(2);
+                        firstDay = date.get(Calendar.DAY_OF_MONTH);
+                        firstMonth = date.get(Calendar.MONTH);
+                        setDateLabel(firstDay, lastDay, firstMonth + 1, secondMonth + 1, date.get(Calendar.YEAR));
+                        setData(2);
 
-                } else if (tab.getPosition() == all) {
-                    setDateLabel();
-                    setData(0);
-                } else if (tab.getPosition() == month) {
-                    setDateLabel(date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
-                    setData(3);
+                    } else if (tab.getPosition() == all) {
+                        setDateLabel();
+                        setData(0);
+                    } else if (tab.getPosition() == month) {
+                        setDateLabel(date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+                        setData(3);
 
-                } else if (tab.getPosition() == year) {
-                    setDateLabel(date.get(Calendar.YEAR));
-                    setData(4);
+                    } else if (tab.getPosition() == year) {
+                        setDateLabel(date.get(Calendar.YEAR));
+                        setData(4);
 
+                    }
                 }
             }
 

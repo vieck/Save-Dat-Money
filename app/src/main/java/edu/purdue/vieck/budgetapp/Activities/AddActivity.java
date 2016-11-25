@@ -44,7 +44,6 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
 
     ActivityAddBinding binding;
 
-    AddCategoryFragment addCategoryFragment;
     private SharedPreferences mSharedPreferences;
     private int actionBarColor;
     RealmHandler mRealmHandler;
@@ -213,7 +212,6 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
         binding.addTextviewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CategoryActivity categoryActivity = new CategoryActivity();
                 Bundle bundle = new Bundle();
                 if (binding.incomeButton.isChecked()) {
                     bundle.putBoolean("Type", true);
@@ -242,7 +240,6 @@ public class AddActivity extends AppCompatActivity implements NumberPickerDialog
             @Override
             public void onClick(View v) {
                 if (!binding.addTextviewCategory.getText().equals("")) {
-                    SubCategoryActivity subCategoryActivity = new SubCategoryActivity();
                     Bundle bundle = new Bundle();
                     if (binding.incomeButton.isChecked()) {
                         bundle.putBoolean("Type", true);
