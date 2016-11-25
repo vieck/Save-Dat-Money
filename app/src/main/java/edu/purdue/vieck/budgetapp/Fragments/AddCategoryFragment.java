@@ -51,6 +51,7 @@ public class AddCategoryFragment extends Fragment {
         }
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         fabFoward = (FloatingActionButton) getActivity().findViewById(R.id.fab_next);
+        if (fabFoward != null)
         fabFoward.setVisibility(View.VISIBLE);
         fabBackward = (FloatingActionButton) getActivity().findViewById(R.id.fab_back);
         fabBackward.setVisibility(View.GONE);

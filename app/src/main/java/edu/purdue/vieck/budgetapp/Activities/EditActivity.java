@@ -371,56 +371,56 @@ public class EditActivity extends AppCompatActivity implements NumberPickerDialo
                     binding.editButton.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{actionBarColor}));
                 } else {
                     binding.addTextviewAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    binding.addTextviewCategory.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
-                            Bundle bundle = getIntent().getExtras();
-                            if (binding.incomeButton.isChecked()) {
-                                bundle.putBoolean("Type", true);
-                            } else {
-                                bundle.putBoolean("Type", false);
-                            }
-                            bundle.putString("Category", binding.addTextviewCategory.getText().toString());
-                            bundle.putString("Subcategory", binding.addTextviewSubcategory.getText().toString());
-                            if (!binding.addTextviewAmount.getText().toString().equals("")) {
-                                bundle.putDouble("Amount", Double.parseDouble(binding.addTextviewAmount.getText().toString()));
-                            }
-                            bundle.putString("Note", binding.edittextNote.getText().toString());
-                            bundle.putInt("Month", month);
-                            bundle.putInt("Day", day);
-                            bundle.putInt("Year", year);
-                            addCategoryFragment.setArguments(bundle);
-                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.fragment_container, addCategoryFragment);
-                            fragmentTransaction.commit();
-                        }
-                    });
-                    binding.addTextviewSubcategory.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-//                            AddSubCategoryFragment addSubCategoryFragment = new AddSubCategoryFragment();
-                            Bundle bundle = getIntent().getExtras();
-                            if (binding.incomeButton.isChecked()) {
-                                bundle.putBoolean("Type", true);
-                            } else {
-                                bundle.putBoolean("Type", false);
-                            }
-                            bundle.putString("Category", binding.addTextviewCategory.getText().toString());
-                            bundle.putString("Subcategory", binding.addTextviewSubcategory.getText().toString());
-                            if (!binding.addTextviewAmount.getText().toString().equals("")) {
-                                bundle.putDouble("Amount", Double.parseDouble(binding.addTextviewAmount.getText().toString()));
-                            }
-                            bundle.putString("Note", binding.edittextNote.getText().toString());
-                            bundle.putInt("Month", month);
-                            bundle.putInt("Day", day);
-                            bundle.putInt("Year", year);
-//                            addSubCategoryFragment.setArguments(bundle);
+//                    binding.addTextviewCategory.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
+//                            Bundle bundle = getIntent().getExtras();
+//                            if (binding.incomeButton.isChecked()) {
+//                                bundle.putBoolean("Type", true);
+//                            } else {
+//                                bundle.putBoolean("Type", false);
+//                            }
+//                            bundle.putString("Category", binding.addTextviewCategory.getText().toString());
+//                            bundle.putString("Subcategory", binding.addTextviewSubcategory.getText().toString());
+//                            if (!binding.addTextviewAmount.getText().toString().equals("")) {
+//                                bundle.putDouble("Amount", Double.parseDouble(binding.addTextviewAmount.getText().toString()));
+//                            }
+//                            bundle.putString("Note", binding.edittextNote.getText().toString());
+//                            bundle.putInt("Month", month);
+//                            bundle.putInt("Day", day);
+//                            bundle.putInt("Year", year);
+//                            addCategoryFragment.setArguments(bundle);
 //                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//                            fragmentTransaction.replace(R.id.fragment_container, addSubCategoryFragment);
+//                            fragmentTransaction.replace(R.id.fragment_container, addCategoryFragment);
 //                            fragmentTransaction.commit();
-                        }
-                    });
+//                        }
+//                    });
+//                    binding.addTextviewSubcategory.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+////                            AddSubCategoryFragment addSubCategoryFragment = new AddSubCategoryFragment();
+//                            Bundle bundle = getIntent().getExtras();
+//                            if (binding.incomeButton.isChecked()) {
+//                                bundle.putBoolean("Type", true);
+//                            } else {
+//                                bundle.putBoolean("Type", false);
+//                            }
+//                            bundle.putString("Category", binding.addTextviewCategory.getText().toString());
+//                            bundle.putString("Subcategory", binding.addTextviewSubcategory.getText().toString());
+//                            if (!binding.addTextviewAmount.getText().toString().equals("")) {
+//                                bundle.putDouble("Amount", Double.parseDouble(binding.addTextviewAmount.getText().toString()));
+//                            }
+//                            bundle.putString("Note", binding.edittextNote.getText().toString());
+//                            bundle.putInt("Month", month);
+//                            bundle.putInt("Day", day);
+//                            bundle.putInt("Year", year);
+////                            addSubCategoryFragment.setArguments(bundle);
+////                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+////                            fragmentTransaction.replace(R.id.fragment_container, addSubCategoryFragment);
+////                            fragmentTransaction.commit();
+//                        }
+//                    });
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.editButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_save, getTheme()));
                         binding.deleteButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_close_clear_cancel, getTheme()));
